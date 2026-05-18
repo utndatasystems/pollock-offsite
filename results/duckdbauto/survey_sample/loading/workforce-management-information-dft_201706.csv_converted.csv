@@ -1,0 +1,18 @@
+Application Error
+CSV Error on Line: 2
+ The parallel scanner does not support null_padding in conjunction with quoted new lines. Please disable the parallel csv reader with parallel=false
+  file = data/survey_sample/csv/workforce-management-information-dft_201706.csv
+  delimiter = , (Set By User)
+  quote = " (Set By User)
+  escape = (empty) (Set By User)
+  new_line = \n (Auto-Detected)
+  header = true (Set By User)
+  skip_rows = 0 (Set By User)
+  comment = (empty) (Set By User)
+  strict_mode = false (Set By User)
+  date_format =  (Auto-Detected)
+  timestamp_format =  (Auto-Detected)
+  null_padding = 1
+  sample_size = 20480
+  ignore_errors = true
+  all_varchar = 0

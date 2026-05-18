@@ -1,0 +1,56 @@
+Source,C1
+Table 7.1: ,Case ascertainment and data completeness according to trust/hospital site
+Table 7.2:,Management of all patients reported to the audit according to trust/hospital site
+Table 7.3: ,Management of patients who had major surgery according to trust/hospital site
+Table 7.4: ,Outcomes of patients who had major surgery according to trust/hospital site (excludes those recorded as <18 years or ICD-10 code C18.1 (Malignant neoplasm of appendix))
+Table 7.5: ,Results for patients with rectal cancer who had major surgery according to trust/hospital site
+,
+Source,Field Name
+,Cancer Alliance/Trust Code
+,Cancer Alliance/Trust Name
+Table 7.1,No. cases reported to the Audit
+Table 7.1,No. cases identified in HES/PEDW
+Table 7.1,Case ascertainment (%)
+Table 7.1,Patients with compleTe pre-treatment staging (%)*
+Table 7.1,Patients with recorded performance status (%)
+Table 7.1,No. cases having major surgery according to the Audit
+Table 7.1,Data completeness for patients having major surgery (%)
+Table 7.1,Patients having major surgery recorded as ASA 1 (%)
+Table 7.1,Patients having major surgery recorded as ASA 2 (%)
+Table 7.1,Patients having major surgery recorded as ASA 3 (%)
+Table 7.1,Patients having major surgery recorded as ASA 4/5 (%)
+Table 7.1,Patients having major surgery with no ASA recorded (%)
+Table 7.2,Number of patients reported to the audit
+Table 7.2,Seen by clinical nurse specialist (%)
+Table 7.2,Curative Major Resection Treatment Pathway (%)
+Table 7.2,Too Little Treatment Pathway (%)
+Table 7.2,Non-Curative Major Resection Treatment Pathway (%)
+Table 7.2,Too Much/Too Frail Treatment Pathways (%)
+Table 7.2,Not Known/Other Treatment Pathway (%)
+Table 7.3,No. patients having major surgery
+Table 7.3,Patients with distant metastases at time of surgery (%)
+Table 7.3,Major surgery carried out as urgent or emergency (%)
+Table 7.3,Median number of lymph nodes excised
+Table 7.3,Proportion of patients with recorded number of lymph nodes (%)
+Table 7.3,Proportion cases >=12 nodes (%)
+Table 7.3,Laparoscopic surgery attempted (%)
+Table 7.3,No. patients included in risk adjusted length of stay
+Table 7.3,Risk adjusted length of stay >5 days (%)
+Table 7.4,No. patients having major surgery
+Table 7.4,Observed 90-day mortality (%)
+Table 7.4,Adjusted 90-day mortality (%)
+Table 7.4,No. patients having major surgery linked to HES/PEDW
+Table 7.4,Observed 30-day unplanned readmission rate (%)
+Table 7.4,Adjusted 30-day unplanned readmission rate (%)
+Table 7.4,No. patients having major resection 1 Apr 13 - 31 Mar 14
+Table 7.4,"Observed 2-year mortality (%, per person-2-years)"
+Table 7.4,"Adjusted 2-year mortality (%, per person-2-years)"
+Table 7.5,Number of patients with rectal cancer undergoing major surgery
+Table 7.5,Positive margins reported (%)
+Table 7.5,Records missing status of margins (%)
+Table 7.5,APER rate (%)
+Table 7.5,Number of patients diagnosed with rectal cancer Jan-Dec 2015 undergoing major surgery 
+Table 7.5,Short or long course Pre-operative radiotherapy (%)
+Table 7.5,Number of patients in HES/PEDW 18-month stoma estimate
+Table 7.5,Observed 18-month stoma rate using HES/PEDW (%)
+Table 7.5,Adjusted 18-month stoma rate using HES/PEDW (%)
