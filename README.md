@@ -111,13 +111,15 @@ to run a specific python sut against a custom dataset.
 
 defaults to ```polluted_files```
 
+If you want to get a table of SuTs and their respective scores without having to rerun the evaluate script (which can take some time), run the python file ```python3 scripts/results_tables.py --dataset <dataset>```.
+Note: this only works after evaluate has been run once before.
+
 
 # Getting Started with your own Approach
 
 A template for a custom SuT is provided in ```sut/custom```. Just change the function in solution.py any way you like or substitute it entirely inside ```custom-bench.py```.
 
-
-The score to beat with an automatic inference solution that does not use the provided dialect information is the one by DuckDB-Auto which is currently at: 9.646808 (unweighted)
+The score to beat with an automatic inference solution that does not use the provided dialect information is the one by DuckDB-Auto which is currently at: 9.646808 (unweighted). 
 
 Have fun and happy hacking ;)
 
@@ -127,5 +129,5 @@ Have fun and happy hacking ;)
 
 1. Some dependency versions were changed compared to the original Pollock Benchmark (e.g. Pandas is now 3.x and not 1.x anymore). This might lead to different scores
 2. DuckDB-Auto had a bug where it correctly read datetime but wrote it in a different format than expected by the benchmark, which is why its score in the original repo is lower.
-3. Some non-python SuTs require Docker. Their original and mostly broken dependencies were updated and they should run now. However, the score might have changed due to changes in how csvs are parsed between the old and new versions.
+3. Most non-python SuTs require Docker. Their original and mostly broken dependencies were updated and they should run now (status May 2026). However, some settings like the number of repetitions in the .env file are not yet passed through to docker. Also, the score might have changed due to changes in how csvs are parsed between the old and new versions as some legacy docker containers were not distributed anymore.
 
