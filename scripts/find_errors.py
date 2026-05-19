@@ -297,7 +297,7 @@ def main():
     failed = df[df[success_col] == 0]
     poor   = df[(df[success_col] == 1) & (df[cell_f1_col] < args.threshold)]
 
-    output_path = os.path.abspath(args.output or f"{sut}_errors.txt")
+    output_path = os.path.abspath(args.output or os.path.join(args.results_dir, sut, args.dataset, f"{sut}_errors.txt"))
 
     with open(output_path, "w") as out:
         out.write(f"SUT: {sut}\n")
