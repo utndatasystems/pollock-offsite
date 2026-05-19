@@ -7,7 +7,7 @@ import json
 import os
 import re
 import sys
-from collections import Counter
+from collections import Counter, defaultdict
 
 import pandas as pd
 
@@ -52,6 +52,22 @@ def pollution_type(filename):
         if m:
             return description.format(*m.groups())
     return "Unknown"
+
+
+_GROUP_PATTERNS = [
+    (r"row_field_delimiter_\d+_",   "One single row uses space as field delimiter"),
+    (r"row_extra_quote\d+_col\d+",  "Extra unescaped quote in one single row"),
+    (r"row_less_sep_row\d+_col\d+", "Missing delimiter in one single row "),
+    (r"row_more_sep_row\d+_col\d+", "Extra delimiter in one single row"),
+]
+
+def pollution_group(filename):
+    """Like pollution_type but collapses row-specific variants into a single label."""
+    stem = filename.removesuffix(".csv")
+    for pattern, description in _GROUP_PATTERNS:
+        if re.match(pattern, stem):
+            return description
+    return pollution_type(filename)
 
 
 def read_csv_rows(path):
@@ -140,6 +156,37 @@ def diff_rows(clean_rows, loaded_rows, max_examples=3):
     return diag
 
 
+def write_summary(f, df, failed, poor, cell_f1_col, threshold):
+    W = 70
+    f.write(f"{'='*W}\n")
+    f.write("SUMMARY\n")
+    f.write(f"{'='*W}\n")
+    f.write(f"Total files evaluated : {len(df)}\n")
+    f.write(f"Failed to load        : {len(failed)}\n")
+    f.write(f"Poor (cell F1 < {threshold}) : {len(poor)}\n")
+
+    if not failed.empty:
+        counts = Counter(pollution_group(r["file"]) for _, r in failed.iterrows())
+        f.write(f"\nFAILED BY POLLUTION TYPE:\n")
+        for ptype, cnt in counts.most_common():
+            f.write(f"  {cnt:4d}  {ptype}\n")
+
+    if not poor.empty:
+        sums, cnts = defaultdict(float), defaultdict(int)
+        for _, r in poor.iterrows():
+            pt = pollution_group(r["file"])
+            sums[pt] += r[cell_f1_col]
+            cnts[pt] += 1
+        f.write(f"\nPOOR RESULTS BY POLLUTION TYPE (avg cell F1):\n")
+        for ptype, cnt in sorted(cnts.items(), key=lambda x: -x[1]):
+            avg = sums[ptype] / cnt
+            f.write(f"  {cnt:4d}  {ptype}  (avg={avg:.4f})\n")
+
+    f.write(f"\n{'#'*W}\n")
+    f.write(f"# END OF SUMMARY — PER-FILE DETAILS BELOW\n")
+    f.write(f"{'#'*W}\n")
+
+
 def write_file_section(f, filename, scores, diag, polluted_lines, params, poll_type):
     sep = "-" * 70
     f.write(f"\n{sep}\n")
@@ -203,7 +250,7 @@ def main():
     parser = argparse.ArgumentParser(
         description="Find files where a SUT did not perform well."
     )
-    parser.add_argument("sut", help="Name of the SUT (e.g. pandas, duckdbparse)")
+    parser.add_argument("--sut", required=True, help="Name of the SUT (e.g. pandas, duckdbparse)")
     parser.add_argument(
         "--dataset", default="polluted_files",
         help="Dataset to examine (default: polluted_files)"
@@ -250,16 +297,15 @@ def main():
     failed = df[df[success_col] == 0]
     poor   = df[(df[success_col] == 1) & (df[cell_f1_col] < args.threshold)]
 
-    output_path = args.output or f"{sut}_errors.txt"
+    output_path = os.path.abspath(args.output or f"{sut}_errors.txt")
 
     with open(output_path, "w") as out:
         out.write(f"SUT: {sut}\n")
         out.write(f"Dataset: {args.dataset}\n")
         out.write(f"Results file: {results_csv}\n")
-        out.write(f"Cell F1 threshold: {args.threshold}\n")
-        out.write(f"Total files evaluated: {len(df)}\n")
-        out.write(f"Failed to load: {len(failed)}\n")
-        out.write(f"Poor results (cell F1 < {args.threshold}): {len(poor)}\n")
+        out.write(f"Cell F1 threshold: {args.threshold}\n\n")
+
+        write_summary(out, df, failed, poor, cell_f1_col, args.threshold)
 
         # --- Failed to load ---
         out.write(f"\n{'='*70}\n")
@@ -304,9 +350,9 @@ def main():
 
             write_file_section(out, fname, scores, diag, None, params, pollution_type(fname))
 
+    print(f"Failed to load: {len(failed)}")
+    print(f"Poor (cell F1 < {args.threshold}): {len(poor)}")
     print(f"Results written to {output_path}")
-    print(f"  Failed to load:           {len(failed)}")
-    print(f"  Poor (cell F1 < {args.threshold}): {len(poor)}")
 
 
 if __name__ == "__main__":
