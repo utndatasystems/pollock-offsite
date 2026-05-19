@@ -142,11 +142,13 @@ Have fun and happy hacking ;)
 
 # Detailed explanation of the Pollock Benchmark Structure 
 
-## 0. Vanilla Benchmark Overview (read first)
+## 0. Benchmark Overview (read first)
 1. The polluter writes polluted versions of the ```results/source.csv``` file into ```data/polluted_files/csv/```. It also writes the expected output of files that are read with the correct grammar (which is known by the polluter) into ```data/polluted_files/clean/```. These serve as the basis for comparison with what the SuTs have read from the polluted files later. On top of this, the polluter also writes the dialect information (e.g. delimiter, column datatypes, quote character etc.) into ```data/polluted_files/parameters/```
 2. The different SuTs read the files from ```data/polluted_files/csv/```. 
 3. The different SuTs write the content of their respective databases/dataframes etc. into ```results/<sut>/polluted_files/loading/``` 
 4. The evaluation script ```evaluate.py``` uses Multi-Set operations to compare the outputs of the SuTs (```results/<sut>/polluted_files/loading/```) with the expected clean outputs in (```data/polluted_files/clean/```). It does so on a per-row (record) and per-cell basis. The final score is a mix of loading-success and recall + precision metrics (for formula, see the more detailed explanation of the Evaluation below)
+
+![](overview.png)
 
 
 ## 1. Pollution - more details
