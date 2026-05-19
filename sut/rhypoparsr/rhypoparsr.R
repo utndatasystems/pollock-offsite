@@ -6,6 +6,9 @@ OUT_DIR <- paste0('/results/', sut, '/', dataset, '/loading/')
 TIME_DIR <- paste0('/results/', sut, '/', dataset, '/')
 N_REPETITIONS <- as.integer(Sys.getenv("N_REPETITIONS", unset = "3"))
 
+dir.create(OUT_DIR, recursive = TRUE, showWarnings = FALSE)
+dir.create(TIME_DIR, recursive = TRUE, showWarnings = FALSE)
+
 quiet <- function(x) {
   sink(tempfile())
   on.exit(sink())

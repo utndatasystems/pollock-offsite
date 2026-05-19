@@ -7,6 +7,9 @@ TIME_DIR <- paste0('/results/', sut, '/', dataset, '/')
 N_REPETITIONS <- as.integer(Sys.getenv("N_REPETITIONS", unset = "3"))
 library("rjson")
 
+dir.create(OUT_DIR, recursive = TRUE, showWarnings = FALSE)
+dir.create(TIME_DIR, recursive = TRUE, showWarnings = FALSE)
+
 
 benchmark_files <- list.files(IN_DIR)
 
