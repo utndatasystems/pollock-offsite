@@ -18,6 +18,7 @@ services:
   mariadb-client:
     environment:
       - DATASET=${DATASET}
+      - N_REPETITIONS=${N_REPETITIONS}
     build:
       context: .
       dockerfile: ./sut/maria/Dockerfile
@@ -54,6 +55,7 @@ services:
       dockerfile: ./sut/my/Dockerfile
     environment:
       - DATASET=${DATASET}
+      - N_REPETITIONS=${N_REPETITIONS}
     volumes:
       - ./results/mysql:/results/mysql
       - ./data:/data
@@ -85,6 +87,7 @@ services:
       dockerfile: ./sut/postgres/Dockerfile
     environment:
       - DATASET=${DATASET}
+      - N_REPETITIONS=${N_REPETITIONS}
     volumes:
       - postgres-tmp:/tmp
       - ./results/postgres:/results/postgres
@@ -101,6 +104,7 @@ services:
       dockerfile: ./sut/sqlite/Dockerfile
     environment:
       - DATASET=${DATASET}
+      - N_REPETITIONS=${N_REPETITIONS}
     volumes:
       - ./results/sqlite:/results/sqlite
       - ./data:/data
@@ -111,6 +115,7 @@ services:
   pandas-client:
     environment:
       - DATASET=${DATASET}
+      - N_REPETITIONS=${N_REPETITIONS}
     build:
       context: .
       dockerfile: ./sut/pandas/Dockerfile
@@ -122,6 +127,7 @@ services:
   duckdbparse-client:
     environment:
       - DATASET=${DATASET}
+      - N_REPETITIONS=${N_REPETITIONS}
     build:
       context: .
       dockerfile: ./sut/duckdbparse/Dockerfile
@@ -133,6 +139,7 @@ services:
   duckdbauto-client:
     environment:
       - DATASET=${DATASET}
+      - N_REPETITIONS=${N_REPETITIONS}
     build:
       context: .
       dockerfile: ./sut/duckdbauto/Dockerfile
@@ -147,6 +154,7 @@ services:
       dockerfile: ./sut/opencsv/Dockerfile
     environment:
       - DATASET=${DATASET}
+      - N_REPETITIONS=${N_REPETITIONS}
     volumes:
       - ./results/opencsv:/results/opencsv
       - ./data:/data
@@ -154,6 +162,7 @@ services:
   pycsv-client:
     environment:
       - DATASET=${DATASET}
+      - N_REPETITIONS=${N_REPETITIONS}
     build:
       context: .
       dockerfile: ./sut/pycsv/Dockerfile
@@ -168,6 +177,7 @@ services:
       dockerfile: ./sut/rcsv/Dockerfile
     environment:
       - DATASET=${DATASET}
+      - N_REPETITIONS=${N_REPETITIONS}
     volumes:
       - ./results/rcsv:/results/rcsv
       - ./data:/data
@@ -178,6 +188,7 @@ services:
       dockerfile: ./sut/rhypoparsr/Dockerfile
     environment:
       - DATASET=${DATASET}
+      - N_REPETITIONS=${N_REPETITIONS}
     volumes:
       - ./results/rhypoparsr:/results/rhypoparsr
       - ./data:/data
@@ -185,6 +196,7 @@ services:
   clevercs-client:
     environment:
       - DATASET=${DATASET}
+      - N_REPETITIONS=${N_REPETITIONS}
     build:
       context: .
       dockerfile: ./sut/clevercs/Dockerfile
@@ -199,6 +211,7 @@ services:
       dockerfile: ./sut/libreoffice/Dockerfile
     environment:
       - DATASET=${DATASET}
+      - N_REPETITIONS=${N_REPETITIONS}
     volumes:
       - ./results/libreoffice:/results/libreoffice
       - ./data:/data
@@ -210,6 +223,7 @@ services:
       dockerfile: ./sut/univocity/Dockerfile
     environment:
       - DATASET=${DATASET}
+      - N_REPETITIONS=${N_REPETITIONS}
     volumes:
       - ./results/univocity:/results/univocity
       - ./data:/data
@@ -220,6 +234,7 @@ services:
       dockerfile: ./sut/csvcommons/Dockerfile
     environment:
       - DATASET=${DATASET}
+      - N_REPETITIONS=${N_REPETITIONS}
     volumes:
       - ./results/csvcommons:/results/csvcommons
       - ./data:/data
