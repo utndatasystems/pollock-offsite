@@ -4,9 +4,11 @@ import os
 import argparse
 import traceback
 import re
+import warnings
 
 from pqdm.processes import pqdm
 import pandas as pd
+warnings.filterwarnings("ignore", category=pd.errors.PerformanceWarning)
 from typing import List
 
 import pollock.metrics as metrics
@@ -67,8 +69,10 @@ def evaluate_single_file(filename:str, dataset:str, sut:str, verbose=False, n_jo
 
 
 def evaluate_single_run(files: List[str], dataset: str, result_file:str, sut:str, verbose=False, n_jobs=1):
+    n_jobs = max(1, min(int(n_jobs), os.cpu_count() or 1))
 
-    if os.cpu_count()< n_jobs:
+    # sequential
+    if n_jobs == 1:
         file_measures = []
         n = len(files)
         for i, f in enumerate(files):
@@ -76,6 +80,7 @@ def evaluate_single_run(files: List[str], dataset: str, result_file:str, sut:str
                 print(f"  {i}/{n} files...")
             file_measures.append(evaluate_single_file(filename=f, dataset=dataset, sut=sut, verbose=verbose))
         print(f"  {n}/{n} files done.")
+    # parallel
     else:
         tiny_files = [f for f in files if os.path.getsize(f"data/{dataset}/csv/{f}")/ 1024 < 500]
         args = [{"filename" : f, "dataset":dataset, "sut": sut, "verbose": verbose} for f in tiny_files]
@@ -115,7 +120,7 @@ def main():
 
     files= [f for f in os.listdir(f"data/{dataset}/csv") if f.endswith("csv")]
     aggregate = []
-    global_df = pd.DataFrame({"file": files})
+    system_dfs = []
     eval_systems = systems if UPDATE_SYSTEM is None else [s for s in systems if s == UPDATE_SYSTEM]
     for s in systems:
         result_file = f"{RESULT_DIR}/{s}/{dataset}/{s}_results.csv"
@@ -128,7 +133,9 @@ def main():
         d_aggregate = {"".join(key.split("_")[1:]): val for key, val in df.mean(axis=0, numeric_only=True).items()}
         d_aggregate.update({"sut": s})
         aggregate += [d_aggregate]
-        global_df = global_df.merge(df, how="outer", left_on="file", right_on="file")  # , suffixes=(None,"_"+s))
+        system_dfs.append(df.set_index("file"))
+    base = pd.DataFrame({"file": files}).set_index("file")
+    global_df = pd.concat([base] + system_dfs, axis=1).reset_index().copy()
     aggregate_df = pd.DataFrame(aggregate).set_index("sut")
     aggregate_df["pollock_simple"] = aggregate_df.sum(axis=1, numeric_only=True)
 
