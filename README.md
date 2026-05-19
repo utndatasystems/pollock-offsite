@@ -25,7 +25,7 @@ Generate polluted variants (number depends on n_rows + n_cols of your file)
 ```bash
 python3 pollute_main.py --source data/<dataset_name>/<your_csv_file>.csv --output data/<dataset_name>
 ```
-**Note:** The explanations in ```Explanation of the Pollock Benchmark Structure```, the   ```dataset_name``` is ```polluted_files``` as it is the default one used by the original authors. This one is set in the ```.env``` file as the ```$DATASET``` variable default -> scripts default back to ```polluted_files``` if no other dataset name is passed.
+**Note:** The explanations in ```Detailed explanation of the Pollock Benchmark Structure```, the   ```dataset_name``` is already replaced by ```polluted_files``` as it is the default one used by the original authors. This one is set in the ```.env``` file as the ```$DATASET``` variable default -> scripts default back to ```polluted_files``` if no other dataset name is passed or the ```.env``` file is not changed
 
 </details>
 
@@ -49,6 +49,7 @@ to run a specific python sut against a custom dataset.
   <summary>more...</summary>
 
 python suts: duckdbauto, duckdbparse, pandas, pycsv, clevercsv
+**!DOES NOT INCLUDE custom!**
 
 ```bash
 scripts/run_python_suts.sh <dataset_name>
@@ -81,6 +82,11 @@ This will take a looong time, especially on the first pass as the docker images 
 ```
 python3 evaluate.py --sut <sut> --dataset <dataset_name>
 ```
+e.g. 
+```
+python3 evaluate.py --sut custom
+```
+to run the custom sut against the ```data/polluted_files``` folder
 
 evalates all suts if no sut is passed (takes long). dataset defaults to ```polluted_files```
 
@@ -93,13 +99,13 @@ If you want to get a table of SuTs and their respective scores without having to
 **This only works after evaluate has been run once before.**
 
 
-### Looking at which files were read wrong 
+### Looking at which loaded files contain errors
 
 
 ```
 python3 scripts/find_errors.py --sut <sut> 
 ```
-This writes a .txt file containing information about what errors the given SUT made
+This writes a .txt file containing information about what errors the given SUT made into ```results/<sut>/<dataset>/<sut>_errors.txt```
 
 
 # Getting Started with your own Approach
@@ -107,14 +113,34 @@ This writes a .txt file containing information about what errors the given SUT m
 A template for a custom SuT is provided in ```sut/custom```. Just change the function in ```solution.py``` any way you like or substitute it entirely inside ```custom-bench.py```.
 Since only you know what dependencies you need, no docker has been setup yet for this sut.
 
-The score to beat with an automatic inference solution that does not use the provided dialect information is the one by DuckDB-Auto which is currently at: 9.646808 (unweighted). 
+The score to beat with an automatic inference solution that does not use the provided dialect information is either Univocity (9.939419 simple,7.936767 weighted) or the Python default parser ( 9.724189 simple, 9.436467 weighted) depending on whether improvement in the simple or the unweighted category is the goal.
 
 Have fun and happy hacking ;)
 
 
+# Overview of SUTs and Scores 
+
+| SUT         | pollock_simple | pollock_weighted | Uses provided dialect info? | Runtime |
+| ----------- | -------------: | ---------------: | --------------------------- | ------- |
+| custom      |    10.0 (soon) |      10.0 (soon) | No                        | Python (for now)  |
+| duckdbparse |       9.961516 |         9.599662 | Yes                         | Python  |
+| mariadb     |       9.953843 |         9.610157 | Yes                         | Docker  |
+| mysql       |       9.953843 |         9.610157 | Yes                         | Docker  |
+| univocity   |       9.939419 |         7.936767 | No          | Docker  |
+| sqlite      |       9.936568 |         9.589233 | Yes                         | Docker  |
+| pandas      |       9.884786 |         7.909017 | Yes                         | Python  |
+| pycsv       |       9.724189 |         9.436467 | No          | Python  |
+| duckdbauto  |       9.646808 |         8.996221 | No                          | Python  |
+| clevercs    |       9.193083 |         9.453858 | No          | Python  |
+| libreoffice |       1.011722 |         0.000864 | Yes                         | Docker  |
+| postgres    |       0.141977 |         7.872715 | Yes                         | Docker  |
 
 
-# Explanation of the Pollock Benchmark Structure 
+
+
+
+
+# Detailed explanation of the Pollock Benchmark Structure 
 
 ## 0. Vanilla Benchmark Overview (read first)
 1. The polluter writes polluted versions of the ```results/source.csv``` file into ```data/polluted_files/csv/```. It also writes the expected output of files that are read with the correct grammar (which is known by the polluter) into ```data/polluted_files/clean/```. These serve as the basis for comparison with what the SuTs have read from the polluted files later. On top of this, the polluter also writes the dialect information (e.g. delimiter, column datatypes, quote character etc.) into ```data/polluted_files/parameters/```
@@ -177,7 +203,7 @@ Since not every pollution is equally likely to be found "in the wild", the Pollo
 # Boring Section:
 ## Things to note / limitations
 
-1. Some dependency versions were changed compared to the original Pollock Benchmark (e.g. Pandas is now 3.x and not 1.x anymore). This might lead to different scores
+1. Some sut versions had to be changed compared to the original Pollock Benchmark (e.g. Pandas is now 3.x and not 1.x anymore). This might lead to different scores
 2. DuckDB-Auto had a bug where it correctly read datetime but wrote it in a different format than expected by the benchmark, which is why its score in the original repo is lower.
 3. Most non-python SuTs require Docker. Their original and mostly broken dependencies were updated and they should run now. However, the score might have moved slightly due to changes in how csvs are parsed between the old and new versions of the suts as some legacy docker containers were not distributed anymore.
 

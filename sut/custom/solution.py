@@ -1,12 +1,12 @@
 import pandas as pd
 
 
-def parse_csv(csv_input: str) -> pd.DataFrame:
+def parse_csv(csv_path: str) -> pd.DataFrame:
     """
     Parse a CSV and return a pandas DataFrame 
 
     Args:
-        csv_input: A filesystem path to a CSV file
+        csv_path: A filesystem path to a CSV file
                    as a string.
 
     Returns:
