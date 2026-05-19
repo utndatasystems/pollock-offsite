@@ -8,7 +8,7 @@ import warnings
 
 from pqdm.processes import pqdm
 import pandas as pd
-warnings.filterwarnings("ignore", category=pd.errors.PerformanceWarning)
+
 from typing import List
 
 import pollock.metrics as metrics
@@ -84,7 +84,13 @@ def evaluate_single_run(files: List[str], dataset: str, result_file:str, sut:str
     else:
         tiny_files = [f for f in files if os.path.getsize(f"data/{dataset}/csv/{f}")/ 1024 < 500]
         args = [{"filename" : f, "dataset":dataset, "sut": sut, "verbose": verbose} for f in tiny_files]
-        tiny_file_measures = pqdm(args, evaluate_single_file, n_jobs=n_jobs, argument_type="kwargs")
+        with warnings.catch_warnings():
+            warnings.filterwarnings(
+            "ignore",
+            category=DeprecationWarning,
+            message=r"This process .* is multi-threaded, use of fork\(\) may lead to deadlocks in the child\.")
+
+            tiny_file_measures = pqdm(args, evaluate_single_file, n_jobs=n_jobs, argument_type="kwargs")
 
         large_filenames = [f for f in files if os.path.getsize(f"data/{dataset}/csv/{f}")/ 1024 >= 500]
         large_file_measures = []
@@ -118,10 +124,18 @@ def main():
     systems = [s for s in next(os.walk(f"{RESULT_DIR}"))[1]
                if s != "archives" and os.path.isdir(f"{RESULT_DIR}/{s}/{dataset}/loading")]
 
+    sut_dirs = {s for s in os.listdir("sut") if os.path.isdir(f"sut/{s}") and not s.startswith("_")}
+    no_results = sorted(sut_dirs - set(systems))
+    if no_results:
+        print(f"Warning: {len(no_results)} SUT(s) in sut/ have no results for dataset '{dataset}': {no_results}")
+
     files= [f for f in os.listdir(f"data/{dataset}/csv") if f.endswith("csv")]
     aggregate = []
     system_dfs = []
     eval_systems = systems if UPDATE_SYSTEM is None else [s for s in systems if s == UPDATE_SYSTEM]
+
+    
+
     for s in systems:
         result_file = f"{RESULT_DIR}/{s}/{dataset}/{s}_results.csv"
         if UPDATE_SYSTEM is None or s == UPDATE_SYSTEM:
@@ -135,7 +149,9 @@ def main():
         aggregate += [d_aggregate]
         system_dfs.append(df.set_index("file"))
     base = pd.DataFrame({"file": files}).set_index("file")
-    global_df = pd.concat([base] + system_dfs, axis=1).reset_index().copy()
+    with warnings.catch_warnings():
+        warnings.filterwarnings("ignore", category=pd.errors.PerformanceWarning)
+        global_df = pd.concat([base] + system_dfs, axis=1).reset_index().copy()
     aggregate_df = pd.DataFrame(aggregate).set_index("sut")
     aggregate_df["pollock_simple"] = aggregate_df.sum(axis=1, numeric_only=True)
 
@@ -152,23 +168,17 @@ def main():
             weights = json.load(f)
         global_df["weight"] = [weights.get(x, -1) for x in global_df.index]
         global_df["normalized_weight"] = global_df["weight"] / sum(global_df["weight"])
+        
         for sut in aggregate_df.index:
             partial_mean = global_df[[c for c in global_df.columns if sut in c]].sum(axis=1) * global_df["normalized_weight"]
             weighted_score = sum(partial_mean)
             aggregate_df.loc[sut, "pollock_weighted"] = weighted_score
-        # print("\n",aggregate_df.loc[SUT_ORDER][["simple","weighted"]])
-        present = [s for s in SUT_ORDER if s in aggregate_df.index]
-        missing = [s for s in SUT_ORDER if s not in aggregate_df.index]
-        if missing:
-            print(f"Note: {len(missing)} SUT(s) from SUT_ORDER not in results and skipped: {missing}")
-        print("\n",aggregate_df.loc[present][[c for c in aggregate_df.columns if "_" in c]])
+        cols = [c for c in aggregate_df.columns if "_" in c]
+        print("\n", aggregate_df[cols].sort_values("pollock_simple", ascending=False))
 
     else:
-        present = [s for s in SUT_ORDER if s in aggregate_df.index]
-        missing = [s for s in SUT_ORDER if s not in aggregate_df.index]
-        if missing:
-            print(f"Note: {len(missing)} SUT(s) from SUT_ORDER not in results and skipped: {missing}")
-        print("\n", aggregate_df.loc[present][["success","headerf1", "cellf1", "recordf1", "pollock_simple"]])
+        cols = ["success", "headerf1", "cellf1", "recordf1", "pollock_simple"]
+        print("\n", aggregate_df[cols].sort_values("pollock_simple", ascending=False))
 
     global_df.to_csv(RESULT_DIR + f"/global_results_{dataset}.csv")
     aggregate_df.to_csv(RESULT_DIR + f"/aggregate_results_{dataset}.csv")
