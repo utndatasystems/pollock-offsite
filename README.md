@@ -11,7 +11,7 @@ python3 -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
 ```
-## 2. Pollution (skip this if you want to use the default benchmark source file and get comparable scores)
+## 2. Pollution (skip this if you want comparable scores and use the default benchmark source file)
 <details>
 <summary>
 more...
