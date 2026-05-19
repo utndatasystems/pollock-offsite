@@ -54,7 +54,8 @@ def evaluate_single_file(filename:str, dataset:str, sut:str, verbose=False, n_jo
         print("Exception:", traceback.format_exc())
         if not verbose:
             print("On file:", filename)
-        for measure in ("header_precision",
+        for measure in ("success",
+                        "header_precision",
                         "header_recall",
                         "header_f1",
                         "record_precision",
@@ -158,11 +159,13 @@ def main():
     global_df.set_index("file", inplace=True)
     if dataset == "polluted_files":
         for subset in SUB_MEASURES:
-            files = [f for f in global_df.index if re.search(SUB_MEASURES[subset],f)]
-            rows = global_df.loc[files].mean()
-            for measure in ["success","header_f1","record_f1","cell_f1"]:
-                aggregate_df[subset+"_"+ measure] = \
-                    [v for key,v in rows.items() if "_".join(key.split("_")[1:]) == measure]
+            subset_files = [f for f in global_df.index if re.search(SUB_MEASURES[subset], f)]
+            for measure in ["success", "header_f1", "record_f1", "cell_f1"]:
+                aggregate_df[subset + "_" + measure] = [
+                    global_df.loc[subset_files, f"{sut}_{measure}"].mean()
+                    if f"{sut}_{measure}" in global_df.columns else float("nan")
+                    for sut in aggregate_df.index
+                ]
 
         with open("pollock_weights.json", "r") as f:
             weights = json.load(f)
@@ -174,6 +177,7 @@ def main():
             weighted_score = sum(partial_mean)
             aggregate_df.loc[sut, "pollock_weighted"] = weighted_score
         cols = [c for c in aggregate_df.columns if "_" in c]
+        cols = ["pollock_simple", "pollock_weighted"] + [c for c in cols if c not in ("pollock_simple", "pollock_weighted")]
         print("\n", aggregate_df[cols].sort_values("pollock_simple", ascending=False))
 
     else:
