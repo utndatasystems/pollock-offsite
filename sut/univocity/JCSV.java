@@ -74,7 +74,7 @@ public class JCSV {
     }
 
     public static void processFiles() {
-
+        new File(OUT_DIR).mkdirs();
         ArrayList<File> files = new ArrayList<>(List.of(Objects.requireNonNull(new File(IN_DIR).listFiles())));
         int total = files.size();
         int i = 1;

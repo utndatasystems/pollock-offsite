@@ -239,6 +239,18 @@ services:
       - ./results/csvcommons:/results/csvcommons
       - ./data:/data
       - ./sut/csvcommons/:/app/
+  custom-client:
+    build:
+      context: .
+      dockerfile: ./sut/custom/Dockerfile
+    environment:
+      - DATASET=${DATASET}
+      - N_REPETITIONS=${N_REPETITIONS}
+    volumes:
+      - ./results/custom:/results/custom
+      - ./data:/data
+      - ./sut/custom/:/app/
+      - ./sut/utils.py:/app/utils.py
   pollution:
     image: pollock_pollution
     command: ["python3", "/app/pollute_main.py"]

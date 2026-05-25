@@ -1,0 +1,2 @@
+Application Error
+com.opencsv.exceptions.CsvMalformedLineException: Unterminated quoted field at end of CSV line. Beginning of lost text: ["0,YY-7734,$73.42,Havana Hat,"The perfect complement to any summertime style: this fedora hat off...]

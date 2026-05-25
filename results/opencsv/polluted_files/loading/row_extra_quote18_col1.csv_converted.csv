@@ -1,0 +1,2 @@
+Application Error
+com.opencsv.exceptions.CsvMalformedLineException: Unterminated quoted field at end of CSV line. Beginning of lost text: ["04:15,2,ZN-4777,$34.14,"Kids' Sweater Fleece, Hooded","With its fleece warmth, sweatshirt stylin...]

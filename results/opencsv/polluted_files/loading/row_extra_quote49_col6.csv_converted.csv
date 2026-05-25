@@ -1,0 +1,2 @@
+Application Error
+com.opencsv.exceptions.CsvMalformedLineException: Unterminated quoted field at end of CSV line. Beginning of lost text: [""The classic alpine hiker is back, with retro style and all-day comfort you'll want to wear beyo...]

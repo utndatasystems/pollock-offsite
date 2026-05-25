@@ -1,0 +1,2 @@
+Application Error
+com.opencsv.exceptions.CsvMalformedLineException: Unterminated quoted field at end of CSV line. Beginning of lost text: ["BH-1732,$65.46,"Waterproof Boots, Tall","Industry-leading insulation and innovative construction...]

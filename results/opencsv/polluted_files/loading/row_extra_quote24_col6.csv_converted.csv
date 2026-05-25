@@ -1,0 +1,2 @@
+Application Error
+com.opencsv.exceptions.CsvMalformedLineException: Unterminated quoted field at end of CSV line. Beginning of lost text: [""This 3-in-1 girls' jacket offers three great options for one great price, so she'll stay warm, ...]

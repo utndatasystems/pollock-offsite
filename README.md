@@ -32,7 +32,7 @@ python3 pollute_main.py --source data/<dataset_name>/<your_csv_file>.csv --outpu
 ## 3. Run custom SuTs
 
 To run the template for your custom implementation on the same files used by the benchmark:
-```
+```but 
 python3 ./sut/custom/custom-bench.py
 ```
 or more generally:
@@ -73,6 +73,8 @@ to run on the default (polluted_files) folder in ```./data```
 bash benchmark.sh
 ```
 This will take a looong time, especially on the first pass as the docker images are sometimes > 300MB
+
+To speed it up, comment out the SuTs that run for a long time like rhypoparsr or libreoffice.
 
 </details>
 
@@ -120,7 +122,7 @@ Have fun and happy hacking ;)
 
 # Overview of SUTs and Scores 
 
-| SUT         | pollock_simple | pollock_weighted | Uses provided dialect info? | Runtime |
+| SUT         | pollock_simple | pollock_weighted | Uses dialect info? | Runtime |
 | ----------- | -------------: | ---------------: | --------------------------- | ------- |
 | custom      |    10.0 (soon) |      10.0 (soon) | No                        | Python (for now)  |
 | duckdbparse |       9.961516 |         9.599662 | Yes                         | Python  |
@@ -128,16 +130,19 @@ Have fun and happy hacking ;)
 | mysql       |       9.953843 |         9.610157 | Yes                         | Docker  |
 | univocity   |       9.939419 |         7.936767 | No          | Docker  |
 | sqlite      |       9.936568 |         9.589233 | Yes                         | Docker  |
+| spreaddesktop|	    9.929XXX |         9.597XXX | N/A         | N/A |
+| libreoffice |       9.925582 |         7.833335 | Yes                         | Docker  |
 | pandas      |       9.884786 |         7.909017 | Yes                         | Python  |
 | pycsv       |       9.724189 |         9.436467 | No          | Python  |
+|spreadweb    |	      9.721XXX |         9.431XXX | N/A         | N/A |  
 | duckdbauto  |       9.646808 |         8.996221 | No                          | Python  |
 | clevercs    |       9.193083 |         9.453858 | No          | Python  |
-| libreoffice |       1.011722 |         0.000864 | Yes                         | Docker  |
+| dataviz     |       5.003XXX |         5.152XXX | N/A     | N/A |
+| hypoparsr   |       3.877452 |         4.400585 | No | Docker |
 | postgres    |       0.141977 |         7.872715 | Yes                         | Docker  |
 
 
-
-
+The rows with N/A are SuTs where the license agreement prohibits public benchmarking which is why the benchmark authors only them using a pseudonym and without Docker reproducibility.
 
 
 # Detailed explanation of the Pollock Benchmark Structure 
@@ -181,7 +186,7 @@ Every SuT tries to read the polluted files in ```data/polluted_files/csv/```. Af
 
 **Some of the systems (e.g. duckdbparse) are given the dialect** info from ```data/polluted_files/parameters/```, others (e.g. duckdbauto or clevercsv) infer them automatically. In general, the benchmark tried to be a "best effort" benchmark, meaning that the benchmark score directly correlates with the number of settings a given SuT has to deal with different dialects. In general comparisons between SuTs only make sense if they are either both using the supplied metadata (e.g. duckdbparse, sqlite) or not using it at all (e.g. duckdbauto, clevercsv).
 
-This is heavily dockerized (one docker for every SuT) in the default Pollock  [GitHub repo](https://github.com/HPI-Information-Systems/Pollock). Which does not mean it runs for every SuT as many struggle from a pandas<->numpy dependency conflict due to non-pinned versions. This problem is probably fixed by now in this version of the repo. At least for the SuTs that seem useful to re-run, as the already loaded csvs per SuT are already provided in the repo.
+This is heavily dockerized (one docker for every SuT) in the default Pollock  [GitHub repo](https://github.com/HPI-Information-Systems/Pollock). Which does not mean the default repo is reproducible since it suffers from a pandas<->numpy dependency conflict due to non-pinned versions which is fixed here.
 
 ## 4 Evaluation - more details
 
@@ -198,8 +203,6 @@ Each component is from [0,1], so the maximum score is 10.
 The evaluation script writes the scores per file into ```results/<sut>/polluted_files```.
 
 Since not every pollution is equally likely to be found "in the wild", the Pollock score also comes in a weighted variant, which bases its weightings on a survey of governmental csv files done for the Pollock paper. Note: This weighted score is only accurate when using the original ```results/source.csv``` since the number times a pollution is used depends on the row + column counts of the polluted file and the weights are were hardcoded by the authors in ```pollock_weights.json```
-
-
 
 
 # Boring Section:
