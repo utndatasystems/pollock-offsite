@@ -43,13 +43,18 @@ to run a specific python sut against a custom dataset.
 
 **Note1:** If you rerun this, make sure to **delete the old results output** before.  ```rm -r results/custom/<dataset_name>```.
 
+If you need more complex dependencies, add them to the Dockerfile and then use 
+
+``
+docker-compose up custom-client
+```
+
 ### Run all python-only SUTs (no docker needed)
 
 <details>
   <summary>more...</summary>
 
-python suts: duckdbauto, duckdbparse, pandas, pycsv, clevercsv
-**!DOES NOT INCLUDE custom!**
+python suts: duckdbauto, duckdbparse, pandas, pycsv, clevercsv, custom
 
 ```bash
 scripts/run_python_suts.sh <dataset_name>
@@ -113,7 +118,7 @@ This writes a .txt file containing information about what errors the given SUT m
 # Getting Started with your own Approach
 
 A template for a custom SuT is provided in ```sut/custom```. Just change the function in ```solution.py``` any way you like or substitute it entirely inside ```custom-bench.py```.
-Since only you know what dependencies you need, no docker has been setup yet for this sut.
+A rudimentary Dockerfile has also been setup, so you can add more complex dependencies.
 
 The score to beat with an automatic inference solution that does not use the provided dialect information is either Univocity (9.939419 simple,7.936767 weighted) or the Python default parser ( 9.724189 simple, 9.436467 weighted) depending on whether improvement in the simple or the unweighted category is the goal.
 
@@ -124,7 +129,7 @@ Have fun and happy hacking ;)
 
 | SUT         | pollock_simple | pollock_weighted | Uses dialect info? | Runtime |
 | ----------- | -------------: | ---------------: | --------------------------- | ------- |
-| custom      |    10.0 (soon) |      10.0 (soon) | No                        | Python (for now)  |
+| custom      |    10.0 (soon) |      10.0 (soon) | No                        | Python or Docker  |
 | duckdbparse |       9.961516 |         9.599662 | Yes                         | Python  |
 | mariadb     |       9.953843 |         9.610157 | Yes                         | Docker  |
 | mysql       |       9.953843 |         9.610157 | Yes                         | Docker  |
