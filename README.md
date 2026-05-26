@@ -130,14 +130,14 @@ Have fun and happy hacking ;)
 | mysql       |       9.953843 |         9.610157 | Yes                         | Docker  |
 | univocity   |       9.939419 |         7.936767 | No          | Docker  |
 | sqlite      |       9.936568 |         9.589233 | Yes                         | Docker  |
-| spreaddesktop|	    9.929XXX |         9.597XXX | N/A         | N/A |
+| spreaddesktop|	    9.929668 |         9.597198 | N/A         | N/A |
 | libreoffice |       9.925582 |         7.833335 | Yes                         | Docker  |
 | pandas      |       9.884786 |         7.909017 | Yes                         | Python  |
 | pycsv       |       9.724189 |         9.436467 | No          | Python  |
-|spreadweb    |	      9.721XXX |         9.431XXX | N/A         | N/A |  
+|spreadweb    |	      9.721757 |         9.431587 | N/A         | N/A |  
 | duckdbauto  |       9.646808 |         8.996221 | No                          | Python  |
 | clevercs    |       9.193083 |         9.453858 | No          | Python  |
-| dataviz     |       5.003XXX |         5.152XXX | N/A     | N/A |
+| dataviz     |       5.003541 |         5.152075 | N/A     | N/A |
 | hypoparsr   |       3.877452 |         4.400585 | No | Docker |
 | postgres    |       0.141977 |         7.872715 | Yes                         | Docker  |
 
