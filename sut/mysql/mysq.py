@@ -43,7 +43,7 @@ def connect_to_db():
                                           allow_local_infile=True)
             done = True
             print('Connected')
-        except DatabaseError as e:
+        except mysql.connector.Error as e:
             if i >= 119:
                 quit(1)
         print('Waiting for server...')

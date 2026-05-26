@@ -21,11 +21,11 @@ services:
       - N_REPETITIONS=${N_REPETITIONS}
     build:
       context: .
-      dockerfile: ./sut/maria/Dockerfile
+      dockerfile: ./sut/mariadb/Dockerfile
     volumes:
       - ./results/mariadb:/results/mariadb
       - ./data:/data
-      - ./sut/maria/:/app/
+      - ./sut/mariadb/:/app/
       - ./sut/utils.py:/app/utils.py
       - mariadb-tmp:/tmp
     depends_on:
@@ -52,7 +52,7 @@ services:
   mysql-client:
     build:
       context: .
-      dockerfile: ./sut/my/Dockerfile
+      dockerfile: ./sut/mysql/Dockerfile
     environment:
       - DATASET=${DATASET}
       - N_REPETITIONS=${N_REPETITIONS}
@@ -60,7 +60,7 @@ services:
       - ./results/mysql:/results/mysql
       - ./data:/data
       - mysql-tmp:/tmp
-      - ./sut/my/:/app/
+      - ./sut/mysql/:/app/
       - ./sut/utils.py:/app/utils.py
     depends_on:
       - mysql-server
