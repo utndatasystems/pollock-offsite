@@ -86,7 +86,7 @@ def fetch_dataset_ids(cached: bool) -> set[str]:
 
 def download_dataset(dataset_id: str) -> str:
     """
-    Download SDMX structure definition XML.
+    Download a dataset as SDMX-csv.
     """
     url = f"{DATASET_URL_BASE}/data/{dataset_id}?format=SDMX-CSV"
 
@@ -96,5 +96,4 @@ def download_dataset(dataset_id: str) -> str:
         headers={"Accept": "application/vnd.sdmx.data+csv"},
     )
     response.raise_for_status()
-
-    return response.text
+    return _decode_response_content(response).decode("utf-8")
