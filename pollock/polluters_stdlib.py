@@ -673,15 +673,18 @@ def superheader(file: CSVFile):
     _set_polluted_filename(file, "file_superheader.csv")
 
 
-def embeddedFiles(file: CSVFile):
+def embeddedJSON(file: CSVFile):
     """Embeds JSON-like file content inside a single cell."""
     payload = '{"name":"example.json","rows":[{"id":1,"value":"alpha"},{"id":2,"value":"beta"}]}'
     pb.changeCell(file, row=2 if _safe_row_count(file) >= 2 else 1, col=1, new_content=payload)
     _set_polluted_filename(file, "file_embedded_json_cell.csv")
 
 
-def embeddCSV(file: CSVFile):
-    # TODO: csv in csv embedded
+def embeddedCSV(file: CSVFile):
+    """Embeds CSV-like file content inside a single cell."""
+    payload = 'id,name\n1,alpha\n2,beta'
+    pb.changeCell(file, row=2 if _safe_row_count(file) >= 2 else 1, col=1, new_content=payload)
+    _set_polluted_filename(file, "file_embedded_csv_cell.csv")
     pass 
 
 
@@ -709,6 +712,8 @@ def encoding(file: CSVFile, target_encoding: constants.Encoding):
 
 
 def bomMarker(file: CSVFile):
+    pass 
+    #TODO: fix 
     """Adds a UTF-8 BOM marker to the first header cell."""
     first = _row_values(file, row=1)[0] if _row_values(file, row=1) else ""
     pb.changeCell(file, row=1, col=1, new_content="\ufeff" + first)
@@ -717,6 +722,7 @@ def bomMarker(file: CSVFile):
 
 
 def weirdUnicode(file: CSVFile):
+    # TODO: inject in middle of CSV not end of CSV
     """Adds mojibake and non-ASCII strings."""
     row = ["FranÃ§ois", "MÃ¼nchen", "SÃ£o Paulo", "â‚¬"]
     row = row[:file.col_count] + [""] * max(file.col_count - len(row), 0)
@@ -726,6 +732,7 @@ def weirdUnicode(file: CSVFile):
 
 
 def invisibleCharacters(file: CSVFile):
+    # TODO: inject in middle of CSV not end of CSV
     """Adds zero-width and non-breaking characters to cells."""
     values = ["zero\u200bwidth", "non\u00a0breaking", "left\u200emark", "word\ufeffjoiner"]
     row = values[:file.col_count] + [""] * max(file.col_count - len(values), 0)
@@ -736,6 +743,8 @@ def invisibleCharacters(file: CSVFile):
 
 def collations(file: CSVFile):
     """Adds strings whose sort order differs by locale/collation."""
+    # TODO: insert in middle of file, not end of file
+    # TODO: make value a parameter in function and iterate over them in pollute_main
     for value in ["ä", "z", "å", "a", "Á", "á", "ß", "ss"]:
         row = [value] + [""] * max(file.col_count - 1, 0)
         pb.addRows(file, cell_content=row, n_rows=1, position=_safe_row_count(file),
