@@ -186,13 +186,26 @@ class CSVFile:
     def write_csv(self, out_path="./", verbose=False):
         xslt = etree.XML(CSV_XSL)
         transform = etree.XSLT(xslt)
-        output = transform(self.xml)
+        output = str(transform(self.xml))
 
         if verbose:
-            print("\n" + str(output))
-        Path(out_path).mkdir(parents=True, exist_ok=True)
-        with open(out_path + self.filename, "w", encoding=self.encoding) as out:
-            out.write(str(output))
+            print("\n" + output)
+
+        out_dir = Path(out_path)
+        out_dir.mkdir(parents=True, exist_ok=True)
+        out_file = out_dir / self.filename
+
+        encoding = getattr(self, "encoding", None) or "utf-8"
+
+        try:
+            output.encode(encoding)
+        except UnicodeEncodeError:
+            encoding = "utf-8"
+            self.encoding = encoding
+            self.xml.getroot().attrib["encoding"] = encoding
+
+        with open(out_file, "w", encoding=encoding, newline="") as out:
+            out.write(output)
 
     def write_xml(self, out_path="./", pretty=False):
         Path(out_path).mkdir(parents=True, exist_ok=True)
