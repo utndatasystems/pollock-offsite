@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Find files where a given SUT performed poorly (errors or low F1 scores)."""
+"""Find files where a given SUT produced any error."""
 
 import argparse
 import csv
@@ -79,6 +79,16 @@ def read_polluted_lines(path, n=5):
         return [f"(could not read: {e})"]
 
 
+def is_load_failed(path):
+    if not os.path.exists(path):
+        return True
+    try:
+        with open(path, "r", encoding="utf-8-sig", errors="replace") as f:
+            return f.readline().rstrip("\r\n") == "Application Error"
+    except Exception:
+        return True
+
+
 def load_params(params_path):
     try:
         with open(params_path) as f:
@@ -148,13 +158,9 @@ def write_file_section(f, filename, scores, diag, polluted_lines, params, poll_t
     if params:
         f.write(f"DIALECT: {format_params(params)}\n")
 
-    success = scores.get("success", "?")
-    f.write(f"SUCCESS: {success}  |  "
-            f"header_f1={scores.get('header_f1', 0):.4f}  "
-            f"record_f1={scores.get('record_f1', 0):.4f}  "
-            f"cell_f1={scores.get('cell_f1', 0):.4f}\n")
+    f.write(f"WRONG: {scores.get('wrong', '?')}\n")
 
-    if success == 0:
+    if scores.get("load_failed", False):
         f.write("\n  SUT failed to load the file.\n")
         if polluted_lines:
             f.write("  First lines of polluted input:\n")
@@ -201,16 +207,12 @@ def write_file_section(f, filename, scores, diag, polluted_lines, params, poll_t
 
 def main():
     parser = argparse.ArgumentParser(
-        description="Find files where a SUT did not perform well."
+        description="Find files where a SUT produced any error."
     )
     parser.add_argument("sut", help="Name of the SUT (e.g. pandas, duckdbparse)")
     parser.add_argument(
         "--dataset", default="polluted_files",
         help="Dataset to examine (default: polluted_files)"
-    )
-    parser.add_argument(
-        "--threshold", type=float, default=0.99,
-        help="Cell F1 score below which a file is considered a poor result (default: 0.99)"
     )
     parser.add_argument(
         "--results-dir", default="results",
@@ -238,17 +240,13 @@ def main():
 
     df = pd.read_csv(results_csv)
 
-    success_col   = f"{sut}_success"
-    cell_f1_col   = f"{sut}_cell_f1"
-    record_f1_col = f"{sut}_record_f1"
-    header_f1_col = f"{sut}_header_f1"
+    wrong_col = f"{sut}_wrong"
 
-    missing_cols = [c for c in [success_col, cell_f1_col] if c not in df.columns]
+    missing_cols = [c for c in [wrong_col] if c not in df.columns]
     if missing_cols:
         sys.exit(f"Error: expected columns not found: {missing_cols}")
 
-    failed = df[df[success_col] == 0]
-    poor   = df[(df[success_col] == 1) & (df[cell_f1_col] < args.threshold)]
+    wrong = df[df[wrong_col] == 1]
 
     output_path = args.output or f"{sut}_errors.txt"
 
@@ -256,45 +254,20 @@ def main():
         out.write(f"SUT: {sut}\n")
         out.write(f"Dataset: {args.dataset}\n")
         out.write(f"Results file: {results_csv}\n")
-        out.write(f"Cell F1 threshold: {args.threshold}\n")
         out.write(f"Total files evaluated: {len(df)}\n")
-        out.write(f"Failed to load: {len(failed)}\n")
-        out.write(f"Poor results (cell F1 < {args.threshold}): {len(poor)}\n")
+        out.write(f"Wrong files: {len(wrong)}\n")
 
-        # --- Failed to load ---
         out.write(f"\n{'='*70}\n")
-        out.write(f"FAILED TO LOAD ({len(failed)} files)\n")
+        out.write(f"WRONG FILES ({len(wrong)} files)\n")
         out.write(f"{'='*70}\n")
 
-        for _, row in failed.iterrows():
+        for _, row in wrong.iterrows():
             fname = row["file"]
-            scores = {
-                "success": int(row[success_col]),
-                "header_f1": row.get(header_f1_col, 0),
-                "record_f1": row.get(record_f1_col, 0),
-                "cell_f1": row.get(cell_f1_col, 0),
-            }
-            params = load_params(os.path.join(params_dir, fname + "_parameters.json"))
-            polluted_lines = read_polluted_lines(os.path.join(csv_dir, fname))
-            write_file_section(out, fname, scores, None, polluted_lines, params, pollution_type(fname))
-
-        # --- Poor results ---
-        out.write(f"\n{'='*70}\n")
-        out.write(f"POOR RESULTS — cell F1 < {args.threshold} ({len(poor)} files)\n")
-        out.write(f"{'='*70}\n")
-
-        for _, row in poor.sort_values(cell_f1_col).iterrows():
-            fname = row["file"]
-            scores = {
-                "success": int(row[success_col]),
-                "header_f1": row.get(header_f1_col, 0),
-                "record_f1": row.get(record_f1_col, 0),
-                "cell_f1": row.get(cell_f1_col, 0),
-            }
             params = load_params(os.path.join(params_dir, fname + "_parameters.json"))
 
             clean_path   = os.path.join(clean_dir, fname)
             loaded_path  = os.path.join(loading_dir, fname + "_converted.csv")
+            load_failed = is_load_failed(loaded_path)
 
             diag = None
             if os.path.exists(clean_path) and os.path.exists(loaded_path):
@@ -302,11 +275,12 @@ def main():
                 loaded_rows = read_csv_rows(loaded_path)
                 diag = diff_rows(clean_rows, loaded_rows)
 
-            write_file_section(out, fname, scores, diag, None, params, pollution_type(fname))
+            scores = {"wrong": int(row[wrong_col]), "load_failed": load_failed}
+            polluted_lines = read_polluted_lines(os.path.join(csv_dir, fname)) if load_failed else None
+            write_file_section(out, fname, scores, diag, polluted_lines, params, pollution_type(fname))
 
     print(f"Results written to {output_path}")
-    print(f"  Failed to load:           {len(failed)}")
-    print(f"  Poor (cell F1 < {args.threshold}): {len(poor)}")
+    print(f"  Wrong files: {len(wrong)}")
 
 
 if __name__ == "__main__":

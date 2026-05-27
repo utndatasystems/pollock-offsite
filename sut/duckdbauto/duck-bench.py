@@ -35,7 +35,7 @@ for idx,file in enumerate(benchmark_files):
     print(f"({idx}/{len(benchmark_files)}) {f}")
 
     kw = {}
-    kw["strict_mode"] = False
+    # kw["strict_mode"] = False
     kw["ignore_errors"] = True
     kw["null_padding"] = True
     kw["auto_type_candidates"] = ['NULL', 'BOOLEAN', 'BIGINT', 'DOUBLE', 'VARCHAR'] # exclude timestamp type as they get written to the solution file in a different format, leading to an error where semantically everything was correct (Pollock shows an error because "00:00" is a different string from "00:00:00")

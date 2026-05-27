@@ -15,6 +15,10 @@ def print_aggregate(dataset):
         return
 
     df = pd.read_csv(path, index_col='sut')
+    if not {"score", "correct", "wrong"}.issubset(df.columns):
+        print(f"Aggregate results at {path} use old scoring columns. Rerun evaluate.py --dataset {dataset}.")
+        return
+
     present = [s for s in SUT_ORDER if s in df.index]
     extra = [s for s in df.index if s not in SUT_ORDER]
     missing = [s for s in SUT_ORDER if s not in df.index]
@@ -25,14 +29,8 @@ def print_aggregate(dataset):
         print(f"Note: {len(extra)} SUT(s) not in SUT_ORDER, appended: {extra}")
         present += extra
 
-    if dataset == 'polluted_files':
-        subset_cols = [c for c in df.columns if '_' in c and c not in ('pollock_simple', 'pollock_weighted')]
-        cols = ['pollock_simple', 'pollock_weighted'] + subset_cols
-        out = df.loc[present][cols].sort_values('pollock_simple', ascending=False)
-        print(out)
-    else:
-        out = df.loc[present][["pollock_simple", "success", "headerf1", "cellf1", "recordf1"]].sort_values('pollock_simple', ascending=False)
-        print(out)
+    out = df.loc[present][["score", "correct", "wrong"]].sort_values('score', ascending=False)
+    print(out)
 
 
 if __name__ == "__main__":

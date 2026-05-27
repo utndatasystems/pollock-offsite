@@ -12,5 +12,5 @@ def parse_csv(csv_input: str) -> pd.DataFrame:
     Returns:
         A pandas DataFrame.
     """
-    
+    return pd.read_csv(csv_input)
     raise NotImplementedError("Implement parse_csv in this file")

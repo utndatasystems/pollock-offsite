@@ -1,9 +1,7 @@
 from __future__ import print_function
-import json
 import os
 import argparse
 import traceback
-import re
 
 from pqdm.processes import pqdm
 import pandas as pd
@@ -21,11 +19,6 @@ SUT_ORDER = ["clevercs", "csvcommons", "rhypoparsr",
             "mariadb", "mysql", "postgres", "sqlite", "libreoffice", 
             "spreaddesktop", "spreadweb", "dataviz"]
 
-SUB_MEASURES = {"table" : "file_double.*|file_header.*|file_no.*|file_one.*|file_multi.*|file_preamble.*",
-        "inconsistent": "%row_less.*|row_more",
-        "structural":"file_field.*|row_field.*|file_quote.*|file_record_delimiter.*|row_extra_quote.*|file_escape.*"}
-
-
 def evaluate_single_file(filename:str, dataset:str, sut:str, verbose=False, n_jobs=1):
     sut_dir = f"results/{sut}/{dataset}/loading/"
     clean_path = f"data/{dataset}/clean/{filename}"
@@ -34,34 +27,25 @@ def evaluate_single_file(filename:str, dataset:str, sut:str, verbose=False, n_jo
     dict_measures = {"file": filename}
     if verbose:
         print(f"'{filename}'")
+    if not os.path.exists(loaded_path):
+        dict_measures[sut + "_correct"] = 0
+        dict_measures[sut + "_wrong"] = 1
+        return dict_measures
     try:
         succ = metrics.successful_csv(loaded_path)
-        dict_measures[sut + "_success"] = succ
-        dict_measures[sut + "_header_precision"], \
-        dict_measures[sut + "_header_recall"], \
-        dict_measures[sut + "_header_f1"], \
-        dict_measures[sut + "_record_precision"], \
-        dict_measures[sut + "_record_recall"], \
-        dict_measures[sut + "_record_f1"], \
-        dict_measures[sut + "_cell_precision"], \
-        dict_measures[sut + "_cell_recall"], \
-        dict_measures[sut + "_cell_f1"] = metrics.header_record_cell_measures_csv(clean_path,loaded_path, n_jobs) \
-            if succ else [0, 0, 0, 0, 0, 0, 0, 0, 0]
+        correct = False
+        if succ:
+            measures = metrics.header_record_cell_measures_csv(clean_path, loaded_path, n_jobs)
+            correct = all(measure == 1 for measure in measures)
+        dict_measures[sut + "_correct"] = int(correct)
+        dict_measures[sut + "_wrong"] = int(not correct)
 
     except Exception as e:
         print("Exception:", traceback.format_exc())
         if not verbose:
             print("On file:", filename)
-        for measure in ("header_precision",
-                        "header_recall",
-                        "header_f1",
-                        "record_precision",
-                        "record_recall",
-                        "record_f1",
-                        "cell_precision",
-                        "cell_recall",
-                        "cell_f1"):
-            dict_measures[sut + "_" + measure] = 0
+        dict_measures[sut + "_correct"] = 0
+        dict_measures[sut + "_wrong"] = 1
 
     return dict_measures
 
@@ -125,43 +109,32 @@ def main():
         if not os.path.exists(result_file):
             continue
         df = pd.read_csv(result_file)
-        d_aggregate = {"".join(key.split("_")[1:]): val for key, val in df.mean(axis=0, numeric_only=True).items()}
+        expected_cols = {f"{s}_correct", f"{s}_wrong"}
+        if not expected_cols.issubset(df.columns):
+            print(f"Skipping {s}: result file uses old scoring columns. Rerun evaluate.py --sut {s} to update it.")
+            continue
+        d_aggregate = {"".join(key.split("_")[1:]): val for key, val in df.sum(axis=0, numeric_only=True).items()}
         d_aggregate.update({"sut": s})
         aggregate += [d_aggregate]
         global_df = global_df.merge(df, how="outer", left_on="file", right_on="file")  # , suffixes=(None,"_"+s))
-    aggregate_df = pd.DataFrame(aggregate).set_index("sut")
-    aggregate_df["pollock_simple"] = aggregate_df.sum(axis=1, numeric_only=True)
+    aggregate_df = pd.DataFrame(aggregate)
+    if aggregate_df.empty:
+        print("No compatible result files found.")
+        return
+    aggregate_df.set_index("sut", inplace=True)
+    if not aggregate_df.empty:
+        aggregate_df["score"] = aggregate_df["correct"]
 
     global_df.set_index("file", inplace=True)
-    if dataset == "polluted_files":
-        for subset in SUB_MEASURES:
-            files = [f for f in global_df.index if re.search(SUB_MEASURES[subset],f)]
-            rows = global_df.loc[files].mean()
-            for measure in ["success","header_f1","record_f1","cell_f1"]:
-                aggregate_df[subset+"_"+ measure] = \
-                    [v for key,v in rows.items() if "_".join(key.split("_")[1:]) == measure]
-
-        with open("pollock_weights.json", "r") as f:
-            weights = json.load(f)
-        global_df["weight"] = [weights.get(x, -1) for x in global_df.index]
-        global_df["normalized_weight"] = global_df["weight"] / sum(global_df["weight"])
-        for sut in aggregate_df.index:
-            partial_mean = global_df[[c for c in global_df.columns if sut in c]].sum(axis=1) * global_df["normalized_weight"]
-            weighted_score = sum(partial_mean)
-            aggregate_df.loc[sut, "pollock_weighted"] = weighted_score
-        # print("\n",aggregate_df.loc[SUT_ORDER][["simple","weighted"]])
-        present = [s for s in SUT_ORDER if s in aggregate_df.index]
-        missing = [s for s in SUT_ORDER if s not in aggregate_df.index]
-        if missing:
-            print(f"Note: {len(missing)} SUT(s) from SUT_ORDER not in results and skipped: {missing}")
-        print("\n",aggregate_df.loc[present][[c for c in aggregate_df.columns if "_" in c]])
-
-    else:
-        present = [s for s in SUT_ORDER if s in aggregate_df.index]
-        missing = [s for s in SUT_ORDER if s not in aggregate_df.index]
-        if missing:
-            print(f"Note: {len(missing)} SUT(s) from SUT_ORDER not in results and skipped: {missing}")
-        print("\n", aggregate_df.loc[present][["success","headerf1", "cellf1", "recordf1", "pollock_simple"]])
+    present = [s for s in SUT_ORDER if s in aggregate_df.index]
+    extra = [s for s in aggregate_df.index if s not in SUT_ORDER]
+    missing = [s for s in SUT_ORDER if s not in aggregate_df.index]
+    if missing:
+        print(f"Note: {len(missing)} SUT(s) from SUT_ORDER not in results and skipped: {missing}")
+    if extra:
+        print(f"Note: {len(extra)} SUT(s) not in SUT_ORDER, appended: {extra}")
+        present += extra
+    print("\n", aggregate_df.loc[present][["score", "correct", "wrong"]].sort_values("score", ascending=False))
 
     global_df.to_csv(RESULT_DIR + f"/global_results_{dataset}.csv")
     aggregate_df.to_csv(RESULT_DIR + f"/aggregate_results_{dataset}.csv")

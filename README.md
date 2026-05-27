@@ -7,7 +7,7 @@
 1. The polluter writes polluted versions of the ```results/source.csv``` file into ```data/polluted_files/csv/```. It also writes the expected output of files that are read with the correct grammar (which is known by the polluter) into ```data/polluted_files/clean/```. These serve as the basis for comparison with what the SuTs have read from the polluted files later. On top of this, the polluter also writes the dialect information (e.g. delimiter, column datatypes, quote character etc.) into ```data/polluted_files/parameters/```
 2. The different SuTs read the files from ```data/polluted_files/csv/```. 
 3. The different SuTs write the content of their respective databases/dataframes etc. into ```results/<sut>/polluted_files/loading/``` 
-4. The evaluation script ```evaluate.py``` uses Multi-Set operations to compare the outputs of the SuTs (```results/<sut>/polluted_files/loading/```) with the expected clean outputs in (```data/polluted_files/clean/```). It does so on a per-row (record) and per-cell basis. The final score is a mix of loading-success and recall + precision metrics (for formula, see the more detailed explanation of the Evaluation below)
+4. The evaluation script ```evaluate.py``` compares the outputs of the SuTs (```results/<sut>/polluted_files/loading/```) with the expected clean outputs in (```data/polluted_files/clean/```). Each file is counted as correct only when loading succeeds and every comparison is perfect. Any error makes the file wrong.
 
 
 ## 1. Pollution - more details
@@ -42,19 +42,14 @@ This is heavily dockerized (one docker for every SuT) in the default Pollock  [G
 
 ## 4 Evaluation - more details
 
-The final Benchmark score is calculated as follows:
+The final benchmark score is the number of correct files:
 
 ```
-Score = mean(success)
-  + mean(header_precision) + mean(header_recall) + mean(header_f1)
-  + mean(record_precision) + mean(record_recall) + mean(record_f1)
-  + mean(cell_precision)   + mean(cell_recall)   + mean(cell_f1)
+score = correct files
+wrong = total files - correct files
 ```
-Each component is from [0,1], so the maximum score is 10.
 
-The evaluation script writes the scores per file into ```results/<sut>/polluted_files```.
-
-Since not every pollution is equally likely to be found "in the wild", the Pollock score also comes in a weighted variant, which bases its weightings on a survey of governmental csv files done for the Pollock paper. Note: This weighted score is only accurate when using the original ```results/source.csv``` since the number times a pollution is used depends on the row + column counts of the polluted file and the weights are were hardcoded by the authors in ```pollock_weights.json```
+The evaluation script writes per-file ```correct```/```wrong``` results into ```results/<sut>/polluted_files```.
 
 
 # Running the Pipeline for non-Docker SuTs
@@ -119,7 +114,7 @@ Note: this only works after evaluate has been run once before.
 
 A template for a custom SuT is provided in ```sut/custom```. Just change the function in solution.py any way you like or substitute it entirely inside ```custom-bench.py```.
 
-The score to beat with an automatic inference solution that does not use the provided dialect information is the one by DuckDB-Auto which is currently at: 9.646808 (unweighted). 
+The score to beat with an automatic inference solution that does not use the provided dialect information is the current DuckDB-Auto correct-file count.
 
 Have fun and happy hacking ;)
 
@@ -130,4 +125,3 @@ Have fun and happy hacking ;)
 1. Some dependency versions were changed compared to the original Pollock Benchmark (e.g. Pandas is now 3.x and not 1.x anymore). This might lead to different scores
 2. DuckDB-Auto had a bug where it correctly read datetime but wrote it in a different format than expected by the benchmark, which is why its score in the original repo is lower.
 3. Most non-python SuTs require Docker. Their original and mostly broken dependencies were updated and they should run now (status May 2026). However, some settings like the number of repetitions in the .env file are not yet passed through to docker. Also, the score might have changed due to changes in how csvs are parsed between the old and new versions as some legacy docker containers were not distributed anymore.
-
