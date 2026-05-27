@@ -1,10 +1,8 @@
-import pandas as pd
 import xml.etree.ElementTree as ET
 import gzip
 import requests
 
 
-from io import StringIO
 from requests.adapters import HTTPAdapter
 from urllib3.util.retry import Retry
 
@@ -86,17 +84,17 @@ def fetch_dataset_ids(cached: bool) -> set[str]:
     return dataset_ids
 
 
-def download_dataset(dataset_id: str) -> pd.DataFrame:
+def download_dataset(dataset_id: str) -> str:
     """
     Download SDMX structure definition XML.
     """
     url = f"{DATASET_URL_BASE}/data/{dataset_id}?format=SDMX-CSV"
+
     response = SESSION.get(
         url,
         timeout=120,
         headers={"Accept": "application/vnd.sdmx.data+csv"},
     )
-
     response.raise_for_status()
 
-    return pd.read_csv(StringIO(response.text))
+    return response.text
