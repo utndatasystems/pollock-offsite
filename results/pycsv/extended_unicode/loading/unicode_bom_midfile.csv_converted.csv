@@ -1,0 +1,2 @@
+Application Error
+'ascii' codec can't decode byte 0xef in position 1261: ordinal not in range(128)

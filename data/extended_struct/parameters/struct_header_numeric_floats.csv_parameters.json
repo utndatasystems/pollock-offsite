@@ -1,0 +1,22 @@
+{
+    "encoding": "ascii",
+    "delimiter": ",",
+    "quotechar": "\"",
+    "escapechar": "\"",
+    "row_delimiter": "\r\n",
+    "header_lines": 1,
+    "preamble_lines": 0,
+    "footnote_lines": 0,
+    "column_names": [
+        "1.0",
+        "2.0",
+        "3.0",
+        "4.0",
+        "5.0",
+        "6.0",
+        "7.0",
+        "8.0",
+        "9.0"
+    ],
+    "n_columns": 9
+}

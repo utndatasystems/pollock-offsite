@@ -1,0 +1,22 @@
+{
+    "encoding": "utf_8",
+    "delimiter": "\u200f,\u200f",
+    "quotechar": "\"",
+    "escapechar": "\"",
+    "row_delimiter": "\r\n",
+    "header_lines": 1,
+    "preamble_lines": 0,
+    "footnote_lines": 0,
+    "column_names": [
+        "DA\u200fTE",
+        "TI\u200fME",
+        "Q\u200fty",
+        "PROD\u200fUCTID",
+        "Pr\u200fice",
+        "Produ\u200fctType",
+        "ProductDe\u200fscription",
+        "U\u200fRL",
+        "Comm\u200fents"
+    ],
+    "n_columns": 9
+}

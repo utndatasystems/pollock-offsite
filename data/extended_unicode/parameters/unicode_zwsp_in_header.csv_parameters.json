@@ -1,0 +1,22 @@
+{
+    "encoding": "utf_8",
+    "delimiter": ",",
+    "quotechar": "\"",
+    "escapechar": "\"",
+    "row_delimiter": "\r\n",
+    "header_lines": 1,
+    "preamble_lines": 0,
+    "footnote_lines": 0,
+    "column_names": [
+        "D\u200bA\u200bT\u200bE",
+        "T\u200bI\u200bM\u200bE",
+        "Q\u200bt\u200by",
+        "P\u200bR\u200bO\u200bD\u200bU\u200bC\u200bT\u200bI\u200bD",
+        "P\u200br\u200bi\u200bc\u200be",
+        "P\u200br\u200bo\u200bd\u200bu\u200bc\u200bt\u200bT\u200by\u200bp\u200be",
+        "P\u200br\u200bo\u200bd\u200bu\u200bc\u200bt\u200bD\u200be\u200bs\u200bc\u200br\u200bi\u200bp\u200bt\u200bi\u200bo\u200bn",
+        "U\u200bR\u200bL",
+        "C\u200bo\u200bm\u200bm\u200be\u200bn\u200bt\u200bs"
+    ],
+    "n_columns": 9
+}

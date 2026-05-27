@@ -1,0 +1,20 @@
+{
+  "engines": [
+    "unicode",
+    "quote",
+    "typeinfer",
+    "lineend",
+    "struct",
+    "dialect"
+  ],
+  "top_k_per_sut": 20,
+  "promoted_total": 179,
+  "promoted_by_engine": {
+    "unicode": 32,
+    "quote": 28,
+    "typeinfer": 36,
+    "lineend": 22,
+    "struct": 30,
+    "dialect": 31
+  }
+}

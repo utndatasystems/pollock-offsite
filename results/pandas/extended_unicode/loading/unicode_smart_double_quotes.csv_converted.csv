@@ -1,0 +1,2 @@
+Application Error
+ord(quotechar) > 127, meaning the quotechar is larger than one byte, and the 'c' engine does not support such quotechars

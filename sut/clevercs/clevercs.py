@@ -54,6 +54,9 @@ for idx, f in enumerate(benchmark_files):
         times_dict[f] = times_dict.get(f, []) + [(end - start)]
         print("\tProcessing complete in", (end - start) * 1000, "ms")
 
-        del dialect, reader, rows, start, end, in_csvfile, out_csvfile
+        try:
+            del dialect, reader, rows, start, end, in_csvfile, out_csvfile
+        except NameError:
+            pass
 
 save_time_df(TIME_DIR, sut, times_dict)
