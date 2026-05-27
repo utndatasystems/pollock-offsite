@@ -1,7 +1,7 @@
 import logging
 
 from include.constants import DOWNLOAD_PATH
-from include.dataset_list import fetch_dataset_ids
+from include.dataset_fetch import fetch_dataset_ids, download_dataset
 
 log = logging.getLogger(__name__)
 
@@ -16,5 +16,11 @@ if __name__ == "__main__":
         ],
     )
 
-    dataset_ids = fetch_dataset_ids()
-    log.info(f"Found {len(dataset_ids)} datasets: {dataset_ids}")
+    dataset_ids = fetch_dataset_ids(cached=True)
+    log.info(f"Found {len(dataset_ids)} datasets")
+
+    for id in dataset_ids:
+        log.info(f"Fetching {id}")
+        df = download_dataset(id)
+        df.to_csv(path_or_buf=DOWNLOAD_PATH / f"{id.lower()}.csv", index=False)
+        break
