@@ -426,6 +426,7 @@ def addTable(file: CSVFile, n_rows, n_cols, empty_boundary=True):
     file.filename = f"file_multitable_rows_{n_rows}_{strtype}_cols{'_separated' if empty_boundary else ''}.csv"
     file.xml.getroot().attrib["filename"] = file.filename
 
+# --- New Pollutions for Pollock 2.0 below ---
 def addTableSideways(file: CSVFile, n_rows, n_cols):
     """Adds a table after the first one with n_rows and n_cols, but adds it sideways, i.e. the rows of the new table are added as columns."""
     random.seed(constants.RAND_SEED)
@@ -444,25 +445,13 @@ def addTableSideways(file: CSVFile, n_rows, n_cols):
     file.filename = f"file_multitable_sideways_rows_{n_rows}_cols{n_cols}.csv"
     file.xml.getroot().attrib["filename"] = file.filename
 
+def multilineHeader(file: CSVFile, col=1, new_content="Line1\nLine2\nLine3"):
+    """Adds a multiline header in a cell, i.e. line breaks in the header content."""
+    pass
 
 def duplicateHeaderAsDataRow(file: CSVFile):
-    """Duplicates the header row as a data row, i.e. the first row is both header and data. """
-    header_cells = [
-        "".join(v.text or "" for v in c if v.tag == "value")
-        for c in file.xml.xpath("//row[1]//cell")
-        ]
-    pb.addRows(
-        file,
-        cell_content=header_cells,
-        n_rows=1,
-        position=1,
-        col_count=file.col_count,
-        role="data"
-    )
-
-    file.filename = "file_duplicate_header_as_data.csv"
-    file.xml.getroot().attrib["filename"] = file.filename
-
+    """Duplicates the header row as a data row, i.e. the first row is both header and data."""
+    pass
 
 def extremelyLongFields(file: CSVFile, row=1, col=1, length=10000):
     """Dumps the content of a row into a single cell, creating an extremely long field. --> field with several MB """
@@ -483,6 +472,90 @@ def addGroupSectionHeader(file: CSVFile, group_name="Region: North", position=-1
 def addCommentToFile(file: CSVFile, comment="This is a comment."):
     """Adds a comment to end of a row"""
     pass
+
+def mixedDelimiters(file: CSVFile, row=1, delimiters=[",", ";", "|"]):
+    """Adds mixed delimiters to a row, i.e. different delimiters in the same row (row, tab)"""
+    pass
+
+def unescaped(file: CSVFile, row=1, col=1, content="This is a \"quote\" and a comma, and a newline\nin the same cell."):
+    """quote char used as an apostrophe mid-field (e.g. O'Brien with ' as quote char)doubled-quote escaping vs backslash escaping mixed in the same file (""hi"" on one row, \"hi\" on the next)"""
+    pass
+
+def doubleEscaping():
+    """doubled-quote escaping vs backslash escaping mixed in the same file (""hi"" on one row, \"hi\" on the next)"""
+    pass
+
+def variableColumnCount(file: CSVFile):
+    """(more / less than specified in header), extra delimiter at the end truncated columns schema change: add/remove column within the file"""
+    pass
+
+def excelExportAutoformat(file: CSVFile):
+    """autoformat (zip code becomes number / date)"""
+    pass
+
+def exelExportFormulas(file: CSVFile):
+    """formulas pasted into .csv, e.g. =SUM(A1:A10)"""
+    pass
+
+def typeAmbiguity(file: CSVFile):
+    """Type ambiguity
+    "NULL" vs "N/A" vs NaN vs …
+    "true"/"false" vs 1/0 for boolean columns,
+    dot vs comma for decimal separator
+    decimal comma colliding with the field delimiter in a semicolon file (1,5;2,3 European style)
+    drift 
+    2026-05-27 vs 27.05.2026 mid-file same for currency signs 
+     """
+    pass
+
+def superheader(file: CSVFile):
+    """superheader rows above the header row, e.g. for grouping columns (e.g. Region with sub-columns Country, City)"""
+    pass
+
+def embeddedFiles(file: CSVFile):
+    """embedded files (e.g. json file content in a cell)"""
+    pass
+
+def encoding(file: CSVFile, target_encoding: constants.Encoding):
+    """utf-8 vs windows-1252"""
+    pass
+
+def bomMarker(file: CSVFile):
+    pass
+
+def weirdUnicode(file: CSVFile):
+    """weird unicode / Mojibake (“FranÃ§ois” instead of “François”)"""
+
+def invisibleCharacters(file: CSVFile):
+    """
+    """
+    pass
+
+def collations(file: CSVFile):
+    """collations (e.g. different sorting orders for accented characters)"""
+    pass
+
+def mixedTypes(file: CSVFile):
+    """3.1415, N/A, unknown, 0, zero, $20, …"""
+    pass
+
+def mixedTimeformats(file: CSVFile):
+    """
+    Mixed date formats 05/27 vs 27th of May vs 2026-05-27, …
+    With and without timezones"""
+    pass
+
+
+
+    
+
+
+
+
+
+
+
+
 
 
     
