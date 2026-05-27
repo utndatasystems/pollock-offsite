@@ -124,7 +124,7 @@ execute_polluter(f, pl.changeEscapeCharacter, target_escape="")
 if args.polluters == "pollock2.0":
     # Multi-table / layout structure
     execute_polluter(f, pl.addTableSideways, n_rows=min(f.row_count, 5), n_cols=min(f.col_count, 5))
-    execute_polluter(f, pl.multilineHeader, col=1, new_content="Line1\nLine2\nLine3")
+    execute_polluter(f, pl.multilineHeader, header_col=4, header_rows=3, content="Line1")
     execute_polluter(f, pl.duplicateHeaderAsDataRow)
     execute_polluter(f, pl.superheader)
 
@@ -135,7 +135,8 @@ if args.polluters == "pollock2.0":
     execute_polluter(f, pl.variableColumnCount)
 
     # Delimiter / quoting / escaping edge cases
-    execute_polluter(f, pl.mixedDelimiters, row=2 if f.row_count >= 2 else 1, delimiters=[",", ";", "|"])
+    execute_polluter(f, pl.mixedDelimiters, row=2 if f.row_count >= 2 else 1, delimiters=[",", ";", "|"], mode = "within_row")
+    execute_polluter(f, pl.mixedDelimiters, row=2 if f.row_count >= 2 else 1, delimiters=[",", ";", "|"], mode = "whole_row")
     execute_polluter(f, pl.unescaped, row=2 if f.row_count >= 2 else 1, col=1)
     execute_polluter(f, pl.doubleEscaping, row1=2, row2=3, col=1)
 

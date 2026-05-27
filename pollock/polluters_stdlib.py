@@ -427,6 +427,7 @@ def addTable(file: CSVFile, n_rows, n_cols, empty_boundary=True):
     file.xml.getroot().attrib["filename"] = file.filename
 
 # --- New Pollutions for Pollock 2.0 below ---
+
 def _set_polluted_filename(file: CSVFile, filename: str):
     """Keep the CSVFile metadata and XML root filename in sync."""
     file.filename = filename
@@ -448,47 +449,60 @@ def _safe_col_count(file: CSVFile, table=0):
     first_row = file.xml.getroot().xpath(f"//table[{table + 1}]/row[1]")
     return len(first_row[0].xpath("./cell")) if first_row else 0
 
-
 def _last_data_row(file: CSVFile):
     return max(2, _safe_row_count(file))
 
 
 def addTableSideways(file: CSVFile, n_rows, n_cols):
-    """Adds a second table whose source rows are transposed into columns."""
-    random.seed(constants.RAND_SEED)
-    root = file.xml.getroot()
-    old_table = root.xpath("//table")[0]
-    new_table = etree.SubElement(root, "table")
-
-    source = []
-    for i in range(n_rows):
-        values = [x.text or "" for x in old_table.xpath(f"./row[{i + 1}]//value")]
-        if len(values) < n_cols:
-            values += [""] * (n_cols - len(values))
-        source.append(values[:n_cols])
-
-    # Transpose source rows into rows of the new table. This produces a sideways table
-    # without relying on addColumns(), which expects rows to already exist.
-    for c in range(n_cols):
-        row_cells = [source[r][c] for r in range(n_rows)]
-        pb.addRows(file, cell_content=row_cells, n_rows=1, position=len(new_table),
-                   col_count=n_rows, role="data", table=1)
-
-    _set_polluted_filename(file, f"file_multitable_sideways_rows_{n_rows}_cols_{n_cols}.csv")
+    """Adds a second table of size n_rows and n_cols next to the original table."""
+    pass 
 
 
-def multilineHeader(file: CSVFile, col=1, new_content="Line1\nLine2\nLine3"):
-    """Adds line breaks inside one header cell."""
-    pb.changeCell(file, row=1, col=col, new_content=new_content)
-    _set_polluted_filename(file, f"file_multiline_header_col_{col}.csv")
+def multilineHeader(file: CSVFile, header_col=5, header_rows = 3, content="Line", join_char=","):
+    """Adds additional header rows with the same content in the specified column. 
+    Header rows is length header_columns, content is the string from which the multiline header is constructed, 
+    and the multiline header stretches across header_rows."""
+    pass
+
+    # create content for a line of the header that will then be inserted header_rows times
+    new_content = join_char.join([content + str(i + 1) for i in range(header_rows)])
+    new_content = new_content + "\n" 
+    print(new_content)
+
+    # add a new empty line
+    
+    for i in range(header_rows):
+        pb.changeCell(file, row=1, col=1, new_content=new_content)
+    
+    _set_polluted_filename(file, f"file_multiline_header_col_{header_col}.csv")
 
 
-def duplicateHeaderAsDataRow(file: CSVFile):
-    """Duplicates the header row as the first data row."""
+def duplicateHeaderAsDataRow(file: CSVFile, n_duplicates: int = 1):
+    """Duplicates the header row as data rows directly below the header.
+
+    Args:
+        file: CSVFile to mutate.
+        n_duplicates: Number of duplicated header rows to insert.
+    """
+    if n_duplicates < 1:
+        raise ValueError("n_duplicates must be at least 1")
+
     header = _row_values(file, row=1)
-    pb.addRows(file, cell_content=header, n_rows=1, position=1,
-               col_count=len(header) or file.col_count, role="data")
-    _set_polluted_filename(file, "file_duplicate_header_as_data.csv")
+    if not header:
+        raise ValueError("Cannot duplicate header: first row is empty or missing")
+
+    for _ in range(n_duplicates):
+        pb.addRows(
+            file,
+            cell_content=header,
+            n_rows=1,
+            position=1,
+            col_count=len(header) or file.col_count,
+            role="data",
+        )
+
+    suffix = "" if n_duplicates == 1 else f"_{n_duplicates}x"
+    _set_polluted_filename(file, f"file_duplicate_header_as_data{suffix}.csv")
 
 
 def extremelyLongFields(file: CSVFile, row=1, col=1, length=10000):
@@ -502,8 +516,10 @@ def extremelyLongFields(file: CSVFile, row=1, col=1, length=10000):
     _set_polluted_filename(file, f"file_extremely_long_field_row_{row}_col_{col}_len_{length}.csv")
 
 
-def addGroupSectionHeader(file: CSVFile, group_name="Region: North", position=-1):
+def addGroupSectionHeader(file: CSVFile, group_name="Region: North", position=1):
     """Adds a bare section/group label row with content only in the first column."""
+    pass 
+    # has to be added to right files only. This is only meaningful if the file has some kind of grouping structure. 
     if position < 0:
         position = _last_data_row(file) - 1
     row = [group_name] + [""] * max(file.col_count - 1, 0)
@@ -512,27 +528,71 @@ def addGroupSectionHeader(file: CSVFile, group_name="Region: North", position=-1
     _set_polluted_filename(file, f"file_group_section_header_{position}.csv")
 
 
-def addCommentToFile(file: CSVFile, comment="This is a comment."):
-    """Adds a comment-like trailing field to the last row."""
-    row = _last_data_row(file)
-    pb.addCells(file, row=row, position=file.col_count, n_cells=1,
-                content="# " + comment, role="comment")
+def addCommentToFile(file: CSVFile, comment="This is a comment.", row=3):
+    """Adds a comment-like trailing field to a row without a delimiter before it."""
+
+    pb.addCells(
+        file,
+        row=row,
+        position=file.col_count,
+        n_cells=1,
+        content=" # " + comment,
+        role="comment",
+    )
+
+    # Remove the delimiter before the newly inserted comment cell
+    root = file.xml.getroot()
+    row_xml = root.xpath(f"//row[{row}]")[0]
+
+    delimiters = [i for i, x in enumerate(row_xml) if x.tag == "field_delimiter"]
+    if delimiters:
+        del row_xml[delimiters[-1]]
+
     _set_polluted_filename(file, "file_trailing_comment.csv")
 
+#TODO: multiline comment at beginning of file (e.g instrument info)
 
-def mixedDelimiters(file: CSVFile, row=1, delimiters=None):
-    """Uses different field delimiters within one row."""
+def mixedDelimiters(file: CSVFile, row=1, delimiters=None, mode="within_row"):
+    """Uses alternative field delimiters.
+
+    Args:
+        file: CSVFile to mutate.
+        row: Row to modify. Supports negative indexing.
+        delimiters: Delimiters to use.
+        mode:
+            "whole_row" changes all delimiters in one row to the same delimiter.
+            "within_row" cycles multiple delimiters within the same row.
+    """
+    pass
+    #TODO: debug 
     if delimiters is None:
-        delimiters = [",", ";", "|"]
-    root = file.xml.getroot()
+        delimiters = [";", "|"]
+
+    if not delimiters:
+        raise ValueError("delimiters must contain at least one delimiter")
+
+    if mode not in {"whole_row", "within_row"}:
+        raise ValueError("mode must be either 'whole_row' or 'within_row'")
+
     if type(row) == int and row < 0:
         row = "last()-" + str(row + 1)
-    fds = root.xpath(f"//row[{row}]/field_delimiter")
-    for idx, fd in enumerate(fds):
-        fd.text = delimiters[idx % len(delimiters)]
-    encoded = "_".join(str(ord(d[0])) for d in delimiters if d)
-    _set_polluted_filename(file, f"file_mixed_delimiters_row_{row}_{encoded}.csv")
 
+    root = file.xml.getroot()
+    fds = root.xpath(f"//row[{row}]/field_delimiter")
+
+    if not fds:
+        raise ValueError(f"Row {row} has no field delimiters to modify")
+
+    if mode == "whole_row":
+        target_delimiter = delimiters[0]
+        for fd in fds:
+            fd.text = target_delimiter
+    else:
+        for idx, fd in enumerate(fds):
+            fd.text = delimiters[idx % len(delimiters)]
+
+    encoded = "_".join(str(ord(d[0])) for d in delimiters if d)
+    _set_polluted_filename(file, f"file_mixed_delimiters_{mode}_row_{row}_{encoded}.csv")
 
 def unescaped(file: CSVFile, row=1, col=1, content="This is a \"quote\" and a comma, and a newline\nin the same cell."):
     """Places quote, delimiter, and newline characters in a cell without adding escaping metadata."""
@@ -620,6 +680,11 @@ def embeddedFiles(file: CSVFile):
     _set_polluted_filename(file, "file_embedded_json_cell.csv")
 
 
+def embeddCSV(file: CSVFile):
+    # TODO: csv in csv embedded
+    pass 
+
+
 def encoding(file: CSVFile, target_encoding: constants.Encoding):
     """Changes the declared file encoding.
 
@@ -686,7 +751,6 @@ def mixedTypes(file: CSVFile):
                    col_count=file.col_count, role="data")
     _set_polluted_filename(file, "file_mixed_types.csv")
 
-
 def mixedTimeformats(file: CSVFile):
     """Adds multiple date/time formats, with and without time zones."""
     values = ["05/27", "27th of May", "2026-05-27", "2026-05-27T10:30:00+02:00"]
@@ -694,3 +758,7 @@ def mixedTimeformats(file: CSVFile):
     pb.addRows(file, cell_content=row, n_rows=1, position=_safe_row_count(file),
                col_count=file.col_count, role="data")
     _set_polluted_filename(file, "file_mixed_time_formats.csv")
+
+def unquotedLists(file: CSVFile):
+    #TODO: semantic understanding for unquotedlists
+    pass
