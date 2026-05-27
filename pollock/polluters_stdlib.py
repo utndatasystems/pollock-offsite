@@ -427,140 +427,270 @@ def addTable(file: CSVFile, n_rows, n_cols, empty_boundary=True):
     file.xml.getroot().attrib["filename"] = file.filename
 
 # --- New Pollutions for Pollock 2.0 below ---
+def _set_polluted_filename(file: CSVFile, filename: str):
+    """Keep the CSVFile metadata and XML root filename in sync."""
+    file.filename = filename
+    file.xml.getroot().attrib["filename"] = filename
+
+
+def _row_values(file: CSVFile, row=1, table=0):
+    """Return value text for every cell in a row. Row uses XPath-style 1-based indexing."""
+    root = file.xml.getroot()
+    cells = root.xpath(f"//table[{table + 1}]/row[{row}]/cell")
+    return ["".join(v.text or "" for v in c if v.tag == "value") for c in cells]
+
+
+def _safe_row_count(file: CSVFile, table=0):
+    return len(file.xml.getroot().xpath(f"//table[{table + 1}]/row"))
+
+
+def _safe_col_count(file: CSVFile, table=0):
+    first_row = file.xml.getroot().xpath(f"//table[{table + 1}]/row[1]")
+    return len(first_row[0].xpath("./cell")) if first_row else 0
+
+
+def _last_data_row(file: CSVFile):
+    return max(2, _safe_row_count(file))
+
+
 def addTableSideways(file: CSVFile, n_rows, n_cols):
-    """Adds a table after the first one with n_rows and n_cols, but adds it sideways, i.e. the rows of the new table are added as columns."""
+    """Adds a second table whose source rows are transposed into columns."""
     random.seed(constants.RAND_SEED)
     root = file.xml.getroot()
     old_table = root.xpath("//table")[0]
     new_table = etree.SubElement(root, "table")
 
-    content = []
+    source = []
     for i in range(n_rows):
-        content += [[x.text for x in old_table.xpath(f"//row[{i + 1}]//value")]]
+        values = [x.text or "" for x in old_table.xpath(f"./row[{i + 1}]//value")]
+        if len(values) < n_cols:
+            values += [""] * (n_cols - len(values))
+        source.append(values[:n_cols])
 
+    # Transpose source rows into rows of the new table. This produces a sideways table
+    # without relying on addColumns(), which expects rows to already exist.
     for c in range(n_cols):
-        col_cells = [content[r][c] for r in range(n_rows)]
-        pb.addColumns(file, cell_content=col_cells, n_cols=1, position=file.col_count + 1, table=1)
+        row_cells = [source[r][c] for r in range(n_rows)]
+        pb.addRows(file, cell_content=row_cells, n_rows=1, position=len(new_table),
+                   col_count=n_rows, role="data", table=1)
 
-    file.filename = f"file_multitable_sideways_rows_{n_rows}_cols{n_cols}.csv"
-    file.xml.getroot().attrib["filename"] = file.filename
+    _set_polluted_filename(file, f"file_multitable_sideways_rows_{n_rows}_cols_{n_cols}.csv")
+
 
 def multilineHeader(file: CSVFile, col=1, new_content="Line1\nLine2\nLine3"):
-    """Adds a multiline header in a cell, i.e. line breaks in the header content."""
-    pass
+    """Adds line breaks inside one header cell."""
+    pb.changeCell(file, row=1, col=col, new_content=new_content)
+    _set_polluted_filename(file, f"file_multiline_header_col_{col}.csv")
+
 
 def duplicateHeaderAsDataRow(file: CSVFile):
-    """Duplicates the header row as a data row, i.e. the first row is both header and data."""
-    pass
+    """Duplicates the header row as the first data row."""
+    header = _row_values(file, row=1)
+    pb.addRows(file, cell_content=header, n_rows=1, position=1,
+               col_count=len(header) or file.col_count, role="data")
+    _set_polluted_filename(file, "file_duplicate_header_as_data.csv")
+
 
 def extremelyLongFields(file: CSVFile, row=1, col=1, length=10000):
-    """Dumps the content of a row into a single cell, creating an extremely long field. --> field with several MB """
+    """Replaces a cell with an extremely long random alphanumeric field."""
     if type(row) == int and row < 0:
         row = "last()-" + str(row + 1)
 
+    random.seed(constants.RAND_SEED)
     long_string = ''.join(random.choices(string.ascii_letters + string.digits, k=length))
     pb.changeCell(file, row=row, col=col, new_content=long_string)
-
-    file.filename = f"file_extremely_long_field_row{row}_col{col}_len{length}.csv"
-    file.xml.getroot().attrib["filename"] = file.filename
+    _set_polluted_filename(file, f"file_extremely_long_field_row_{row}_col_{col}_len_{length}.csv")
 
 
 def addGroupSectionHeader(file: CSVFile, group_name="Region: North", position=-1):
-    """group/section header rows interleaved within a single table (bare label row like Region: North, content only in column 1)"""
-    pass
+    """Adds a bare section/group label row with content only in the first column."""
+    if position < 0:
+        position = _last_data_row(file) - 1
+    row = [group_name] + [""] * max(file.col_count - 1, 0)
+    pb.addRows(file, cell_content=row, n_rows=1, position=position,
+               col_count=file.col_count, role="section_header")
+    _set_polluted_filename(file, f"file_group_section_header_{position}.csv")
+
 
 def addCommentToFile(file: CSVFile, comment="This is a comment."):
-    """Adds a comment to end of a row"""
-    pass
+    """Adds a comment-like trailing field to the last row."""
+    row = _last_data_row(file)
+    pb.addCells(file, row=row, position=file.col_count, n_cells=1,
+                content="# " + comment, role="comment")
+    _set_polluted_filename(file, "file_trailing_comment.csv")
 
-def mixedDelimiters(file: CSVFile, row=1, delimiters=[",", ";", "|"]):
-    """Adds mixed delimiters to a row, i.e. different delimiters in the same row (row, tab)"""
-    pass
+
+def mixedDelimiters(file: CSVFile, row=1, delimiters=None):
+    """Uses different field delimiters within one row."""
+    if delimiters is None:
+        delimiters = [",", ";", "|"]
+    root = file.xml.getroot()
+    if type(row) == int and row < 0:
+        row = "last()-" + str(row + 1)
+    fds = root.xpath(f"//row[{row}]/field_delimiter")
+    for idx, fd in enumerate(fds):
+        fd.text = delimiters[idx % len(delimiters)]
+    encoded = "_".join(str(ord(d[0])) for d in delimiters if d)
+    _set_polluted_filename(file, f"file_mixed_delimiters_row_{row}_{encoded}.csv")
+
 
 def unescaped(file: CSVFile, row=1, col=1, content="This is a \"quote\" and a comma, and a newline\nin the same cell."):
-    """quote char used as an apostrophe mid-field (e.g. O'Brien with ' as quote char)doubled-quote escaping vs backslash escaping mixed in the same file (""hi"" on one row, \"hi\" on the next)"""
-    pass
+    """Places quote, delimiter, and newline characters in a cell without adding escaping metadata."""
+    pb.changeCell(file, row=row, col=col, new_content=content)
+    _set_polluted_filename(file, f"file_unescaped_row_{row}_col_{col}.csv")
 
-def doubleEscaping():
-    """doubled-quote escaping vs backslash escaping mixed in the same file (""hi"" on one row, \"hi\" on the next)"""
-    pass
+
+def doubleEscaping(file: CSVFile, row1=2, row2=3, col=1):
+    """Mixes doubled-quote escaping and backslash escaping in the same column."""
+    row_count = _safe_row_count(file)
+    if row_count < row2:
+        last = _row_values(file, row=row_count) or [""] * file.col_count
+        pb.addRows(file, cell_content=last, n_rows=row2 - row_count, position=row_count,
+                   col_count=file.col_count, role="data")
+    pb.changeCell(file, row=row1, col=col, new_content='""hi""')
+    pb.changeCell(file, row=row2, col=col, new_content='\\"hi\\"')
+    _set_polluted_filename(file, f"file_double_escaping_col_{col}.csv")
+
 
 def variableColumnCount(file: CSVFile):
-    """(more / less than specified in header), extra delimiter at the end truncated columns schema change: add/remove column within the file"""
-    pass
+    """Creates rows with fewer and more fields than the header."""
+    row_count = _safe_row_count(file)
+    if row_count < 3:
+        last = _row_values(file, row=row_count) or [""] * file.col_count
+        pb.addRows(file, cell_content=last, n_rows=3 - row_count, position=row_count,
+                   col_count=file.col_count, role="data")
+    if file.col_count > 1:
+        pb.deleteCells(file, row=2, col=[file.col_count - 1])
+    pb.addCells(file, row=3, position=file.col_count, n_cells=1,
+                content="EXTRA_FIELD", role="data")
+    _set_polluted_filename(file, "file_variable_column_count.csv")
+
 
 def excelExportAutoformat(file: CSVFile):
-    """autoformat (zip code becomes number / date)"""
-    pass
+    """Adds values commonly autoformatted by Excel: leading-zero IDs and date-like strings."""
+    rows = [
+        ["00123", "03/04/05", "1-2", "1E10"],
+        ["00001", "2026-05-27", "12-13", "3.14E2"],
+    ]
+    for values in rows:
+        padded = values[:file.col_count] + [""] * max(file.col_count - len(values), 0)
+        pb.addRows(file, cell_content=padded, n_rows=1, position=_safe_row_count(file),
+                   col_count=file.col_count, role="data")
+    _set_polluted_filename(file, "file_excel_autoformat.csv")
+
 
 def exelExportFormulas(file: CSVFile):
-    """formulas pasted into .csv, e.g. =SUM(A1:A10)"""
-    pass
+    """Adds spreadsheet formulas as literal CSV cell contents."""
+    formulas = ["=SUM(A1:A10)", "=A2+B2", "=HYPERLINK(\"https://example.com\",\"link\")"]
+    row = formulas[:file.col_count] + [""] * max(file.col_count - len(formulas), 0)
+    pb.addRows(file, cell_content=row, n_rows=1, position=_safe_row_count(file),
+               col_count=file.col_count, role="data")
+    _set_polluted_filename(file, "file_excel_formulas.csv")
+
 
 def typeAmbiguity(file: CSVFile):
-    """Type ambiguity
-    "NULL" vs "N/A" vs NaN vs …
-    "true"/"false" vs 1/0 for boolean columns,
-    dot vs comma for decimal separator
-    decimal comma colliding with the field delimiter in a semicolon file (1,5;2,3 European style)
-    drift 
-    2026-05-27 vs 27.05.2026 mid-file same for currency signs 
-     """
-    pass
+    """Adds rows containing ambiguous nulls, booleans, decimals, dates, and currencies."""
+    rows = [
+        ["NULL", "N/A", "NaN", ""],
+        ["true", "false", "1", "0"],
+        ["1.5", "1,5", "2026-05-27", "27.05.2026"],
+        ["$20", "20 EUR", "unknown", "zero"],
+    ]
+    for values in rows:
+        padded = values[:file.col_count] + [""] * max(file.col_count - len(values), 0)
+        pb.addRows(file, cell_content=padded, n_rows=1, position=_safe_row_count(file),
+                   col_count=file.col_count, role="data")
+    _set_polluted_filename(file, "file_type_ambiguity.csv")
+
 
 def superheader(file: CSVFile):
-    """superheader rows above the header row, e.g. for grouping columns (e.g. Region with sub-columns Country, City)"""
-    pass
+    """Adds a grouping row above the normal header."""
+    groups = []
+    for i in range(file.col_count):
+        groups.append("Region" if i < max(1, file.col_count // 2) else "Metrics")
+    pb.addRows(file, cell_content=groups, n_rows=1, position=0,
+               col_count=file.col_count, role="superheader")
+    _set_polluted_filename(file, "file_superheader.csv")
+
 
 def embeddedFiles(file: CSVFile):
-    """embedded files (e.g. json file content in a cell)"""
-    pass
+    """Embeds JSON-like file content inside a single cell."""
+    payload = '{"name":"example.json","rows":[{"id":1,"value":"alpha"},{"id":2,"value":"beta"}]}'
+    pb.changeCell(file, row=2 if _safe_row_count(file) >= 2 else 1, col=1, new_content=payload)
+    _set_polluted_filename(file, "file_embedded_json_cell.csv")
+
 
 def encoding(file: CSVFile, target_encoding: constants.Encoding):
-    """utf-8 vs windows-1252"""
-    pass
+    """Changes the declared file encoding.
+
+    This wrapper is intentionally a little more permissive than
+    changeEncoding(): tests and callers may pass plain strings such as
+    "utf-8" instead of a constants.Encoding enum member.
+    """
+    target = target_encoding.value if type(target_encoding) == constants.Encoding else str(target_encoding)
+
+    aliases = {
+        "utf8": "utf-8",
+        "utf_8": "utf-8",
+        "cp1252": "windows-1252",
+        "windows_1252": "windows-1252",
+    }
+    target = aliases.get(target.lower(), target)
+
+    file.encoding = target
+    root = file.xml.getroot()
+    root.attrib["encoding"] = target
+    _set_polluted_filename(file, f"file_encoding_{target}.csv")
+
 
 def bomMarker(file: CSVFile):
-    pass
+    """Adds a UTF-8 BOM marker to the first header cell."""
+    first = _row_values(file, row=1)[0] if _row_values(file, row=1) else ""
+    pb.changeCell(file, row=1, col=1, new_content="\ufeff" + first)
+    file.xml.getroot().attrib["bom"] = "utf-8"
+    _set_polluted_filename(file, "file_utf8_bom.csv")
+
 
 def weirdUnicode(file: CSVFile):
-    """weird unicode / Mojibake (“FranÃ§ois” instead of “François”)"""
+    """Adds mojibake and non-ASCII strings."""
+    row = ["FranÃ§ois", "MÃ¼nchen", "SÃ£o Paulo", "â‚¬"]
+    row = row[:file.col_count] + [""] * max(file.col_count - len(row), 0)
+    pb.addRows(file, cell_content=row, n_rows=1, position=_safe_row_count(file),
+               col_count=file.col_count, role="data")
+    _set_polluted_filename(file, "file_weird_unicode_mojibake.csv")
+
 
 def invisibleCharacters(file: CSVFile):
-    """
-    """
-    pass
+    """Adds zero-width and non-breaking characters to cells."""
+    values = ["zero\u200bwidth", "non\u00a0breaking", "left\u200emark", "word\ufeffjoiner"]
+    row = values[:file.col_count] + [""] * max(file.col_count - len(values), 0)
+    pb.addRows(file, cell_content=row, n_rows=1, position=_safe_row_count(file),
+               col_count=file.col_count, role="data")
+    _set_polluted_filename(file, "file_invisible_characters.csv")
+
 
 def collations(file: CSVFile):
-    """collations (e.g. different sorting orders for accented characters)"""
-    pass
+    """Adds strings whose sort order differs by locale/collation."""
+    for value in ["ä", "z", "å", "a", "Á", "á", "ß", "ss"]:
+        row = [value] + [""] * max(file.col_count - 1, 0)
+        pb.addRows(file, cell_content=row, n_rows=1, position=_safe_row_count(file),
+                   col_count=file.col_count, role="data")
+    _set_polluted_filename(file, "file_collation_edge_cases.csv")
+
 
 def mixedTypes(file: CSVFile):
-    """3.1415, N/A, unknown, 0, zero, $20, …"""
-    pass
+    """Adds values with incompatible types in the same logical column."""
+    for value in ["3.1415", "N/A", "unknown", "0", "zero", "$20"]:
+        row = [value] + [""] * max(file.col_count - 1, 0)
+        pb.addRows(file, cell_content=row, n_rows=1, position=_safe_row_count(file),
+                   col_count=file.col_count, role="data")
+    _set_polluted_filename(file, "file_mixed_types.csv")
+
 
 def mixedTimeformats(file: CSVFile):
-    """
-    Mixed date formats 05/27 vs 27th of May vs 2026-05-27, …
-    With and without timezones"""
-    pass
-
-
-
-    
-
-
-
-
-
-
-
-
-
-
-    
-
-
-
-
-
+    """Adds multiple date/time formats, with and without time zones."""
+    values = ["05/27", "27th of May", "2026-05-27", "2026-05-27T10:30:00+02:00"]
+    row = values[:file.col_count] + [""] * max(file.col_count - len(values), 0)
+    pb.addRows(file, cell_content=row, n_rows=1, position=_safe_row_count(file),
+               col_count=file.col_count, role="data")
+    _set_polluted_filename(file, "file_mixed_time_formats.csv")
