@@ -1,13 +1,44 @@
 from copy import deepcopy
 import argparse
 import os
+import pollock
 from pollock.CSVFile import CSVFile
 import pollock.polluters_stdlib as pl
 from sut.utils import print
+from tqdm import tqdm
 
 parser = argparse.ArgumentParser()
-parser.add_argument("--source", default="./results/source.csv", help="Path to the source CSV file to pollute")
-parser.add_argument("--output", default="./data/polluted_files", help="Root output directory for polluted files")
+
+parser.add_argument(
+    "--source",
+    required=True,
+    choices=[
+        "./results/source.csv",
+    ],
+    help="Path to the source CSV file to pollute",)
+
+parser.add_argument(
+    "--output",
+    required=True,
+    choices=[
+        "./data/polluted_files",
+        "./data/data_gov",
+        "./data/csv_storm",
+        "./data/eurostat",
+        "./data/survey_sample"
+    ],
+    help="Root output directory for polluted files",)
+
+parser.add_argument(
+    "--polluters",
+    required=False,
+    choices=[
+        "pollock1.0",
+        "pollock2.0"
+    ],
+    default="pollock1.0",
+    help="Which polluters to use for pollution process. Use pollock1.0 for original pollock pollutions only.",)
+
 args = parser.parse_args()
 
 OUT_CSV_PATH = os.path.join(args.output, "csv/")
@@ -57,7 +88,9 @@ execute_polluter(f, pl.changeNumberRows, new_filename="file_one_data_row.csv", t
 # Add or remove one separator for each row/column : 1428 files
 # Add extra quote mark for each row/column : 756 files
 # Change delimiter for each row : 88 files
-for i in range(f.row_count):
+
+"""
+for i in tqdm(range(f.row_count)):
     for j in range(f.col_count):
         execute_polluter(f, pl.addRowFieldDelimiter, new_filename=f"row_more_sep_row{i}_col{j}.csv", row=i, col=j)  # row 1, empty
         if j > 0:
@@ -68,7 +101,7 @@ for i in range(f.row_count):
     del_string = ''.join([f'_0x{v:X}' for v in vals])
     target_filename = f"row_field_delimiter_{i}{del_string}.csv"
     execute_polluter(f, pl.changeRowFieldDelimiter, new_filename=target_filename, row=i, target_delimiter=" ")
-
+"""
 # Change record Delimiter : 2 files
 execute_polluter(f, pl.changeRecordDelimiter, target_delimiter="\n")
 execute_polluter(f, pl.changeRecordDelimiter, target_delimiter="\r")
@@ -85,5 +118,46 @@ execute_polluter(f, pl.changeQuotationChar, target_char="\u0027")
 # Change escape character : 2 files
 execute_polluter(f, pl.changeEscapeCharacter, target_escape="\u005C")  # backslash
 execute_polluter(f, pl.changeEscapeCharacter, target_escape="")
+
+# NEW POLLUTIONS FOR POLLOCK 2.0
+
+if args.polluters == "pollock2.0":
+    # Multi-table / layout structure
+    execute_polluter(f, pl.addTableSideways, n_rows=min(f.row_count, 5), n_cols=min(f.col_count, 5))
+    execute_polluter(f, pl.multilineHeader, col=1, new_content="Line1\nLine2\nLine3")
+    execute_polluter(f, pl.duplicateHeaderAsDataRow)
+    execute_polluter(f, pl.superheader)
+
+    # Row / column irregularities
+    execute_polluter(f, pl.extremelyLongFields, row=2 if f.row_count >= 2 else 1, col=1, length=10000)
+    execute_polluter(f, pl.addGroupSectionHeader, group_name="Region: North")
+    execute_polluter(f, pl.addCommentToFile, comment="This is a comment.")
+    execute_polluter(f, pl.variableColumnCount)
+
+    # Delimiter / quoting / escaping edge cases
+    execute_polluter(f, pl.mixedDelimiters, row=2 if f.row_count >= 2 else 1, delimiters=[",", ";", "|"])
+    execute_polluter(f, pl.unescaped, row=2 if f.row_count >= 2 else 1, col=1)
+    execute_polluter(f, pl.doubleEscaping, row1=2, row2=3, col=1)
+
+    # Spreadsheet / Excel-style edge cases
+    execute_polluter(f, pl.excelExportAutoformat)
+    execute_polluter(f, pl.exelExportFormulas)
+
+    # Type ambiguity / mixed values
+    execute_polluter(f, pl.typeAmbiguity)
+    execute_polluter(f, pl.mixedTypes)
+    execute_polluter(f, pl.mixedTimeformats)
+
+    # Encoding / Unicode edge cases
+    execute_polluter(f, pl.encoding, target_encoding="utf-8")
+    execute_polluter(f, pl.encoding, target_encoding="windows-1252")
+    execute_polluter(f, pl.bomMarker)
+    execute_polluter(f, pl.weirdUnicode)
+    execute_polluter(f, pl.invisibleCharacters)
+    execute_polluter(f, pl.collations)
+
+    # Embedded semi-structured payloads
+    execute_polluter(f, pl.embeddedFiles)
+
 
 print("Pollution process complete.")
