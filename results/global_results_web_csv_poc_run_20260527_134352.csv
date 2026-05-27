@@ -1,2 +1,0 @@
-file,pandas_success,pandas_header_precision,pandas_header_recall,pandas_header_f1,pandas_record_precision,pandas_record_recall,pandas_record_f1,pandas_cell_precision,pandas_cell_recall,pandas_cell_f1
-datagov_electric_vehicle_population_data.csv,1,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0
