@@ -2,6 +2,21 @@ from .CSVFile import CSVFile, create_cell
 from lxml import etree
 from lxml.builder import E
 
+def insert_value_cell(file, cell, value):  # NEW
+    """
+    Safely inserts content into a CSV XML cell.
+
+    CSVFile.create_cell stores the actual field payload in a child
+    <value> element. Keep that structure when replacing cell content;
+    otherwise XPath queries such as //cell/value will stop finding the
+    changed values.
+    """
+
+    for child in list(cell):
+        cell.remove(child)
+    cell.text = None
+    cell.append(E.value("" if value is None else str(value)))
+
 def addCells(file: CSVFile, row, position, n_cells=1, content="", role="", table=0):
     """
         Inserts a cell in a row in the given position (with the corresponding delimiter)
@@ -28,7 +43,11 @@ def addCells(file: CSVFile, row, position, n_cells=1, content="", role="", table
             row_pos = 0
 
         for i in range(n_cells):
-            cell = create_cell(file, content, role=role)
+            cell = create_cell(field_delimiter=file.field_delimiter,
+                               quotation_char=file.quotation_char,
+                               escape_char=file.escape_char,
+                               text=content or "",
+                               role=role)
             delimiter = E.field_delimiter(file.field_delimiter)
 
             r.insert(row_pos, cell)
