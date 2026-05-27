@@ -75,7 +75,7 @@ def fetch_dataset_ids(cached: bool) -> set[str]:
         "structure": "http://www.sdmx.org/resources/sdmxml/schemas/v2_1/structure",
         "common": "http://www.sdmx.org/resources/sdmxml/schemas/v2_1/common",
     }
-    datasets_xml = _fetch_raw_datasets_xml(cached=True)
+    datasets_xml = _fetch_raw_datasets_xml(cached=cached)
 
     dataset_ids = set(
         elem.attrib.get("id")
