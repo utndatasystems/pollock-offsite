@@ -45,7 +45,7 @@ to run a specific python sut against a custom dataset.
 
 If you need more complex dependencies, add them to the Dockerfile and then use 
 
-``
+```
 docker-compose up custom-client
 ```
 
