@@ -158,7 +158,8 @@ if args.polluters == "pollock2.0":
     execute_polluter(f, pl.collations)
 
     # Embedded semi-structured payloads
-    execute_polluter(f, pl.embeddedFiles)
+    execute_polluter(f, pl.embeddedJSON)
+    execute_polluter(f, pl.embeddedCSV)
 
 
 print("Pollution process complete.")
