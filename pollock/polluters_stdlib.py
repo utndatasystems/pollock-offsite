@@ -754,6 +754,7 @@ def collations(file: CSVFile):
 
 def mixedTypes(file: CSVFile):
     """Adds values with incompatible types in the same logical column."""
+    #TODO: insert in middle of file, not end of file
     for value in ["3.1415", "N/A", "unknown", "0", "zero", "$20"]:
         row = [value] + [""] * max(file.col_count - 1, 0)
         pb.addRows(file, cell_content=row, n_rows=1, position=_safe_row_count(file),
@@ -762,6 +763,7 @@ def mixedTypes(file: CSVFile):
 
 def mixedTimeformats(file: CSVFile):
     """Adds multiple date/time formats, with and without time zones."""
+    # TODO: insert in middle of file, not end of file
     values = ["05/27", "27th of May", "2026-05-27", "2026-05-27T10:30:00+02:00"]
     row = values[:file.col_count] + [""] * max(file.col_count - len(values), 0)
     pb.addRows(file, cell_content=row, n_rows=1, position=_safe_row_count(file),
