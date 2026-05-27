@@ -5,6 +5,9 @@ The highlights of our experiments are these results, obtained on 17 different sy
 
 ## Pollock Score (ranked by simple score)
 
+#TODO: reduce to new SuT list (include snowflake, remove proprietary or outdated systems)
+
+
 | System under test        | Pollock score (simple)  | Pollock score (weighted)  |
 | ------------------------ | ----------------------- | ------------------------- |
 | DuckDB 1.2               | **9.961**               | **9.599**                 |
@@ -42,7 +45,7 @@ The structure of the repository is the following:
 - `results` contains the results of loading both the polluted files and the survey files for each of the systems evaluated. The folder will also contain `.csv` files that summarize the evaluation results - for each of the systems under test and for all of them together (`aggregate_results_{dataset}.csv`, `global_results_{dataset}.csv`).
 - The file `docker-compose.yml` contains a list of the docker images that are used to run the benchmark. The images are built from the `Dockerfile` files in the `sut` folder.
 - The two files `pollute_main.py` and `evaluate.py` are used to run the pollution of a source file and to evaluate all systems under test that have a folder in `results/loading`
-
+#TODO: update repository structure here (webscarping?)
 
 ## Running the benchmark
 
@@ -117,6 +120,8 @@ The script also outputs the results of the benchmark with the simple and weighte
 
 ## Pollution list
 For the complete list of benchmark files, expand the following table.
+
+#TODO: add new pollutions to table
 <details>
 <summary>Pollock files</summary>
 
