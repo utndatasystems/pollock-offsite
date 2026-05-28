@@ -8,6 +8,7 @@ from . import polluters_base as pb
 from .CSVFile import CSVFile
 from lxml.builder import E
 from .randdata import randomString, randomDateStr, randomType
+from dateutil.parser import parse
 
 
 def dummyPolluter(file: CSVFile):
@@ -935,20 +936,27 @@ def mixedTypes(file: CSVFile, row: int | None = None):
     _set_polluted_filename(file, f"file_mixed_types_row_{row}.csv")
 
 
-def mixedTimeformats(file: CSVFile, row: int | None = None):
-    """Adds multiple date/time formats, with and without time zones."""
-    if row is None:
-        row = random.randint(1, _safe_row_count(file))
-    randomRow = [randomDateStr() for _ in range(file.col_count)]
-    pb.addRows(
-        file,
-        cell_content=randomRow,
-        n_rows=1,
-        position=row,
-        col_count=file.col_count,
-        role="data",
-    )
-    _set_polluted_filename(file, f"file_mixed_time_formats_row_{row}.csv")
+def mixedTimeformats(file: CSVFile, max_num_to_change=100):
+    """Replaces some random date time cells from the CSV with random values in random formats"""
+
+    def is_datetime(value, row_idx, col_idx):
+        if value is None or row_idx == 0 or str.isdigit(value):
+            return False
+
+        try:
+            parse(value, fuzzy=False)
+            return True
+        except Exception:
+            return False
+
+    matching_cells = list(pb.findMatchingCells(file, matching=is_datetime))
+    random.shuffle(matching_cells)
+
+    for entry in matching_cells[:max_num_to_change]:
+        row_idx, col_idx, _ = entry
+        pb.changeCell(file, row=row_idx, col=col_idx, new_content=randomDateStr())
+
+    _set_polluted_filename(file, f"file_mixed_time_formats.csv")
 
 
 def unquotedLists(

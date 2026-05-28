@@ -216,3 +216,38 @@ def changeColumnDelimiters(file: CSVFile, col=1, new_delimiter=";", table=0):
     query = root.xpath(f"//table[{table + 1}]/row/field_delimiter[{col}]") if col != "*" else root.xpath(f"table[{table + 1}]/row/field_delimiter")
     for r in query:
         r.text = new_delimiter
+
+
+def get_cell_value(cell) -> str:
+    """
+    Extracts the textual payload from a CSV XML cell.
+    Expected structure:
+
+    <cell>
+        <value>...</value>
+    </cell>
+    """
+    value_el = cell.find("value")
+    return value_el.text if value_el is not None else None
+
+
+def findMatchingCells(
+    file: CSVFile, matching=lambda value: True, table=0
+) -> set[tuple[int, int, str]]:
+    """
+    Finds all cells matching a predicate. Returns set of tuples of
+    (row_idx, col_idx, value) for all matching cells.
+    """
+
+    root = file.xml.getroot()
+    rows = root.xpath(f"//table[{table + 1}]/row")
+
+    matches = set()
+    for row_idx, row in enumerate(rows):
+        cells = [x for x in row if x.tag == "cell"]
+        for col_idx, cell in enumerate(cells):
+            value = get_cell_value(cell)
+            if matching(value, row_idx, col_idx):
+                matches.add((row_idx, col_idx, value))
+
+    return matches
