@@ -97,7 +97,7 @@ def randomBoolStr() -> str:
 
 
 def randomNull() -> str:
-    return random.choice(["N/A", "unknown", "0", "NULL", "None", "NaN"])
+    return random.choice(["N/A", "unknown", "0", "NULL", "None", "NaN", "", "NUL"])
 
 
 def randomType() -> str:
