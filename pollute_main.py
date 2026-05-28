@@ -1,9 +1,11 @@
-from copy import deepcopy
 import argparse
 import os
 import pollock
-from pollock.CSVFile import CSVFile
 import pollock.polluters_stdlib as pl
+import random
+
+from copy import deepcopy
+from pollock.CSVFile import CSVFile
 from sut.utils import print
 from tqdm import tqdm
 
@@ -37,7 +39,16 @@ parser.add_argument(
         "pollock2.0"
     ],
     default="pollock1.0",
-    help="Which polluters to use for pollution process. Use pollock1.0 for original pollock pollutions only.",)
+    help="Which polluters to use for pollution process. Use pollock1.0 for original pollock pollutions only.",
+)
+
+parser.add_argument(
+    "--rng-seed",
+    required=False,
+    default=1337,
+    help="RNG seed",
+)
+
 
 args = parser.parse_args()
 
@@ -48,7 +59,10 @@ OUT_PARAMETERS_PATH = os.path.join(args.output, "parameters/")
 os.makedirs(OUT_CSV_PATH, exist_ok=True)
 os.makedirs(OUT_CLEAN_PATH, exist_ok=True)
 os.makedirs(OUT_PARAMETERS_PATH, exist_ok=True)
-os.system('cd ' + OUT_CSV_PATH + ' && rm -f *.csv')
+
+print(f"Seeding RNG: {args.rng_seed}")
+random.seed(args.rng_seed)
+
 
 def execute_polluter(file: CSVFile, polluter, new_filename=None, *args, **kwargs):
     t = deepcopy(file)
