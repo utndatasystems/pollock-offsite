@@ -7,6 +7,8 @@ from . import constants
 from . import polluters_base as pb
 from .CSVFile import CSVFile
 from lxml.builder import E
+from .randdata import randomString
+
 
 def dummyPolluter(file: CSVFile):
     pass
@@ -770,6 +772,18 @@ def mixedTimeformats(file: CSVFile):
                col_count=file.col_count, role="data")
     _set_polluted_filename(file, "file_mixed_time_formats.csv")
 
-def unquotedLists(file: CSVFile):
-    #TODO: semantic understanding for unquotedlists
-    pass
+
+def unquotedLists(
+    file: CSVFile,
+    row: int,
+    col: int,
+    delimiter: str = ",",
+    min_list_len=2,
+    max_list_len=10,
+):
+    payload = delimiter.join(
+        randomString(min_length=1, max_length=10)
+        for _ in range(random.randint(min_list_len, max_list_len))
+    )
+    pb.changeCell(file, row=row, col=col, new_content=payload)
+    _set_polluted_filename(file, f"file_unquoted_lists_row_{row}_col_{col}.csv")

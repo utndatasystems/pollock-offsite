@@ -139,6 +139,7 @@ if args.polluters == "pollock2.0":
     execute_polluter(f, pl.mixedDelimiters, row=2 if f.row_count >= 2 else 1, delimiters=[",", ";", "|"], mode = "whole_row")
     execute_polluter(f, pl.unescaped, row=2 if f.row_count >= 2 else 1, col=1)
     execute_polluter(f, pl.doubleEscaping, row1=2, row2=3, col=1)
+    execute_polluter(f, pl.unquotedLists, row=3 if f.row_count >= 3 else 1, col=2)
 
     # Spreadsheet / Excel-style edge cases
     execute_polluter(f, pl.excelExportAutoformat)
