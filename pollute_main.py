@@ -208,6 +208,7 @@ if args.polluters == "pollock2.0":
     execute_polluter(f, pl.superheader)
 
     # Row / column irregularities
+    execute_polluter(f, pl.moveHeaderRow)
     execute_polluter(
         f, pl.extremelyLongFields, row=2 if f.row_count >= 2 else 1, col=1, length=10000
     )  # For the final evaluation, we have to make sure th insert something extremely long of the same data type as the original cell

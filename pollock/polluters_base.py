@@ -175,6 +175,46 @@ def deleteRows(file: CSVFile, rows_to_delete: list, table=0):
         row.getparent().remove(row)
 
 
+def getRow(file: CSVFile, row: int, table: int = 0, detach=False):
+    """
+    Returns a copy of a row element.
+
+    row is 0-indexed.
+    If detach=True, removes the row from the table.
+    """
+
+    root = file.xml.getroot()
+    query = root.xpath(f"//table[{table + 1}]/row[{row + 1}]")
+
+    if not query:
+        raise IndexError(f"Row {row} not found")
+
+    row_node = query[0]
+    row_copy = deepcopy(row_node)
+    if detach:
+        row_node.getparent().remove(row_node)
+
+    return row_copy
+
+
+def insertRow(file: CSVFile, row_node, position: int, table: int = 0):
+    """
+    Inserts an existing row node at a position.
+    Position is 0-indexed.
+    """
+
+    root = file.xml.getroot().xpath("//table")[table]
+
+    if position >= len(root):
+        position = len(root)
+
+    root.insert(position, row_node)
+
+
+def moveRow(file: CSVFile, src: int, dst: int, table: int = 0):
+    insertRow(file, getRow(file, src, table, detach=True), dst, table)
+
+
 def deleteColumns(file, col: list, table=0):
     root = file.xml.getroot()
 
