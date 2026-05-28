@@ -782,12 +782,17 @@ def mixedTimeformats(file: CSVFile, row: int | None = None):
 
 def unquotedLists(
     file: CSVFile,
-    row: int,
-    col: int,
+    row: int | None = None,
+    col: int | None = None,
     delimiter: str = ",",
     min_list_len=2,
     max_list_len=10,
 ):
+    if row is None:
+        row = random.randint(1, _safe_row_count(file))
+    if col is None:
+        col = random.randint(0, _safe_col_count(file))
+
     payload = delimiter.join(
         randomString(min_length=1, max_length=10)
         for _ in range(random.randint(min_list_len, max_list_len))
