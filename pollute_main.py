@@ -17,7 +17,8 @@ parser.add_argument(
     choices=[
         "./results/source.csv",
     ],
-    help="Path to the source CSV file to pollute",)
+    help="Path to the source CSV file to pollute",
+)
 
 parser.add_argument(
     "--output",
@@ -27,17 +28,15 @@ parser.add_argument(
         "./data/data_gov",
         "./data/csv_storm",
         "./data/eurostat",
-        "./data/survey_sample"
+        "./data/survey_sample",
     ],
-    help="Root output directory for polluted files",)
+    help="Root output directory for polluted files",
+)
 
 parser.add_argument(
     "--polluters",
     required=False,
-    choices=[
-        "pollock1.0",
-        "pollock2.0"
-    ],
+    choices=["pollock1.0", "pollock2.0"],
     default="pollock1.0",
     help="Which polluters to use for pollution process. Use pollock1.0 for original pollock pollutions only.",
 )
@@ -66,7 +65,12 @@ random.seed(args.rng_seed)
 
 def execute_polluter(file: CSVFile, polluter, new_filename=None, *args, **kwargs):
     t = deepcopy(file)
-    print("Executing", polluter.__name__, "with arguments", tuple(map(lambda x: str(x)[:300], [f"{k}:{v}" for k, v in kwargs.items()])))
+    print(
+        "Executing",
+        polluter.__name__,
+        "with arguments",
+        tuple(map(lambda x: str(x)[:300], [f"{k}:{v}" for k, v in kwargs.items()])),
+    )
     polluter(t, *args, **kwargs)
     if new_filename is not None:
         t.filename = new_filename
@@ -82,22 +86,78 @@ f = CSVFile(args.source, quote_all=True)
 execute_polluter(f, pl.dummyPolluter, "source.csv")
 
 # File payload polluters : 3 files
-execute_polluter(f, pl.changeDimension, target_dimension=0, new_filename="file_no_payload.csv")
-execute_polluter(f, pl.changeRowRecordDelimiter, row=-1, target_delimiter="", new_filename="file_no_trailing_newline.csv")
-execute_polluter(f, pl.changeRowRecordDelimiter, row=-1, target_delimiter="\r\n\r\n", new_filename="file_double_trailing_newline.csv")
+execute_polluter(
+    f, pl.changeDimension, target_dimension=0, new_filename="file_no_payload.csv"
+)
+execute_polluter(
+    f,
+    pl.changeRowRecordDelimiter,
+    row=-1,
+    target_delimiter="",
+    new_filename="file_no_trailing_newline.csv",
+)
+execute_polluter(
+    f,
+    pl.changeRowRecordDelimiter,
+    row=-1,
+    target_delimiter="\r\n\r\n",
+    new_filename="file_double_trailing_newline.csv",
+)
 
 # Header and preamble polluters : 7 files
-execute_polluter(f, pl.changeNumberRows, target_number_rows=f.row_count, remove_header=True, new_filename="file_no_header.csv")
-execute_polluter(f, pl.expandColumnHeader, extra_rows=1, new_filename="file_header_multirow_2.csv")  # 1 regular, on multiple rows
-execute_polluter(f, pl.expandColumnHeader, extra_rows=2, new_filename="file_header_multirow_3.csv")  # 1 regular, on multiple rows
-execute_polluter(f, pl.addPreamble, n_rows=1, delimiters=True, emptyrow=True, new_filename="file_preamble.csv")  # delimited, with empty
-execute_polluter(f, pl.addTable, new_filename="file_multitable_less.csv", n_rows=f.row_count-1, n_cols=f.col_count-1, empty_boundary=False)
-execute_polluter(f, pl.addTable, new_filename="file_multitable_same.csv", n_rows=f.row_count-1, n_cols=f.col_count, empty_boundary=False)
-execute_polluter(f, pl.addTable, new_filename="file_multitable_more.csv", n_rows=f.row_count-1, n_cols=f.col_count+1, empty_boundary=False)
+execute_polluter(
+    f,
+    pl.changeNumberRows,
+    target_number_rows=f.row_count,
+    remove_header=True,
+    new_filename="file_no_header.csv",
+)
+execute_polluter(
+    f, pl.expandColumnHeader, extra_rows=1, new_filename="file_header_multirow_2.csv"
+)  # 1 regular, on multiple rows
+execute_polluter(
+    f, pl.expandColumnHeader, extra_rows=2, new_filename="file_header_multirow_3.csv"
+)  # 1 regular, on multiple rows
+execute_polluter(
+    f,
+    pl.addPreamble,
+    n_rows=1,
+    delimiters=True,
+    emptyrow=True,
+    new_filename="file_preamble.csv",
+)  # delimited, with empty
+execute_polluter(
+    f,
+    pl.addTable,
+    new_filename="file_multitable_less.csv",
+    n_rows=f.row_count - 1,
+    n_cols=f.col_count - 1,
+    empty_boundary=False,
+)
+execute_polluter(
+    f,
+    pl.addTable,
+    new_filename="file_multitable_same.csv",
+    n_rows=f.row_count - 1,
+    n_cols=f.col_count,
+    empty_boundary=False,
+)
+execute_polluter(
+    f,
+    pl.addTable,
+    new_filename="file_multitable_more.csv",
+    n_rows=f.row_count - 1,
+    n_cols=f.col_count + 1,
+    empty_boundary=False,
+)
 
 # Data rows: 2 files
-execute_polluter(f, pl.changeNumberRows, new_filename="file_header_only.csv", target_number_rows=1)
-execute_polluter(f, pl.changeNumberRows, new_filename="file_one_data_row.csv", target_number_rows=2)
+execute_polluter(
+    f, pl.changeNumberRows, new_filename="file_header_only.csv", target_number_rows=1
+)
+execute_polluter(
+    f, pl.changeNumberRows, new_filename="file_one_data_row.csv", target_number_rows=2
+)
 
 # Add or remove one separator for each row/column : 1428 files
 # Add extra quote mark for each row/column : 756 files
@@ -130,29 +190,54 @@ execute_polluter(f, pl.changeFieldDelimiter, target_delimiter=" ")
 execute_polluter(f, pl.changeQuotationChar, target_char="\u0027")
 
 # Change escape character : 2 files
-execute_polluter(f, pl.changeEscapeCharacter, target_escape="\u005C")  # backslash
+execute_polluter(f, pl.changeEscapeCharacter, target_escape="\u005c")  # backslash
 execute_polluter(f, pl.changeEscapeCharacter, target_escape="")
 
 # --- NEW POLLUTIONS FOR POLLOCK 2.0 ---
 
 if args.polluters == "pollock2.0":
     # Multi-table / layout structure
-    execute_polluter(f, pl.addTableSideways, n_rows=min(f.row_count, 5), n_cols=min(f.col_count, 5))
-    execute_polluter(f, pl.multilineHeader, header_col=4, header_rows=3, content="ExampleLineHeader")
+    execute_polluter(
+        f, pl.addTableSideways, n_rows=min(f.row_count, 5), n_cols=min(f.col_count, 5)
+    )
+    execute_polluter(
+        f, pl.multilineHeader, header_col=4, header_rows=3, content="ExampleLineHeader"
+    )
     execute_polluter(f, pl.duplicateHeaderAsDataRow)
     execute_polluter(f, pl.metadataAsHeader)
     execute_polluter(f, pl.superheader)
 
     # Row / column irregularities
-    execute_polluter(f, pl.extremelyLongFields, row=2 if f.row_count >= 2 else 1, col=1, length=10000) # For the final evaluation, we have to make sure th insert something extremely long of the same data type as the original cell 
+    execute_polluter(
+        f, pl.extremelyLongFields, row=2 if f.row_count >= 2 else 1, col=1, length=10000
+    )  # For the final evaluation, we have to make sure th insert something extremely long of the same data type as the original cell
     execute_polluter(f, pl.addGroupSectionHeader, group_name="Region: North")
     execute_polluter(f, pl.addCommentToFile, comment="This is a comment.")
     execute_polluter(f, pl.variableColumnCount)
 
     # Delimiter / quoting / escaping edge cases
-    execute_polluter(f, pl.mixedDelimiters, row=2 if f.row_count >= 2 else 1, delimiters=[";"], mode = "within_row")
-    execute_polluter(f, pl.mixedDelimiters, row=2 if f.row_count >= 2 else 1, delimiters=[";"], mode = "within_row", range_within_row=3)
-    execute_polluter(f, pl.mixedDelimiters, row=2 if f.row_count >= 2 else 1, delimiters=[";"], mode = "whole_row")
+    execute_polluter(
+        f,
+        pl.mixedDelimiters,
+        row=2 if f.row_count >= 2 else 1,
+        delimiters=[";"],
+        mode="within_row",
+    )
+    execute_polluter(
+        f,
+        pl.mixedDelimiters,
+        row=2 if f.row_count >= 2 else 1,
+        delimiters=[";"],
+        mode="within_row",
+        range_within_row=3,
+    )
+    execute_polluter(
+        f,
+        pl.mixedDelimiters,
+        row=2 if f.row_count >= 2 else 1,
+        delimiters=[";"],
+        mode="whole_row",
+    )
     execute_polluter(f, pl.unescaped, row=2 if f.row_count >= 2 else 1, col=1)
     execute_polluter(f, pl.doubleEscaping, row1=2, row2=3, col=1)
     execute_polluter(f, pl.unquotedLists)
