@@ -34,6 +34,8 @@ def successful_csv(filepath):
 
 
 def header_record_cell_measures_csv(source_csv, loaded_csv, n_jobs=1):
+    # Both files are parsed as normal comma-delimited CSV after conversion:
+    # source_csv is the expected clean file, loaded_csv is the SUT output.
     with open(source_csv, "r", encoding="utf-8-sig") as f:
         reader = csv.reader(f, delimiter=",", quotechar='"', doublequote=True)
         source_rows = [row for row in reader]
@@ -61,6 +63,8 @@ def header_record_cell_measures_csv(source_csv, loaded_csv, n_jobs=1):
             header_p = header_r = header_f1 = 0.0
         else:
             loaded_header = list(map(normalize_cell, loaded_rows[0]))
+            # Header comparison ignores column order but preserves duplicates by
+            # using multisets, so repeated names must appear the right number of times.
             s = Multiset(source_header)
             l = Multiset(loaded_header)
             i = s.intersection(l)
@@ -82,6 +86,8 @@ def header_record_cell_measures_csv(source_csv, loaded_csv, n_jobs=1):
     source_records = list(map(lambda x: "".join(x), normalized_source_cells[1:]))
     loaded_records = list(map(lambda x: "".join(x), normalized_loaded_cells[1:]))
 
+    # Record comparison also ignores row order. Each data row is normalized and
+    # collapsed to one string, then compared as a multiset entry.
     rec_s = Multiset(source_records)
     rec_l = Multiset(loaded_records)
     rec_i = rec_s.intersection(rec_l)
@@ -98,6 +104,8 @@ def header_record_cell_measures_csv(source_csv, loaded_csv, n_jobs=1):
     source_cells = [c for r in source_rows for c in r]
     loaded_cells = [c for r in loaded_rows for c in r]
 
+    # Cell comparison ignores both row and column position. It only checks that
+    # the same raw cell values appear the same number of times.
     cell_s = Multiset(source_cells)
     cell_l = Multiset(loaded_cells)
     cell_i = cell_s.intersection(cell_l)
@@ -112,3 +120,30 @@ def header_record_cell_measures_csv(source_csv, loaded_csv, n_jobs=1):
         cell_f1 = (cell_p * cell_r) / (cell_p + cell_r) * 2
 
     return header_p, header_r, header_f1, rec_p, rec_r, rec_f1, cell_p, cell_r, cell_f1
+
+
+def alex_compare(source_csv, loaded_csv, n_jobs=1):
+    # Both files are parsed as normal comma-delimited CSV after conversion:
+    # source_csv is the expected clean file, loaded_csv is the SUT output.
+    with open(source_csv, "r", encoding="utf-8-sig") as f:
+        reader = csv.reader(f, delimiter=",", quotechar='"', doublequote=True)
+        source_rows = [row for row in reader]
+
+    try:
+        with open(loaded_csv, "r", encoding="utf-8-sig") as f:
+            reader = csv.reader(f, delimiter=",", quotechar='"', doublequote=True)
+            loaded_rows = [row for row in reader]
+    except Exception as e:
+        return False
+    
+    if len(source_rows) != len(loaded_rows):
+        return False
+    
+    for r1, r2 in zip(source_rows, loaded_rows):
+        if len(r1) != len(r2):
+            return False
+        for c1, c2 in zip(r1, r2):
+            if normalize_cell(c1) != normalize_cell(c2):
+                return False
+
+    return True

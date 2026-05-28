@@ -1,4 +1,5 @@
 from __future__ import print_function
+import builtins as __builtin__
 import os
 import argparse
 import traceback
@@ -21,6 +22,8 @@ SUT_ORDER = ["clevercs", "csvcommons", "rhypoparsr",
 
 def evaluate_single_file(filename:str, dataset:str, sut:str, verbose=False, n_jobs=1):
     sut_dir = f"results/{sut}/{dataset}/loading/"
+    # Each converted result is compared against the canonical clean CSV with
+    # the same filename. The original polluted input lives in data/.../csv/.
     clean_path = f"data/{dataset}/clean/{filename}"
     loaded_path = f"{sut_dir}{filename}_converted.csv"
 
@@ -28,24 +31,21 @@ def evaluate_single_file(filename:str, dataset:str, sut:str, verbose=False, n_jo
     if verbose:
         print(f"'{filename}'")
     if not os.path.exists(loaded_path):
+        __builtin__.print(f"[{filename}] wrong")
         dict_measures[sut + "_correct"] = 0
         dict_measures[sut + "_wrong"] = 1
         return dict_measures
     try:
-        succ = metrics.successful_csv(loaded_path)
-        correct = False
-        if succ:
-            measures = metrics.header_record_cell_measures_csv(clean_path, loaded_path, n_jobs)
-            correct = all(measure == 1 for measure in measures)
-        dict_measures[sut + "_correct"] = int(correct)
-        dict_measures[sut + "_wrong"] = int(not correct)
-
+        correct = metrics.alex_compare(clean_path, loaded_path, n_jobs)
+        dict_measures[sut + "_correct"] = correct
+        dict_measures[sut + "_wrong"] = not correct
     except Exception as e:
         print("Exception:", traceback.format_exc())
         if not verbose:
             print("On file:", filename)
-        dict_measures[sut + "_correct"] = 0
-        dict_measures[sut + "_wrong"] = 1
+        __builtin__.print(f"[{filename}] wrong")
+        dict_measures[sut + "_correct"] = False
+        dict_measures[sut + "_wrong"] = True
 
     return dict_measures
 
