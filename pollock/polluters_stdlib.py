@@ -742,16 +742,19 @@ def duplicateHeaderAsDataRow(file: CSVFile, n_duplicates: int = 1):  # checked m
     _set_polluted_filename(file, f"file_duplicate_header_as_data{suffix}.csv")
 
 
-def extremelyLongFields(file: CSVFile, row=1, col=1, length=100):  # checked manually
+def extremelyLongFields(
+    file: CSVFile, row=1, col=1, length=50 * 1024 * 1024
+):  # checked manually
     """Replaces a cell with an extremely long random alphanumeric field."""
     if type(row) == int and row < 0:
         row = "last()-" + str(row + 1)
 
-    random.seed(constants.RAND_SEED)
-    long_string = "".join(
-        random.choices(string.ascii_letters + string.digits, k=length)
+    pb.changeCell(
+        file,
+        row=row,
+        col=col,
+        new_content=randomString(min_length=length, max_length=length),
     )
-    pb.changeCell(file, row=row, col=col, new_content=long_string)
     _set_polluted_filename(
         file, f"file_extremely_long_field_row_{row}_col_{col}_len_{length}.csv"
     )
