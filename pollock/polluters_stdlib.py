@@ -1234,7 +1234,7 @@ def moveHeaderRow(file: CSVFile, row: int | None = None):
     This polluter will move the header row down to 'row' index (0 based).
     """
     if row is None:
-        row = random.randint(1, _safe_row_count(file))
+        row = random.randint(1, min(10, _safe_row_count(file)))
 
     pb.moveRow(file, 0, row)
     _set_polluted_filename(file, f"file_move_header_row{row}.csv")
