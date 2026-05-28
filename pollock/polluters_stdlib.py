@@ -1213,6 +1213,9 @@ def unquotedLists(
     min_list_len=2,
     max_list_len=10,
 ):
+    """
+    This polluter will replace a cell content with an unqoted list.
+    """
     if row is None:
         row = random.randint(1, _safe_row_count(file))
     if col is None:
