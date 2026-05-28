@@ -7,7 +7,7 @@ from . import constants
 from . import polluters_base as pb
 from .CSVFile import CSVFile
 from lxml.builder import E
-from .randdata import randomString
+from .randdata import randomString, randomDateStr
 
 
 def dummyPolluter(file: CSVFile):
@@ -763,14 +763,21 @@ def mixedTypes(file: CSVFile):
                    col_count=file.col_count, role="data")
     _set_polluted_filename(file, "file_mixed_types.csv")
 
-def mixedTimeformats(file: CSVFile):
+
+def mixedTimeformats(file: CSVFile, row: int | None = None):
     """Adds multiple date/time formats, with and without time zones."""
-    # TODO: insert in middle of file, not end of file
-    values = ["05/27", "27th of May", "2026-05-27", "2026-05-27T10:30:00+02:00"]
-    row = values[:file.col_count] + [""] * max(file.col_count - len(values), 0)
-    pb.addRows(file, cell_content=row, n_rows=1, position=_safe_row_count(file),
-               col_count=file.col_count, role="data")
-    _set_polluted_filename(file, "file_mixed_time_formats.csv")
+    if row is None:
+        row = random.randint(1, _safe_row_count(file))
+    randomRow = [randomDateStr() for _ in range(file.col_count)]
+    pb.addRows(
+        file,
+        cell_content=randomRow,
+        n_rows=1,
+        position=row,
+        col_count=file.col_count,
+        role="data",
+    )
+    _set_polluted_filename(file, f"file_mixed_time_formats_row_{row}.csv")
 
 
 def unquotedLists(
