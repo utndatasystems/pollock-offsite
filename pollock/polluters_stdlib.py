@@ -649,7 +649,7 @@ def addCommentToFile(file: CSVFile, comment="This is a comment.", row=3): # chec
 
     _set_polluted_filename(file, "file_trailing_comment.csv")
 
-def superheaderAsMetainfo( # checked manually
+def metadataAsHeader( # checked manually
     file: CSVFile,
     content="This is a superheader with metadata info.\nInstrument 3AdF\nExperiment Number 3"
 ):
@@ -671,7 +671,7 @@ def superheaderAsMetainfo( # checked manually
             role="superheader",
         )
 
-    _set_polluted_filename(file, "file_superheader_metainfo.csv")
+    _set_polluted_filename(file, "file_metadata_as_header.csv")
 
 
 def mixedDelimiters( # checked manually 
@@ -750,14 +750,16 @@ def mixedDelimiters( # checked manually
             f"file_mixed_delimiters_{mode}_row_{row_label}_{encoded}.csv",
         )
         
-def unescaped(file: CSVFile, row=1, col=1, content="This is a \"quote\" and a comma, and a newline\nin the same cell."):
+def unescaped(file: CSVFile, row=1, col=1, content="This is a \"quote\" and a comma, and a newline\nin the same cell."): # checked manually
     """Places quote, delimiter, and newline characters in a cell without adding escaping metadata."""
+    print('USE WITH CAUTION: only insert in field with same data type for fair pollution')
     pb.changeCell(file, row=row, col=col, new_content=content)
     _set_polluted_filename(file, f"file_unescaped_row_{row}_col_{col}.csv")
 
 
-def doubleEscaping(file: CSVFile, row1=2, row2=3, col=1):
-    """Mixes doubled-quote escaping and backslash escaping in the same column."""
+def doubleEscaping(file: CSVFile, row1=2, row2=3, col=1): # checked manually
+    """Mixes doubled-quote escaping and backslash escaping in the same column. Example content: ""hi"" and \"hi\"."""
+    print('USE WITH CAUTION: only insert in field with same data type for fair pollution')
     row_count = _safe_row_count(file)
     if row_count < row2:
         last = _row_values(file, row=row_count) or [""] * file.col_count
@@ -769,6 +771,7 @@ def doubleEscaping(file: CSVFile, row1=2, row2=3, col=1):
 
 
 def variableColumnCount(file: CSVFile):
+    #TODO: this is wrong. We should do this pollution differently
     """Creates rows with fewer and more fields than the header."""
     row_count = _safe_row_count(file)
     if row_count < 3:
@@ -782,12 +785,14 @@ def variableColumnCount(file: CSVFile):
     _set_polluted_filename(file, "file_variable_column_count.csv")
 
 
-def excelExportAutoformat(file: CSVFile):
-    """Adds values commonly autoformatted by Excel: leading-zero IDs and date-like strings."""
-    rows = [
-        ["00123", "03/04/05", "1-2", "1E10"],
-        ["00001", "2026-05-27", "12-13", "3.14E2"],
-    ]
+def excelExportAutoformat(file: CSVFile, rows = None): # checked manually
+    """Adds values commonly autoformatted by Excel to end of CSV: leading-zero IDs and date-like strings."""
+    if rows is None:
+        print('USE WITH CAUTION: only insert fields with same data type for fair pollution')
+        rows = [
+            ["00123", "03/04/05", "1-2", "1E10"],
+            ["00001", "2026-05-27", "12-13", "3.14E2"],]
+        
     for values in rows:
         padded = values[:file.col_count] + [""] * max(file.col_count - len(values), 0)
         pb.addRows(file, cell_content=padded, n_rows=1, position=_safe_row_count(file),
@@ -795,8 +800,10 @@ def excelExportAutoformat(file: CSVFile):
     _set_polluted_filename(file, "file_excel_autoformat.csv")
 
 
-def exelExportFormulas(file: CSVFile):
-    """Adds spreadsheet formulas as literal CSV cell contents."""
+def exelExportFormulas(file: CSVFile): # checked manually
+    """Adds spreadsheet formulas as literal CSV cell contents to end of CSV."""
+    print('USE WITH CAUTION: only insert fields with same data type for fair pollution')
+
     formulas = ["=SUM(A1:A10)", "=A2+B2", "=HYPERLINK(\"https://example.com\",\"link\")"]
     row = formulas[:file.col_count] + [""] * max(file.col_count - len(formulas), 0)
     pb.addRows(file, cell_content=row, n_rows=1, position=_safe_row_count(file),
@@ -804,8 +811,9 @@ def exelExportFormulas(file: CSVFile):
     _set_polluted_filename(file, "file_excel_formulas.csv")
 
 
-def typeAmbiguity(file: CSVFile):
+def typeAmbiguity(file: CSVFile): # checked manually 
     """Adds rows containing ambiguous nulls, booleans, decimals, dates, and currencies."""
+    print('USE WITH CAUTION: this may break csv. Maybe create new csv altogether to test this?')
     rows = [
         ["NULL", "N/A", "NaN", ""],
         ["true", "false", "1", "0"],
@@ -819,8 +827,9 @@ def typeAmbiguity(file: CSVFile):
     _set_polluted_filename(file, "file_type_ambiguity.csv")
 
 
-def superheader(file: CSVFile):
+def superheader(file: CSVFile): 
     """Adds a grouping row above the normal header."""
+    print('USE WITH CAUTION: only add this to files where such grouping structure would make sense, e.g. a sales file with regional groups.')
     groups = []
     for i in range(file.col_count):
         groups.append("Region" if i < max(1, file.col_count // 2) else "Metrics")

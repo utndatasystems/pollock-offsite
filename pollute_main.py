@@ -140,7 +140,7 @@ if args.polluters == "pollock2.0":
     execute_polluter(f, pl.addTableSideways, n_rows=min(f.row_count, 5), n_cols=min(f.col_count, 5))
     execute_polluter(f, pl.multilineHeader, header_col=4, header_rows=3, content="ExampleLineHeader")
     execute_polluter(f, pl.duplicateHeaderAsDataRow)
-    execute_polluter(f, pl.superheaderAsMetainfo)
+    execute_polluter(f, pl.metadataAsHeader)
     execute_polluter(f, pl.superheader)
 
     # Row / column irregularities
