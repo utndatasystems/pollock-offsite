@@ -784,13 +784,14 @@ def addGroupSectionHeader(file: CSVFile, group_name="Region: North", position=1)
 def addCommentToFile(
     file: CSVFile, comment="This is a comment.", row=3
 ):  # checked manually
+    # TODO: commented row, row comment, ... (not just trailing)
     """Adds a comment-like trailing field to a row without a delimiter before it."""
     pb.addCells(
         file,
         row=row,
         position=file.col_count,
         n_cells=1,
-        content=" # " + comment,
+        content=" # " + comment,  # TODO: other comment marker
         role="comment",
     )
 
