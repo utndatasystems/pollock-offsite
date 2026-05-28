@@ -7,7 +7,7 @@ from . import constants
 from . import polluters_base as pb
 from .CSVFile import CSVFile
 from lxml.builder import E
-from .randdata import randomString, randomDateStr
+from .randdata import randomString, randomDateStr, randomType
 
 
 def dummyPolluter(file: CSVFile):
@@ -917,14 +917,22 @@ def collations(file: CSVFile):
     _set_polluted_filename(file, "file_collation_edge_cases.csv")
 
 
-def mixedTypes(file: CSVFile):
+def mixedTypes(file: CSVFile, row: int | None = None):
     """Adds values with incompatible types in the same logical column."""
-    #TODO: insert in middle of file, not end of file
-    for value in ["3.1415", "N/A", "unknown", "0", "zero", "$20"]:
-        row = [value] + [""] * max(file.col_count - 1, 0)
-        pb.addRows(file, cell_content=row, n_rows=1, position=_safe_row_count(file),
-                   col_count=file.col_count, role="data")
-    _set_polluted_filename(file, "file_mixed_types.csv")
+    if row is None:
+        row = random.randint(1, _safe_row_count(file))
+
+    for row in range(5):
+        randomRow = [randomType() for _ in range(file.col_count)]
+        pb.addRows(
+            file,
+            cell_content=randomRow,
+            n_rows=1,
+            position=row,
+            col_count=file.col_count,
+            role="data",
+        )
+    _set_polluted_filename(file, f"file_mixed_types_row_{row}.csv")
 
 
 def mixedTimeformats(file: CSVFile, row: int | None = None):
