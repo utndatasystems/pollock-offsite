@@ -133,24 +133,26 @@ execute_polluter(f, pl.changeQuotationChar, target_char="\u0027")
 execute_polluter(f, pl.changeEscapeCharacter, target_escape="\u005C")  # backslash
 execute_polluter(f, pl.changeEscapeCharacter, target_escape="")
 
-# NEW POLLUTIONS FOR POLLOCK 2.0
+# --- NEW POLLUTIONS FOR POLLOCK 2.0 ---
 
 if args.polluters == "pollock2.0":
     # Multi-table / layout structure
     execute_polluter(f, pl.addTableSideways, n_rows=min(f.row_count, 5), n_cols=min(f.col_count, 5))
-    execute_polluter(f, pl.multilineHeader, header_col=4, header_rows=3, content="Line1")
+    execute_polluter(f, pl.multilineHeader, header_col=4, header_rows=3, content="ExampleLineHeader")
     execute_polluter(f, pl.duplicateHeaderAsDataRow)
+    execute_polluter(f, pl.superheaderAsMetainfo)
     execute_polluter(f, pl.superheader)
 
     # Row / column irregularities
-    execute_polluter(f, pl.extremelyLongFields, row=2 if f.row_count >= 2 else 1, col=1, length=10000)
+    execute_polluter(f, pl.extremelyLongFields, row=2 if f.row_count >= 2 else 1, col=1, length=10000) # For the final evaluation, we have to make sure th insert something extremely long of the same data type as the original cell 
     execute_polluter(f, pl.addGroupSectionHeader, group_name="Region: North")
     execute_polluter(f, pl.addCommentToFile, comment="This is a comment.")
     execute_polluter(f, pl.variableColumnCount)
 
     # Delimiter / quoting / escaping edge cases
-    execute_polluter(f, pl.mixedDelimiters, row=2 if f.row_count >= 2 else 1, delimiters=[",", ";", "|"], mode = "within_row")
-    execute_polluter(f, pl.mixedDelimiters, row=2 if f.row_count >= 2 else 1, delimiters=[",", ";", "|"], mode = "whole_row")
+    execute_polluter(f, pl.mixedDelimiters, row=2 if f.row_count >= 2 else 1, delimiters=[";"], mode = "within_row")
+    execute_polluter(f, pl.mixedDelimiters, row=2 if f.row_count >= 2 else 1, delimiters=[";"], mode = "within_row", range_within_row=3)
+    execute_polluter(f, pl.mixedDelimiters, row=2 if f.row_count >= 2 else 1, delimiters=[";"], mode = "whole_row")
     execute_polluter(f, pl.unescaped, row=2 if f.row_count >= 2 else 1, col=1)
     execute_polluter(f, pl.doubleEscaping, row1=2, row2=3, col=1)
     execute_polluter(f, pl.unquotedLists)
