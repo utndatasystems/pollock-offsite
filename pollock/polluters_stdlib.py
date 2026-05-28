@@ -7,7 +7,7 @@ from . import constants
 from . import polluters_base as pb
 from .CSVFile import CSVFile
 from lxml.builder import E
-from .randdata import randomString, randomDateStr, randomType
+from .randdata import randomString, randomDateStr, randomType, randomInt
 from dateutil.parser import parse
 
 
@@ -973,7 +973,7 @@ def unquotedLists(
         col = random.randint(0, _safe_col_count(file))
 
     payload = delimiter.join(
-        randomString(min_length=1, max_length=10)
+        str(randomInt(min=-100, max=1000))
         for _ in range(random.randint(min_list_len, max_list_len))
     )
     pb.changeCell(file, row=row, col=col, new_content=payload)

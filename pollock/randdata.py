@@ -33,6 +33,10 @@ def randomDateStr(
     )
 
 
+def randomInt(min=-sys.maxsize, max=sys.maxsize) -> int:
+    return random.randint(min, max)
+
+
 def randomFloat(min: float = -13374201337.123, max: float = 4201337420.321) -> float:
     return min + random.random() * (max - min)
 
@@ -56,15 +60,11 @@ def randomNumberLike() -> str:
 
     case = random.choice(list(NumberLike))
     if case == NumberLike.INT:
-        return str(random.randint(-sys.maxsize, sys.maxsize))
+        return str(randomInt())
     elif case == NumberLike.FLOAT:
         return str(randomFloat())
     elif case == NumberLike.CURRENCY:
-        num = (
-            str(random.randint(-sys.maxsize, sys.maxsize))
-            if random.randint(0, 1) == 1
-            else str(randomFloat())
-        )
+        num = str(randomInt()) if random.randint(0, 1) == 1 else str(randomFloat())
         curr = randomCurrency()
         space = random.choice(["", " "])
         return space.join([num, curr] if random.randint(0, 1) == 1 else [curr, num])
