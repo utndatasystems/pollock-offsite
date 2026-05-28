@@ -1,3 +1,4 @@
+from copy import deepcopy
 from .CSVFile import CSVFile, create_cell
 from lxml import etree
 from lxml.builder import E
