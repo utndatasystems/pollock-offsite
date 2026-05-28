@@ -1113,7 +1113,7 @@ def bomMarker(file: CSVFile):
 def weirdUnicode(file: CSVFile):
     # TODO: inject in middle of CSV not end of CSV
     """Adds mojibake and non-ASCII strings."""
-    row = ["FranÃ§ois", "MÃ¼nchen", "SÃ£o Paulo", "â‚¬"]
+    row = ["FranÃ§ois", "MÃ¼nchen", "SÃ£o Paulo", "â‚¬", "👍🏼"]
     row = row[: file.col_count] + [""] * max(file.col_count - len(row), 0)
     pb.addRows(
         file,
