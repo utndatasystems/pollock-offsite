@@ -63,6 +63,32 @@ def addCells(file: CSVFile, row, position, n_cells=1, content="", role="", table
             )
 
 
+def deleteCellAndDelimiter(file: CSVFile, row: int, col: int, table=0):
+    """
+    Deletes a single cell and its associated delimiter from a row.
+    """
+
+    root = file.xml.getroot()
+    query = root.xpath(f"//table[{table + 1}]/row[{row + 1}]/cell[{col + 1}]")
+
+    if not query:
+        raise IndexError(f"Cell ({row}, {col}) not found")
+
+    cell = query[0]
+    parent = cell.getparent()
+
+    # Remove preceding delimiter if possible,
+    # otherwise remove following delimiter
+    prev = cell.getprevious()
+    nxt = cell.getnext()
+    if prev is not None and prev.tag == "field_delimiter":
+        parent.remove(prev)
+    elif nxt is not None and nxt.tag == "field_delimiter":
+        parent.remove(nxt)
+
+    parent.remove(cell)
+
+
 def addRows(
     file: CSVFile,
     cell_content="",

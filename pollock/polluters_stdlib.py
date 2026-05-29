@@ -936,31 +936,20 @@ def doubleEscaping(file: CSVFile, row1=2, row2=3, col=1):  # checked manually
     _set_polluted_filename(file, f"file_double_escaping_col_{col}.csv")
 
 
-def variableColumnCount(file: CSVFile):
-    # TODO: this is wrong. We should do this pollution differently
+def variableColumnCount(file: CSVFile, row: int | None = None):
     """Creates rows with fewer and more fields than the header."""
-    row_count = _safe_row_count(file)
-    if row_count < 3:
-        last = _row_values(file, row=row_count) or [""] * file.col_count
-        pb.addRows(
-            file,
-            cell_content=last,
-            n_rows=3 - row_count,
-            position=row_count,
-            col_count=file.col_count,
-            role="data",
-        )
-    if file.col_count > 1:
-        pb.deleteCells(file, row=2, col=[file.col_count - 1])
-    pb.addCells(
-        file,
-        row=3,
-        position=file.col_count,
-        n_cells=1,
-        content="EXTRA_FIELD",
-        role="data",
-    )
-    _set_polluted_filename(file, "file_variable_column_count.csv")
+    if row is None:
+        row = random.randint(1, _safe_row_count(file))
+
+    rowCells = pb.getRowCells(file, row)
+    col = random.randint(0, len(rowCells))
+
+    if random.randint(0, 1) == 1:
+        pb.deleteCellAndDelimiter(file, row, col)
+    else:
+        pb.addCells(file, row + 1, col, n_cells=1, content=randomType(), role="data")
+
+    _set_polluted_filename(file, f"file_variable_column_count_row_{row}_col_{col}.csv")
 
 
 def excelExportAutoformat(file: CSVFile, rows=None):  # checked manually

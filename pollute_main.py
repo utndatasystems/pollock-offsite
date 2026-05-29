@@ -223,7 +223,8 @@ if args.polluters == "pollock2.0":
     execute_polluter(f, pl.commentRow, row=0)
     execute_polluter(f, pl.commentRow, comment_marker="//")
     execute_polluter(f, pl.commentRow, comment_marker="<!--")
-    execute_polluter(f, pl.variableColumnCount)
+    for i in range(10):
+        execute_polluter(f, pl.variableColumnCount)
 
     # Delimiter / quoting / escaping edge cases
     execute_polluter(
