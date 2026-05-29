@@ -1063,7 +1063,6 @@ def embeddedCSV(file: CSVFile):
         file, row=2 if _safe_row_count(file) >= 2 else 1, col=1, new_content=payload
     )
     _set_polluted_filename(file, "file_embedded_csv_cell.csv")
-    pass
 
 
 def encoding(file: CSVFile, target_encoding: constants.Encoding):
