@@ -2,6 +2,8 @@ chardet==7.4.3
 clevercsv==0.8.5
 duckdb==1.5.2
 joblib==1.5.3
+langchain-core
+langchain-openai
 lxml==6.1.0
 multiset==3.2.0
 numpy==2.4.4
