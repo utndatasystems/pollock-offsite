@@ -15,7 +15,7 @@ from lxml.builder import E
 
 from .data_types import parse_cell, normalize_cell
 
-CSV_XSL = '''<xsl:stylesheet version="3.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"> <xsl:output method="text" /> 
+CSV_XSL = """<xsl:stylesheet version="3.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"> <xsl:output method="text" /> 
 <xsl:template match="/">
     <xsl:for-each select="//row">
         <xsl:for-each select="child::*">
@@ -23,13 +23,21 @@ CSV_XSL = '''<xsl:stylesheet version="3.0" xmlns:xsl="http://www.w3.org/1999/XSL
         </xsl:for-each>
     </xsl:for-each>
 </xsl:template>
-</xsl:stylesheet>'''
+</xsl:stylesheet>"""
 
 csv.field_size_limit(min(sys.maxsize, 2147483646))
 
-def create_row(row: list, role: str, field_delimiter: str, quotation_char: str, escape_char: str, record_delimiter: str, normalize=False):
-    """This function is used to create a row element to be inserted in a files' XML
-    """
+
+def create_row(
+    row: list,
+    role: str,
+    field_delimiter: str,
+    quotation_char: str,
+    escape_char: str,
+    record_delimiter: str,
+    normalize=False,
+):
+    """This function is used to create a row element to be inserted in a files' XML"""
     r = E.row(role=role)
     n_cells = len(row)
     for j, (cell, is_quoted) in enumerate(row):
@@ -38,8 +46,16 @@ def create_row(row: list, role: str, field_delimiter: str, quotation_char: str, 
         if j > 0 and len(field_delimiter) > 1:
             cell_text = cell_text[1:]
 
-        c = create_cell(field_delimiter, quotation_char, escape_char, text=cell_text, role=role, type=typ, should_quote=is_quoted,
-                        normalize=normalize)
+        c = create_cell(
+            field_delimiter,
+            quotation_char,
+            escape_char,
+            text=cell_text,
+            role=role,
+            type=typ,
+            should_quote=is_quoted,
+            normalize=normalize,
+        )
         r.append(c)
 
         if j < n_cells - 1:
@@ -51,16 +67,24 @@ def create_row(row: list, role: str, field_delimiter: str, quotation_char: str, 
     return etree.tostring(r)
 
 
-def create_cell(field_delimiter: str, quotation_char: str, escape_char: str, text: str, should_quote=False, role: str = None, normalize=False,
-                **kwargs):
+def create_cell(
+    field_delimiter: str,
+    quotation_char: str,
+    escape_char: str,
+    text: str,
+    should_quote=False,
+    role: str = None,
+    normalize=False,
+    **kwargs,
+):
     """This function is used to create a cell element to be inserted in a files' XML,
-        respecting quotation and escape characters.
-        Keyword arguments are used as attributes in the resulting element.
-        should_quote is used in case in the original file the cell was quoted regardless
+    respecting quotation and escape characters.
+    Keyword arguments are used as attributes in the resulting element.
+    should_quote is used in case in the original file the cell was quoted regardless
     """
     cell = etree.Element("cell", role=role, **kwargs)
 
-    to_quote = (text or '').find(field_delimiter) > 0
+    to_quote = (text or "").find(field_delimiter) > 0
     if to_quote or should_quote:
         q = etree.SubElement(cell, "quotation_char")
         q.text = quotation_char
@@ -68,7 +92,7 @@ def create_cell(field_delimiter: str, quotation_char: str, escape_char: str, tex
     values = text.split(quotation_char)
     for vdx, v in enumerate(values):
         v_text = normalize_cell(v) if normalize else v
-        v_text = re.sub(r'\p{Cc}', '', v_text)
+        v_text = re.sub(r"\p{Cc}", "", v_text)
         if vdx == 0:
             cell.append(E.value(v_text))
         else:
@@ -83,21 +107,24 @@ def create_cell(field_delimiter: str, quotation_char: str, escape_char: str, tex
 
 
 class CSVFile:
-    """This class is used to load a CSV file and record it as an XML tree
-    """
+    """This class is used to load a CSV file and record it as an XML tree"""
 
-    def __init__(self, filename, parameters: dict = None,
-                 record_delimiter="\r\n",
-                 field_delimiter=",",
-                 quotation_char='"',
-                 escape_char='"',
-                 preamble_rows=0,
-                 no_header=False,
-                 header_lines=1,
-                 quote_all=False,
-                 n_jobs=1,
-                 normalize=False,
-                 skip_xml=False):
+    def __init__(
+        self,
+        filename,
+        parameters: dict = None,
+        record_delimiter="\r\n",
+        field_delimiter=",",
+        quotation_char='"',
+        escape_char='"',
+        preamble_rows=0,
+        no_header=False,
+        header_lines=1,
+        quote_all=False,
+        n_jobs=1,
+        normalize=False,
+        skip_xml=False,
+    ):
 
         self.filename = filename.split("/")[-1]
         root = etree.Element("file", filename=self.filename)
@@ -128,7 +155,7 @@ class CSVFile:
             self.xml = None
             return
 
-        with open(filename, 'rb') as rawfile:
+        with open(filename, "rb") as rawfile:
             rawdata = rawfile.read()
 
         try:
@@ -148,9 +175,13 @@ class CSVFile:
             dict_roles[idx] = "header"
 
         if self.escape_char == self.quotation_char:
-            dialect = SimpleDialect(self.field_delimiter[0], self.quotation_char, escapechar='')
+            dialect = SimpleDialect(
+                self.field_delimiter[0], self.quotation_char, escapechar=""
+            )
         else:
-            dialect = SimpleDialect(self.field_delimiter[0], self.quotation_char, self.escape_char)
+            dialect = SimpleDialect(
+                self.field_delimiter[0], self.quotation_char, self.escape_char
+            )
         lst_rows = list(parse_string(data, dialect, return_quoted=True))
 
         self.row_count = len(lst_rows)
@@ -159,25 +190,35 @@ class CSVFile:
         except ValueError:
             self.col_count = 0
         if n_jobs == 1 or self.row_count < 10000:
-            xml_rows = list(map(lambda x: create_row(row=x[1],
-                                                     role=dict_roles.get(x[0], "data"),
-                                                     field_delimiter=self.field_delimiter,
-                                                     quotation_char=self.quotation_char,
-                                                     escape_char=self.escape_char,
-                                                     record_delimiter=self.record_delimiter,
-                                                     normalize=normalize),
-                                enumerate(lst_rows)))
+            xml_rows = list(
+                map(
+                    lambda x: create_row(
+                        row=x[1],
+                        role=dict_roles.get(x[0], "data"),
+                        field_delimiter=self.field_delimiter,
+                        quotation_char=self.quotation_char,
+                        escape_char=self.escape_char,
+                        record_delimiter=self.record_delimiter,
+                        normalize=normalize,
+                    ),
+                    enumerate(lst_rows),
+                )
+            )
         else:
-            args = [{"row": row, "role": dict_roles.get(idx, "data"),
-                     "field_delimiter": self.field_delimiter,
-                     "quotation_char": self.quotation_char,
-                     "escape_char": self.escape_char,
-                     "record_delimiter": self.record_delimiter,
-                     "normalize": normalize}
-                    for idx, row in enumerate(lst_rows)]
+            args = [
+                {
+                    "row": row,
+                    "role": dict_roles.get(idx, "data"),
+                    "field_delimiter": self.field_delimiter,
+                    "quotation_char": self.quotation_char,
+                    "escape_char": self.escape_char,
+                    "record_delimiter": self.record_delimiter,
+                    "normalize": normalize,
+                }
+                for idx, row in enumerate(lst_rows)
+            ]
             with Parallel(n_jobs=n_jobs, verbose=0) as parallel:
                 xml_rows = parallel(delayed(create_row)(**arg) for arg in args)
-
 
         [table.append(etree.fromstring(row)) for row in xml_rows]
 
@@ -216,14 +257,19 @@ class CSVFile:
         header_rows = self.xml.xpath("/file/table/row[@role='header']")
         if len(header_rows):
             if len(header_rows) == 1:
-                header = [x.text for x in header_rows[0].xpath(f"./cell[@role='header']/value")]
+                header = [
+                    x.text
+                    for x in header_rows[0].xpath(f"./cell[@role='header']/value")
+                ]
             else:
                 header = []
                 n_columns = max([len(row.xpath("cell")) for row in header_rows])
                 for idx in range(n_columns):
                     header_i = []
                     for j in range(len(header_rows)):
-                        hcell_val = header_rows[j].xpath(f"cell[position()={idx + 1}]/value")
+                        hcell_val = header_rows[j].xpath(
+                            f"cell[position()={idx + 1}]/value"
+                        )
                         if len(hcell_val):
                             header_i.append(hcell_val[0].text or "")
                     header.append((" ".join(header_i)))
@@ -234,7 +280,10 @@ class CSVFile:
         data_rows = self.xml.xpath("/file/table/row[@role='data']")
         if len(data_rows):
             for d in data_rows:
-                cell_values = ["".join([v.text or "" for v in c if v.tag=="value"])for c in d.xpath("cell")]
+                cell_values = [
+                    "".join([v.text or "" for v in c if v.tag == "value"])
+                    for c in d.xpath("cell")
+                ]
                 rows.append(cell_values)
 
         with open(out_path + self.filename, "w", encoding="utf8") as out:
@@ -269,16 +318,31 @@ class CSVFile:
         n_footnote_lines = len(self.xml.xpath(f"/file/table/row[@role='footnote']"))
 
         if self.xml.xpath(f"//*[@role='data']/.."):
-            n_columns = max([len(row.xpath("cell")) for row in self.xml.xpath(f"/file/table/row[@role='data']")])
+            n_columns = max(
+                [
+                    len(row.xpath("cell"))
+                    for row in self.xml.xpath(f"/file/table/row[@role='data']")
+                ]
+            )
         else:
             n_columns = 0
         column_names = []
         if n_header_lines == 1:
-            column_names = [x.text for x in self.xml.xpath(f"/file/table/row[@role='header']/cell/value")]
+            column_names = [
+                x.text
+                for x in self.xml.xpath(f"/file/table/row[@role='header']/cell/value")
+            ]
         elif n_header_lines > 1:
             # for every Nth children of a header row, get the value
             for idx in range(n_columns):
-                header_i = " ".join([x.text for x in self.xml.xpath(f"/file/table/row[@role='header']/cell[position()={idx + 1}]/value")])
+                header_i = " ".join(
+                    [
+                        x.text
+                        for x in self.xml.xpath(
+                            f"/file/table/row[@role='header']/cell[position()={idx + 1}]/value"
+                        )
+                    ]
+                )
                 column_names += [header_i]
 
         parameters_dict = {
@@ -300,11 +364,9 @@ class CSVFile:
 
     def __getstate__(self):
         state = self.__dict__.copy()
-        state['xml'] = etree.tostring(state['xml'].getroot())
+        state["xml"] = etree.tostring(state["xml"].getroot())
         return state
-
 
     def __setstate__(self, state):
         self.__dict__.update(state)
-        self.xml = etree.ElementTree(etree.fromstring(state['xml']))
-
+        self.xml = etree.ElementTree(etree.fromstring(state["xml"]))
