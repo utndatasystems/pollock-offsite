@@ -9,6 +9,8 @@ from pollock.CSVFile import CSVFile
 from sut.utils import print
 from tqdm import tqdm
 
+from pollock.polluters_utils import _set_polluted_filename
+
 parser = argparse.ArgumentParser()
 
 parser.add_argument(

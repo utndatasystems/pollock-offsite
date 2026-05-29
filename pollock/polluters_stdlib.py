@@ -1,59 +1,22 @@
 import random
 import string
 import time
-from tokenize import group
 from lxml import etree
-from . import constants
-from . import polluters_base as pb
 from .CSVFile import CSVFile
 from lxml.builder import E
 from .randdata import randomString, randomDateStr, randomType, randomInt
 from dateutil.parser import parse
+
+from . import constants
+from . import polluters_base as pb
+from pollock.polluters_utils import _set_polluted_filename, _row_values, _safe_row_count, _safe_col_count
 
 
 def dummyPolluter(file: CSVFile):
     pass
 
 
-def changeFilename(file: CSVFile, target_name):
-    file.filename = target_name
-    file.xml.getroot().attrib["filename"] = target_name
-
-
-# Pollution Utils
-
-
-# --- New Pollutions for Pollock 2.0 below ---
-
-
-def _set_polluted_filename(file: CSVFile, filename: str):
-    """Keep the CSVFile metadata and XML root filename in sync."""
-    file.filename = filename
-    file.xml.getroot().attrib["filename"] = filename
-
-
-def _row_values(file: CSVFile, row=1, table=0):
-    """Return value text for every cell in a row. Row uses XPath-style 1-based indexing."""
-    root = file.xml.getroot()
-    cells = root.xpath(f"//table[{table + 1}]/row[{row}]/cell")
-    return ["".join(v.text or "" for v in c if v.tag == "value") for c in cells]
-
-
-def _safe_row_count(file: CSVFile, table=0):
-    return len(file.xml.getroot().xpath(f"//table[{table + 1}]/row"))
-
-
-def _safe_col_count(file: CSVFile, table=0):
-    first_row = file.xml.getroot().xpath(f"//table[{table + 1}]/row[1]")
-    return len(first_row[0].xpath("./cell")) if first_row else 0
-
-
-def _last_data_row(file: CSVFile):
-    return max(2, _safe_row_count(file))
-
-
 # --- Pollock1.0 Pollutions ---
-
 
 def changeDimension(file: CSVFile, target_dimension=-1):
     content = []
@@ -591,6 +554,7 @@ def addTable(file: CSVFile, n_rows, n_cols, empty_boundary=True):
     file.xml.getroot().attrib["filename"] = file.filename
     # TODO: use _set_polluted_filename for all of these
 
+# --- New Pollutions for Pollock 2.0 below ---
 
 def addTableSideways(
     file: CSVFile, n_rows, n_cols, random_content=False, empty_boundary=True
