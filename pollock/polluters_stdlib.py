@@ -9,7 +9,12 @@ from dateutil.parser import parse
 
 from . import constants
 from . import polluters_base as pb
-from pollock.polluters_utils import _set_polluted_filename, _row_values, _safe_row_count, _safe_col_count
+from pollock.polluters_utils import (
+    _set_polluted_filename,
+    _row_values,
+    _safe_row_count,
+    _safe_col_count,
+)
 
 
 def dummyPolluter(file: CSVFile):
@@ -17,6 +22,7 @@ def dummyPolluter(file: CSVFile):
 
 
 # --- Pollock1.0 Pollutions ---
+
 
 def changeDimension(file: CSVFile, target_dimension=-1):
     content = []
@@ -45,10 +51,7 @@ def changeDimension(file: CSVFile, target_dimension=-1):
         remove_rows = list(range(file.row_count - n_rows_to_keep, file.row_count + 1))
         pb.deleteRows(file, rows_to_delete=remove_rows)
 
-    # TODO: use utils function here
-    file.filename = "file_size_" + str(target_dimension) + ".csv"
-    file.xml.getroot().attrib["filename"] = file.filename
-    return
+    _set_polluted_filename(file, f"file_size_{str(target_dimension)}.csv")
 
 
 def changeEncoding(file: CSVFile, target_encoding: constants.Encoding):
@@ -60,9 +63,8 @@ def changeEncoding(file: CSVFile, target_encoding: constants.Encoding):
     assert target in constants.Encoding.supported_encodings.value
 
     file.encoding = target
-    file.filename = "file_encoding_" + target + ".csv"
-    file.xml.getroot().attrib["filename"] = file.filename
     file.xml.getroot().attrib["encoding"] = target
+    _set_polluted_filename(file, f"file_encoding_{target}.csv")
 
 
 def changeNumberColumns(file: CSVFile, target_number_cols: int):
@@ -95,9 +97,7 @@ def changeNumberColumns(file: CSVFile, target_number_cols: int):
         )
         print("took", time.time() - t, "seconds")
 
-    file.filename = "file_num_columns_" + str(target_number_cols) + ".csv"
-    file.xml.getroot().attrib["filename"] = file.filename
-    return
+    _set_polluted_filename(file, f"file_num_columns_{str(target_number_cols)}.csv")
 
 
 def changeNumberRows(file: CSVFile, target_number_rows: int, remove_header=False):
@@ -121,17 +121,17 @@ def changeNumberRows(file: CSVFile, target_number_rows: int, remove_header=False
         )
         print("took", time.time() - t, "seconds")
 
-    file.filename = f"file_num_rows_{str(target_number_rows)}{'_no_header' if remove_header else ''}.csv"
-    file.xml.getroot().attrib["filename"] = file.filename
-    return
+    _set_polluted_filename(
+        file,
+        f"file_num_rows_{str(target_number_rows)}{'_no_header' if remove_header else ''}.csv",
+    )
 
 
 def expandColumnHeader(file: CSVFile, extra_rows=1):
     header = [x for x in file.xml.xpath(f"//row[{1}]//value//node()[not(node())]")]
     pb.addRows(file, cell_content=header, n_rows=extra_rows, position=0, role="header")
 
-    file.filename = "file_multirow_header_" + str(extra_rows) + ".csv"
-    file.xml.getroot().attrib["filename"] = file.filename
+    _set_polluted_filename(file, f"file_multirow_header_{str(extra_rows)}.csv")
 
 
 def addPreamble(
@@ -184,9 +184,10 @@ def addPreamble(
             role="preamble",
         )
 
-    file.filename = f"file_preamble_{n_rows}_{'not_' if not delimiters else ''}delimited{'_empty_row' if emptyrow else ''}.csv"
-    file.xml.getroot().attrib["filename"] = file.filename
-    return
+    _set_polluted_filename(
+        file,
+        f"file_preamble_{n_rows}_{'not_' if not delimiters else ''}delimited{'_empty_row' if emptyrow else ''}.csv",
+    )
 
 
 def addFootnote(
@@ -233,7 +234,6 @@ def addFootnote(
         file,
         f"file_footnote_{n_rows}_{'not_' if not delimiters else ''}delimited{'_empty_row' if emptyrow else ''}.csv",
     )
-    return
 
 
 def changeRecordDelimiter(file: CSVFile, target_delimiter="\r\n"):
@@ -247,7 +247,6 @@ def changeRecordDelimiter(file: CSVFile, target_delimiter="\r\n"):
     del_string = "".join([f"_0x{v:X}" for v in vals])
 
     _set_polluted_filename(file, f"file_record_delimiter{del_string}.csv")
-    return
 
 
 def changeFieldDelimiter(file: CSVFile, target_delimiter=";"):
@@ -260,9 +259,7 @@ def changeFieldDelimiter(file: CSVFile, target_delimiter=";"):
     vals = [ord(x) for x in target_delimiter]
     del_string = "".join([f"_0x{v:X}" for v in vals])
 
-    # TODO: use utils function here
-    file.filename = f"file_field_delimiter{del_string}.csv"
-    file.xml.getroot().attrib["filename"] = file.filename
+    _set_polluted_filename(file, f"file_field_delimiter{del_string}.csv")
 
 
 def changeEscapeCharacter(file: CSVFile, target_escape="\\"):
@@ -275,11 +272,9 @@ def changeEscapeCharacter(file: CSVFile, target_escape="\\"):
     if target_escape != "":
         vals = [ord(x) for x in target_escape]
         e_string = "".join([f"_0x{v:X}" for v in vals])
-        file.filename = f"file_escape_char{e_string}.csv"
+        _set_polluted_filename(file, f"file_escape_char{e_string}.csv")
     else:
-        file.filename = f"file_escape_char_0x00.csv"
-
-    file.xml.getroot().attrib["filename"] = file.filename
+        _set_polluted_filename(file, f"file_escape_char_0x00.csv")
 
 
 def changeQuotationChar(file: CSVFile, target_char="\u0022"):
@@ -298,8 +293,8 @@ def changeQuotationChar(file: CSVFile, target_char="\u0022"):
 
     vals = [ord(x) for x in target_char]
     quote_string = "".join([f"_0x{v:X}" for v in vals])
-    file.filename = f"file_quotation_char{quote_string}.csv"
-    file.xml.getroot().attrib["filename"] = file.filename
+
+    _set_polluted_filename(file, f"file_quotation_char{quote_string}.csv")
 
 
 def addSynthethicRowID(file: CSVFile):
@@ -345,8 +340,7 @@ def changeRowNumberFields(file: CSVFile, row=1, target_n_cells=1):
             n_cells=target_n_cells - file.col_count,
         )
 
-    file.filename = f"row_n_fields_{row}_{strtype}.csv"
-    file.xml.getroot().attrib["filename"] = file.filename
+    _set_polluted_filename(file, f"row_n_fields_{row}_{strtype}.csv")
 
 
 def addRowFieldDelimiter(file: CSVFile, row, col, n_separators=1):
@@ -364,8 +358,7 @@ def addRowFieldDelimiter(file: CSVFile, row, col, n_separators=1):
         ]
     row_xml.insert(index, delimiter)
 
-    file.filename = f"row_add_separator_{row}_{col}.csv"
-    file.xml.getroot().attrib["filename"] = file.filename
+    _set_polluted_filename(file, f"row_add_separator_{row}_{col}.csv")
 
 
 def deleteRowFieldDelimiter(file: CSVFile, row, col):
@@ -382,8 +375,7 @@ def deleteRowFieldDelimiter(file: CSVFile, row, col):
         ]
         del row_xml[index]
 
-    file.filename = f"row_n_separator_{file.col_count - 1}.csv"
-    file.xml.getroot().attrib["filename"] = file.filename
+    _set_polluted_filename(file, f"row_n_separator_{file.col_count - 1}.csv")
 
 
 def addRowQuoteMark(file: CSVFile, row, col):
@@ -398,8 +390,7 @@ def addRowQuoteMark(file: CSVFile, row, col):
             c.text = file.quotation_char + old
             break
 
-    file.filename = f"row_n_separator_{file.col_count - 1}.csv"
-    file.xml.getroot().attrib["filename"] = file.filename
+    _set_polluted_filename(file, f"row_n_separator_{file.col_count - 1}.csv")
 
 
 def changeRowRecordDelimiter(file: CSVFile, row=1, target_delimiter="\r\n"):
@@ -411,8 +402,7 @@ def changeRowRecordDelimiter(file: CSVFile, row=1, target_delimiter="\r\n"):
 
     vals = [ord(x) for x in target_delimiter]
     del_string = "".join([f"_0x{v:X}" for v in vals])
-    file.filename = f"row_record_delimiter_{row}{del_string}.csv"
-    file.xml.getroot().attrib["filename"] = file.filename
+    _set_polluted_filename(file, f"row_record_delimiter_{row}{del_string}.csv")
 
 
 def changeRowFieldDelimiter(file: CSVFile, row=1, target_delimiter=";"):
@@ -429,8 +419,7 @@ def changeRowFieldDelimiter(file: CSVFile, row=1, target_delimiter=";"):
 
     vals = [ord(x) for x in target_delimiter]
     del_string = "".join([f"_0x{v:X}" for v in vals])
-    file.filename = f"row_field_delimiter_{row}{del_string}.csv"
-    file.xml.getroot().attrib["filename"] = file.filename
+    _set_polluted_filename(file, f"row_field_delimiter_{row}{del_string}.csv")
 
 
 def changeRowQuotationMark(file: CSVFile, row=1, target_quotation="'"):
@@ -498,8 +487,9 @@ def changeColumnHeader(
     if not target_header.isalnum():
         strtype += "_nonalnum"
 
-    file.filename = f"column_header_{col}_{strtype}{'_multiple' if extra_rows > 0 else ''}{'_nonunique' if type(col) == list else ''}.csv"
-    file.xml.getroot().attrib["filename"] = file.filename
+    _set_polluted_filename(
+        f"column_header_{col}_{strtype}{'_multiple' if extra_rows > 0 else ''}{'_nonunique' if type(col) == list else ''}.csv"
+    )
 
 
 def addTable(file: CSVFile, n_rows, n_cols, empty_boundary=True):
@@ -550,11 +540,14 @@ def addTable(file: CSVFile, n_rows, n_cols, empty_boundary=True):
     if empty_boundary:
         pb.addRows(file, cell_content="", n_rows=1, position=0, table=1)
 
-    file.filename = f"file_multitable_rows_{n_rows}_{strtype}_cols{'_separated' if empty_boundary else ''}.csv"
-    file.xml.getroot().attrib["filename"] = file.filename
-    # TODO: use _set_polluted_filename for all of these
+    _set_polluted_filename(
+        file,
+        f"file_multitable_rows_{n_rows}_{strtype}_cols{'_separated' if empty_boundary else ''}.csv",
+    )
+
 
 # --- New Pollutions for Pollock 2.0 below ---
+
 
 def addTableSideways(
     file: CSVFile, n_rows, n_cols, random_content=False, empty_boundary=True

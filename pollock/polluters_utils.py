@@ -1,12 +1,7 @@
 from . import polluters_base as pb
 from .CSVFile import CSVFile
 
-
 # Pollution Utils
-
-def _changeFilename(file: CSVFile, target_name):
-    file.filename = target_name
-    file.xml.getroot().attrib["filename"] = target_name
 
 
 def _set_polluted_filename(file: CSVFile, filename: str):
@@ -33,4 +28,3 @@ def _safe_col_count(file: CSVFile, table=0):
 
 def _last_data_row(file: CSVFile):
     return max(2, _safe_row_count(file))
-
