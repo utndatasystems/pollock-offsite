@@ -316,9 +316,7 @@ def get_cell_value(cell) -> str:
     return value_el.text if value_el is not None else None
 
 
-def findMatchingCells(
-    file: CSVFile, matching=lambda value: True, table=0
-) -> set[tuple[int, int, str]]:
+def findMatchingCells(file: CSVFile, matching, table=0) -> set[tuple[int, int, str]]:
     """
     Finds all cells matching a predicate. Returns set of tuples of
     (row_idx, col_idx, value) for all matching cells.
