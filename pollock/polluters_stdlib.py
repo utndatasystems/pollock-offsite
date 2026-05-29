@@ -5,7 +5,13 @@ import time
 from lxml import etree
 from .CSVFile import CSVFile
 from lxml.builder import E
-from .randdata import randomString, randomDateStr, randomType, randomInt
+from .randdata import (
+    randomString,
+    randomDateStr,
+    randomType,
+    randomInt,
+    randomJsonStr,
+)
 from dateutil.parser import parse
 
 from . import constants
@@ -1040,12 +1046,13 @@ def superheader(file: CSVFile):
     _set_polluted_filename(file, "file_superheader.csv")
 
 
-def embeddedJSON(file: CSVFile):
+def embeddedJSON(file: CSVFile, row: int | None = None, col: int | None = None):
     """Embeds JSON-like file content inside a single cell."""
-    payload = '{"name":"example.json","rows":[{"id":1,"value":"alpha"},{"id":2,"value":"beta"}]}'
-    pb.changeCell(
-        file, row=2 if _safe_row_count(file) >= 2 else 1, col=1, new_content=payload
-    )
+    if row is None:
+        row = random.randint(1, _safe_row_count(file))
+    if col is None:
+        col = random.randint(0, _safe_col_count(file))
+    pb.changeCell(file, row=row + 1, col=col + 1, new_content=randomJsonStr())
     _set_polluted_filename(file, "file_embedded_json_cell.csv")
 
 

@@ -1,3 +1,4 @@
+import json
 import random
 import sys
 
@@ -7,8 +8,7 @@ from typing import Optional
 
 from faker import Faker
 
-# Configure faker
-faker = Faker(["en_US", "de_DE", "th_TH"])
+faker = Faker(["en_US", "de_DE"])
 
 
 class NumberLike(Enum):
@@ -195,3 +195,69 @@ def randomType() -> str:
         return randomNull()
 
     raise ValueError("Unhandled RandomType case")
+
+
+def randomJson(
+    depth: int = 0,
+    max_depth: int = 3,
+    max_object_size: int = 5,
+    max_array_size: int = 5,
+):
+    """
+    Generate random JSON-compatible Python objects.
+    """
+
+    def random_key():
+        return faker.word()
+
+    def random_primitive():
+        PRIMITIVE_GENERATORS = [
+            lambda: faker.name(),
+            lambda: faker.email(),
+            lambda: faker.word(),
+            lambda: faker.uuid4(),
+            lambda: faker.ipv4(),
+            lambda: faker.url(),
+            lambda: faker.phone_number(),
+            lambda: faker.date(),
+            lambda: faker.iso8601(),
+            lambda: faker.pyint(),
+            lambda: faker.pyfloat(),
+            lambda: faker.boolean(),
+            lambda: None,
+        ]
+        return random.choice(PRIMITIVE_GENERATORS)()
+
+    # stop recursion
+    if depth >= max_depth:
+        return random_primitive()
+
+    node_type = random.choice(["object", "array", "primitive"])
+    if node_type == "primitive":
+        return random_primitive()
+
+    elif node_type == "array":
+        return [
+            randomJson(
+                depth + 1,
+                max_depth,
+                max_object_size,
+                max_array_size,
+            )
+            for _ in range(random.randint(1, max_array_size))
+        ]
+
+    elif node_type == "object":
+        return {
+            random_key(): randomJson(
+                depth + 1,
+                max_depth,
+                max_object_size,
+                max_array_size,
+            )
+            for _ in range(random.randint(1, max_object_size))
+        }
+
+
+def randomJsonStr(**kwargs) -> str:
+    return json.dumps(randomJson(**kwargs))
