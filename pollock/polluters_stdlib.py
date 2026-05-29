@@ -1,4 +1,5 @@
 import random
+import unicodedata
 import string
 import time
 from lxml import etree
@@ -1097,20 +1098,70 @@ def bomMarker(file: CSVFile):
     _set_polluted_filename(file, "file_utf8_bom.csv")
 
 
-def weirdUnicode(file: CSVFile):
-    # TODO: inject in middle of CSV not end of CSV
-    """Adds mojibake and non-ASCII strings."""
-    row = ["FranÃ§ois", "MÃ¼nchen", "SÃ£o Paulo", "â‚¬", "👍🏼"]
-    row = row[: file.col_count] + [""] * max(file.col_count - len(row), 0)
-    pb.addRows(
-        file,
-        cell_content=row,
-        n_rows=1,
-        position=_safe_row_count(file),
-        col_count=file.col_count,
-        role="data",
+def weirdUnicode(
+    file: CSVFile,
+    row: int | None = None,
+    col: int | None = None,
+    weird_values=[
+        "FranÃ§ois",
+        "MÃ¼nchen",
+        "SÃ£o Paulo",
+        "â‚¬",
+        "👍🏼",
+        "cafÃ©",
+        "naÃ¯ve",
+        "PokÃ©mon",
+    ],
+):
+    """
+    Injects unicode-related corruption into a random cell.
+
+    Includes:
+    - mojibake
+    - unicode normalization changes
+    - non-ASCII characters
+    """
+    if row is None:
+        row = random.randint(1, _safe_row_count(file))
+    if col is None:
+        col = random.randint(0, _safe_col_count(file))
+
+    old_value = pb.getCell(file, row, col)
+    mode = random.choice(
+        [
+            "mojibake",
+            "nfc",
+            "nfd",
+            "append_unicode",
+        ]
     )
-    _set_polluted_filename(file, "file_weird_unicode_mojibake.csv")
+    if mode == "mojibake":
+        new_value = random.choice(weird_values)
+    elif mode == "nfc":
+        new_value = unicodedata.normalize("NFC", old_value or "")
+    elif mode == "nfd":
+        new_value = unicodedata.normalize("NFD", old_value or "")
+    else:
+        suffix = random.choice(
+            [
+                " 👍🏼",
+                " café",
+                " München",
+                " €",
+                " ß",
+            ]
+        )
+
+        new_value = (old_value or "") + suffix
+
+    pb.changeCell(
+        file,
+        row=row + 1,  # XPath indexing
+        col=col + 1,
+        new_content=new_value,
+    )
+
+    _set_polluted_filename(file, f"file_weird_unicode_row_{row}_col_{col}.csv")
 
 
 def invisibleCharacters(file: CSVFile):
@@ -1134,20 +1185,39 @@ def invisibleCharacters(file: CSVFile):
     _set_polluted_filename(file, "file_invisible_characters.csv")
 
 
-def collations(file: CSVFile):
-    """Adds strings whose sort order differs by locale/collation."""
-    # TODO: insert in middle of file, not end of file
-    # TODO: make value a parameter in function and iterate over them in pollute_main
-    for value in ["ä", "z", "å", "a", "Á", "á", "ß", "ss"]:
-        row = [value] + [""] * max(file.col_count - 1, 0)
+def collations(file: CSVFile, row: int | None = None):
+    """
+    Inserts rows containing strings whose ordering/equality differs between collations/locales.
+    """
+    examples = [
+        ["straße", "strasse"],
+        ["Müller", "Mueller"],
+        ["ä", "ae"],
+        ["Ångström", "Angstrom"],
+        ["é", "e"],
+        ["İstanbul", "Istanbul"],
+        ["ß", "ss"],
+        ["Özil", "Oezil"],
+        ["Æ", "AE"],
+    ]
+
+    if row is None:
+        row = random.randint(1, _safe_row_count(file))
+
+    for values in examples:
+        content = values + [""] * max(file.col_count - len(values), 0)
+
         pb.addRows(
             file,
-            cell_content=row,
+            cell_content=content,
             n_rows=1,
-            position=_safe_row_count(file),
+            position=row,
             col_count=file.col_count,
             role="data",
         )
+
+        row += 1
+
     _set_polluted_filename(file, "file_collation_edge_cases.csv")
 
 
