@@ -336,3 +336,18 @@ def findMatchingCells(
                 matches.add((row_idx, col_idx, value))
 
     return matches
+
+
+def getRowCells(file: CSVFile, row: int, table: int = 0) -> list[any]:
+    """
+    Returns all cells from a row.
+    """
+
+    root = file.xml.getroot()
+    query = root.xpath(f"//table[{table + 1}]/row[{row + 1}]")
+
+    if not query:
+        raise IndexError(f"Row {row} not found")
+
+    row_node = query[0]
+    return [cell for cell in row_node if cell.tag == "cell"]

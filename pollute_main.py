@@ -213,7 +213,14 @@ if args.polluters == "pollock2.0":
         f, pl.extremelyLongFields, row=2 if f.row_count >= 2 else 1, col=1, length=10000
     )  # For the final evaluation, we have to make sure th insert something extremely long of the same data type as the original cell
     execute_polluter(f, pl.addGroupSectionHeader, group_name="Region: North")
-    execute_polluter(f, pl.addCommentToFile, comment="This is a comment.")
+    execute_polluter(f, pl.addTrailingCommentToFile, comment="This is a comment.")
+    execute_polluter(
+        f, pl.addTrailingCommentToFile, comment="Your advertisements here."
+    )
+    execute_polluter(f, pl.commentRow)
+    execute_polluter(f, pl.commentRow, row=0)
+    execute_polluter(f, pl.commentRow, comment_marker="//")
+    execute_polluter(f, pl.commentRow, comment_marker="<!--")
     execute_polluter(f, pl.variableColumnCount)
 
     # Delimiter / quoting / escaping edge cases

@@ -781,17 +781,23 @@ def addGroupSectionHeader(file: CSVFile, group_name="Region: North", position=1)
     _set_polluted_filename(file, f"file_group_section_header_{position}.csv")
 
 
-def addCommentToFile(
-    file: CSVFile, comment="This is a comment.", row=3
+def addTrailingCommentToFile(
+    file: CSVFile,
+    comment="This is a comment.",
+    row: int | None = None,
+    comment_marker: str = "#",
+    space=" ",
 ):  # checked manually
-    # TODO: commented row, row comment, ... (not just trailing)
     """Adds a comment-like trailing field to a row without a delimiter before it."""
+    if row is None:
+        row = random.randint(1, _safe_row_count(file))
+
     pb.addCells(
         file,
         row=row,
         position=file.col_count,
         n_cells=1,
-        content=" # " + comment,  # TODO: other comment marker
+        content=f"{comment_marker}{space}{comment}",
         role="comment",
     )
 
@@ -804,6 +810,29 @@ def addCommentToFile(
         del row_xml[delimiters[-1]]
 
     _set_polluted_filename(file, "file_trailing_comment.csv")
+
+
+def commentRow(
+    file: CSVFile, row: int | None = None, comment_marker: str = "#", space=" "
+):
+    """
+    Simulates commented-out CSV rows by prefixing the first cell with a comment marker.
+    """
+    if row is None:
+        row = random.randint(1, _safe_row_count(file))
+
+    cells = pb.getRowCells(file, row)
+    if not cells or len(cells) == 0:
+        return
+
+    value = pb.get_cell_value(cells[0])
+    pb.changeCell(
+        file,
+        row=row + 1,  # XPath indexing
+        col=1,
+        new_content=f"{comment_marker}{space}{value}",
+    )
+    _set_polluted_filename(file, f"file_commented_row_{row}.csv")
 
 
 def metadataAsHeader(  # checked manually
