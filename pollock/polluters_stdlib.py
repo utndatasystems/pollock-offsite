@@ -18,6 +18,7 @@ from pollock.polluters_utils import (
 
 
 def dummyPolluter(file: CSVFile):
+    """dummy Polluter that does nothing"""
     pass
 
 
@@ -25,6 +26,7 @@ def dummyPolluter(file: CSVFile):
 
 
 def changeDimension(file: CSVFile, target_dimension=-1):
+    """TODO: documentation here"""
     content = []
     for i in range(file.row_count):
         texts = [x.text or "" for x in file.xml.xpath(f"//row[{i + 1}]//*[not(*)]")]
@@ -55,6 +57,7 @@ def changeDimension(file: CSVFile, target_dimension=-1):
 
 
 def changeEncoding(file: CSVFile, target_encoding: constants.Encoding):
+    """TODO: documentation here"""
     target = (
         target_encoding.value
         if type(target_encoding) == constants.Encoding
@@ -68,6 +71,7 @@ def changeEncoding(file: CSVFile, target_encoding: constants.Encoding):
 
 
 def changeNumberColumns(file: CSVFile, target_number_cols: int):
+    """TODO: documentation here"""
     if target_number_cols < file.col_count:
         cols_delete = list(range(target_number_cols, file.col_count))
         pb.deleteColumns(file, col=cols_delete)
@@ -101,6 +105,7 @@ def changeNumberColumns(file: CSVFile, target_number_cols: int):
 
 
 def changeNumberRows(file: CSVFile, target_number_rows: int, remove_header=False):
+    """TODO: documentation here"""
     last_row_cells = [x for x in file.xml.xpath("//row[last()]//cell")]
     last_row_content = [
         "".join(v.text or "") for c in last_row_cells for v in c if v.tag == "value"
@@ -128,6 +133,7 @@ def changeNumberRows(file: CSVFile, target_number_rows: int, remove_header=False
 
 
 def expandColumnHeader(file: CSVFile, extra_rows=1):
+    """TODO: documentation here"""
     header = [x for x in file.xml.xpath(f"//row[{1}]//value//node()[not(node())]")]
     pb.addRows(file, cell_content=header, n_rows=extra_rows, position=0, role="header")
 
@@ -237,6 +243,7 @@ def addFootnote(
 
 
 def changeRecordDelimiter(file: CSVFile, target_delimiter="\r\n"):
+    """TODO: documentation here"""
     file.record_delimiter = target_delimiter
     root = file.xml.getroot()
     query = root.xpath(f"//record_delimiter")
@@ -250,6 +257,7 @@ def changeRecordDelimiter(file: CSVFile, target_delimiter="\r\n"):
 
 
 def changeFieldDelimiter(file: CSVFile, target_delimiter=";"):
+    """TODO: documentation here"""
     file.field_delimiter = target_delimiter
     root = file.xml.getroot()
     query = root.xpath(f"//field_delimiter")
@@ -263,6 +271,7 @@ def changeFieldDelimiter(file: CSVFile, target_delimiter=";"):
 
 
 def changeEscapeCharacter(file: CSVFile, target_escape="\\"):
+    """TODO: documentation here"""
     file.escape_char = target_escape
     root = file.xml.getroot()
     query = root.xpath(f"//escape_char")
@@ -278,6 +287,7 @@ def changeEscapeCharacter(file: CSVFile, target_escape="\\"):
 
 
 def changeQuotationChar(file: CSVFile, target_char="\u0022"):
+    """TODO: documentation here"""
     file.quotation_char = target_char
     root = file.xml.getroot()
     query = root.xpath(f"//quotation_char")
@@ -298,6 +308,7 @@ def changeQuotationChar(file: CSVFile, target_char="\u0022"):
 
 
 def addSynthethicRowID(file: CSVFile):
+    """TODO: documentation here"""
     root = file.xml.getroot()
     n_rows = len(root.xpath("//row"))
     pb.addCells(
@@ -311,6 +322,7 @@ def addSynthethicRowID(file: CSVFile):
 
 
 def changeRowNumberFields(file: CSVFile, row=1, target_n_cells=1):
+    """TODO: documentation here"""
     if type(row) == int and row < 0:
         row = "last()-" + str(row + 1)
 
@@ -344,6 +356,7 @@ def changeRowNumberFields(file: CSVFile, row=1, target_n_cells=1):
 
 
 def addRowFieldDelimiter(file: CSVFile, row, col, n_separators=1):
+    """TODO: documentation here"""
     if type(row) == int and row < 0:
         row = "last()-" + str(row + 1)
 
@@ -362,6 +375,7 @@ def addRowFieldDelimiter(file: CSVFile, row, col, n_separators=1):
 
 
 def deleteRowFieldDelimiter(file: CSVFile, row, col):
+    """TODO: documentation here"""
     if type(row) == int and row < 0:
         row = "last()-" + str(row + 1)
     root = file.xml.getroot()
@@ -379,6 +393,7 @@ def deleteRowFieldDelimiter(file: CSVFile, row, col):
 
 
 def addRowQuoteMark(file: CSVFile, row, col):
+    """TODO: documentation here"""
     if type(row) == int and row < 0:
         row = "last()-" + str(row + 1)
     root = file.xml.getroot()
@@ -394,6 +409,7 @@ def addRowQuoteMark(file: CSVFile, row, col):
 
 
 def changeRowRecordDelimiter(file: CSVFile, row=1, target_delimiter="\r\n"):
+    """TODO: documentation here"""
     if type(row) == int and row < 0:
         row = "last()-" + str(row + 1)
 
