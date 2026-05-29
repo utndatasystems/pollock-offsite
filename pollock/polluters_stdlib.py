@@ -1160,25 +1160,61 @@ def weirdUnicode(
     _set_polluted_filename(file, f"file_weird_unicode_row_{row}_col_{col}.csv")
 
 
-def invisibleCharacters(file: CSVFile):
-    # TODO: inject in middle of CSV not end of CSV
-    """Adds zero-width and non-breaking characters to cells."""
-    values = [
-        "zero\u200bwidth",
-        "non\u00a0breaking",
-        "left\u200emark",
-        "word\ufeffjoiner",
+def invisibleCharacters(
+    file: CSVFile,
+    row: int | None = None,
+    col: int | None = None,
+):
+    """Injects invisible Unicode characters into an existing cell."""
+    if row is None:
+        row = random.randint(1, _safe_row_count(file))
+    if col is None:
+        col = random.randint(0, _safe_col_count(file))
+
+    invisible_chars = [
+        "\u200b",  # zero-width space
+        "\u00a0",  # non-breaking space
+        "\u200e",  # left-to-right mark
+        "\ufeff",  # zero-width no-break space / BOM char
+        "\u2060",  # word joiner
     ]
-    row = values[: file.col_count] + [""] * max(file.col_count - len(values), 0)
-    pb.addRows(
-        file,
-        cell_content=row,
-        n_rows=1,
-        position=_safe_row_count(file),
-        col_count=file.col_count,
-        role="data",
+
+    old_value = pb.getCell(file, row, col) or ""
+    mode = random.choice(
+        [
+            "prefix",
+            "suffix",
+            "middle",
+            "replace_space",
+        ]
     )
-    _set_polluted_filename(file, "file_invisible_characters.csv")
+
+    char = random.choice(invisible_chars)
+    if mode == "prefix":
+        new_value = char + old_value
+    elif mode == "suffix":
+        new_value = old_value + char
+    elif mode == "middle":
+        midpoint = len(old_value) // 2
+        new_value = old_value[:midpoint] + char + old_value[midpoint:]
+    else:  # replace_space
+        if " " in old_value:
+            new_value = old_value.replace(" ", char, 1)
+        else:
+            midpoint = len(old_value) // 2
+            new_value = old_value[:midpoint] + char + old_value[midpoint:]
+
+    print(f"modifying row={row}, col={col} by setting value '{new_value}'")
+    pb.changeCell(
+        file,
+        row=row + 1,
+        col=col + 1,
+        new_content=new_value,
+    )
+    _set_polluted_filename(
+        file,
+        f"file_invisible_characters_row_{row}_col_{col}.csv",
+    )
 
 
 def collations(file: CSVFile, row: int | None = None):
