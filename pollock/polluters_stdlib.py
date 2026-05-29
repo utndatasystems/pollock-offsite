@@ -1257,7 +1257,7 @@ def mixedTypes(file: CSVFile, row: int | None = None):
     if row is None:
         row = random.randint(1, _safe_row_count(file))
 
-    for row in range(5):
+    for _ in range(5):
         randomRow = [randomType() for _ in range(file.col_count)]
         pb.addRows(
             file,
