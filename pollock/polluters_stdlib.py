@@ -1089,11 +1089,7 @@ def encoding(file: CSVFile, target_encoding: constants.Encoding):
 
 
 def bomMarker(file: CSVFile):
-    pass
-    # TODO: fix
-    """Adds a UTF-8 BOM marker to the first header cell."""
-    first = _row_values(file, row=1)[0] if _row_values(file, row=1) else ""
-    pb.changeCell(file, row=1, col=1, new_content="\ufeff" + first)
+    """Adds a UTF-8 BOM marker to the serialized CSV output."""
     file.xml.getroot().attrib["bom"] = "utf-8"
     _set_polluted_filename(file, "file_utf8_bom.csv")
 

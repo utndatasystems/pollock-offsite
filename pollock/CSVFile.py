@@ -237,6 +237,7 @@ class CSVFile:
         out_file = out_dir / self.filename
 
         encoding = getattr(self, "encoding", None) or "utf-8"
+        bom = self.xml.getroot().attrib.get("bom")
 
         try:
             output.encode(encoding)
@@ -244,6 +245,10 @@ class CSVFile:
             encoding = "utf-8"
             self.encoding = encoding
             self.xml.getroot().attrib["encoding"] = encoding
+
+        # true BOM emission
+        if bom == "utf-8":
+            encoding = "utf-8-sig"
 
         with open(out_file, "w", encoding=encoding, newline="") as out:
             out.write(output)
