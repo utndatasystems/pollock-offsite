@@ -946,9 +946,7 @@ def variableColumnCount(file: CSVFile, row: int | None = None):
     """Creates rows with fewer and more fields than the header."""
     if row is None:
         row = random.randint(1, _safe_row_count(file))
-
-    rowCells = pb.getRowCells(file, row)
-    col = random.randint(0, len(rowCells))
+    col = random.randrange(_safe_col_count(file))
 
     if random.randint(0, 1) == 1:
         pb.deleteCellAndDelimiter(file, row, col)
