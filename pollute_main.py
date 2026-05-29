@@ -8,6 +8,7 @@ from copy import deepcopy
 from pollock.CSVFile import CSVFile
 from sut.utils import print
 from tqdm import tqdm
+from faker import Faker
 
 from pollock.polluters_utils import _set_polluted_filename
 
@@ -63,6 +64,7 @@ os.makedirs(OUT_PARAMETERS_PATH, exist_ok=True)
 
 print(f"Seeding RNG: {args.rng_seed}")
 random.seed(args.rng_seed)
+Faker.seed(args.rng_seed)
 
 
 def execute_polluter(file: CSVFile, polluter, new_filename=None, *args, **kwargs):
@@ -201,19 +203,26 @@ execute_polluter(f, pl.changeEscapeCharacter, target_escape="")
 if args.polluters == "pollock2.0":
 
     # Multi-table / layout structure
-    execute_polluter(f, pl.addTableSideways, n_rows=min(f.row_count, 5), n_cols=min(f.col_count, 5))
-    execute_polluter(f, pl.multilineHeader, header_col=4, header_rows=3, content="ExampleLineHeader")
+    execute_polluter(
+        f, pl.addTableSideways, n_rows=min(f.row_count, 5), n_cols=min(f.col_count, 5)
+    )
+    execute_polluter(
+        f, pl.multilineHeader, header_col=4, header_rows=3, content="ExampleLineHeader"
+    )
     execute_polluter(f, pl.duplicateHeaderAsDataRow)
     execute_polluter(f, pl.metadataAsHeader)
     execute_polluter(f, pl.superheader)
 
-
     # Row / column irregularities
     execute_polluter(f, pl.moveHeaderRow)
-    execute_polluter(f, pl.extremelyLongFields, row=2 if f.row_count >= 2 else 1, col=1, length=10000)  # For the final evaluation, we have to make sure th insert something extremely long of the same data type as the original cell
+    execute_polluter(
+        f, pl.extremelyLongFields, row=2 if f.row_count >= 2 else 1, col=1, length=10000
+    )  # For the final evaluation, we have to make sure th insert something extremely long of the same data type as the original cell
     execute_polluter(f, pl.addGroupSectionHeader, group_name="Region: North")
     execute_polluter(f, pl.addTrailingCommentToFile, comment="This is a comment.")
-    execute_polluter(f, pl.addTrailingCommentToFile, comment="Your advertisements here.")
+    execute_polluter(
+        f, pl.addTrailingCommentToFile, comment="Your advertisements here."
+    )
     execute_polluter(f, pl.commentRow)
     execute_polluter(f, pl.commentRow, row=0)
     execute_polluter(f, pl.commentRow, comment_marker="//")

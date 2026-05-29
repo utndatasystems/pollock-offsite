@@ -1,3 +1,5 @@
+Faker==40.19.1
+Pygments==2.20.0
 attrs==26.1.0
 bounded-pool-executor==0.0.3
 certifi==2026.5.20
@@ -15,18 +17,18 @@ kiwisolver==1.5.0
 lxml==6.1.0
 matplotlib==3.10.9
 multiset==3.2.0
-numpy==2.4.4
+numpy==2.4.6
 packaging==26.2
 pandas==3.0.3
 pillow==12.2.0
 pluggy==1.6.0
 pqdm==0.2.0
 price-parser==0.5.1
-Pygments==2.20.0
 pyparsing==3.3.2
 pytest==9.0.3
 python-dateutil==2.9.0.post0
 python-dotenv==1.2.2
+python_dateutil==2.9.0.post0
 regex==2026.5.9
 requests==2.34.2
 six==1.17.0

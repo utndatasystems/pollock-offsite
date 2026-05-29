@@ -1,121 +1,197 @@
 import random
-import string
 import sys
 
-from datetime import datetime, timedelta
+from datetime import datetime
 from enum import Enum
+from typing import Optional
+
+from faker import Faker
+
+# Configure faker
+faker = Faker(["en_US", "de_DE", "th_TH"])
+
+
+class NumberLike(Enum):
+    INT = "int"
+    FLOAT = "float"
+    CURRENCY = "currency"
+    AS_TEXT = "as_text"
+
+
+class RandomType(Enum):
+    NUMBER = "number"
+    DATE_STR = "date_str"
+    STRING = "string"
+    BOOL_STR = "bool_str"
+    NULL = "null"
+
+
+DATE_FORMATS = [
+    "%Y-%m-%d",
+    "%d/%m/%Y",
+    "%m-%d-%Y",
+    "%B %d, %Y",
+    "%d %b %Y",
+    "%Y%m%d",
+    "%A, %d %B %Y",
+    "%I:%M %p %d-%m-%Y",
+]
+
+
+NULL_VALUES = [
+    "N/A",
+    "unknown",
+    "NULL",
+    "None",
+    "NaN",
+    "",
+    "null",
+    "undefined",
+]
+
+
+BOOL_VALUES = [
+    "True",
+    "False",
+    "true",
+    "false",
+    "yes",
+    "no",
+    "y",
+    "n",
+    "1",
+    "0",
+    "wahr",
+    "falsch",
+]
 
 
 def randomDate(
-    start_date=datetime(2000, 1, 1), end_date=datetime(2030, 12, 31)
+    start_date: datetime = datetime(2000, 1, 1),
+    end_date: datetime = datetime(2030, 12, 31),
 ) -> datetime:
-    return start_date + timedelta(
-        seconds=random.randint(0, int((end_date - start_date).total_seconds()))
+    return faker.date_time_between_dates(
+        datetime_start=start_date,
+        datetime_end=end_date,
     )
 
 
 def randomDateStr(
-    start_date=datetime(2000, 1, 1),
-    end_date=datetime(2030, 12, 31),
-    out_formats=[
-        "%Y-%m-%d",
-        "%d/%m/%Y",
-        "%m-%d-%Y",
-        "%B %d, %Y",
-        "%d %b %Y",
-        "%Y%m%d",
-        "%A, %d %B %Y",
-        "%I:%M %p %d-%m-%Y",
-    ],
+    start_date: datetime = datetime(2000, 1, 1),
+    end_date: datetime = datetime(2030, 12, 31),
+    out_formats: Optional[list[str]] = None,
 ) -> str:
-    return randomDate(start_date=start_date, end_date=end_date).strftime(
-        random.choice(out_formats)
-    )
+    formats = out_formats or DATE_FORMATS
+    dt = randomDate(start_date, end_date)
+    return dt.strftime(random.choice(formats))
 
 
-def randomInt(min=-sys.maxsize, max=sys.maxsize) -> int:
-    return random.randint(min, max)
+def randomInt(
+    min: int = -sys.maxsize,
+    max: int = sys.maxsize,
+) -> int:
+    return faker.random_int(min=min, max=max)
 
 
-def randomFloat(min: float = -13374201337.123, max: float = 4201337420.321) -> float:
-    return min + random.random() * (max - min)
+def randomFloat(
+    min_value: float = -1_000_000.0,
+    max_value: float = 1_000_000.0,
+    precision: int = 6,
+) -> float:
+    return round(random.uniform(min_value, max_value), precision)
 
 
 def randomDigitText() -> str:
-    return random.choice(
-        ["zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine"]
+    return faker.random_element(
+        elements=[
+            "zero",
+            "one",
+            "two",
+            "three",
+            "four",
+            "five",
+            "six",
+            "seven",
+            "eight",
+            "nine",
+        ]
     )
 
 
 def randomCurrency() -> str:
-    return random.choice(["€", "Euro", "Eur", "$", "Dollar", "฿", "Baht"])
+    return faker.random_element(
+        elements=[
+            "€",
+            "$",
+            "£",
+            "¥",
+            "฿",
+            "Euro",
+            "Dollar",
+            "Baht",
+        ]
+    )
 
 
 def randomNumberLike() -> str:
-    class NumberLike(Enum):
-        INT = 1
-        FLOAT = 2
-        CURRENCY = 3
-        AS_TEXT = 4
+    case = faker.random_element(elements=list(NumberLike))
 
-    case = random.choice(list(NumberLike))
     if case == NumberLike.INT:
         return str(randomInt())
     elif case == NumberLike.FLOAT:
         return str(randomFloat())
     elif case == NumberLike.CURRENCY:
-        num = str(randomInt()) if random.randint(0, 1) == 1 else str(randomFloat())
-        curr = randomCurrency()
-        space = random.choice(["", " "])
-        return space.join([num, curr] if random.randint(0, 1) == 1 else [curr, num])
+        value = str(randomInt()) if faker.boolean() else str(randomFloat())
+        currency = randomCurrency()
+        return f"{currency}{value}" if faker.boolean() else f"{value} {currency}"
+
     elif case == NumberLike.AS_TEXT:
-        return "".join(randomDigitText() for _ in range(random.randint(1, 3)))
+        return " ".join(randomDigitText() for _ in range(random.randint(1, 4)))
+
+    raise ValueError("Unhandled NumberLike case")
 
 
-def randomString(min_length: int = 0, max_length: int = 20) -> str:
-    return "".join(
-        random.choice([*string.ascii_letters, *string.digits])
-        for _ in range(random.randint(min_length, max_length))
-    )
+def randomString(
+    min_length: int = 5,
+    max_length: int = 30,
+) -> str:
+    target_length = random.randint(min_length, max_length)
+
+    generators = [
+        faker.word,
+        faker.name,
+        faker.email,
+        faker.user_name,
+        faker.company,
+        faker.city,
+        faker.uuid4,
+    ]
+
+    value = faker.random_element(generators)()
+
+    return value[:target_length]
 
 
 def randomBoolStr() -> str:
-    return random.choice(
-        [
-            str(True),
-            str(False),
-            "true",
-            "false",
-            "y",
-            "n",
-            "yes",
-            "no",
-            "wahr",
-            "falsch",
-        ]
-    )
+    return faker.random_element(elements=BOOL_VALUES)
 
 
 def randomNull() -> str:
-    return random.choice(["N/A", "unknown", "0", "NULL", "None", "NaN", "", "NUL"])
+    return faker.random_element(elements=NULL_VALUES)
 
 
 def randomType() -> str:
-    class Types(Enum):
-        NUMBER = 1
-        DATE_STR = 2
-        STRING = 3
-        BOOL_STR = 4
-        NULL = 5
+    random_type = faker.random_element(elements=list(RandomType))
 
-    type = random.choice(list(Types))
-    if type == Types.NUMBER:
+    if random_type == RandomType.NUMBER:
         return randomNumberLike()
-    elif type == Types.DATE_STR:
+    elif random_type == RandomType.DATE_STR:
         return randomDateStr()
-    elif type == Types.STRING:
+    elif random_type == RandomType.STRING:
         return randomString()
-    elif type == Types.BOOL_STR:
+    elif random_type == RandomType.BOOL_STR:
         return randomBoolStr()
-    elif type == Types.NULL:
+    elif random_type == RandomType.NULL:
         return randomNull()
+
+    raise ValueError("Unhandled RandomType case")
