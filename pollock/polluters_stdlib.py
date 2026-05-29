@@ -1204,7 +1204,6 @@ def invisibleCharacters(
             midpoint = len(old_value) // 2
             new_value = old_value[:midpoint] + char + old_value[midpoint:]
 
-    print(f"modifying row={row}, col={col} by setting value '{new_value}'")
     pb.changeCell(
         file,
         row=row + 1,
