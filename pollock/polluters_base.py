@@ -375,3 +375,18 @@ def getRowCells(file: CSVFile, row: int, table: int = 0) -> list[any]:
 
     row_node = query[0]
     return [cell for cell in row_node if cell.tag == "cell"]
+
+
+def getCell(file: CSVFile, row: int, col: int, table=0):
+    """
+    Returns the textual value of a cell.
+
+    row and col are 0-based.
+    """
+    root = file.xml.getroot()
+    query = root.xpath(f"//table[{table + 1}]/row[{row + 1}]/cell[{col + 1}]")
+
+    if not query:
+        return None
+
+    return get_cell_value(query[0])

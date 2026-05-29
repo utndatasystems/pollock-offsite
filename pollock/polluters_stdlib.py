@@ -794,16 +794,12 @@ def commentRow(
     if row is None:
         row = random.randint(1, _safe_row_count(file))
 
-    cells = pb.getRowCells(file, row)
-    if not cells or len(cells) == 0:
-        return
-
-    value = pb.get_cell_value(cells[0])
+    old_value = pb.getCell(file, row, col=0)
     pb.changeCell(
         file,
         row=row + 1,  # XPath indexing
         col=1,
-        new_content=f"{comment_marker}{space}{value}",
+        new_content=f"{comment_marker}{space}{old_value}",
     )
     _set_polluted_filename(file, f"file_commented_row_{row}.csv")
 
