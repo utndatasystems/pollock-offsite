@@ -1,0 +1,2 @@
+Application Error
+com.opencsv.exceptions.CsvMalformedLineException: Unterminated quoted field at end of CSV line. Beginning of lost text: ["30/06/2018,10:15,2,GN-1306,$78.95,National Park Patch,"Were proud to offer the National Park col...]

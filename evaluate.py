@@ -3,9 +3,12 @@ import builtins as __builtin__
 import os
 import argparse
 import traceback
+import re
+import warnings
 
 from pqdm.processes import pqdm
 import pandas as pd
+
 from typing import List
 
 import pollock.metrics as metrics
@@ -51,8 +54,10 @@ def evaluate_single_file(filename:str, dataset:str, sut:str, verbose=False, n_jo
 
 
 def evaluate_single_run(files: List[str], dataset: str, result_file:str, sut:str, verbose=False, n_jobs=1):
+    n_jobs = max(1, min(int(n_jobs), os.cpu_count() or 1))
 
-    if os.cpu_count()< n_jobs:
+    # sequential
+    if n_jobs == 1:
         file_measures = []
         n = len(files)
         for i, f in enumerate(files):
@@ -60,10 +65,17 @@ def evaluate_single_run(files: List[str], dataset: str, result_file:str, sut:str
                 print(f"  {i}/{n} files...")
             file_measures.append(evaluate_single_file(filename=f, dataset=dataset, sut=sut, verbose=verbose))
         print(f"  {n}/{n} files done.")
+    # parallel
     else:
         tiny_files = [f for f in files if os.path.getsize(f"data/{dataset}/csv/{f}")/ 1024 < 500]
         args = [{"filename" : f, "dataset":dataset, "sut": sut, "verbose": verbose} for f in tiny_files]
-        tiny_file_measures = pqdm(args, evaluate_single_file, n_jobs=n_jobs, argument_type="kwargs")
+        with warnings.catch_warnings():
+            warnings.filterwarnings(
+            "ignore",
+            category=DeprecationWarning,
+            message=r"This process .* is multi-threaded, use of fork\(\) may lead to deadlocks in the child\.")
+
+            tiny_file_measures = pqdm(args, evaluate_single_file, n_jobs=n_jobs, argument_type="kwargs")
 
         large_filenames = [f for f in files if os.path.getsize(f"data/{dataset}/csv/{f}")/ 1024 >= 500]
         large_file_measures = []
@@ -97,10 +109,18 @@ def main():
     systems = [s for s in next(os.walk(f"{RESULT_DIR}"))[1]
                if s != "archives" and os.path.isdir(f"{RESULT_DIR}/{s}/{dataset}/loading")]
 
+    sut_dirs = {s for s in os.listdir("sut") if os.path.isdir(f"sut/{s}") and not s.startswith("_")}
+    no_results = sorted(sut_dirs - set(systems))
+    if no_results:
+        print(f"Warning: {len(no_results)} SUT(s) in sut/ have no results for dataset '{dataset}': {no_results}")
+
     files= [f for f in os.listdir(f"data/{dataset}/csv") if f.endswith("csv")]
     aggregate = []
-    global_df = pd.DataFrame({"file": files})
+    system_dfs = []
     eval_systems = systems if UPDATE_SYSTEM is None else [s for s in systems if s == UPDATE_SYSTEM]
+
+    
+
     for s in systems:
         result_file = f"{RESULT_DIR}/{s}/{dataset}/{s}_results.csv"
         if UPDATE_SYSTEM is None or s == UPDATE_SYSTEM:

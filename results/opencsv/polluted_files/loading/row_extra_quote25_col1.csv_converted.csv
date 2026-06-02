@@ -1,0 +1,2 @@
+Application Error
+com.opencsv.exceptions.CsvMalformedLineException: Unterminated quoted field at end of CSV line. Beginning of lost text: ["06:00,1,RI-9121,$9.81,Women's No-Show Socks,"These ankle socks provide all-day comfort and no-sh...]

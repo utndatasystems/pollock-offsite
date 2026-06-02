@@ -25,7 +25,7 @@ else
     DATASET="${DATASET:-polluted_files}"
 fi
 
-ALL_SUTS=(duckdbauto duckdbparse pandas pycsv clevercs)
+ALL_SUTS=(duckdbauto duckdbparse pandas pycsv clevercs custom)
 if [[ $# -gt 0 ]]; then
     SUTS=("$@")
 else
@@ -52,6 +52,7 @@ declare -A SUT_SCRIPT=(
     [pandas]="sut/pandas/panda.py"
     [pycsv]="sut/pycsv/pycsv.py"
     [clevercs]="sut/clevercs/clevercs.py"
+    [custom]="sut/custom/custom-bench.py"
 )
 
 for sut in "${SUTS[@]}"; do

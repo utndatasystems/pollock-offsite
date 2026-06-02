@@ -1,0 +1,2 @@
+Application Error
+com.opencsv.exceptions.CsvMalformedLineException: Unterminated quoted field at end of CSV line. Beginning of lost text: [""The original boot, made since 1912. Now with even more protection from cold, wet weather, with ...]

@@ -1,0 +1,3 @@
+Application Error
+com.opencsv.exceptions.CsvMalformedLineException: Unterminated quoted field at end of CSV line. Beginning of lost text: [""https://www.example.com/product/ZN_4777.html",
+27/02/2018,04:30,0,ZN-2049,$83.32,"Women's Hiker...]

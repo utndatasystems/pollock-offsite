@@ -1,0 +1,2 @@
+Application Error
+com.opencsv.exceptions.CsvMalformedLineException: Unterminated quoted field at end of CSV line. Beginning of lost text: ["$72.91,"Tee, Traditional Fit, Long-Sleeve","Made of soft cotton that resists wrinkles, stains, s...]

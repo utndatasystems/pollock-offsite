@@ -100,7 +100,7 @@ public class JCSV {
                     .withQuoteChar(quote)
                     .build();
         }
-        String skiplines = (String) sut_params.get("preamble_lines");
+        String skiplines = String.valueOf(sut_params.get("preamble_lines"));
         int skip_lines = (skiplines.equals("")) ? 0 : Integer.parseInt(skiplines);
 
         String encoding = ((String) sut_params.get("encoding")).toUpperCase();
@@ -146,6 +146,7 @@ public class JCSV {
     }
 
     public static void processFiles() {
+        new File(OUT_DIR).mkdirs();
         ArrayList<File> files = new ArrayList<>(List.of(Objects.requireNonNull(new File(IN_DIR).listFiles())));
         int total = files.size();
         int i = 1;

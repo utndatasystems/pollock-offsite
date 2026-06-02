@@ -1,0 +1,2 @@
+Application Error
+com.opencsv.exceptions.CsvMalformedLineException: Unterminated quoted field at end of CSV line. Beginning of lost text: [""This lightweight, ventilated version of the best-selling trail hiker features less volume in th...]

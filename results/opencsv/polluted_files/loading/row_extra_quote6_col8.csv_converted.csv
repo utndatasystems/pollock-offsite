@@ -1,0 +1,3 @@
+Application Error
+com.opencsv.exceptions.CsvMalformedLineException: Unterminated quoted field at end of CSV line. Beginning of lost text: ["
+15/02/2018,01:30,2,RI-6052,$89.34,Organic Textured Cotton Towel,"All the softness and absorbenc...]

@@ -1,4 +1,5 @@
 #!/bin/bash
+docker-compose up custom-client
 docker-compose up --detach mariadb-server mysql-server postgres-server
 docker-compose up opencsv-client
 docker-compose up csvcommons-client
