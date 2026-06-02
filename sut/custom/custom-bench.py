@@ -18,7 +18,16 @@ parser.add_argument(
     action="store_true",
     help="When malformed rows are detected, replace them with the ground-truth rows from data/<dataset>/clean",
 )
+parser.add_argument(
+    "--llm-repair",
+    action="store_true",
+    help="When malformed rows are detected, ask the configured LLM to repair only those rows",
+)
 args = parser.parse_args()
+if args.cheat and args.llm_repair:
+    parser.error("--cheat and --llm-repair cannot be used together")
+if args.llm_repair and not os.environ.get("HEIMGARTEN_OPENAI_KEY"):
+    parser.error("--llm-repair requires HEIMGARTEN_OPENAI_KEY")
 
 sut = 'custom'
 DATASET = os.environ.get('DATASET', 'polluted_files')
@@ -27,6 +36,7 @@ CLEAN_DIR = join(REPO_ROOT, 'data', DATASET, 'clean')
 OUT_DIR = join(REPO_ROOT, 'results', sut, DATASET, 'loading')
 TIME_DIR = join(REPO_ROOT, 'results', sut, DATASET)
 CHEAT = args.cheat
+LLM_REPAIR = args.llm_repair
 
 os.makedirs(IN_DIR, exist_ok=True)
 os.makedirs(OUT_DIR, exist_ok=True)
@@ -73,7 +83,7 @@ for idx, file in enumerate(benchmark_files):
     out_filename = f'{f}_converted.csv'
     out_filepath = join(OUT_DIR, out_filename)
     malformed_path = malformed_report_path(f)
-    if not CHEAT and os.path.exists(out_filepath) and os.path.exists(malformed_path):
+    if not (CHEAT or LLM_REPAIR) and os.path.exists(out_filepath) and os.path.exists(malformed_path):
         continue
     print(f"({idx}/{len(benchmark_files)}) {f}")
 
@@ -86,6 +96,7 @@ for idx, file in enumerate(benchmark_files):
                 in_filepath,
                 clean_csv=clean_filepath,
                 cheat=CHEAT,
+                llm_repair=LLM_REPAIR,
             )
             end = time.time()
             if malformed:
@@ -94,6 +105,8 @@ for idx, file in enumerate(benchmark_files):
                     print(f"\t  line {row['line_num']}: {row['reason']} — {row['raw']!r}")
                 if CHEAT:
                     print("\t  cheat mode: swapped malformed row(s) with ground truth")
+                if LLM_REPAIR:
+                    print("\t  llm mode: asked model to repair malformed row(s)")
             df.to_csv(out_filepath, index=False)
             write_malformed_report(malformed_path, malformed=malformed)
         except Exception as e:
