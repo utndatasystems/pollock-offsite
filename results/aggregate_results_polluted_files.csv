@@ -1,4 +1,5 @@
 sut,correct,wrong,score
 duckdbauto,840,1450,840
+custom,2140,150,2140
 pycsv,4,2286,4
 duckdbparse,197,2093,197

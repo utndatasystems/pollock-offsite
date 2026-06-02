@@ -3,6 +3,7 @@ import builtins as __builtin__
 import os
 import argparse
 import traceback
+import json
 import re
 import warnings
 
@@ -22,6 +23,40 @@ SUT_ORDER = ["clevercs", "csvcommons", "rhypoparsr",
             "opencsv", "pandas", "duckdbparse","duckdbauto", "pycsv", "rcsv", "univocity", 
             "mariadb", "mysql", "postgres", "sqlite", "libreoffice", 
             "spreaddesktop", "spreadweb", "dataviz"]
+
+
+def load_weights(dataset: str):
+    if dataset != "polluted_files":
+        return {}
+    weights_path = "pollock_weights.json"
+    if not os.path.exists(weights_path):
+        return {}
+    with open(weights_path) as f:
+        return json.load(f)
+
+
+def add_scores(results_df: pd.DataFrame, sut: str, weights: dict):
+    correct_col = f"{sut}_correct"
+    if correct_col not in results_df.columns:
+        return results_df
+
+    total_files = len(results_df)
+    correct_count = results_df[correct_col].astype(int).sum()
+    score_10 = 0.0 if total_files == 0 else 10.0 * correct_count / total_files
+
+    if weights:
+        total_weight = sum(float(weights.get(filename, 1.0)) for filename in results_df["file"])
+        weighted_correct = sum(
+            float(weights.get(filename, 1.0)) * int(correct)
+            for filename, correct in zip(results_df["file"], results_df[correct_col])
+        )
+        weighted_score_10 = 0.0 if total_weight == 0 else 10.0 * weighted_correct / total_weight
+    else:
+        weighted_score_10 = score_10
+
+    results_df.attrs["score_10"] = score_10
+    results_df.attrs["weighted_score_10"] = weighted_score_10
+    return results_df
 
 def evaluate_single_file(filename:str, dataset:str, sut:str, verbose=False, n_jobs=1):
     sut_dir = f"results/{sut}/{dataset}/loading/"
@@ -54,10 +89,9 @@ def evaluate_single_file(filename:str, dataset:str, sut:str, verbose=False, n_jo
 
 
 def evaluate_single_run(files: List[str], dataset: str, result_file:str, sut:str, verbose=False, n_jobs=1):
-    n_jobs = max(1, min(int(n_jobs), os.cpu_count() or 1))
+    effective_jobs = max(1, min(int(n_jobs), os.cpu_count() or 1))
 
-    # sequential
-    if n_jobs == 1:
+    if effective_jobs == 1:
         file_measures = []
         n = len(files)
         for i, f in enumerate(files):
@@ -67,25 +101,8 @@ def evaluate_single_run(files: List[str], dataset: str, result_file:str, sut:str
         print(f"  {n}/{n} files done.")
     # parallel
     else:
-        tiny_files = [f for f in files if os.path.getsize(f"data/{dataset}/csv/{f}")/ 1024 < 500]
-        args = [{"filename" : f, "dataset":dataset, "sut": sut, "verbose": verbose} for f in tiny_files]
-        with warnings.catch_warnings():
-            warnings.filterwarnings(
-            "ignore",
-            category=DeprecationWarning,
-            message=r"This process .* is multi-threaded, use of fork\(\) may lead to deadlocks in the child\.")
-
-            tiny_file_measures = pqdm(args, evaluate_single_file, n_jobs=n_jobs, argument_type="kwargs")
-
-        large_filenames = [f for f in files if os.path.getsize(f"data/{dataset}/csv/{f}")/ 1024 >= 500]
-        large_file_measures = []
-        if large_filenames:
-            print(f"Evaluating {len(large_filenames)} large file(s)...")
-        for i, f in enumerate(large_filenames, 1):
-            print(f"  [{i}/{len(large_filenames)}] {f}")
-            large_file_measures.append(evaluate_single_file(f, dataset, sut, verbose=verbose, n_jobs=n_jobs))
-
-        file_measures = tiny_file_measures+large_file_measures
+        args = [{"filename": f, "dataset": dataset, "sut": sut, "verbose": verbose} for f in files]
+        file_measures = pqdm(args, evaluate_single_file, n_jobs=effective_jobs, argument_type="kwargs")
     results_df = pd.DataFrame(file_measures)
     results_df.to_csv(result_file, index=False)
     if verbose: print(results_df)
@@ -104,6 +121,7 @@ def main():
     dataset = args.dataset
     RESULT_DIR = args.result
     N_JOBS = int(args.njobs)
+    weights = load_weights(dataset)
 
     verbose = bool(args.verbose)
     systems = [s for s in next(os.walk(f"{RESULT_DIR}"))[1]
@@ -133,7 +151,10 @@ def main():
         if not expected_cols.issubset(df.columns):
             print(f"Skipping {s}: result file uses old scoring columns. Rerun evaluate.py --sut {s} to update it.")
             continue
+        df = add_scores(df, s, weights)
         d_aggregate = {"".join(key.split("_")[1:]): val for key, val in df.sum(axis=0, numeric_only=True).items()}
+        d_aggregate["score_10"] = df.attrs["score_10"]
+        d_aggregate["weighted_score_10"] = df.attrs["weighted_score_10"]
         d_aggregate.update({"sut": s})
         aggregate += [d_aggregate]
         global_df = global_df.merge(df, how="outer", left_on="file", right_on="file")  # , suffixes=(None,"_"+s))
@@ -154,7 +175,11 @@ def main():
     if extra:
         print(f"Note: {len(extra)} SUT(s) not in SUT_ORDER, appended: {extra}")
         present += extra
-    print("\n", aggregate_df.loc[present][["score", "correct", "wrong"]].sort_values("score", ascending=False))
+    print(
+        "\n",
+        aggregate_df.loc[present][["score", "score_10", "weighted_score_10", "correct", "wrong"]]
+        .sort_values("score_10", ascending=False)
+    )
 
     global_df.to_csv(RESULT_DIR + f"/global_results_{dataset}.csv")
     aggregate_df.to_csv(RESULT_DIR + f"/aggregate_results_{dataset}.csv")

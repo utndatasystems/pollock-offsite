@@ -7,6 +7,7 @@ import json
 import os
 import re
 import sys
+from concurrent.futures import ProcessPoolExecutor
 from collections import Counter, defaultdict
 from pathlib import Path
 
@@ -304,6 +305,87 @@ def subset_reports(reports, filenames):
     return {filename: reports[filename] for filename in filenames if filename in reports}
 
 
+def load_cached_results(results_csv, sut):
+    if not os.path.exists(results_csv):
+        return None
+    try:
+        df = pd.read_csv(results_csv)
+    except Exception:
+        return None
+
+    required = {"file", f"{sut}_correct", f"{sut}_wrong"}
+    if not required.issubset(df.columns):
+        return None
+    return df
+
+
+def compare_loaded_to_clean(task):
+    fname, clean_path, loaded_path = task
+    return fname, alex_compare(clean_path, loaded_path)
+
+
+def build_results_cache(all_files, loading_dir, clean_dir, sut, results_csv):
+    app_error_files = []
+    compare_tasks = []
+    for fname in all_files:
+        loaded_path = os.path.join(loading_dir, fname + "_converted.csv")
+        if is_load_failed(loaded_path):
+            app_error_files.append(fname)
+            continue
+        clean_path = os.path.join(clean_dir, fname)
+        if os.path.exists(clean_path):
+            compare_tasks.append((fname, clean_path, loaded_path))
+
+    compare_results = {}
+    max_workers = min(os.cpu_count() or 1, 8)
+    if compare_tasks:
+        with ProcessPoolExecutor(max_workers=max_workers) as executor:
+            for fname, is_correct in executor.map(compare_loaded_to_clean, compare_tasks):
+                compare_results[fname] = bool(is_correct)
+
+    rows = []
+    app_error_set = set(app_error_files)
+    for fname in all_files:
+        if fname in app_error_set:
+            correct = False
+        else:
+            correct = compare_results.get(fname, False)
+        rows.append({
+            "file": fname,
+            f"{sut}_correct": int(correct),
+            f"{sut}_wrong": int(not correct),
+        })
+
+    df = pd.DataFrame(rows)
+    Path(results_csv).parent.mkdir(parents=True, exist_ok=True)
+    df.to_csv(results_csv, index=False)
+    return df
+
+
+def classify_files(all_files, results_csv, loading_dir, clean_dir, sut):
+    df = load_cached_results(results_csv, sut)
+    if df is None or set(df["file"]) != set(all_files):
+        df = build_results_cache(all_files, loading_dir, clean_dir, sut, results_csv)
+
+    app_error_files = []
+    wrong_content_files = []
+    wrong_col = f"{sut}_wrong"
+    wrong_files = {
+        row["file"]
+        for _, row in df.iterrows()
+        if bool(row[wrong_col])
+    }
+
+    for fname in all_files:
+        loaded_path = os.path.join(loading_dir, fname + "_converted.csv")
+        if is_load_failed(loaded_path):
+            app_error_files.append(fname)
+        elif fname in wrong_files:
+            wrong_content_files.append(fname)
+
+    return app_error_files, wrong_content_files
+
+
 def diff_rows(clean_rows, loaded_rows, max_examples=3):
     """
     Return a diagnostic dict comparing clean vs loaded row lists.
@@ -467,16 +549,13 @@ def main():
     else:
         sys.exit(f"Error: neither results CSV ({results_csv}) nor input dir ({csv_dir}) found")
 
-    app_error_files = []
-    wrong_content_files = []
-    for fname in all_files:
-        loaded_path = os.path.join(loading_dir, fname + "_converted.csv")
-        if is_load_failed(loaded_path):
-            app_error_files.append(fname)
-        else:
-            clean_path = os.path.join(clean_dir, fname)
-            if os.path.exists(clean_path) and not alex_compare(clean_path, loaded_path):
-                wrong_content_files.append(fname)
+    app_error_files, wrong_content_files = classify_files(
+        all_files=all_files,
+        results_csv=results_csv,
+        loading_dir=loading_dir,
+        clean_dir=clean_dir,
+        sut=sut,
+    )
 
     app_error_groups = group_by_pollution(app_error_files)
     wrong_content_groups = group_by_pollution(wrong_content_files)
