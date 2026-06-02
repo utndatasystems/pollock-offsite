@@ -1,0 +1,2 @@
+Malformed rows: 1
+{"line_num": 76, "reason": "',' expected after '\"'", "raw": "\"14/07/2018,10:45,0,GN-4624,$24.52,Summer Slip-On Sneakers,\"Run a 5K, rock hop at the shore, window shop in town - these summer slip-on sneakers do it all. They're breathable, quick drying and comfortably cushioned for whatever your day has in store.\",\"https://www.example.com/product/GN_4624.html\",\r\n"}

@@ -1,0 +1,2 @@
+Malformed rows: 1
+{"line_num": 9, "reason": "expected 9 fields, got 10", "raw": ["", "16/02/2018", "01:45", "2", "YY-3522", "$19.34", "Cycling Jersey, Short-Sleeve", "Designed with lots of performance features, plus a semi-form-fitting profile, this cycling jersey delivers all-day comfort and serious style.", "https://www.example.com/product/YY_3522.html", ""]}

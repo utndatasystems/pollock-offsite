@@ -1,0 +1,2 @@
+Malformed rows: 1
+{"line_num": 36, "reason": "',' expected after '\"'", "raw": "28/03/2018,\"08:45,4,AN-6109,$18.58,Kids' Pullover,\"Just as good today as it was back then, our kids' retro fleece pullover combines our soft, warm, stretchy fleece with cool colorblock designs and our logo.\",\"https://www.example.com/product/AN_6109.html\",\r\n"}

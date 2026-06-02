@@ -1,0 +1,2 @@
+Malformed rows: 1
+{"line_num": 23, "reason": "expected 9 fields, got 8", "raw": ["14/03/2018", "05:15", "1", "YY-2600", "$90.99", "Kids' Mountain Bike, 24\"\"An easy-to-ride mountain bike that not only proves to be great fun for all the kids, but also offers great durability and stability.", "https://www.example.com/product/YY_2600.html", ""]}

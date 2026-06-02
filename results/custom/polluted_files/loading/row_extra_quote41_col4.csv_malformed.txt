@@ -1,0 +1,2 @@
+Malformed rows: 1
+{"line_num": 42, "reason": "',' expected after '\"'", "raw": "16/04/2018,11:45,15,RI-3655,\"$45.12,Kids' Sneaker,\"Designed with FAST fun in mind, these super cool kids' sneakers feature a sleek, engineered mesh upper and award-winning cushioning for all-day, action-packed comfort.\",\"https://www.example.com/product/RI_3655.html\",\r\n"}

@@ -1,0 +1,2 @@
+Malformed rows: 1
+{"line_num": 13, "reason": "',' expected after '\"'", "raw": "20/02/2018,02:45,1,\"BH-7531,$48.08,Women's  Fly Rod 8 Wt.,\"Amazingly crisp action and a remarkably light feel in our 8\\'9\"\" length fly rod, impeccably designed for her.\",\"https://www.example.com/product/BH_7531.html\",\r\n"}

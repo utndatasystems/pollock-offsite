@@ -7,9 +7,13 @@ import json
 import os
 import re
 import sys
-from collections import Counter
+from collections import Counter, defaultdict
+from pathlib import Path
 
 import pandas as pd
+
+sys.path.insert(0, str(Path(__file__).parent.parent))
+from pollock.metrics import alex_compare
 
 
 def _counter_subtract(a: Counter, b: Counter) -> Counter:
@@ -52,6 +56,101 @@ def pollution_type(filename):
         if m:
             return description.format(*m.groups())
     return "Unknown"
+
+
+_GROUP_PATTERNS = [
+    (r"row_field_delimiter_\d+_.+", "Row uses space as field delimiter"),
+    (r"row_extra_quote\d+_col\d+",  "Extra unescaped quote"),
+    (r"row_less_sep_row\d+_col\d+", "Missing delimiter"),
+    (r"row_more_sep_row\d+_col\d+", "Extra delimiter"),
+]
+
+
+def pollution_group(filename):
+    """Like pollution_type but collapses row/col-index variants into a single label."""
+    stem = filename.removesuffix(".csv")
+    for pattern, description in _GROUP_PATTERNS:
+        if re.fullmatch(pattern, stem):
+            return description
+    return pollution_type(filename)
+
+
+def group_by_pollution(files):
+    grouped = defaultdict(list)
+    for filename in files:
+        grouped[pollution_group(filename)].append(filename)
+    for grouped_files in grouped.values():
+        grouped_files.sort(key=natural_sort_key)
+    return grouped
+
+
+def natural_sort_key(value):
+    return [
+        int(part) if part.isdigit() else part
+        for part in re.split(r"(\d+)", value)
+    ]
+
+
+def sorted_pollution_groups(grouped):
+    return sorted(grouped.items(), key=lambda item: (-len(item[1]), item[0]))
+
+
+def pollution_location(filename):
+    stem = filename.removesuffix(".csv")
+    patterns = [
+        r"row_field_delimiter_(?P<row>\d+)_.+",
+        r"row_extra_quote(?P<row>\d+)_col(?P<col>\d+)",
+        r"row_less_sep_row(?P<row>\d+)_col(?P<col>\d+)",
+        r"row_more_sep_row(?P<row>\d+)_col(?P<col>\d+)",
+    ]
+    for pattern in patterns:
+        match = re.fullmatch(pattern, stem)
+        if match:
+            row = int(match.group("row"))
+            col = match.groupdict().get("col")
+            return row, int(col) if col is not None else None
+    return None
+
+
+def format_number_ranges(values):
+    values = sorted(set(values))
+    if not values:
+        return ""
+
+    ranges = []
+    start = prev = values[0]
+    for value in values[1:]:
+        if value == prev + 1:
+            prev = value
+            continue
+        ranges.append((start, prev))
+        start = prev = value
+    ranges.append((start, prev))
+
+    return ", ".join(
+        str(start) if start == end else f"{start}-{end}"
+        for start, end in ranges
+    )
+
+
+def pollution_variant_summary(files):
+    rows = []
+    cols = []
+    for filename in files:
+        location = pollution_location(filename)
+        if location is None:
+            continue
+        row, col = location
+        rows.append(row)
+        if col is not None:
+            cols.append(col)
+
+    parts = []
+    if rows:
+        parts.append(f"rows {format_number_ranges(rows)} ({len(set(rows))} unique)")
+    if cols:
+        parts.append(f"columns {format_number_ranges(cols)} ({len(set(cols))} unique)")
+    return "; ".join(parts)
 
 
 def read_csv_rows(path):
@@ -108,6 +207,103 @@ def format_params(params):
     return ", ".join(parts)
 
 
+def malformed_report_path(loading_dir, filename):
+    return os.path.join(loading_dir, f"{filename}_malformed.txt")
+
+
+def load_malformed_report(path):
+    report = {
+        "exists": os.path.exists(path),
+        "status": "missing",
+        "count": 0,
+        "entries": [],
+        "error": None,
+    }
+    if not report["exists"]:
+        return report
+
+    try:
+        with open(path, "r", encoding="utf-8") as f:
+            lines = [line.rstrip("\n") for line in f]
+    except Exception as exc:
+        report["status"] = "read_error"
+        report["error"] = str(exc)
+        return report
+
+    if not lines:
+        report["status"] = "empty"
+        return report
+
+    header = lines[0].strip()
+    if header == "Application Error":
+        report["status"] = "application_error"
+        report["error"] = "\n".join(lines[1:]).strip() or None
+        return report
+
+    if header.startswith("Malformed rows:"):
+        report["status"] = "ok"
+        try:
+            report["count"] = int(header.split(":", 1)[1].strip())
+        except ValueError:
+            report["status"] = "parse_error"
+            report["error"] = f"Invalid malformed row count header: {header!r}"
+            return report
+
+        entries = []
+        for line in lines[1:]:
+            if not line.strip():
+                continue
+            try:
+                entries.append(json.loads(line))
+            except json.JSONDecodeError as exc:
+                report["status"] = "parse_error"
+                report["error"] = f"Invalid JSON entry: {exc}"
+                return report
+        report["entries"] = entries
+        if entries and report["count"] == 0:
+            report["count"] = len(entries)
+        elif report["count"] == 0:
+            report["count"] = len(entries)
+        return report
+
+    report["status"] = "parse_error"
+    report["error"] = f"Unknown malformed report format: {header!r}"
+    return report
+
+
+def format_malformed_raw(raw, max_width=120):
+    text = raw if isinstance(raw, str) else repr(raw)
+    text = text.replace("\n", "\\n")
+    if len(text) > max_width:
+        return text[: max_width - 3] + "..."
+    return text
+
+
+def malformed_reason_counts(reports):
+    counts = Counter()
+    for report in reports.values():
+        for entry in report.get("entries", []):
+            reason = entry.get("reason") or "Unknown"
+            counts[reason] += 1
+    return counts
+
+
+def malformed_detection_counts(files, reports):
+    detected = 0
+    total_rows = 0
+    for filename in files:
+        report = reports.get(filename, {})
+        count = report.get("count", 0)
+        if count > 0:
+            detected += 1
+            total_rows += count
+    return detected, total_rows
+
+
+def subset_reports(reports, filenames):
+    return {filename: reports[filename] for filename in filenames if filename in reports}
+
+
 def diff_rows(clean_rows, loaded_rows, max_examples=3):
     """
     Return a diagnostic dict comparing clean vs loaded row lists.
@@ -150,7 +346,7 @@ def diff_rows(clean_rows, loaded_rows, max_examples=3):
     return diag
 
 
-def write_file_section(f, filename, scores, diag, polluted_lines, params, poll_type):
+def write_file_section(f, filename, scores, diag, polluted_lines, params, poll_type, malformed_report=None):
     sep = "-" * 70
     f.write(f"\n{sep}\n")
     f.write(f"FILE: {filename}\n")
@@ -158,7 +354,24 @@ def write_file_section(f, filename, scores, diag, polluted_lines, params, poll_t
     if params:
         f.write(f"DIALECT: {format_params(params)}\n")
 
-    f.write(f"WRONG: {scores.get('wrong', '?')}\n")
+    if malformed_report and malformed_report.get("exists"):
+        status = malformed_report.get("status")
+        if status == "ok":
+            count = malformed_report.get("count", 0)
+            f.write(f"MALFORMED ROWS DETECTED: {count}\n")
+            if count:
+                entries = malformed_report.get("entries", [])
+                for entry in entries[:3]:
+                    f.write(
+                        f"  line {entry.get('line_num')}: {entry.get('reason')} "
+                        f"- {format_malformed_raw(entry.get('raw'))}\n"
+                    )
+                if count > len(entries[:3]):
+                    f.write(f"  ... and {count - len(entries[:3])} more\n")
+        else:
+            f.write(f"MALFORMED ROW REPORT: {status}\n")
+            if malformed_report.get("error"):
+                f.write(f"  {malformed_report['error']}\n")
 
     if scores.get("load_failed", False):
         f.write("\n  SUT failed to load the file.\n")
@@ -207,7 +420,7 @@ def write_file_section(f, filename, scores, diag, polluted_lines, params, poll_t
 
 def main():
     parser = argparse.ArgumentParser(
-        description="Find files where a SUT produced any error."
+        description="Find files where a SUT failed to load (Application Error)."
     )
     parser.add_argument("sut", help="Name of the SUT (e.g. pandas, duckdbparse)")
     parser.add_argument(
@@ -226,7 +439,17 @@ def main():
         "--output", default=None,
         help="Output file path (default: {sut}_errors.txt)"
     )
+    parser.add_argument(
+        "--max-details-per-type", type=int, default=3,
+        help="Number of detailed file examples to write per pollution type (0 = all; default: 3)"
+    )
+    parser.add_argument(
+        "--custom", action="store_true",
+        help="Read custom malformed-row sidecars and report detection ratios by pollution type"
+    )
     args = parser.parse_args()
+    if args.max_details_per_type < 0:
+        parser.error("--max-details-per-type must be greater than or equal to 0")
 
     sut = args.sut
     results_csv = os.path.join(args.results_dir, sut, args.dataset, f"{sut}_results.csv")
@@ -235,52 +458,196 @@ def main():
     csv_dir     = os.path.join(args.polluted_dir, "csv")
     params_dir  = os.path.join(args.polluted_dir, "parameters")
 
-    if not os.path.exists(results_csv):
-        sys.exit(f"Error: results file not found at {results_csv}")
+    # Get file list from results CSV if available, otherwise scan the input dir.
+    if os.path.exists(results_csv):
+        df = pd.read_csv(results_csv)
+        all_files = df["file"].tolist()
+    elif os.path.isdir(csv_dir):
+        all_files = sorted(f for f in os.listdir(csv_dir) if f.endswith(".csv"))
+    else:
+        sys.exit(f"Error: neither results CSV ({results_csv}) nor input dir ({csv_dir}) found")
 
-    df = pd.read_csv(results_csv)
+    app_error_files = []
+    wrong_content_files = []
+    for fname in all_files:
+        loaded_path = os.path.join(loading_dir, fname + "_converted.csv")
+        if is_load_failed(loaded_path):
+            app_error_files.append(fname)
+        else:
+            clean_path = os.path.join(clean_dir, fname)
+            if os.path.exists(clean_path) and not alex_compare(clean_path, loaded_path):
+                wrong_content_files.append(fname)
 
-    wrong_col = f"{sut}_wrong"
-
-    missing_cols = [c for c in [wrong_col] if c not in df.columns]
-    if missing_cols:
-        sys.exit(f"Error: expected columns not found: {missing_cols}")
-
-    wrong = df[df[wrong_col] == 1]
+    app_error_groups = group_by_pollution(app_error_files)
+    wrong_content_groups = group_by_pollution(wrong_content_files)
+    app_error_counts = Counter({k: len(v) for k, v in app_error_groups.items()})
+    wrong_content_counts = Counter({k: len(v) for k, v in wrong_content_groups.items()})
+    malformed_reports = {}
+    if args.custom:
+        malformed_reports = {
+            fname: load_malformed_report(malformed_report_path(loading_dir, fname))
+            for fname in all_files
+        }
 
     output_path = args.output or f"{sut}_errors.txt"
+
+    def write_category_counts(out, grouped):
+        if not grouped:
+            out.write("  (none)\n")
+            return
+        for category, files in sorted_pollution_groups(grouped):
+            out.write(f"  {len(files):4d}  {category}\n")
+
+    def detail_files_for_type(files):
+        if args.max_details_per_type == 0:
+            return files
+        return files[:args.max_details_per_type]
+
+    def write_pollution_type_header(out, pollution, files):
+        out.write(f"\n{'-'*70}\n")
+        out.write(f"POLLUTION TYPE: {pollution}\n")
+        out.write(f"FILES: {len(files)}\n")
+        variants = pollution_variant_summary(files)
+        if variants:
+            out.write(f"VARIANTS: {variants}\n")
+
+        shown = detail_files_for_type(files)
+        if len(shown) < len(files):
+            hidden = len(files) - len(shown)
+            out.write(
+                f"SHOWING: {len(shown)} example file(s); "
+                f"{hidden} more grouped under this pollution type.\n"
+            )
+        return shown
+
+    def write_app_error_file(out, fname):
+        params = load_params(os.path.join(params_dir, fname + "_parameters.json"))
+        polluted_lines = read_polluted_lines(os.path.join(csv_dir, fname))
+        write_file_section(
+            out,
+            fname,
+            {"load_failed": True},
+            None,
+            polluted_lines,
+            params,
+            pollution_type(fname),
+            malformed_reports.get(fname),
+        )
+
+    def write_wrong_content_file(out, fname):
+        params = load_params(os.path.join(params_dir, fname + "_parameters.json"))
+        clean_path = os.path.join(clean_dir, fname)
+        loaded_path = os.path.join(loading_dir, fname + "_converted.csv")
+        clean_rows = read_csv_rows(clean_path)
+        loaded_rows = read_csv_rows(loaded_path)
+        diag = diff_rows(clean_rows, loaded_rows)
+        write_file_section(
+            out,
+            fname,
+            {"load_failed": False},
+            diag,
+            None,
+            params,
+            pollution_type(fname),
+            malformed_reports.get(fname),
+        )
+
+    def write_grouped_file_sections(out, grouped, write_file):
+        if not grouped:
+            out.write("\n  (none)\n")
+            return
+        for pollution, files in sorted_pollution_groups(grouped):
+            for fname in write_pollution_type_header(out, pollution, files):
+                write_file(out, fname)
+
+    def write_custom_detection_summary(out):
+        wrong_reports = subset_reports(malformed_reports, wrong_content_files)
+        present = sum(1 for report in wrong_reports.values() if report.get("exists"))
+        detected = sum(1 for report in wrong_reports.values() if report.get("count", 0) > 0)
+        total_rows = sum(report.get("count", 0) for report in wrong_reports.values())
+
+        out.write(f"\n{'='*70}\n")
+        out.write("CUSTOM MALFORMED-ROW DETECTION\n")
+        out.write(f"{'='*70}\n")
+        out.write(f"Scope: wrong-content files only\n")
+        out.write(f"Sidecar reports found: {present} / {len(wrong_content_files)}\n")
+        out.write(f"Files with detected malformed rows: {detected} / {len(wrong_content_files)}")
+        if wrong_content_files:
+            out.write(f" ({detected / len(wrong_content_files):.1%})")
+        out.write("\n")
+        out.write(f"Total malformed rows logged: {total_rows}\n")
+
+        out.write("\nDETECTION RATIO BY POLLUTION TYPE\n")
+        if not wrong_content_groups:
+            out.write("  (none)\n")
+        for pollution, files in sorted_pollution_groups(wrong_content_groups):
+            detected_files, rows_logged = malformed_detection_counts(files, malformed_reports)
+            ratio = detected_files / len(files) if files else 0.0
+            out.write(
+                f"  {detected_files:4d}/{len(files):4d}  {ratio:6.1%}  {pollution}"
+            )
+            if rows_logged:
+                out.write(f"  ({rows_logged} row(s) logged)")
+            out.write("\n")
+
+        reason_counts = malformed_reason_counts(wrong_reports)
+        out.write("\nMALFORMED ROW REASONS\n")
+        if reason_counts:
+            for reason, count in reason_counts.most_common():
+                out.write(f"  {count:4d}  {reason}\n")
+        else:
+            out.write("  (none)\n")
 
     with open(output_path, "w") as out:
         out.write(f"SUT: {sut}\n")
         out.write(f"Dataset: {args.dataset}\n")
-        out.write(f"Results file: {results_csv}\n")
-        out.write(f"Total files evaluated: {len(df)}\n")
-        out.write(f"Wrong files: {len(wrong)}\n")
+        if os.path.exists(results_csv):
+            out.write(f"Results file: {results_csv}\n")
+        out.write(f"Total files evaluated: {len(all_files)}\n")
+        out.write(f"Application errors: {len(app_error_files)}\n")
+        out.write(f"Wrong content:      {len(wrong_content_files)}\n")
+        if args.custom:
+            missing_sidecars = sum(1 for report in malformed_reports.values() if not report.get("exists"))
+            out.write(f"Malformed sidecars: {len(all_files) - missing_sidecars} / {len(all_files)}\n")
+
+        if args.custom:
+            write_custom_detection_summary(out)
 
         out.write(f"\n{'='*70}\n")
-        out.write(f"WRONG FILES ({len(wrong)} files)\n")
+        out.write(f"APPLICATION ERRORS BY POLLUTION TYPE - {len(app_error_files)} files\n")
         out.write(f"{'='*70}\n")
+        write_category_counts(out, app_error_groups)
 
-        for _, row in wrong.iterrows():
-            fname = row["file"]
-            params = load_params(os.path.join(params_dir, fname + "_parameters.json"))
+        out.write(f"\n{'='*70}\n")
+        out.write(f"APPLICATION ERROR FILES BY POLLUTION TYPE\n")
+        out.write(f"{'='*70}\n")
+        write_grouped_file_sections(out, app_error_groups, write_app_error_file)
 
-            clean_path   = os.path.join(clean_dir, fname)
-            loaded_path  = os.path.join(loading_dir, fname + "_converted.csv")
-            load_failed = is_load_failed(loaded_path)
+        out.write(f"\n{'='*70}\n")
+        out.write(f"WRONG CONTENT BY POLLUTION TYPE - {len(wrong_content_files)} files\n")
+        out.write(f"{'='*70}\n")
+        write_category_counts(out, wrong_content_groups)
 
-            diag = None
-            if os.path.exists(clean_path) and os.path.exists(loaded_path):
-                clean_rows  = read_csv_rows(clean_path)
-                loaded_rows = read_csv_rows(loaded_path)
-                diag = diff_rows(clean_rows, loaded_rows)
-
-            scores = {"wrong": int(row[wrong_col]), "load_failed": load_failed}
-            polluted_lines = read_polluted_lines(os.path.join(csv_dir, fname)) if load_failed else None
-            write_file_section(out, fname, scores, diag, polluted_lines, params, pollution_type(fname))
+        out.write(f"\n{'='*70}\n")
+        out.write(f"WRONG CONTENT FILES BY POLLUTION TYPE\n")
+        out.write(f"{'='*70}\n")
+        write_grouped_file_sections(out, wrong_content_groups, write_wrong_content_file)
 
     print(f"Results written to {output_path}")
-    print(f"  Wrong files: {len(wrong)}")
+    if args.custom:
+        wrong_reports = subset_reports(malformed_reports, wrong_content_files)
+        detected = sum(1 for report in wrong_reports.values() if report.get("count", 0) > 0)
+        present = sum(1 for report in wrong_reports.values() if report.get("exists"))
+        print(f"  Malformed sidecars on wrong-content files: {present} / {len(wrong_content_files)}")
+        print(f"  Wrong-content files with detected malformed rows: {detected} / {len(wrong_content_files)}")
+    print(f"  Application errors: {len(app_error_files)} / {len(all_files)}")
+    if app_error_counts:
+        for category, count in sorted(app_error_counts.items(), key=lambda x: -x[1]):
+            print(f"    {count:4d}  {category}")
+    print(f"  Wrong content: {len(wrong_content_files)} / {len(all_files)}")
+    if wrong_content_counts:
+        for category, count in sorted(wrong_content_counts.items(), key=lambda x: -x[1]):
+            print(f"    {count:4d}  {category}")
 
 
 if __name__ == "__main__":

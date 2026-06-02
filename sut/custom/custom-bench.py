@@ -1,5 +1,6 @@
 import sys
 import os
+import json
 from os.path import join, abspath, dirname
 
 # make sure this script can be invoked from anywhere by finding repo root
@@ -8,7 +9,7 @@ sys.path.insert(0, join(REPO_ROOT, 'sut'))
 
 import time
 from utils import print, save_time_df
-from solution import parse_csv
+from solution import parse_csv_with_validation
 
 sut = 'custom'
 DATASET = os.environ.get('DATASET', 'polluted_files')
@@ -22,6 +23,37 @@ os.makedirs(TIME_DIR, exist_ok=True)
 
 N_REPETITIONS = int(os.environ.get("N_REPETITIONS", 3))
 
+
+def malformed_report_path(filename):
+    return join(OUT_DIR, f"{filename}_malformed.txt")
+
+
+def _json_safe_raw(raw):
+    if isinstance(raw, (str, int, float, bool)) or raw is None:
+        return raw
+    if isinstance(raw, list):
+        return raw
+    return repr(raw)
+
+
+def write_malformed_report(path, malformed=None, error=None):
+    malformed = malformed or []
+    with open(path, "w", encoding="utf-8") as text_file:
+        if error is not None:
+            text_file.write("Application Error\n")
+            text_file.write(str(error))
+            text_file.write("\n")
+            return
+
+        text_file.write(f"Malformed rows: {len(malformed)}\n")
+        for row in malformed:
+            text_file.write(json.dumps({
+                "line_num": row.get("line_num"),
+                "reason": row.get("reason"),
+                "raw": _json_safe_raw(row.get("raw")),
+            }, ensure_ascii=True))
+            text_file.write("\n")
+
 times_dict = {}
 benchmark_files = os.listdir(IN_DIR)
 for idx, file in enumerate(benchmark_files):
@@ -29,22 +61,30 @@ for idx, file in enumerate(benchmark_files):
     in_filepath = join(IN_DIR, f)
     out_filename = f'{f}_converted.csv'
     out_filepath = join(OUT_DIR, out_filename)
-    if os.path.exists(out_filepath):
+    malformed_path = malformed_report_path(f)
+    if os.path.exists(out_filepath) and os.path.exists(malformed_path):
         continue
     print(f"({idx}/{len(benchmark_files)}) {f}")
 
     for time_rep in range(N_REPETITIONS):
-        start = time.time()
+        malformed = []
         try:
-            df = parse_csv(in_filepath)
+            start = time.time()
+            df, malformed = parse_csv_with_validation(in_filepath)
             end = time.time()
+            if malformed:
+                print(f"\t{len(malformed)} malformed row(s):")
+                for row in malformed:
+                    print(f"\t  line {row['line_num']}: {row['reason']} — {row['raw']!r}")
             df.to_csv(out_filepath, index=False)
+            write_malformed_report(malformed_path, malformed=malformed)
         except Exception as e:
             end = time.time()
             print("\t", e)
             with open(out_filepath, "w") as text_file:
                 text_file.write("Application Error\n")
                 text_file.write(str(e))
+            write_malformed_report(malformed_path, malformed=malformed, error=e)
 
         times_dict[f] = times_dict.get(f, []) + [(end - start)]
 

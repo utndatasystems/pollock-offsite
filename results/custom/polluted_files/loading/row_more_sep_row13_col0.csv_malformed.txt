@@ -1,0 +1,2 @@
+Malformed rows: 1
+{"line_num": 14, "reason": "expected 9 fields, got 10", "raw": ["", "21/02/2018", "03:00", "3", "BH-3190", "$65.38", "Men's Down Vest", "Our best-value down vest is packed with ultralight 650-fill for warmth and protection, even when wet.", "https://www.example.com/product/BH_3190.html", ""]}

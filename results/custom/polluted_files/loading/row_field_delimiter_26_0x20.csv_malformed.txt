@@ -1,0 +1,2 @@
+Malformed rows: 1
+{"line_num": 27, "reason": "expected 9 fields, got 2", "raw": ["18/03/2018 06:15 1 RI-7338 $43.53 Kids' Hat \"Let your kids show their spirit for adventure with our fun trucker-style hat", " ready to go from trailhead to bus stop and back.\" \"https://www.example.com/product/RI_7338.html\" "]}

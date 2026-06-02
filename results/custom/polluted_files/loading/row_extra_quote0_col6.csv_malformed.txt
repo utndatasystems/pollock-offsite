@@ -1,0 +1,2 @@
+Malformed rows: 1
+{"line_num": 1, "reason": "',' expected after '\"'", "raw": "DATE,TIME,Qty,PRODUCTID,Price,ProductType,\"\"ProductDescription\",\"URL\",Comments\r\n"}

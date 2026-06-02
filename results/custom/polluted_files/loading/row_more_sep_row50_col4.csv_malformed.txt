@@ -1,0 +1,2 @@
+Malformed rows: 1
+{"line_num": 51, "reason": "expected 9 fields, got 10", "raw": ["29/04/2018", "15:00", "30", "AN-5829", "", "$2.86", "Women's Booties", "Inspired by the legendary comfort of our slippers, we designed these warm slipper booties to be so cozy you'll never want to take them off. The durable knit lambswool upper is lined with toasty fleece that wraps your feet in luxury.", "https://www.example.com/product/AN_5829.html", ""]}

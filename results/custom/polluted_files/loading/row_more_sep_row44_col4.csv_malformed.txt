@@ -1,0 +1,2 @@
+Malformed rows: 1
+{"line_num": 45, "reason": "expected 9 fields, got 10", "raw": ["19/04/2018", "12:30", "9", "YY-7121", "", "$67.64", "Backpacking Stove Kit", "Our lightest, most compact 2-person cookset nests together to save space. Includes a stove, a two-liter hard anodized aluminum pot with clear strainer lid, 2 bowls, 2-12.5 oz. double-wall insulated mugs and 2 folding sporks.", "https://www.example.com/product/YY_7121.html", ""]}

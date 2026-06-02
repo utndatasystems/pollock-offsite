@@ -1,16 +1,24 @@
+import csv
 import pandas as pd
 
 
-def parse_csv(csv_input: str) -> pd.DataFrame:
+def parse_csv_with_validation(csv_input: str):
     """
-    Parse a CSV and return a pandas DataFrame 
-
-    Args:
-        csv_input: A filesystem path to a CSV file
-                   as a string.
+    Parse a CSV, skipping malformed rows.
 
     Returns:
-        A pandas DataFrame.
+        (DataFrame of good rows, list of malformed row dicts)
+        Each malformed dict has keys: line_num, raw, reason.
     """
-    return pd.read_csv(csv_input)
-    raise NotImplementedError("Implement parse_csv in this file")
+    with open(csv_input, newline='') as f:
+        try:
+            expected_cols = len(next(csv.reader(f)))
+        except StopIteration:
+            return pd.DataFrame(), []
+        f.seek(0)
+        vr = csv.ValidationReader(f, expected_cols=expected_cols, strict=True)
+        rows = list(vr)
+        malformed = vr.malformed_rows
+    if not rows:
+        return pd.DataFrame(), malformed
+    return pd.DataFrame(rows[1:], columns=rows[0]), malformed

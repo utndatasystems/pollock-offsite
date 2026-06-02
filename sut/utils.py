@@ -4,6 +4,9 @@ from datetime import datetime
 from time import time
 from pathlib import Path
 import pandas as pd
+from dotenv import load_dotenv
+
+load_dotenv(dotenv_path=Path(__file__).parent.parent / ".env")
 
 def parse_utf(filename, pollution):
     """

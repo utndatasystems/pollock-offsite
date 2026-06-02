@@ -1,0 +1,2 @@
+Malformed rows: 1
+{"line_num": 17, "reason": "expected 9 fields, got 8", "raw": ["24/02/2018", "03:45", "1AN-5096", "$33.83", "Organic Cotton Oxford Shirt, Plaid", "Introducing our most easygoing oxford ever. This plaid oxford shirt is made from the purest cotton organically sourced and 100% certified and washed for a super laid-back look and feel.", "https://www.example.com/product/AN_5096.html", ""]}

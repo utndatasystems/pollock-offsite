@@ -1,0 +1,2 @@
+Malformed rows: 1
+{"line_num": 66, "reason": "expected 9 fields, got 8", "raw": ["31/05/2018", "15:30", "3HK-9973", "$39.49", "Women's Ventilated Hiking Shoes", "This lightweight, ventilated version of the best-selling trail hiker features less volume in the forefoot for a more athletic fit. It's also equipped with a grippier outsole that excels in both wet and dry conditions.", "https://www.example.com/product/HK_9973.html", ""]}

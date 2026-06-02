@@ -1,0 +1,2 @@
+Malformed rows: 1
+{"line_num": 56, "reason": "',' expected after '\"'", "raw": "20/05/2018,20:30,16,AN-5136,$39.41,Ragg Wool Hat,\"Our traditional ragg wool hat is thickly knit from soft lambswool yarns and keeps on insulating, even when wet.\",\"\"https://www.example.com/product/AN_5136.html\",\r\n"}

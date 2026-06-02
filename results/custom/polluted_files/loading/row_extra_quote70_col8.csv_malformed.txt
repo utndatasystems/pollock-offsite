@@ -1,0 +1,2 @@
+Malformed rows: 1
+{"line_num": 72, "reason": "',' expected after '\"'", "raw": "27/06/2018,17:15,1,RI-7731,$65.13,\"Ceramic Lamp, Stripe\",\"Bring light, texture and classic style to any space with this coast-inspired striped ceramic table lamp.\",\"https://www.example.com/product/RI_7731.html\",\r\n"}

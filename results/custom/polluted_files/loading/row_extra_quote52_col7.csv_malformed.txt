@@ -1,0 +1,2 @@
+Malformed rows: 1
+{"line_num": 53, "reason": "',' expected after '\"'", "raw": "15/05/2018,19:15,18,HK-8027,$26.62,Camp Stove Bundle with Coffee Press,\"This unique bundle includes the wood-burning camp Stove, Portable Grill, Kettle Pot with Coffee Press and a USB Lantern.\",\"\"https://www.example.com/product/HK_8027.html\",\r\n"}
