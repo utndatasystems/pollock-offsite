@@ -134,7 +134,7 @@ def main():
 
     files= [f for f in os.listdir(f"data/{dataset}/csv") if f.endswith("csv")]
     aggregate = []
-    system_dfs = []
+    global_df = pd.DataFrame({"file": files})
     eval_systems = systems if UPDATE_SYSTEM is None else [s for s in systems if s == UPDATE_SYSTEM]
 
     

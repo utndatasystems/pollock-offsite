@@ -1,0 +1,14 @@
+filename,custom_time_0
+file_escape_char_0x00.csv,0.0012831687927246094
+file_escape_char_0x5C.csv,0.0014088153839111328
+file_field_delimiter_0x20.csv,0.0013909339904785156
+file_field_delimiter_0x2C_0x20.csv,0.001369476318359375
+file_field_delimiter_0x3B.csv,0.001689910888671875
+file_field_delimiter_0x9.csv,0.0015370845794677734
+file_multitable_same.csv,0.0014600753784179688
+file_quotation_char_0x27.csv,0.001201629638671875
+row_extra_quote0_col0.csv,0.0008292198181152344
+row_field_delimiter_0_0x20.csv,0.001628875732421875
+row_less_sep_row0_col1.csv,0.0015888214111328125
+row_less_sep_row1_col2.csv,0.0016734600067138672
+row_more_sep_row0_col0.csv,0.0016980171203613281
