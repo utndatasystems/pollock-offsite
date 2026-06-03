@@ -7,6 +7,9 @@ __pycache__/
 # Pollock
 *.docx
 
+# Survey pipeline outputs
+survey/out/
+
 # Database files
 *.db
 
