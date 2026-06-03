@@ -21,6 +21,7 @@ from pathlib import Path
 
 from tqdm.auto import tqdm
 
+from ..config import REPO_ROOT
 from . import manifest, storage
 from ._log import get_logger
 
@@ -142,9 +143,9 @@ def _run_hf(args) -> int:
                 logger.info("[fetch/hf] byte cap reached; stopping")
                 break
             sha = hashlib.sha256(body).hexdigest()
-            staged = storage.stage_path("hf", url)
-            with open(staged, "wb") as f:
-                f.write(body)
+            staged, fh = storage.stage_path("hf", url, REPO_ROOT / "data")
+            with fh:
+                fh.write(body)
             bytes_this_run += len(body)
             n_kept += 1
             bar.update(1)
@@ -271,9 +272,9 @@ def _run_kaggle(args) -> int:
         bar.set_postfix(MB=f"{bytes_this_run/1024/1024:.1f}")
 
         kaggle_url = f"https://www.kaggle.com/datasets/{ref}/{chosen.name}"
-        staged = storage.stage_path("kaggle", kaggle_url)
-        with open(staged, "wb") as f:
-            f.write(body)
+        staged, fh = storage.stage_path("kaggle", kaggle_url, REPO_ROOT / "data")
+        with fh:
+            fh.write(body)
         rows.append(
             manifest.ManifestRow(
                 origin="kaggle",

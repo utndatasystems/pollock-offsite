@@ -30,6 +30,7 @@ from pathlib import Path
 
 from tqdm.auto import tqdm
 
+from ..config import REPO_ROOT
 from . import _http, manifest, storage
 from ._filters import is_safe_http_url, looks_like_csv
 from ._log import get_logger
@@ -270,9 +271,11 @@ def run_data_europa_eu(args) -> int:
                             cap_hit = True
                             break
 
-                        staged = storage.stage_path("data.europa.eu", cand.url)
-                        with open(staged, "wb") as f:
-                            f.write(body)
+                        staged, fh = storage.stage_path(
+                            "data.europa.eu", cand.url, REPO_ROOT / "data"
+                        )
+                        with fh:
+                            fh.write(body)
                         bytes_this_run += real_size
                         known_hashes.add(sha)
                         n_kept += 1

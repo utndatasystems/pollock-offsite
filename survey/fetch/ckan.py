@@ -36,6 +36,7 @@ from urllib.parse import urlencode
 
 from tqdm.auto import tqdm
 
+from ..config import REPO_ROOT
 from . import _http, manifest, storage
 from ._filters import is_safe_http_url, looks_like_csv
 from ._log import get_logger
@@ -197,9 +198,9 @@ def run_ckan(args) -> int:
                 logger.info("[fetch/ckan] byte cap reached after download; stopping")
                 break
             sha = hashlib.sha256(body).hexdigest()
-            staged = storage.stage_path(source, resource.url)
-            with open(staged, "wb") as f:
-                f.write(body)
+            staged, fh = storage.stage_path(source, resource.url, REPO_ROOT / "data")
+            with fh:
+                fh.write(body)
             bytes_this_run += real_size
             n_kept += 1
             bar.update(1)

@@ -1,6 +1,6 @@
 """Per-source corpus storage layout.
 
-Files are staged under ``<repo_root>/data/<source>/csv/`` (the same shape
+Files are staged under ``<root>/<source>/csv/`` (the same shape
 the eurostat downloader uses), keyed by a sanitised basename derived from
 the source URL. Collisions get a numeric suffix (``foo.csv``,
 ``foo__1.csv``, …) so we don't deduplicate or skip — every fetched file
@@ -12,21 +12,20 @@ The ``<source>`` segment is the manifest ``origin`` (``data.gov``,
 
 from __future__ import annotations
 
+import os
 import re
 from pathlib import Path
+from typing import BinaryIO
 from urllib.parse import unquote, urlparse
-
-from ..config import REPO_ROOT
-
 
 _SAFE_NAME_RE = re.compile(r"[^A-Za-z0-9._-]+")
 _SOURCE_DIR_RE = re.compile(r"[^A-Za-z0-9_.]+")
 
 
-def source_dir(origin: str) -> Path:
-    """Return ``<repo>/data/<origin>/csv`` (created if needed)."""
+def source_dir(origin: str, root: Path) -> Path:
+    """Return ``<root>/<origin>/csv`` (created if needed)."""
     safe = _SOURCE_DIR_RE.sub("_", origin).strip("_") or "unknown"
-    out = REPO_ROOT / "data" / safe / "csv"
+    out = root / safe / "csv"
     out.mkdir(parents=True, exist_ok=True)
     return out
 
@@ -46,20 +45,33 @@ def _basename_from_url(url: str) -> str:
     return name
 
 
-def stage_path(origin: str, url: str) -> Path:
-    """Return a fresh, non-colliding path under the per-source dir.
+def stage_path(origin: str, url: str, root: Path) -> tuple[Path, BinaryIO]:
+    """Reserve a fresh, non-colliding path and return ``(path, open_handle)``.
 
-    Same basename twice → ``foo.csv``, ``foo__1.csv``, ``foo__2.csv``, …
+    Uses ``O_WRONLY | O_CREAT | O_EXCL`` so two threads racing the same
+    basename are guaranteed distinct files (``foo.csv``, ``foo__1.csv``, …).
+    The handle is opened in binary write mode; callers should use it via
+    a ``with`` block to close deterministically.
     """
-    base_dir = source_dir(origin)
+    base_dir = source_dir(origin, root)
     name = _basename_from_url(url)
+    flags = os.O_WRONLY | os.O_CREAT | os.O_EXCL
+    if hasattr(os, "O_BINARY"):
+        flags |= os.O_BINARY  # type: ignore[attr-defined]
+
     candidate = base_dir / name
-    if not candidate.exists():
-        return candidate
+    try:
+        fd = os.open(candidate, flags, 0o644)
+        return candidate, os.fdopen(fd, "wb")
+    except FileExistsError:
+        pass
+
     stem, _, ext = name.rpartition(".")
     n = 1
     while True:
         suffixed = base_dir / f"{stem}__{n}.{ext}"
-        if not suffixed.exists():
-            return suffixed
-        n += 1
+        try:
+            fd = os.open(suffixed, flags, 0o644)
+            return suffixed, os.fdopen(fd, "wb")
+        except FileExistsError:
+            n += 1
