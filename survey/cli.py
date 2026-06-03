@@ -1,7 +1,7 @@
-"""Survey CLI dispatcher.
+"""Internal pipeline orchestrator.
 
-Subcommands map 1:1 to submodule entry points so each can be invoked or
-tested in isolation:
+Dispatches into the survey-pipeline subcommands (annotate / scan / triage /
+fetch) so each can be invoked or tested in isolation:
 
     python -m survey fetch    --source data.gov --max-files 2500
     python -m survey annotate --in survey/out/raw --jobs 16
@@ -10,8 +10,8 @@ tested in isolation:
     python -m survey score    --gold-dir survey/out/gold
     python -m survey report   --out survey/out/reports
 
-Phase P1 wires the argparse surface and calls into NotImplementedError
-stubs so later phases can fill them in without touching this file.
+The fetch subcommand here is a thin shim over ``survey.fetch.run_fetch``;
+the standalone fetch CLI lives at ``python -m survey.fetch <backend>``.
 """
 
 from __future__ import annotations
@@ -71,17 +71,6 @@ def _build_parser() -> argparse.ArgumentParser:
         "--datagov-query",
         default="csv",
         help="Search query passed to catalog.data.gov (default: 'csv').",
-    )
-    p_fetch.add_argument(
-        "--datagov-skip-pages",
-        type=int,
-        default=0,
-        help=(
-            "data.gov only: fast-forward past N search pages before "
-            "downloading. Use this once to recover from a previous run that "
-            "exited before cursor persistence was wired up. "
-            "(20 datasets per page; ignored when a persisted cursor is found.)"
-        ),
     )
     p_fetch.add_argument("--dry-run", action="store_true")
     _add_common(p_fetch)

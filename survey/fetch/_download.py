@@ -98,6 +98,16 @@ def fetch_one(
                 max_bytes=opts.per_file_cap_bytes,
                 timeout=opts.request_timeout_s,
             )
+        # TODO(phase8): wire opts.compress through here. The flag is parsed and
+        # plumbed into FetchOptions today, but the streaming path still writes
+        # raw bytes; --compress=gzip|zstd is a no-op for now.
+        if getattr(opts, "compress", "none") not in ("none", None):
+            logger.warning(
+                "--compress=%s requested but compression is not yet wired "
+                "into _download.fetch_one; storing %s verbatim.",
+                opts.compress,
+                cand.url,
+            )
         # Re-open just enough to sniff the prefix for the CSV filter; we don't
         # have the content-type from stream_to_file, so we pass empty string
         # and rely on the body-magic checks in ``looks_like_csv``.

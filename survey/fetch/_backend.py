@@ -68,3 +68,27 @@ def add_common_args(p: argparse.ArgumentParser) -> None:
         help="Reject downloads whose body exceeds this size (default 200M).",
     )
     p.add_argument("--user-agent", default=None)
+    p.add_argument(
+        "--compress",
+        choices=("none", "gzip", "zstd"),
+        default="none",
+        help=(
+            "Compress uncompressed CSV downloads to disk (default: none). "
+            "Already-compressed downloads (.csv.gz, .csv.zst) are stored "
+            "verbatim regardless. Currently parsed but not yet wired into "
+            "the streaming download path."
+        ),
+    )
+    verbosity = p.add_mutually_exclusive_group()
+    verbosity.add_argument(
+        "--quiet",
+        "-q",
+        action="store_true",
+        help="Reduce log output to WARNING and above.",
+    )
+    verbosity.add_argument(
+        "--verbose",
+        "-v",
+        action="store_true",
+        help="Enable DEBUG-level log output.",
+    )

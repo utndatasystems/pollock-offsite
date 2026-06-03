@@ -15,7 +15,7 @@ from __future__ import annotations
 import argparse
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Union
+from typing import Literal, Union
 
 
 @dataclass(frozen=True)
@@ -31,6 +31,7 @@ class FetchOptions:
     request_timeout_s: int = 60
     user_agent: str | None = None
     log_level: str = "INFO"
+    compress: Literal["none", "gzip", "zstd"] = "none"
 
 
 @dataclass(frozen=True)
@@ -73,6 +74,7 @@ def _base_from_args(args: argparse.Namespace) -> FetchOptions:
         request_timeout_s=int(getattr(args, "request_timeout_s", 60) or 60),
         user_agent=getattr(args, "user_agent", None),
         log_level=getattr(args, "log_level", "INFO") or "INFO",
+        compress=getattr(args, "compress", "none") or "none",
     )
 
 
