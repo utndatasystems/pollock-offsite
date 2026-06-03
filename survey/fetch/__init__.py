@@ -1,20 +1,20 @@
-"""Tier 0 — corpus assembly.
+"""Tier 0 -- corpus assembly.
 
-``run_fetch`` dispatches on ``args.source`` (data.gov / data.gov.uk /
-HF / Kaggle) or falls back to ``args.source_dir`` (local-only mode).
-Backends live in sibling modules and produce ``manifest.csv`` rows.
+``BACKENDS`` is the registry of fetch backends; each value is a module that
+satisfies the ``Backend`` Protocol (``name``, ``add_subparser``,
+``options_from_args``, ``run``). Phase 5 dropped the ``_LegacyBackend`` adapter
+in favour of registering the modules directly.
 
-Phase 4 adds the ``BACKENDS`` registry and the typed-config / download / Backend
-re-exports. The legacy ``run_fetch(args)`` shim is preserved verbatim — the
-legacy ``survey/cli.py`` still drives it. Phase 5 will rewrite ``run_fetch`` to
-dispatch via ``BACKENDS``.
+The public ``run_fetch(args)`` shim keeps the legacy ``survey/cli.py`` entry
+point working: it dispatches on ``args.source``, builds the right typed
+options via the backend's ``options_from_args``, and calls ``run``. The Phase
+7 fetch-only CLI (``python -m survey.fetch``) will use the same registry but
+bypass this shim.
 """
 
 from __future__ import annotations
 
-import argparse
-from dataclasses import dataclass, field
-from typing import TYPE_CHECKING, Any, Callable
+from typing import TYPE_CHECKING
 
 from .config import (
     BackendOptions,
@@ -42,101 +42,51 @@ __all__ = (
 )
 
 
-@dataclass
-class _LegacyBackend:
-    """Phase-4 placeholder satisfying the ``Backend`` Protocol.
+def _build_registry() -> "dict[str, Backend]":
+    """Register the three full backend modules.
 
-    Wraps the not-yet-rewritten ``run_<backend>(args)`` entry points so the
-    registry exposes the three full backends today. Phase 5 swaps these out
-    for first-class backend modules.
+    Phase 6 will add the deferred backends (``inside_airbnb``, ``hf``,
+    ``kaggle``) as stubs.
     """
+    from . import ckan, data_europa_eu, datagov
 
-    name: str
-    _run: Callable[[argparse.Namespace], int]
-    _args_factory: Callable[[argparse.Namespace], BackendOptions] = field(
-        default=lambda a: from_args(a, "data.gov")  # overridden per-backend
-    )
-
-    def add_subparser(
-        self, sp: argparse._SubParsersAction
-    ) -> argparse.ArgumentParser:  # pragma: no cover - Phase 7 owns the real CLI
-        return sp.add_parser(self.name, help=f"{self.name} fetch backend")
-
-    def options_from_args(self, args: argparse.Namespace) -> BackendOptions:
-        return self._args_factory(args)
-
-    def run(self, opts: Any) -> int:
-        # Phase 4 keeps the legacy argparse entry. Phase 5 will rewrite each
-        # backend to take its typed Options dataclass directly.
-        if isinstance(opts, argparse.Namespace):
-            return self._run(opts)
-        raise TypeError(
-            f"{self.name}: legacy adapter expects argparse.Namespace until Phase 5"
-        )
+    return {
+        datagov.name: datagov,
+        ckan.name: ckan,
+        data_europa_eu.name: data_europa_eu,
+    }
 
 
-def _build_registry() -> dict[str, "Backend"]:
-    """Register every backend module known to Phase 4.
-
-    Full backends are wrapped via ``_LegacyBackend`` so the registry exposes
-    them before the Phase 5 rewrite. Deferred backends (``inside_airbnb``,
-    ``hf``, ``kaggle``) are skipped — Phase 6 stubs them.
-    """
-    registry: dict[str, "Backend"] = {}
-    from .ckan import run_ckan
-    from .data_europa_eu import run_data_europa_eu
-    from .datagov import run_datagov
-
-    registry["data.gov"] = _LegacyBackend(
-        name="data.gov",
-        _run=run_datagov,
-        _args_factory=lambda a: from_args(a, "data.gov"),
-    )
-    registry["data.gov.uk"] = _LegacyBackend(
-        name="data.gov.uk",
-        _run=run_ckan,
-        _args_factory=lambda a: from_args(a, "data.gov.uk"),
-    )
-    registry["data.europa.eu"] = _LegacyBackend(
-        name="data.europa.eu",
-        _run=run_data_europa_eu,
-        _args_factory=lambda a: from_args(a, "data.europa.eu"),
-    )
-    return registry
-
-
-BACKENDS: dict[str, "Backend"] = _build_registry()
+BACKENDS: "dict[str, Backend]" = _build_registry()
 
 
 def run_fetch(args) -> int:
-    if args.source_dir is not None:
+    """Backwards-compat shim driven by the legacy ``survey/cli.py``.
+
+    Reads ``args.source``, looks up the backend module in ``BACKENDS``, builds
+    its typed options via the module's ``options_from_args``, and calls
+    ``run``. The deferred backends (``inside_airbnb``, ``hf``, ``kaggle``) and
+    the ``--source-dir`` local mode still resolve through their existing
+    code paths until Phases 6 and 7 land.
+    """
+    if getattr(args, "source_dir", None) is not None:
         from .local import run_local
 
         return run_local(args)
 
-    if args.source == "data.gov":
-        from .datagov import run_datagov
+    source = getattr(args, "source", None)
+    if source in BACKENDS:
+        backend = BACKENDS[source]
+        return backend.run(backend.options_from_args(args))
 
-        return run_datagov(args)
-
-    if args.source == "data.gov.uk":
-        from .ckan import run_ckan
-
-        return run_ckan(args)
-
-    if args.source in ("hf", "kaggle"):
+    if source in ("hf", "kaggle"):
         from .hf_kaggle import run_hf_kaggle
 
         return run_hf_kaggle(args)
 
-    if args.source == "inside_airbnb":
+    if source == "inside_airbnb":
         from .inside_airbnb import run_inside_airbnb
 
         return run_inside_airbnb(args)
 
-    if args.source == "data.europa.eu":
-        from .data_europa_eu import run_data_europa_eu
-
-        return run_data_europa_eu(args)
-
-    raise NotImplementedError(f"fetch source {args.source!r} not implemented yet")
+    raise NotImplementedError(f"fetch source {source!r} not implemented yet")

@@ -1,85 +1,98 @@
-"""CKAN-portal fetch backend.
+"""CKAN-portal fetch backend (data.gov.uk).
 
-Targets any CKAN 3-API endpoint. The two portals the user requested are:
+Targets the live CKAN 3 API at ``https://ckan.publishing.service.gov.uk``.
+The public ``data.gov.uk`` site is a static portal; the underlying CKAN
+instance is the address above.
 
-- **data.gov.uk** — the public site is a static portal but the live CKAN
-  instance is at ``https://ckan.publishing.service.gov.uk``. We use that.
-- **data.gov (US)** — the CKAN endpoint at ``catalog.data.gov`` returns
-  ``404 Not Found`` to ``/api/3/action/...`` requests as of 2026-05.
-  When the configured endpoint is unreachable we log a clear error and
-  return without writing any manifest rows; the survey can proceed
-  without this source.
-
-Override the CKAN URL with the env var ``CKAN_<source>_URL`` (e.g.
-``CKAN_DATA_GOV_URL``) to point at a different mirror.
-
-Workflow per source:
+Workflow:
 1. ``package_search?q=res_format:CSV`` paginated until ``--max-files`` is hit.
-2. For each candidate package, walk ``resources[]`` and keep entries whose
-   ``format`` matches CSV / TSV.
-3. ``HEAD`` each resource URL, skip if size is unknown or > 200 MB.
-4. Download the resource body to ``<out-dir>/raw/<sha256[:2]>/<sha256>.csv``,
-   append a manifest row, increment the byte ledger.
+2. Walk ``resources[]`` per package, keep CSV/TSV-format entries.
+3. Stream each candidate through the shared ``download_loop``: HEAD-check
+   size, stream-to-disk under per-file caps, sha-dedup against the manifest,
+   and append manifest rows.
 
-Hard-stops on ``--max-bytes`` and ``--max-files``.
+The endpoint URL can be overridden either with ``--endpoint`` (preferred)
+or the legacy ``CKAN_DATA_GOV_UK_URL`` env var (consulted only when no
+``--endpoint`` is given). Other CKAN portals would each get their own
+backend module rather than sharing this one.
 """
 
 from __future__ import annotations
 
-import hashlib
+import argparse
+import json
 import os
-import time
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Iterable
+from typing import Iterator
 from urllib.parse import urlencode
 
-from tqdm.auto import tqdm
-
-from ..config import REPO_ROOT
-from . import _http, manifest, storage
-from ._filters import is_safe_http_url, looks_like_csv
+from . import _http, storage
+from ._backend import add_common_args
+from ._download import Candidate, download_loop
 from ._log import get_logger
+from ._state import State
+from .config import CkanOptions, FetchOptions, from_args
+from .manifest import ManifestWriter
 
 logger = get_logger("ckan")
 
 
-# Endpoint table. Override with env vars for offline / mirror testing.
-_DEFAULT_ENDPOINTS = {
-    "data.gov":    "https://catalog.data.gov",
-    "data.gov.uk": "https://ckan.publishing.service.gov.uk",
-}
+name = "data.gov.uk"
 
-_CSV_FORMATS = {"csv", "tsv"}
-_MAX_PER_RESOURCE_BYTES = 200 * 1024 * 1024  # 200 MB cap per CSV
-_REQUEST_TIMEOUT = 30
+_DEFAULT_ENDPOINT = "https://ckan.publishing.service.gov.uk"
+_LEGACY_ENV_OVERRIDE = "CKAN_DATA_GOV_UK_URL"
 _PAGE_SIZE = 100
+_REQUEST_TIMEOUT = 30
+_CSV_FORMATS = {"csv", "tsv"}
+_CURSOR_KEY = "ckan_cursors"
+_SEARCH_ERRORS = _http.HTTP_ERRORS + (json.JSONDecodeError,)
 
 
 @dataclass
-class CkanResource:
+class _CkanResource:
     package_title: str
     resource_name: str
     url: str
-    format: str
     size_hint: int | None
 
 
-def _endpoint_for(source: str) -> str:
-    env_key = f"CKAN_{source.upper().replace('.', '_').replace('-', '_')}_URL"
-    return os.environ.get(env_key) or _DEFAULT_ENDPOINTS[source]
+def add_subparser(sp: argparse._SubParsersAction) -> argparse.ArgumentParser:
+    p = sp.add_parser(name, help="Fetch CSV resources from data.gov.uk's CKAN.")
+    p.add_argument(
+        "--endpoint",
+        dest="ckan_endpoint",
+        default=None,
+        help=(
+            f"CKAN endpoint URL (default: {_DEFAULT_ENDPOINT}). "
+            f"Falls back to the {_LEGACY_ENV_OVERRIDE} env var if unset."
+        ),
+    )
+    add_common_args(p)
+    return p
 
 
-def _ckan_search(endpoint: str, query: str, start: int, rows: int) -> dict:
-    params = urlencode({"q": query, "rows": rows, "start": start})
-    url = f"{endpoint}/api/3/action/package_search?{params}"
-    body, _ = _http.get_bytes(url, timeout=_REQUEST_TIMEOUT)
-    import json
+def options_from_args(args: argparse.Namespace) -> CkanOptions:
+    opts = from_args(args, name)
+    assert isinstance(opts, CkanOptions)
+    return opts
 
+
+def _resolve_endpoint(opts: CkanOptions) -> str:
+    if opts.endpoint:
+        return opts.endpoint.rstrip("/")
+    return (os.environ.get(_LEGACY_ENV_OVERRIDE) or _DEFAULT_ENDPOINT).rstrip("/")
+
+
+def _ckan_search(endpoint: str, start: int, rows: int) -> dict:
+    params = urlencode({"q": "res_format:CSV", "rows": rows, "start": start})
+    body, _ = _http.get_bytes(
+        f"{endpoint}/api/3/action/package_search?{params}", timeout=_REQUEST_TIMEOUT
+    )
     return json.loads(body)
 
 
-def _walk_resources(packages: Iterable[dict]) -> Iterable[CkanResource]:
+def _walk_resources(packages: list[dict]) -> Iterator[_CkanResource]:
     for pkg in packages:
         title = (pkg.get("title") or "").strip()
         for r in pkg.get("resources") or []:
@@ -92,150 +105,120 @@ def _walk_resources(packages: Iterable[dict]) -> Iterable[CkanResource]:
                 size_hint = int(size_hint) if size_hint is not None else None
             except (TypeError, ValueError):
                 size_hint = None
-            yield CkanResource(
+            yield _CkanResource(
                 package_title=title,
                 resource_name=(r.get("name") or "").strip(),
                 url=url,
-                format=fmt,
                 size_hint=size_hint,
             )
 
 
-def run_ckan(args) -> int:
-    source: str = args.source
-    out_dir: Path = Path(args.out_dir).resolve()
-    endpoint = _endpoint_for(source).rstrip("/")
-    max_files = args.max_files
-    max_bytes = args.max_bytes
+def _iter_candidates(
+    endpoint: str, source: str, get_start, set_start
+) -> Iterator[Candidate]:
+    """Walk CKAN pages from the resume offset, yielding ``Candidate`` objects.
 
-    logger.info(f"[fetch/ckan] source={source} endpoint={endpoint}")
+    Persists the *next* page's ``start`` offset *before* yielding the current
+    page's candidates. If the consumer stops mid-page (cap_hit), the cursor
+    already points at the next page and a re-run skips this partially
+    processed one (sha-dedup keeps it safe).
+    """
+    start: int = get_start()
+    if start > 0:
+        logger.info(f"resuming from persisted offset start={start}")
 
-    # Probe the endpoint up front so the user gets a clear failure mode.
+    while True:
+        try:
+            page = _ckan_search(endpoint, start=start, rows=_PAGE_SIZE)
+        except _SEARCH_ERRORS as exc:
+            logger.error(f"page request failed at start={start}: {exc!r}; stopping")
+            return
+        if not page.get("success"):
+            logger.error(
+                f"endpoint reported success=false: "
+                f"{page.get('error') or page.get('message')}"
+            )
+            return
+        results = (page.get("result") or {}).get("results") or []
+        if not results:
+            # Catalog exhausted; reset cursor.
+            set_start(0)
+            return
+        next_start = start + len(results)
+        # Persist next cursor *before* yielding so cap_hit mid-page is safe.
+        set_start(next_start)
+        for r in _walk_resources(results):
+            yield Candidate(
+                url=r.url,
+                origin=source,
+                picked_reason=f"ckan:{r.package_title or r.resource_name}"[:180],
+                size_hint=r.size_hint,
+            )
+        start = next_start
+
+
+def run(opts: CkanOptions) -> int:
+    base: FetchOptions = opts.base
+    out_dir: Path = Path(base.out_dir).resolve()
+    endpoint = _resolve_endpoint(opts)
+    source = opts.source
+    state = State(out_dir)
+
+    logger.info(f"source={source} endpoint={endpoint}")
+
+    # Probe so the user gets a clear failure mode for unreachable endpoints.
     try:
-        probe = _ckan_search(endpoint, "*:*", start=0, rows=1)
+        probe = _ckan_search(endpoint, start=0, rows=1)
         if not probe.get("success"):
-            logger.info(
-                f"[fetch/ckan] endpoint reported success=false; aborting "
+            logger.error(
+                f"endpoint reported success=false; aborting "
                 f"({probe.get('error') or probe.get('message')})"
             )
             return 1
         total = probe.get("result", {}).get("count", 0)
-        logger.info(f"[fetch/ckan] endpoint healthy: {total:,} packages indexed")
-    except _http.HTTP_ERRORS as exc:
-        logger.info(f"[fetch/ckan] endpoint unreachable ({exc!r}); skipping {source}")
+        logger.info(f"endpoint healthy: {total:,} packages indexed")
+    except _SEARCH_ERRORS as exc:
+        logger.error(f"endpoint unreachable ({exc!r}); skipping {source}")
         return 1
 
-    # Per-run byte ledger: --max-bytes caps just this invocation's downloads.
-    # The global ledger (.fetch_state.json) is shared across all backends and
-    # gets bumped by this run's contribution at flush time.
-    bytes_at_start = manifest.load_bytes_used(out_dir)
-    bytes_this_run = 0
-    rows: list[manifest.ManifestRow] = []
-
-    n_seen = n_kept = n_skipped = 0
-    start = 0
-    bar = tqdm(
-        total=max_files,
-        desc=f"fetch {source}",
-        unit="file",
-        dynamic_ncols=True,
-        leave=False,
-    )
-
-    while True:
-        if max_files is not None and n_kept >= max_files:
-            break
+    def get_start() -> int:
+        cursors = state.get(_CURSOR_KEY) or {}
         try:
-            page = _ckan_search(endpoint, "res_format:CSV", start=start, rows=_PAGE_SIZE)
-        except _http.HTTP_ERRORS as exc:
-            logger.info(f"[fetch/ckan] page request failed at start={start}: {exc!r}; stopping")
-            break
-        results = (page.get("result") or {}).get("results") or []
-        if not results:
-            break
-        start += len(results)
+            return int(cursors.get(source, 0) or 0)
+        except (TypeError, ValueError):
+            return 0
 
-        for resource in _walk_resources(results):
-            if max_files is not None and n_kept >= max_files:
+    def set_start(value: int) -> None:
+        cursors = dict(state.get(_CURSOR_KEY) or {})
+        cursors[source] = int(value)
+        state.set(_CURSOR_KEY, cursors)
+
+    candidates = _iter_candidates(endpoint, source, get_start, set_start)
+
+    if base.dry_run:
+        n = 0
+        for cand in candidates:
+            if base.max_files is not None and n >= base.max_files:
                 break
-            n_seen += 1
+            logger.info(f"[dry-run] {source} {cand.size_hint or '?'}B {cand.url}")
+            n += 1
+        logger.info(f"dry-run done: {n} candidates")
+        return 0
 
-            if args.dry_run:
-                bar.update(1)
-                logger.info(
-                    f"[dry-run] {source} {resource.format} "
-                    f"{resource.size_hint or '?'}B {resource.url}"
-                )
-                n_kept += 1
-                continue
+    def _stage(origin: str, url: str):
+        return storage.stage_path(origin, url, base.data_root)
 
-            size_hint = resource.size_hint
-            if size_hint is None:
-                size_hint = _http.head_size(resource.url) or 0
-            if size_hint and size_hint > _MAX_PER_RESOURCE_BYTES:
-                n_skipped += 1
-                continue
-            if size_hint and bytes_this_run + size_hint > max_bytes:
-                logger.info(f"[fetch/ckan] byte cap reached; stopping at {bytes_this_run:,} bytes")
-                break
+    with ManifestWriter(out_dir) as mw:
+        summary = download_loop(
+            candidates,
+            opts=base,
+            mw=mw,
+            exclusive_stage=_stage,
+            on_cap_hit=lambda _last: None,  # cursor already persisted on page advance
+        )
 
-            if not is_safe_http_url(resource.url):
-                n_skipped += 1
-                continue
-            try:
-                body, content_type = _http.get_bytes(resource.url, timeout=120)
-            except _http.HTTP_ERRORS as exc:
-                logger.info(f"[fetch/ckan] download failed: {resource.url} ({exc!r})")
-                n_skipped += 1
-                continue
-
-            if not looks_like_csv(body, content_type):
-                n_skipped += 1
-                continue
-
-            real_size = len(body)
-            if bytes_this_run + real_size > max_bytes:
-                logger.info("[fetch/ckan] byte cap reached after download; stopping")
-                break
-            sha = hashlib.sha256(body).hexdigest()
-            staged, fh = storage.stage_path(source, resource.url, REPO_ROOT / "data")
-            with fh:
-                fh.write(body)
-            bytes_this_run += real_size
-            n_kept += 1
-            bar.update(1)
-            bar.set_postfix(MB=f"{bytes_this_run/1024/1024:.1f}", skipped=n_skipped)
-
-            rows.append(
-                manifest.ManifestRow(
-                    origin=source,
-                    url=resource.url,
-                    sha256=sha,
-                    bytes=real_size,
-                    source=source,
-                    picked_reason=f"ckan:{resource.package_title or resource.resource_name}"[
-                        :180
-                    ],
-                    fetched_at=manifest.now_iso(),
-                    local_path=str(staged.resolve()),
-                )
-            )
-
-            if len(rows) % 25 == 0:
-                manifest.append_rows(out_dir, rows)
-                manifest.save_bytes_used(out_dir, bytes_at_start + bytes_this_run)
-                rows.clear()
-
-            time.sleep(0.05)  # be nice to the portal
-        else:
-            continue
-        break  # broke out of inner loop because cap hit
-
-    bar.close()
-    manifest.append_rows(out_dir, rows)
-    manifest.save_bytes_used(out_dir, bytes_at_start + bytes_this_run)
     logger.info(
-        f"[fetch/ckan] {source}: seen={n_seen}, kept={n_kept}, skipped={n_skipped}, "
-        f"bytes_this_run={bytes_this_run:,}"
+        f"{source}: seen={summary.n_seen}, kept={summary.n_kept}, "
+        f"skipped={summary.n_skipped}, bytes_this_run={summary.bytes_this_run:,}"
     )
     return 0
