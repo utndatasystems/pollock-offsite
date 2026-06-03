@@ -192,6 +192,8 @@ execute_polluter(f, pl.changeFieldDelimiter, target_delimiter=" ")
 
 # Change quotation mark everywhere : 1 file
 execute_polluter(f, pl.changeQuotationChar, target_char="\u0027")
+execute_polluter(f, pl.changeQuotationChar, target_char="") # deleted quotation character everywhere
+
 
 # Change escape character : 2 files
 execute_polluter(f, pl.changeEscapeCharacter, target_escape="\u005c")  # backslash
