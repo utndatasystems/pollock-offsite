@@ -34,12 +34,10 @@ from pathlib import Path
 from typing import Iterable
 from urllib.parse import urlencode
 
-import urllib.error
-import urllib.request
-
 from tqdm.auto import tqdm
 
-from . import manifest, storage
+from . import _http, manifest, storage
+from ._filters import is_safe_http_url, looks_like_csv
 from ._log import get_logger
 
 logger = get_logger("ckan")
@@ -53,7 +51,6 @@ _DEFAULT_ENDPOINTS = {
 
 _CSV_FORMATS = {"csv", "tsv"}
 _MAX_PER_RESOURCE_BYTES = 200 * 1024 * 1024  # 200 MB cap per CSV
-_USER_AGENT = "pollock-survey/0.1 (+https://github.com/HPI-Information-Systems/Pollock)"
 _REQUEST_TIMEOUT = 30
 _PAGE_SIZE = 100
 
@@ -72,49 +69,10 @@ def _endpoint_for(source: str) -> str:
     return os.environ.get(env_key) or _DEFAULT_ENDPOINTS[source]
 
 
-def _http_get(url: str, *, timeout: int = _REQUEST_TIMEOUT) -> tuple[bytes, str]:
-    """Fetch a URL, returning ``(body, content_type)``."""
-    req = urllib.request.Request(url, headers={"User-Agent": _USER_AGENT})
-    with urllib.request.urlopen(req, timeout=timeout) as resp:
-        return resp.read(), (resp.headers.get("Content-Type") or "").lower()
-
-
-def _looks_like_csv(body: bytes, content_type: str) -> bool:
-    """Best-effort filter to drop HTML / JSON / XML responses.
-
-    Many portal-listed CSV URLs redirect to a "page moved" HTML stub or
-    return a JSON metadata wrapper. We don't want those in the corpus.
-    """
-    if "text/html" in content_type or "application/json" in content_type:
-        return False
-    if "application/xml" in content_type or "text/xml" in content_type:
-        return False
-    head = body[:1024].lstrip()
-    if head.startswith((b"<!DOCTYPE", b"<html", b"<HTML", b"<?xml", b"<!--")):
-        return False
-    if head.startswith(b"{") and b'"' in head[:200]:
-        # Heuristic: starts with `{"...` → likely JSON, not CSV.
-        # CSVs that *happen* to start with `{` are rare enough to ignore.
-        return False
-    return True
-
-
-def _http_head_size(url: str, *, timeout: int = 15) -> int | None:
-    try:
-        req = urllib.request.Request(
-            url, method="HEAD", headers={"User-Agent": _USER_AGENT}
-        )
-        with urllib.request.urlopen(req, timeout=timeout) as resp:
-            cl = resp.headers.get("Content-Length")
-            return int(cl) if cl is not None else None
-    except (urllib.error.URLError, urllib.error.HTTPError, ValueError, TimeoutError):
-        return None
-
-
 def _ckan_search(endpoint: str, query: str, start: int, rows: int) -> dict:
     params = urlencode({"q": query, "rows": rows, "start": start})
     url = f"{endpoint}/api/3/action/package_search?{params}"
-    body, _ = _http_get(url)
+    body, _ = _http.get_bytes(url, timeout=_REQUEST_TIMEOUT)
     import json
 
     return json.loads(body)
@@ -162,7 +120,7 @@ def run_ckan(args) -> int:
             return 1
         total = probe.get("result", {}).get("count", 0)
         logger.info(f"[fetch/ckan] endpoint healthy: {total:,} packages indexed")
-    except (urllib.error.HTTPError, urllib.error.URLError, ValueError, TimeoutError) as exc:
+    except _http.HTTP_ERRORS as exc:
         logger.info(f"[fetch/ckan] endpoint unreachable ({exc!r}); skipping {source}")
         return 1
 
@@ -188,7 +146,7 @@ def run_ckan(args) -> int:
             break
         try:
             page = _ckan_search(endpoint, "res_format:CSV", start=start, rows=_PAGE_SIZE)
-        except (urllib.error.HTTPError, urllib.error.URLError, ValueError) as exc:
+        except _http.HTTP_ERRORS as exc:
             logger.info(f"[fetch/ckan] page request failed at start={start}: {exc!r}; stopping")
             break
         results = (page.get("result") or {}).get("results") or []
@@ -212,7 +170,7 @@ def run_ckan(args) -> int:
 
             size_hint = resource.size_hint
             if size_hint is None:
-                size_hint = _http_head_size(resource.url) or 0
+                size_hint = _http.head_size(resource.url) or 0
             if size_hint and size_hint > _MAX_PER_RESOURCE_BYTES:
                 n_skipped += 1
                 continue
@@ -220,14 +178,17 @@ def run_ckan(args) -> int:
                 logger.info(f"[fetch/ckan] byte cap reached; stopping at {bytes_this_run:,} bytes")
                 break
 
+            if not is_safe_http_url(resource.url):
+                n_skipped += 1
+                continue
             try:
-                body, content_type = _http_get(resource.url, timeout=120)
-            except (urllib.error.HTTPError, urllib.error.URLError, TimeoutError) as exc:
+                body, content_type = _http.get_bytes(resource.url, timeout=120)
+            except _http.HTTP_ERRORS as exc:
                 logger.info(f"[fetch/ckan] download failed: {resource.url} ({exc!r})")
                 n_skipped += 1
                 continue
 
-            if not _looks_like_csv(body, content_type):
+            if not looks_like_csv(body, content_type):
                 n_skipped += 1
                 continue
 

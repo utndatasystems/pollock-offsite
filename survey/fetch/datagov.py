@@ -34,17 +34,15 @@ from __future__ import annotations
 
 import hashlib
 import json
-import time
-import urllib.error
 import urllib.parse
-import urllib.request
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from dataclasses import dataclass
 from pathlib import Path
 
 from tqdm.auto import tqdm
 
-from . import manifest, storage
+from . import _http, manifest, storage
+from ._filters import is_safe_http_url, looks_like_csv
 from ._log import get_logger
 
 logger = get_logger("datagov")
@@ -52,7 +50,6 @@ logger = get_logger("datagov")
 
 _SEARCH_URL = "https://catalog.data.gov/search"
 _PAGE_SIZE = 20
-_USER_AGENT = "pollock-survey/0.1 (+https://github.com/HPI-Information-Systems/Pollock)"
 _REQUEST_TIMEOUT = 30
 _MAX_PER_RESOURCE_BYTES = 50 * 1024 * 1024  # skip files > 50 MB; survey doesn't need them
 _DOWNLOAD_CONCURRENCY = 8  # parallel HTTP fetches per page
@@ -66,37 +63,6 @@ class _CsvCandidate:
     size_hint: int | None
 
 
-def _http_get(url: str, *, timeout: int = _REQUEST_TIMEOUT) -> tuple[bytes, str]:
-    req = urllib.request.Request(url, headers={"User-Agent": _USER_AGENT})
-    with urllib.request.urlopen(req, timeout=timeout) as resp:
-        return resp.read(), (resp.headers.get("Content-Type") or "").lower()
-
-
-def _http_head_size(url: str, *, timeout: int = 15) -> int | None:
-    try:
-        req = urllib.request.Request(
-            url, method="HEAD", headers={"User-Agent": _USER_AGENT}
-        )
-        with urllib.request.urlopen(req, timeout=timeout) as resp:
-            cl = resp.headers.get("Content-Length")
-            return int(cl) if cl is not None else None
-    except (urllib.error.URLError, urllib.error.HTTPError, ValueError, TimeoutError, OSError):
-        return None
-
-
-def _looks_like_csv(body: bytes, content_type: str) -> bool:
-    if "text/html" in content_type or "application/json" in content_type:
-        return False
-    if "application/xml" in content_type or "text/xml" in content_type:
-        return False
-    head = body[:1024].lstrip()
-    if head.startswith((b"<!DOCTYPE", b"<html", b"<HTML", b"<?xml", b"<!--")):
-        return False
-    if head.startswith(b"{") and b'"' in head[:200]:
-        return False
-    return True
-
-
 def _search_page(query: str, after: str | None) -> dict:
     params = {
         "q": query,
@@ -106,7 +72,7 @@ def _search_page(query: str, after: str | None) -> dict:
     if after:
         params["after"] = after
     url = f"{_SEARCH_URL}?{urllib.parse.urlencode(params)}"
-    body, _ = _http_get(url)
+    body, _ = _http.get_bytes(url, timeout=_REQUEST_TIMEOUT)
     return json.loads(body)
 
 
@@ -152,18 +118,20 @@ def _fetch_one(cand: _CsvCandidate) -> _DownloadOutcome:
 
     Pure function: no shared state, safe to run from a thread pool.
     """
+    if not is_safe_http_url(cand.url):
+        return _DownloadOutcome(cand, None, "", "unsafe_url")
     size_hint = cand.size_hint
     if size_hint is None:
-        size_hint = _http_head_size(cand.url) or 0
+        size_hint = _http.head_size(cand.url) or 0
     if size_hint and size_hint > _MAX_PER_RESOURCE_BYTES:
         return _DownloadOutcome(cand, None, "", "oversize")
     try:
         # 30 s is enough for any CSV under our 50 MB cap on a non-pathological
         # connection. Slow ArcGIS / dead agency hosts shouldn't block the page.
-        body, content_type = _http_get(cand.url, timeout=30)
-    except (urllib.error.URLError, urllib.error.HTTPError, TimeoutError, OSError) as exc:
+        body, content_type = _http.get_bytes(cand.url, timeout=30)
+    except _http.HTTP_ERRORS as exc:
         return _DownloadOutcome(cand, None, "", f"http:{exc!r}"[:200])
-    if not _looks_like_csv(body, content_type):
+    if not looks_like_csv(body, content_type):
         return _DownloadOutcome(cand, None, content_type, "not_csv")
     if len(body) > _MAX_PER_RESOURCE_BYTES:
         return _DownloadOutcome(cand, None, content_type, "oversize_body")
@@ -214,6 +182,9 @@ def _save_cursor(out_dir: Path, query: str, cursor: str | None) -> None:
         json.dump(data, f, sort_keys=True, indent=2)
 
 
+_SEARCH_ERRORS = _http.HTTP_ERRORS + (json.JSONDecodeError,)
+
+
 def run_datagov(args) -> int:
     out_dir: Path = Path(args.out_dir).resolve()
     max_files = args.max_files
@@ -232,7 +203,7 @@ def run_datagov(args) -> int:
     # Probe with one search page to fail fast on outages.
     try:
         first = _search_page(query, after)
-    except (urllib.error.URLError, urllib.error.HTTPError, json.JSONDecodeError) as exc:
+    except _SEARCH_ERRORS as exc:
         logger.error(f"[fetch/data.gov] endpoint unreachable ({exc!r}); skipping")
         return 1
 
@@ -255,7 +226,7 @@ def run_datagov(args) -> int:
                 return 0
             try:
                 page = _search_page(query, after)
-            except (urllib.error.URLError, urllib.error.HTTPError, json.JSONDecodeError) as exc:
+            except _SEARCH_ERRORS as exc:
                 logger.error(f"[fetch/data.gov] page request failed during skip: {exc!r}")
                 return 1
         first = page
@@ -387,7 +358,7 @@ def run_datagov(args) -> int:
             _save_cursor(out_dir, query, after)
             try:
                 page = _search_page(query, after)
-            except (urllib.error.URLError, urllib.error.HTTPError, json.JSONDecodeError) as exc:
+            except _SEARCH_ERRORS as exc:
                 logger.error(f"[fetch/data.gov] page request failed: {exc!r}; stopping")
                 break
             continue

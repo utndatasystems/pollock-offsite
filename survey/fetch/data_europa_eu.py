@@ -22,18 +22,16 @@ data.gov uses.
 from __future__ import annotations
 
 import hashlib
-import http.client
 import json
-import urllib.error
 import urllib.parse
-import urllib.request
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from dataclasses import dataclass
 from pathlib import Path
 
 from tqdm.auto import tqdm
 
-from . import manifest, storage
+from . import _http, manifest, storage
+from ._filters import is_safe_http_url, looks_like_csv
 from ._log import get_logger
 
 logger = get_logger("data_europa_eu")
@@ -41,7 +39,6 @@ logger = get_logger("data_europa_eu")
 
 _SEARCH_URL = "https://data.europa.eu/api/hub/search/search"
 _PAGE_SIZE = 1000  # max allowed by the API
-_USER_AGENT = "pollock-survey/0.1 (+https://github.com/HPI-Information-Systems/Pollock)"
 _REQUEST_TIMEOUT = 60
 _DOWNLOAD_TIMEOUT = 120
 _MAX_PER_RESOURCE_BYTES = 500 * 1024 * 1024  # 500 MB cap per file
@@ -57,42 +54,8 @@ class _CsvCandidate:
     size_hint: int | None
 
 
-def _http_get(url: str, *, timeout: int = _REQUEST_TIMEOUT) -> tuple[bytes, str]:
-    req = urllib.request.Request(
-        url, headers={"User-Agent": _USER_AGENT, "Accept": "*/*"}
-    )
-    with urllib.request.urlopen(req, timeout=timeout) as resp:
-        return resp.read(), (resp.headers.get("Content-Type") or "").lower()
-
-
-def _http_head_size(url: str, *, timeout: int = 15) -> int | None:
-    try:
-        req = urllib.request.Request(
-            url, method="HEAD", headers={"User-Agent": _USER_AGENT}
-        )
-        with urllib.request.urlopen(req, timeout=timeout) as resp:
-            cl = resp.headers.get("Content-Length")
-            return int(cl) if cl is not None else None
-    except (urllib.error.URLError, urllib.error.HTTPError, http.client.HTTPException,
-            ValueError, TimeoutError, OSError):
-        return None
-
-
 def _looks_like_csv(body: bytes, content_type: str) -> bool:
-    if "text/html" in content_type or "application/json" in content_type:
-        return False
-    if "application/xml" in content_type or "text/xml" in content_type:
-        return False
-    if "application/zip" in content_type or "application/x-zip" in content_type:
-        return False
-    head = body[:1024].lstrip()
-    if head.startswith((b"<!DOCTYPE", b"<html", b"<HTML", b"<?xml", b"<!--")):
-        return False
-    if head.startswith(b"{") and b'"' in head[:200]:
-        return False
-    if head.startswith(b"PK\x03\x04"):  # zip magic
-        return False
-    return True
+    return looks_like_csv(body, content_type)
 
 
 def _pick_title(title_field) -> str:
@@ -119,33 +82,12 @@ def _search_page(page: int) -> dict:
         "page": page,
     }
     url = f"{_SEARCH_URL}?{urllib.parse.urlencode(params)}"
-    req = urllib.request.Request(
-        url, headers={"User-Agent": _USER_AGENT, "Accept": "application/json"}
-    )
-    with urllib.request.urlopen(req, timeout=_REQUEST_TIMEOUT) as resp:
-        body = resp.read()
+    body, _ = _http.get_bytes(url, timeout=_REQUEST_TIMEOUT)
     return json.loads(body).get("result", {}) or {}
 
 
 def _is_safe_http_url(url: str) -> bool:
-    """Reject malformed catalog entries before they hit urllib.
-
-    The data.europa.eu catalog occasionally returns ``access_url`` values that
-    are dataset titles or otherwise non-URLs, which crash
-    ``http.client._validate_host`` with ``InvalidURL``. Require an http(s)
-    scheme, a netloc, and no control characters / whitespace in the host.
-    """
-    try:
-        parsed = urllib.parse.urlsplit(url)
-    except ValueError:
-        return False
-    if parsed.scheme not in ("http", "https"):
-        return False
-    if not parsed.netloc:
-        return False
-    if any(c.isspace() or ord(c) < 0x20 for c in parsed.netloc):
-        return False
-    return True
+    return is_safe_http_url(url)
 
 
 def _extract_csv_candidates(results: list[dict]) -> list[_CsvCandidate]:
@@ -193,17 +135,16 @@ class _DownloadOutcome:
 def _fetch_one(cand: _CsvCandidate) -> _DownloadOutcome:
     size_hint = cand.size_hint
     if size_hint is None:
-        size_hint = _http_head_size(cand.url) or 0
+        size_hint = _http.head_size(cand.url) or 0
     if size_hint and size_hint > _MAX_PER_RESOURCE_BYTES:
         return _DownloadOutcome(cand, None, "", "oversize")
     try:
-        body, content_type = _http_get(cand.url, timeout=_DOWNLOAD_TIMEOUT)
-    except (urllib.error.URLError, urllib.error.HTTPError, http.client.HTTPException,
-            ValueError, TimeoutError, OSError) as exc:
+        body, content_type = _http.get_bytes(cand.url, timeout=_DOWNLOAD_TIMEOUT)
+    except _http.HTTP_ERRORS as exc:
         return _DownloadOutcome(cand, None, "", f"http:{exc!r}"[:200])
     if len(body) > _MAX_PER_RESOURCE_BYTES:
         return _DownloadOutcome(cand, None, content_type, "oversize_body")
-    if not _looks_like_csv(body, content_type):
+    if not looks_like_csv(body, content_type):
         return _DownloadOutcome(cand, None, content_type, "not_csv")
     return _DownloadOutcome(cand, body, content_type, None)
 
@@ -244,7 +185,7 @@ def run_data_europa_eu(args) -> int:
 
     try:
         first = _search_page(page)
-    except (urllib.error.URLError, urllib.error.HTTPError, json.JSONDecodeError) as exc:
+    except _http.HTTP_ERRORS + (json.JSONDecodeError,) as exc:
         logger.info(f"[fetch/data.europa.eu] endpoint unreachable ({exc!r}); skipping")
         return 1
 
@@ -384,7 +325,7 @@ def run_data_europa_eu(args) -> int:
         _save_next_page(out_dir, page)
         try:
             current = _search_page(page)
-        except (urllib.error.URLError, urllib.error.HTTPError, json.JSONDecodeError) as exc:
+        except _http.HTTP_ERRORS + (json.JSONDecodeError,) as exc:
             logger.info(f"[fetch/data.europa.eu] page request failed: {exc!r}; stopping")
             break
 
