@@ -278,7 +278,41 @@ def changeFieldDelimiter(file: CSVFile, target_delimiter=";"):
 
 
 def changeEscapeCharacter(file: CSVFile, target_escape="\\"):
-    """TODO: documentation here"""
+    """
+    Replaces the CSV escape character used to escape quotation marks and other
+    special characters (everywhere in the file).
+
+    Common values:
+        "\\\\"   -> backslash (\)
+        "\\u0022" -> double quote (")
+        ""       -> no escape character
+
+    Example:
+
+        Before (escape character = \\):
+            +------------------+
+            | comment          |
+            +------------------+
+            | He said \"hi\"   |
+            | Path: C:\\temp   |
+            +------------------+
+
+        After (escape character = "):
+            +------------------+
+            | comment          |
+            +------------------+
+            | He said ""hi""   |
+            | Path: C:\temp    |
+            +------------------+
+
+        After (no escape character):
+            +------------------+
+            | comment          |
+            +------------------+
+            | He said "hi"     |
+            | Path: C:\temp    |
+            +------------------+
+    """
     file.escape_char = target_escape
     root = file.xml.getroot()
     query = root.xpath(f"//escape_char")
@@ -294,28 +328,79 @@ def changeEscapeCharacter(file: CSVFile, target_escape="\\"):
 
 
 def changeQuotationChar(file: CSVFile, target_char="\u0022"):
-    """TODO: documentation here"""
+    """
+    Replaces the CSV quotation character everywhere in the file with a different text qualifier or deletes the quotation chard.
+    (e.g. '"', "'", '`', '').
+ 
+    Common values:
+        "\\u0022" -> double quote (")
+        "\\u0027" -> single quote (')
+        "\\u0060" -> backtick (`)
+        ""        -> no quotation character
+
+    Example:
+
+        Before (quotation character = "):
+            "Alice","Berlin","10"
+            "Bob","Munich","20"
+
+        After (quotation character = '):
+            'Alice','Berlin','10'
+            'Bob','Munich','20'
+
+        After (no quotation character):
+            Alice,Berlin,10
+            Bob,Munich,20
+    """
     file.quotation_char = target_char
     root = file.xml.getroot()
-    query = root.xpath(f"//quotation_char")
+
+    query = root.xpath("//quotation_char")
     for idx, qc in enumerate(query):
         if not idx % 2:
             qc.text = target_char
         else:
-            qc.text = target_char[::-1]  # reverse it for multi-line
+            qc.text = target_char[::-1] if target_char else ""
 
+    # Remove escape character definitions since they may no longer be valid
     index = [i for i, x in enumerate(root) if x.tag == "escape_char"]
-    for i in index:
-        del root[i]  # TODO
+    for i in reversed(index):
+        del root[i]
 
-    vals = [ord(x) for x in target_char]
-    quote_string = "".join([f"_0x{v:X}" for v in vals])
+    if target_char:
+        vals = [ord(x) for x in target_char]
+        quote_string = "".join([f"_0x{v:X}" for v in vals])
+    else:
+        quote_string = "_none"
 
-    _set_polluted_filename(file, f"file_quotation_char{quote_string}.csv")
+    _set_polluted_filename(
+        file,
+        f"file_quotation_char{quote_string}.csv",
+    )
 
+def addSynthethicRowID(file: CSVFile): # comment Luisa, what is the CSV standard for row ids? Is this even a pollution or a new, correct csv?
+    """
+    Adds a synthetic row identifier column as the first column of the table.
 
-def addSynthethicRowID(file: CSVFile):
-    """TODO: documentation here"""
+    The new column contains a header ('row_id') and sequential row numbers for
+    all data rows.
+
+    Before:
+        +-------+--------+--------+
+        | name  | city   | amount |
+        +-------+--------+--------+
+        | Alice | Berlin | 10     |
+        | Bob   | Munich | 20     |
+        +-------+--------+--------+
+
+    After:
+        +--------+-------+--------+--------+
+        | row_id | name  | city   | amount |
+        +--------+-------+--------+--------+
+        | 1      | Alice | Berlin | 10     |
+        | 2      | Bob   | Munich | 20     |
+        +--------+-------+--------+--------+
+    """
     root = file.xml.getroot()
     n_rows = len(root.xpath("//row"))
     pb.addCells(
@@ -571,7 +656,6 @@ def addTable(file: CSVFile, n_rows, n_cols, empty_boundary=True):
 
 # --- New Pollutions for Pollock 2.0 below ---
 
-
 def addTableSideways(
     file: CSVFile, n_rows, n_cols, random_content=False, empty_boundary=True
 ):
@@ -796,7 +880,14 @@ def commentRow(
     file: CSVFile, row: int | None = None, comment_marker: str = "#", space=" "
 ):
     """
-    Simulates commented-out CSV rows by prefixing the first cell with a comment marker.
+    Simulate a commented-out CSV row by prefixing the first cell with a comment
+    marker (e.g. '#', '//', ';').
+
+    Args:
+        file: CSVFile to modify.
+        row: Zero-based row index to comment out. If None, a random row is chosen.
+        comment_marker: Marker used to indicate a comment.
+        space: Optional separator between the marker and the original value.
     """
     if row is None:
         row = random.randint(1, _safe_row_count(file))
