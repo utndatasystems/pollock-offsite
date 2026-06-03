@@ -4,7 +4,6 @@ Subcommands map 1:1 to submodule entry points so each can be invoked or
 tested in isolation:
 
     python -m survey fetch    --source data.gov --max-files 2500
-    python -m survey fetch    --source-dir /data/local_csvs --max-files 5000
     python -m survey annotate --in survey/out/raw --jobs 16
     python -m survey triage   --threshold 0.30 --budget-usd 200
     python -m survey discover --sample 250 --budget-usd 50
@@ -59,15 +58,10 @@ def _build_parser() -> argparse.ArgumentParser:
 
     # fetch ----------------------------------------------------------------
     p_fetch = sub.add_parser("fetch", help="Assemble a corpus.")
-    src = p_fetch.add_mutually_exclusive_group(required=True)
-    src.add_argument(
+    p_fetch.add_argument(
         "--source",
+        required=True,
         choices=["data.gov", "data.gov.uk", "hf", "kaggle", "inside_airbnb", "data.europa.eu"],
-    )
-    src.add_argument(
-        "--source-dir",
-        type=Path,
-        help="Local directory of CSV files (no network).",
     )
     p_fetch.add_argument("--max-files", type=int, default=None)
     p_fetch.add_argument(

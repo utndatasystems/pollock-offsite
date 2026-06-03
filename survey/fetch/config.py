@@ -51,7 +51,7 @@ class DataEuropaEuOptions:
     base: FetchOptions
 
 
-BackendOptions = Union[DataGovOptions, CkanOptions, DataEuropaEuOptions]
+BackendOptions = Union[FetchOptions, DataGovOptions, CkanOptions, DataEuropaEuOptions]
 
 
 def _base_from_args(args: argparse.Namespace) -> FetchOptions:
@@ -96,4 +96,7 @@ def from_args(args: argparse.Namespace, backend: str) -> BackendOptions:
         )
     if backend == "data.europa.eu":
         return DataEuropaEuOptions(base=base)
+    if backend in ("inside_airbnb", "hf", "kaggle"):
+        # Deferred stub backends: return the bare base; the stub run() exits 2.
+        return base
     raise ValueError(f"unknown backend: {backend!r}")

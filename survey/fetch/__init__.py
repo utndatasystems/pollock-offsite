@@ -43,17 +43,23 @@ __all__ = (
 
 
 def _build_registry() -> "dict[str, Backend]":
-    """Register the three full backend modules.
+    """Register every backend module.
 
-    Phase 6 will add the deferred backends (``inside_airbnb``, ``hf``,
-    ``kaggle``) as stubs.
+    The three full backends (``data.gov``, ``data.gov.uk``, ``data.europa.eu``)
+    do real work; ``inside_airbnb`` / ``hf`` / ``kaggle`` are Phase 6 stubs
+    that exit ``2`` with a "not yet supported in v1" message. Keeping the
+    stubs registered means they show up in ``--help`` and route through the
+    same ``run_fetch`` shim as the full backends.
     """
-    from . import ckan, data_europa_eu, datagov
+    from . import ckan, data_europa_eu, datagov, hf, inside_airbnb, kaggle
 
     return {
         datagov.name: datagov,
         ckan.name: ckan,
         data_europa_eu.name: data_europa_eu,
+        inside_airbnb.name: inside_airbnb,
+        hf.name: hf,
+        kaggle.name: kaggle,
     }
 
 
@@ -65,28 +71,11 @@ def run_fetch(args) -> int:
 
     Reads ``args.source``, looks up the backend module in ``BACKENDS``, builds
     its typed options via the module's ``options_from_args``, and calls
-    ``run``. The deferred backends (``inside_airbnb``, ``hf``, ``kaggle``) and
-    the ``--source-dir`` local mode still resolve through their existing
-    code paths until Phases 6 and 7 land.
+    ``run``.
     """
-    if getattr(args, "source_dir", None) is not None:
-        from .local import run_local
-
-        return run_local(args)
-
     source = getattr(args, "source", None)
     if source in BACKENDS:
         backend = BACKENDS[source]
         return backend.run(backend.options_from_args(args))
-
-    if source in ("hf", "kaggle"):
-        from .hf_kaggle import run_hf_kaggle
-
-        return run_hf_kaggle(args)
-
-    if source == "inside_airbnb":
-        from .inside_airbnb import run_inside_airbnb
-
-        return run_inside_airbnb(args)
 
     raise NotImplementedError(f"fetch source {source!r} not implemented yet")
