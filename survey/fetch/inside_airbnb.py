@@ -2,8 +2,7 @@
 
 Full Inside Airbnb support is deferred past v1; the stub keeps the backend
 discoverable in ``--help`` and exits cleanly with code ``2`` and a pointer to
-the roadmap. Implementation history lives in git (see prior commits before the
-Phase 6 stub-out).
+the roadmap.
 """
 
 from __future__ import annotations

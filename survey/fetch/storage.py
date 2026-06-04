@@ -18,6 +18,8 @@ from pathlib import Path
 from typing import BinaryIO
 from urllib.parse import unquote, urlparse
 
+from ._filters import CSV_SUFFIXES
+
 _SAFE_NAME_RE = re.compile(r"[^A-Za-z0-9._-]+")
 _SOURCE_DIR_RE = re.compile(r"[^A-Za-z0-9_.]+")
 
@@ -36,7 +38,7 @@ def _basename_from_url(url: str) -> str:
     name = name.split("?", 1)[0].split("#", 1)[0]
     name = _SAFE_NAME_RE.sub("_", name).strip("._-") or "file"
     lower = name.lower()
-    if not lower.endswith((".csv", ".tsv", ".csv.zstd", ".csv.zst", ".tsv.zstd", ".tsv.zst")):
+    if not lower.endswith(CSV_SUFFIXES):
         name = f"{name}.csv"
     if len(name) > 180:
         # Keep the extension, trim the stem.

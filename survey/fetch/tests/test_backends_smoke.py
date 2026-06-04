@@ -12,7 +12,6 @@ For the stub backends we just assert that ``run`` returns ``2``.
 
 from __future__ import annotations
 
-import io
 import json
 from pathlib import Path
 from unittest.mock import MagicMock
@@ -26,23 +25,6 @@ from survey.fetch.config import CkanOptions, DataEuropaEuOptions, DataGovOptions
 
 
 CSV_BODY = b"col1,col2,col3\n1,2,3\n4,5,6\n"
-
-
-class _FakeResponse:
-    def __init__(self, body: bytes, headers: dict[str, str] | None = None):
-        self._buf = io.BytesIO(body)
-        self.headers = headers or {}
-
-    def read(self, n: int = -1) -> bytes:
-        if n is None or n < 0:
-            return self._buf.read()
-        return self._buf.read(n)
-
-    def __enter__(self):
-        return self
-
-    def __exit__(self, *exc):
-        return False
 
 
 @pytest.fixture(autouse=True)
@@ -66,18 +48,18 @@ def _base_opts(tmp_path: Path) -> FetchOptions:
     )
 
 
-def _route(routes: dict[str, bytes]):
+def _route(routes: dict[str, bytes], fake_response_factory):
     """Return a side_effect callable that picks a response based on URL prefix."""
     def side_effect(req, *args, **kwargs):
         url = req.full_url if hasattr(req, "full_url") else str(req)
         for prefix, body in routes.items():
             if prefix in url:
-                return _FakeResponse(body)
-        return _FakeResponse(b"")
+                return fake_response_factory(body)
+        return fake_response_factory(b"")
     return side_effect
 
 
-def test_datagov_smoke(monkeypatch, tmp_path: Path) -> None:
+def test_datagov_smoke(monkeypatch, tmp_path: Path, fake_response_factory) -> None:
     csv_url = "https://example.com/data/datagov_x.csv"
     search_payload = {
         "after": None,
@@ -103,7 +85,8 @@ def test_datagov_smoke(monkeypatch, tmp_path: Path) -> None:
         {
             "catalog.data.gov/search": json.dumps(search_payload).encode(),
             csv_url: CSV_BODY,
-        }
+        },
+        fake_response_factory,
     )
     monkeypatch.setattr(_http, "_OPENER", opener)
     monkeypatch.setattr(_http, "head_size", lambda *a, **k: len(CSV_BODY))
@@ -126,7 +109,7 @@ def test_datagov_smoke(monkeypatch, tmp_path: Path) -> None:
     assert cursors is None or cursors == {} or "csv" not in cursors
 
 
-def test_data_gov_uk_smoke(monkeypatch, tmp_path: Path) -> None:
+def test_data_gov_uk_smoke(monkeypatch, tmp_path: Path, fake_response_factory) -> None:
     csv_url = "https://example.com/data/uk_x.csv"
 
     def package_search_payload(start: int) -> dict:
@@ -161,10 +144,10 @@ def test_data_gov_uk_smoke(monkeypatch, tmp_path: Path) -> None:
                     start = int(url.split("start=")[1].split("&")[0])
                 except ValueError:
                     start = 0
-            return _FakeResponse(json.dumps(package_search_payload(start)).encode())
+            return fake_response_factory(json.dumps(package_search_payload(start)).encode())
         if csv_url in url:
-            return _FakeResponse(CSV_BODY)
-        return _FakeResponse(b"")
+            return fake_response_factory(CSV_BODY)
+        return fake_response_factory(b"")
 
     opener = MagicMock()
     opener.open.side_effect = side_effect
@@ -192,7 +175,7 @@ def test_data_gov_uk_smoke(monkeypatch, tmp_path: Path) -> None:
     assert "data.gov.uk" in cursors
 
 
-def test_data_europa_eu_smoke(monkeypatch, tmp_path: Path) -> None:
+def test_data_europa_eu_smoke(monkeypatch, tmp_path: Path, fake_response_factory) -> None:
     csv_url = "https://example.com/data/eu_x.csv"
     search_payload = {
         "result": {
@@ -217,7 +200,8 @@ def test_data_europa_eu_smoke(monkeypatch, tmp_path: Path) -> None:
         {
             "data.europa.eu/api/hub/search": json.dumps(search_payload).encode(),
             csv_url: CSV_BODY,
-        }
+        },
+        fake_response_factory,
     )
     monkeypatch.setattr(_http, "_OPENER", opener)
     monkeypatch.setattr(_http, "head_size", lambda *a, **k: len(CSV_BODY))

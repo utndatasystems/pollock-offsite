@@ -1,8 +1,6 @@
 """Shared HTTP primitives for fetch backends.
 
-Replaces the per-backend ``_http_get`` / ``_http_head_size`` /
-``_stream_to_disk`` duplicates. Adds two new safety properties the old
-copies didn't have:
+Two safety properties beyond stdlib defaults:
 
 - A ``SafeHTTPRedirectHandler`` that rejects redirects to non-``http(s)``
   schemes, redirects to URLs with userinfo, and redirects whose target

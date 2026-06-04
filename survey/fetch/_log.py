@@ -1,13 +1,11 @@
 """Logging setup for ``survey.fetch``.
 
-Replaces the previous ``from sut.utils import print as ts_print`` import,
-which couples the fetch package to the parent project's logger and breaks
-fresh checkouts. Uses stdlib :mod:`logging` exclusively so the package
-imports cleanly without ``sut`` on the path.
+Uses stdlib :mod:`logging` exclusively so the package imports cleanly without
+external dependencies on the path.
 
-Output style mirrors ``sut.utils.print``: an ANSI-blue ``HH:MM:SS:`` prefix
-followed by the message. Console colour is auto-disabled when stderr is
-not a TTY (e.g. when redirected to a file or captured by CI).
+Output style: an ANSI-blue ``HH:MM:SS:`` prefix followed by the message.
+Console colour is auto-disabled when stderr is not a TTY (e.g. when redirected
+to a file or captured by CI).
 
 Environment variables
 ---------------------

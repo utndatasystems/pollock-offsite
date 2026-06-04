@@ -2,14 +2,12 @@
 
 ``BACKENDS`` is the registry of fetch backends; each value is a module that
 satisfies the ``Backend`` Protocol (``name``, ``add_subparser``,
-``options_from_args``, ``run``). Phase 5 dropped the ``_LegacyBackend`` adapter
-in favour of registering the modules directly.
+``options_from_args``, ``run``).
 
-The public ``run_fetch(args)`` shim keeps the legacy ``survey/cli.py`` entry
-point working: it dispatches on ``args.source``, builds the right typed
-options via the backend's ``options_from_args``, and calls ``run``. The Phase
-7 fetch-only CLI (``python -m survey.fetch``) will use the same registry but
-bypass this shim.
+The public ``run_fetch(args)`` shim is what ``survey/cli.py fetch --source X``
+dispatches into: it looks up the backend by name, builds the right typed
+options via the backend's ``options_from_args``, and calls ``run``. The
+fetch-only CLI (``python -m survey.fetch``) uses the same registry directly.
 """
 
 from __future__ import annotations
@@ -46,10 +44,10 @@ def _build_registry() -> "dict[str, Backend]":
     """Register every backend module.
 
     The three full backends (``data.gov``, ``data.gov.uk``, ``data.europa.eu``)
-    do real work; ``inside_airbnb`` / ``hf`` / ``kaggle`` are Phase 6 stubs
-    that exit ``2`` with a "not yet supported in v1" message. Keeping the
-    stubs registered means they show up in ``--help`` and route through the
-    same ``run_fetch`` shim as the full backends.
+    do real work; ``inside_airbnb`` / ``hf`` / ``kaggle`` are stubs that exit
+    ``2`` with a "not yet supported in v1" message. Keeping the stubs
+    registered means they show up in ``--help`` and route through the same
+    ``run_fetch`` shim as the full backends.
     """
     from . import ckan, data_europa_eu, datagov, hf, inside_airbnb, kaggle
 
@@ -67,7 +65,7 @@ BACKENDS: "dict[str, Backend]" = _build_registry()
 
 
 def run_fetch(args) -> int:
-    """Backwards-compat shim driven by the legacy ``survey/cli.py``.
+    """Dispatch ``survey/cli.py fetch --source X`` to the matching backend.
 
     Reads ``args.source``, looks up the backend module in ``BACKENDS``, builds
     its typed options via the module's ``options_from_args``, and calls

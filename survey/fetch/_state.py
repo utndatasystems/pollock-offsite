@@ -67,7 +67,7 @@ class State:
             prefix=self.path.name + ".", suffix=".tmp", dir=str(self.out_dir)
         )
         try:
-            with os.fdopen(fd, "w") as f:
+            with os.fdopen(fd, "w", encoding="utf-8") as f:
                 json.dump(self._data, f, sort_keys=True, indent=2)
             os.replace(tmp, self.path)
         except BaseException:

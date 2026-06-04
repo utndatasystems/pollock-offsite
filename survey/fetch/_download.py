@@ -7,9 +7,10 @@ returns ``Success`` or ``Failure``. No global state, safe to call from a thread
 pool.
 
 ``download_loop`` runs candidates through a single ``ThreadPoolExecutor``
-(reused across pages, per the BLOCKER fix in the plan), enforces ``max_files``
-and ``max_bytes``, dedupes by sha256 via the cached ``manifest.load_known_hashes``,
-and writes manifest rows + bytes-used via the supplied ``ManifestWriter``.
+(reused across pages so we don't pay startup cost per page), enforces
+``max_files`` and ``max_bytes``, dedupes by sha256 via the cached
+``manifest.load_known_hashes``, and writes manifest rows + bytes-used via the
+supplied ``ManifestWriter``.
 """
 
 from __future__ import annotations
@@ -17,7 +18,7 @@ from __future__ import annotations
 from concurrent.futures import Future, ThreadPoolExecutor
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import BinaryIO, Callable, Iterable, Iterator, Union
+from typing import BinaryIO, Callable, Iterable, Iterator
 
 from . import _filters, _http, manifest
 from ._log import get_logger
@@ -29,6 +30,8 @@ logger = get_logger("survey.fetch._download")
 
 @dataclass
 class Candidate:
+    """A URL the backend wants to download, plus enough metadata to manifest it."""
+
     url: str
     origin: str
     picked_reason: str
@@ -38,6 +41,8 @@ class Candidate:
 
 @dataclass(frozen=True)
 class Success:
+    """Result of a download that landed bytes on disk and passed the CSV filter."""
+
     body_path: Path
     sha: str
     bytes: int
@@ -46,14 +51,18 @@ class Success:
 
 @dataclass(frozen=True)
 class Failure:
+    """Result of a download that was rejected; ``reason`` is a stable label."""
+
     reason: str
 
 
-DownloadResult = Union[Success, Failure]
+DownloadResult = Success | Failure
 
 
 @dataclass(frozen=True)
 class FetchSummary:
+    """Per-run counters returned by ``download_loop``."""
+
     n_seen: int
     n_kept: int
     n_skipped: int
@@ -75,9 +84,10 @@ def fetch_one(
     """Download one candidate, validate, and return Success/Failure.
 
     HEAD-checks only when the candidate has no size hint. The per-file cap is
-    enforced *during* the stream by ``_http.stream_to_file``, not after — see
-    the security note in the plan. On a CSV-shape failure the staged file is
-    unlinked so the next run isn't tempted to retry it.
+    enforced *during* the stream by ``_http.stream_to_file``, not after — a
+    post-hoc size check would let an oversized body land on disk first. On a
+    CSV-shape failure the staged file is unlinked so the next run isn't
+    tempted to retry it.
     """
     if cand.size_hint is None:
         size = _http.head_size(cand.url, timeout=opts.head_timeout_s)
@@ -97,16 +107,6 @@ def fetch_one(
                 fh,
                 max_bytes=opts.per_file_cap_bytes,
                 timeout=opts.request_timeout_s,
-            )
-        # TODO(phase8): wire opts.compress through here. The flag is parsed and
-        # plumbed into FetchOptions today, but the streaming path still writes
-        # raw bytes; --compress=gzip|zstd is a no-op for now.
-        if getattr(opts, "compress", "none") not in ("none", None):
-            logger.warning(
-                "--compress=%s requested but compression is not yet wired "
-                "into _download.fetch_one; storing %s verbatim.",
-                opts.compress,
-                cand.url,
             )
         # Re-open just enough to sniff the prefix for the CSV filter; we don't
         # have the content-type from stream_to_file, so we pass empty string
@@ -140,10 +140,10 @@ def download_loop(
 ) -> FetchSummary:
     """Drive ``candidates`` through a shared thread pool, writing manifest rows.
 
-    A single ``ThreadPoolExecutor`` is allocated for the full iterator (the
-    plan calls out per-page pool churn as a regression in the legacy backends).
-    Up to ``concurrency * 2`` futures are kept in flight; we consume them with
-    a sliding window so memory stays bounded for large catalogs.
+    A single ``ThreadPoolExecutor`` is allocated for the full iterator so we
+    don't pay pool startup cost per backend page. Up to ``concurrency * 2``
+    futures are kept in flight; we consume them with a sliding window so
+    memory stays bounded for large catalogs.
 
     On ``max_files`` / ``max_bytes`` cap hit, ``on_cap_hit`` is called with the
     last candidate the iterator produced (or ``None`` if the cap fired before
@@ -151,7 +151,17 @@ def download_loop(
     """
     cands_iter: Iterator[Candidate] = iter(candidates)
     known_hashes = manifest.load_known_hashes(opts.out_dir)
-    bytes_budget_remaining = max(0, opts.max_bytes - mw.bytes_added)
+    bytes_budget_remaining = max(0, opts.max_bytes - mw.total_bytes)
+
+    if opts.compress != "none":
+        # TODO(phase8): wire opts.compress through fetch_one. The flag is
+        # parsed and plumbed into FetchOptions today, but the streaming path
+        # still writes raw bytes.
+        logger.warning(
+            "--compress=%s requested but compression is not yet wired into "
+            "the download path; bodies will be stored verbatim.",
+            opts.compress,
+        )
 
     n_seen = 0
     n_kept = 0
@@ -159,6 +169,7 @@ def download_loop(
     bytes_this_run = 0
     last_cand: Candidate | None = None
     cap_hit = False
+    fut_to_cand: dict[Future, Candidate] = {}
 
     def submit_next(ex: ThreadPoolExecutor) -> Future | None:
         nonlocal last_cand
@@ -168,8 +179,7 @@ def download_loop(
             return None
         last_cand = cand
         fut = ex.submit(fetch_one, cand, opts=opts, exclusive_stage=exclusive_stage)
-        # Stash the candidate on the future for result handling.
-        fut.candidate = cand  # type: ignore[attr-defined]
+        fut_to_cand[fut] = cand
         return fut
 
     with ThreadPoolExecutor(max_workers=opts.concurrency) as ex:
@@ -186,13 +196,13 @@ def download_loop(
         while in_flight:
             # Drain the head; preserve order for stable cursor semantics.
             fut = in_flight.pop(0)
-            cand: Candidate = fut.candidate  # type: ignore[attr-defined]
+            cand = fut_to_cand.pop(fut)
             n_seen += 1
             try:
                 result = fut.result()
-            except Exception as e:  # pragma: no cover - defensive
-                logger.warning("worker raised %s on %s", e.__class__.__name__, cand.url)
-                result = Failure(f"worker_error:{e.__class__.__name__}")
+            except Exception as exc:  # pragma: no cover - defensive
+                logger.exception("worker raised on %s", cand.url)
+                result = Failure(f"worker_error:{exc.__class__.__name__}")
 
             if isinstance(result, Failure):
                 n_skipped += 1
@@ -236,15 +246,27 @@ def download_loop(
                             cap_hit = True
 
             if cap_hit:
-                # Drain in-flight futures so threads exit cleanly, but stop
-                # submitting new work and don't credit late successes.
+                # Stop submitting new work. Cancel what we can; for futures
+                # that already started, drain them so threads exit cleanly,
+                # account for them in n_seen/n_skipped, and unlink any staged
+                # bodies so they don't orphan on disk.
                 for pending in in_flight:
                     pending.cancel()
                 for pending in in_flight:
+                    fut_to_cand.pop(pending, None)
                     try:
-                        pending.result()
+                        r = pending.result()
                     except Exception:
-                        pass
+                        n_seen += 1
+                        n_skipped += 1
+                        continue
+                    n_seen += 1
+                    n_skipped += 1
+                    if isinstance(r, Success):
+                        try:
+                            r.body_path.unlink()
+                        except OSError:
+                            pass
                 in_flight.clear()
                 break
 

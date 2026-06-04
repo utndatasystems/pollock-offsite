@@ -4,10 +4,7 @@
 options compose it via a ``base`` field rather than inheriting (frozen-dataclass
 inheritance is awkward and surprises type checkers).
 
-The legacy ``survey/cli.py`` argparse namespace is the only caller for now:
-``from_args`` accepts that shape and returns the right per-backend dataclass.
-The Phase 7 fetch CLI will add its own subparser flags and may grow this
-adapter.
+``from_args`` adapts an argparse namespace to the right per-backend dataclass.
 """
 
 from __future__ import annotations
@@ -20,6 +17,8 @@ from typing import Literal, Union
 
 @dataclass(frozen=True)
 class FetchOptions:
+    """Shared, immutable knobs every fetch backend reads."""
+
     out_dir: Path
     data_root: Path
     max_files: int | None
@@ -36,12 +35,16 @@ class FetchOptions:
 
 @dataclass(frozen=True)
 class DataGovOptions:
+    """Options for the catalog.data.gov backend; ``query`` is the search term."""
+
     base: FetchOptions
     query: str = "csv"
 
 
 @dataclass(frozen=True)
 class CkanOptions:
+    """Options for any CKAN-shaped catalog (``data.gov.uk`` and friends)."""
+
     base: FetchOptions
     source: str = "data.gov.uk"
     endpoint: str | None = None
@@ -49,6 +52,8 @@ class CkanOptions:
 
 @dataclass(frozen=True)
 class DataEuropaEuOptions:
+    """Options for the data.europa.eu hub backend."""
+
     base: FetchOptions
 
 
@@ -81,7 +86,7 @@ def _base_from_args(args: argparse.Namespace) -> FetchOptions:
 def from_args(args: argparse.Namespace, backend: str) -> BackendOptions:
     """Adapt an argparse namespace to a per-backend options dataclass.
 
-    Reads only fields the legacy ``survey/cli.py`` parser exposes today
+    Reads only fields the top-level ``survey/cli.py`` parser exposes today
     (``out_dir``, ``max_files``, ``max_bytes``, ``dry_run``, ``datagov_query``).
     Unknown attributes fall back to their dataclass defaults via ``getattr``.
     """

@@ -76,6 +76,10 @@ def _host_is_safe(host: str) -> bool:
     h = host.strip().rstrip(".").lower()
     if not h:
         return False
+    # IPv6 zone IDs (``fe80::1%eth0``) are scoped link-local; reject them
+    # even if the address text alone wouldn't parse as is_link_local.
+    if "%" in h:
+        return False
     if h in _LOCAL_HOSTNAMES:
         return False
     if any(h.endswith(suf) for suf in _LOCAL_SUFFIXES):

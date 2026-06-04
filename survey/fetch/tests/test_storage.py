@@ -15,9 +15,7 @@ from survey.fetch.storage import _basename_from_url, source_dir, stage_path
     [
         ("https://example.com/data/file.csv", "file.csv"),
         ("https://example.com/data/file.tsv", "file.tsv"),
-        # ``.csv.gz`` isn't in the recognised-extension list, so the writer
-        # appends ``.csv`` to make the suffix unambiguous on disk.
-        ("https://example.com/data/archive.csv.gz", "archive.csv.gz.csv"),
+        ("https://example.com/data/archive.csv.gz", "archive.csv.gz"),
         ("https://example.com/data/snap.csv.zst", "snap.csv.zst"),
         # No extension --> .csv appended.
         ("https://example.com/data/anonymous", "anonymous.csv"),

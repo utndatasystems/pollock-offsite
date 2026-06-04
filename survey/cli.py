@@ -20,18 +20,7 @@ import argparse
 from pathlib import Path
 
 from . import config
-
-
-def _human_bytes(s: str) -> int:
-    """Parse ``50G``, ``500M``, ``2K``, or a raw integer into bytes."""
-    s = s.strip()
-    if not s:
-        raise argparse.ArgumentTypeError("empty byte spec")
-    units = {"K": 1024, "M": 1024**2, "G": 1024**3, "T": 1024**4}
-    last = s[-1].upper()
-    if last in units:
-        return int(float(s[:-1]) * units[last])
-    return int(s)
+from ._units import human_bytes as _human_bytes
 
 
 def _add_common(p: argparse.ArgumentParser) -> None:

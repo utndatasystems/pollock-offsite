@@ -7,6 +7,7 @@ record-delim is not the standard one) and the new ``ambiguous_delimiter``,
 
 from __future__ import annotations
 
+import re
 from collections import Counter
 
 from clevercsv.cparser_util import parse_string
@@ -108,22 +109,41 @@ def ambiguous_delimiter(sample: ParsedSample) -> bool:
 def mixed_quote_styles(sample: ParsedSample) -> bool:
     """Flag when both ``"`` and ``'`` appear as wrapping characters in cells.
 
-    Strictly heuristic: count cells whose first AND last character match
-    each quote style and call it mixed when both styles exceed 5%.
+    Scans ``sample.raw_text`` directly: ``parse_string`` strips the chosen
+    quote char from each cell, so a post-parse view can never show double
+    quotes when ``quote_char == '"'``. We look for fields whose boundaries
+    are followed/preceded by the field delimiter (or line/text edge) and
+    whose first/last char is ``"`` or ``'``.
     """
-    if not sample.rows:
+    text = sample.raw_text
+    if not text:
         return False
-    double = single = total = 0
-    for row in sample.rows:
-        for cell, _is_quoted in row:
-            total += 1
-            if len(cell) >= 2 and cell[0] == '"' and cell[-1] == '"':
-                double += 1
-            elif len(cell) >= 2 and cell[0] == "'" and cell[-1] == "'":
-                single += 1
-    if total == 0:
+    delim = sample.field_delimiter or ","
+    if delim in ('"', "'"):
         return False
-    return (double / total) > 0.05 and (single / total) > 0.05
+
+    delim_re = re.escape(delim)
+    field_re = re.compile(
+        rf'(?:^|(?<={delim_re})|(?<=\n))'
+        rf'(?:(?P<dq>"[^"\n]*")|(?P<sq>\'[^\'\n]*\'))'
+        rf'(?={delim_re}|\n|$)',
+        re.MULTILINE,
+    )
+
+    total_fields = 0
+    for line in text.splitlines():
+        if line.strip():
+            total_fields += line.count(delim) + 1
+    if total_fields == 0:
+        return False
+
+    double = single = 0
+    for m in field_re.finditer(text):
+        if m.group("dq"):
+            double += 1
+        else:
+            single += 1
+    return (double / total_fields) > 0.05 and (single / total_fields) > 0.05
 
 
 def dialect_unparseable(sample: ParsedSample) -> bool:

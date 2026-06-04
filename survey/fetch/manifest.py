@@ -45,6 +45,8 @@ MANIFEST_FIELDS = (
 
 @dataclass
 class ManifestRow:
+    """A single manifest entry; field meanings are documented at module level."""
+
     origin: str
     url: str
     sha256: str
@@ -112,7 +114,7 @@ def _atomic_write_text(path: Path, text: str) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     fd, tmp = tempfile.mkstemp(prefix=path.name + ".", suffix=".tmp", dir=str(path.parent))
     try:
-        with os.fdopen(fd, "w") as f:
+        with os.fdopen(fd, "w", encoding="utf-8") as f:
             f.write(text)
         os.replace(tmp, path)
     except BaseException:
@@ -153,7 +155,7 @@ def append_rows(out_dir: Path, rows: list[ManifestRow]) -> None:
     p.parent.mkdir(parents=True, exist_ok=True)
     fd, tmp = tempfile.mkstemp(prefix=p.name + ".", suffix=".tmp", dir=str(p.parent))
     try:
-        with os.fdopen(fd, "w", newline="") as out:
+        with os.fdopen(fd, "w", encoding="utf-8", newline="") as out:
             writer = csv.DictWriter(out, fieldnames=MANIFEST_FIELDS)
             writer.writeheader()
             if p.exists():
@@ -215,4 +217,10 @@ class ManifestWriter:
 
     @property
     def bytes_added(self) -> int:
+        """Bytes ``note_bytes`` has been called with this run only."""
         return self._bytes_added
+
+    @property
+    def total_bytes(self) -> int:
+        """Cumulative bytes downloaded into ``out_dir`` (previous runs + this run)."""
+        return self._bytes_at_start + self._bytes_added

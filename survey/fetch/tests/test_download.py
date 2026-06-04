@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import io
 from pathlib import Path
 from unittest.mock import MagicMock
 
@@ -33,29 +32,10 @@ def _staging(tmp_path: Path):
     return stage
 
 
-class _FakeResponse:
-    """Minimal stand-in for the object returned by ``OpenerDirector.open``."""
-
-    def __init__(self, body: bytes, headers: dict[str, str] | None = None):
-        self._buf = io.BytesIO(body)
-        self.headers = headers or {}
-
-    def read(self, n: int = -1) -> bytes:
-        if n is None or n < 0:
-            return self._buf.read()
-        return self._buf.read(n)
-
-    def __enter__(self):
-        return self
-
-    def __exit__(self, *exc):
-        return False
-
-
-def test_fetch_one_happy_path(monkeypatch, tmp_path: Path) -> None:
+def test_fetch_one_happy_path(monkeypatch, tmp_path: Path, fake_response_factory) -> None:
     body = b"a,b,c\n1,2,3\n4,5,6\n"
     opener = MagicMock()
-    opener.open.return_value = _FakeResponse(body, {"Content-Length": str(len(body))})
+    opener.open.return_value = fake_response_factory(body, {"Content-Length": str(len(body))})
     monkeypatch.setattr(_http, "_OPENER", opener)
 
     cand = Candidate(
@@ -73,11 +53,11 @@ def test_fetch_one_happy_path(monkeypatch, tmp_path: Path) -> None:
     assert len(result.sha) == 64
 
 
-def test_fetch_one_oversize_during_stream_aborts(monkeypatch, tmp_path: Path) -> None:
+def test_fetch_one_oversize_during_stream_aborts(monkeypatch, tmp_path: Path, fake_response_factory) -> None:
     """Body bigger than per_file_cap_bytes -> Failure + staged file unlinked."""
     body = b"x" * (5 * 1024 * 1024)  # 5 MiB
     opener = MagicMock()
-    opener.open.return_value = _FakeResponse(body)
+    opener.open.return_value = fake_response_factory(body)
     monkeypatch.setattr(_http, "_OPENER", opener)
     # Force the GET path: HEAD reports unknown size, candidate carries no hint.
     monkeypatch.setattr(_http, "head_size", lambda *a, **k: None)
@@ -146,11 +126,11 @@ def test_fetch_one_redirect_to_file_scheme_is_failure(monkeypatch, tmp_path: Pat
     assert "http_error" in result.reason or "HTTPError" in result.reason
 
 
-def test_fetch_one_non_csv_body_is_failure(monkeypatch, tmp_path: Path) -> None:
+def test_fetch_one_non_csv_body_is_failure(monkeypatch, tmp_path: Path, fake_response_factory) -> None:
     """HTML body fetched at a .csv URL must produce ``Failure('not_csv')``."""
     body = b"<!DOCTYPE html><html>nope</html>"
     opener = MagicMock()
-    opener.open.return_value = _FakeResponse(body)
+    opener.open.return_value = fake_response_factory(body)
     monkeypatch.setattr(_http, "_OPENER", opener)
 
     cand = Candidate(

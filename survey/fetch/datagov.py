@@ -52,7 +52,7 @@ class _CsvHit:
 
 
 def add_subparser(sp: argparse._SubParsersAction) -> argparse.ArgumentParser:
-    """Register the ``data.gov`` subparser. Phase 7 owns the top-level CLI."""
+    """Register the ``data.gov`` subparser."""
     p = sp.add_parser(name, help="Fetch CSV resources from catalog.data.gov.")
     p.add_argument(
         "--datagov-query",
