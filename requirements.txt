@@ -1,3 +1,4 @@
+Requests==2.34.2
 chardet==7.4.3
 clevercsv==0.8.5
 duckdb==1.5.2
@@ -11,3 +12,6 @@ price-parser==0.5.1
 python-dateutil==2.9.0.post0
 python-dotenv==1.2.2
 regex==2026.5.9
+tqdm==4.67.3
+urllib3==2.7.0
+zstandard==0.25.0
