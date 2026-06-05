@@ -88,16 +88,24 @@ def fetch_one(
 ) -> DownloadResult:
     """Download one candidate, validate, and return Success/Failure.
 
-    HEAD-checks only when the candidate has no size hint. The per-file cap is
-    enforced *during* the stream by ``_http.stream_to_file``, not after — a
-    post-hoc size check would let an oversized body land on disk first. On a
-    CSV-shape failure the staged file is unlinked so the next run isn't
-    tempted to retry it.
+    Rejects oversized candidates up front: if the backend supplied a
+    ``size_hint`` that already exceeds ``opts.per_file_cap_bytes`` we return
+    ``Failure('too_large')`` without staging or hitting the network. When no
+    hint is available we HEAD the URL and apply the same check. The per-file
+    cap is also enforced *during* the stream by ``_http.stream_to_file``, not
+    after — a post-hoc size check would let an oversized body land on disk
+    first. On a CSV-shape failure the staged file is unlinked so the next
+    run isn't tempted to retry it.
     """
     require_https = not opts.allow_http
-    if cand.size_hint is None:
+    if cand.size_hint is not None:
+        if cand.size_hint > opts.per_file_cap_bytes:
+            return Failure("too_large")
+    else:
         size = _http.head_size(
-            cand.url, timeout=opts.head_timeout_s, require_https=require_https
+            cand.url,
+            timeout=opts.head_timeout_s,
+            require_https=require_https,
         )
         if size is not None and size > opts.per_file_cap_bytes:
             return Failure("too_large")

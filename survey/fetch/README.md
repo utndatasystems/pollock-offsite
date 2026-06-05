@@ -151,7 +151,6 @@ Shared across every backend (see `python -m survey.fetch <backend> --help`):
 - `--per-file-cap-bytes SPEC`: abort downloads bigger than this (default `200M`).
 - `--concurrency N`: worker threads (default `8`).
 - `--dry-run`: list candidates without staging.
-- `--user-agent STR`: override the User-Agent string.
 - `--compress {none,gzip,zstd}`: currently parsed but no-op; uncompressed CSVs
   are stored verbatim.
 - `--head-timeout-s N`: HEAD request timeout in seconds (default `5`).

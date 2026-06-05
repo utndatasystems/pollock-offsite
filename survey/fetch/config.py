@@ -28,7 +28,6 @@ class FetchOptions:
     per_file_cap_bytes: int = 200 * 1024 * 1024
     head_timeout_s: int = 5
     request_timeout_s: int = 60
-    user_agent: str | None = None
     log_level: str = "INFO"
     compress: Literal["none", "gzip", "zstd"] = "none"
     allow_http: bool = False
@@ -78,7 +77,6 @@ def _base_from_args(args: argparse.Namespace) -> FetchOptions:
         ),
         head_timeout_s=int(getattr(args, "head_timeout_s", 5) or 5),
         request_timeout_s=int(getattr(args, "request_timeout_s", 60) or 60),
-        user_agent=getattr(args, "user_agent", None),
         log_level=getattr(args, "log_level", "INFO") or "INFO",
         compress=getattr(args, "compress", "none") or "none",
         allow_http=bool(getattr(args, "allow_http", False)),

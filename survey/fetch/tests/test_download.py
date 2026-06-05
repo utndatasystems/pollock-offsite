@@ -145,3 +145,31 @@ def test_fetch_one_non_csv_body_is_failure(monkeypatch, tmp_path: Path, fake_res
     raw_dir = tmp_path / "raw" / "data.gov" / "csv"
     if raw_dir.exists():
         assert list(raw_dir.iterdir()) == []
+
+
+def test_fetch_one_too_large_via_size_hint(monkeypatch, tmp_path: Path) -> None:
+    """size_hint > per_file_cap_bytes -> Failure('too_large') with no HEAD or GET."""
+    head_calls = []
+    monkeypatch.setattr(
+        _http, "head_size", lambda *a, **k: head_calls.append((a, k)) or 0
+    )
+    opener = MagicMock()
+    opener.open.side_effect = AssertionError("network must not be hit")
+    monkeypatch.setattr(_http, "_OPENER", opener)
+
+    opts = _opts(tmp_path, per_file_cap=1024)
+    cand = Candidate(
+        url="https://example.com/huge.csv",
+        origin="data.gov",
+        picked_reason="test",
+        size_hint=10 * 1024 * 1024,  # 10 MiB > 1 KiB cap
+    )
+    result = fetch_one(cand, opts=opts, exclusive_stage=_staging(tmp_path))
+
+    assert isinstance(result, Failure)
+    assert result.reason == "too_large"
+    # HEAD must be skipped when the hint already exceeds the cap.
+    assert head_calls == []
+    # No staging directory should have been created either.
+    raw_dir = tmp_path / "raw" / "data.gov" / "csv"
+    assert not raw_dir.exists() or list(raw_dir.iterdir()) == []

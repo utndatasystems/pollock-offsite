@@ -59,7 +59,6 @@ def add_common_args(p: argparse.ArgumentParser) -> None:
         default=200 * 1024 * 1024,
         help="Reject downloads whose body exceeds this size (default 200M).",
     )
-    p.add_argument("--user-agent", default=None)
     p.add_argument(
         "--head-timeout-s",
         type=int,

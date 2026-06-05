@@ -90,7 +90,10 @@ def _request(url: str, *, method: str | None = None) -> urllib.request.Request:
 
 
 def get_bytes(
-    url: str, *, timeout: int = _DEFAULT_TIMEOUT, require_https: bool = False
+    url: str,
+    *,
+    timeout: int = _DEFAULT_TIMEOUT,
+    require_https: bool = False,
 ) -> tuple[bytes, str]:
     """Fetch a URL fully into memory. Returns ``(body, lower-cased-content-type)``."""
     if not _filters.is_safe_http_url(url, require_https=require_https):
@@ -112,7 +115,10 @@ def get_text(
 
 
 def head_size(
-    url: str, *, timeout: int = _DEFAULT_HEAD_TIMEOUT, require_https: bool = False
+    url: str,
+    *,
+    timeout: int = _DEFAULT_HEAD_TIMEOUT,
+    require_https: bool = False,
 ) -> int | None:
     """HEAD the URL and return Content-Length, or ``None`` if unavailable.
 
