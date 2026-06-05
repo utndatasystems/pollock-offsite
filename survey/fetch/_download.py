@@ -61,7 +61,13 @@ DownloadResult = Success | Failure
 
 @dataclass(frozen=True)
 class FetchSummary:
-    """Per-run counters returned by ``download_loop``."""
+    """Per-run counters returned by ``download_loop``.
+
+    ``n_seen`` counts every candidate the loop took ownership of, including
+    those drained mid-flight when a cap was hit. ``n_kept + n_skipped ==
+    n_seen``: a cap-hit drain accounts each in-flight future as both seen
+    and skipped, so the totals stay consistent.
+    """
 
     n_seen: int
     n_kept: int
@@ -69,9 +75,8 @@ class FetchSummary:
     bytes_this_run: int
 
 
-# Callable that reserves an exclusive on-disk staging slot for ``(origin, url)``.
-# Backends pass a partial that wraps ``storage.stage_path(origin, url, root)``
-# so this module stays ignorant of ``FetchOptions.data_root`` resolution.
+# Callable that opens an exclusive write fd at a deterministic path under
+# the configured root.
 ExclusiveStage = Callable[[str, str], "tuple[Path, BinaryIO]"]
 
 
@@ -89,8 +94,11 @@ def fetch_one(
     CSV-shape failure the staged file is unlinked so the next run isn't
     tempted to retry it.
     """
+    require_https = not opts.allow_http
     if cand.size_hint is None:
-        size = _http.head_size(cand.url, timeout=opts.head_timeout_s)
+        size = _http.head_size(
+            cand.url, timeout=opts.head_timeout_s, require_https=require_https
+        )
         if size is not None and size > opts.per_file_cap_bytes:
             return Failure("too_large")
 
@@ -99,18 +107,15 @@ def fetch_one(
     except OSError as e:
         return Failure(f"stage_error:{e.__class__.__name__}")
 
-    content_type = ""
     try:
         with fh:
-            n_bytes, sha = _http.stream_to_file(
+            n_bytes, sha, content_type = _http.stream_to_file(
                 cand.url,
                 fh,
                 max_bytes=opts.per_file_cap_bytes,
                 timeout=opts.request_timeout_s,
+                require_https=require_https,
             )
-        # Re-open just enough to sniff the prefix for the CSV filter; we don't
-        # have the content-type from stream_to_file, so we pass empty string
-        # and rely on the body-magic checks in ``looks_like_csv``.
         with open(body_path, "rb") as f:
             head = f.read(2048)
         if not _filters.looks_like_csv(head, content_type):
@@ -221,6 +226,7 @@ def download_loop(
                             result.body_path.unlink()
                         except OSError:
                             pass
+                        n_skipped += 1
                         cap_hit = True
                     else:
                         row = ManifestRow(

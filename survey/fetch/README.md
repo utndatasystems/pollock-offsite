@@ -154,6 +154,9 @@ Shared across every backend (see `python -m survey.fetch <backend> --help`):
 - `--user-agent STR`: override the User-Agent string.
 - `--compress {none,gzip,zstd}`: currently parsed but no-op; uncompressed CSVs
   are stored verbatim.
+- `--head-timeout-s N`: HEAD request timeout in seconds (default `5`).
+- `--request-timeout-s N`: GET request timeout in seconds (default `60`).
+- `--allow-http`: permit plain `http://` downloads (default: https-only).
 - `-q` / `--quiet`, `-v` / `--verbose`: log-level shortcuts.
 
 Backend-specific flags appear before the shared flags in `--help`:
@@ -161,6 +164,22 @@ Backend-specific flags appear before the shared flags in `--help`:
 - `data.gov`: `--datagov-query <str>` (default `csv`).
 - `data.gov.uk`: `--endpoint <url>`.
 - `data.europa.eu`: none.
+
+## Security limits
+
+`survey.fetch` runs an SSRF screen on every URL (catalog responses,
+redirects, and user-supplied `--endpoint`): it rejects non-`http(s)` schemes,
+URLs carrying userinfo, literal private / loopback / link-local / multicast IP
+addresses, and the common local-network hostname suffixes
+(`localhost`, `*.local`, `*.internal`, `*.intranet`, `*.lan`). By default the
+screen also rejects plain `http://`; pass `--allow-http` to opt back in.
+Redirects from `https://` to `http://` are always rejected.
+
+The screen does **not** perform DNS resolution, so a public hostname that
+resolves to a cloud instance metadata service (e.g. `169.254.169.254`) or a
+DNS-rebinding target is **not** caught here. Operators running this on cloud
+hosts should firewall IMDS at the network layer (or run with IMDSv2 token
+authentication) — relying on the URL screen alone is not sufficient.
 
 ## Contributing: registering a new backend
 

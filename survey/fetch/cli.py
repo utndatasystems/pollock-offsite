@@ -1,13 +1,10 @@
 """Top-level fetch CLI: ``python -m survey.fetch <backend> [opts]``.
 
-Each backend module registers its own subparser via ``add_subparser`` and
-brings in the shared flag surface through ``_backend.add_common_args``. The
-adapter layer in ``config.from_args`` translates the parsed namespace back
-into a typed ``FetchOptions`` (or per-backend variant) and dispatches into
-the backend's ``run``.
-
-The legacy ``survey/cli.py fetch --source <name>`` shim still works in
-parallel via ``run_fetch`` in ``survey/fetch/__init__.py``.
+Each backend registers its own subparser via ``add_subparser`` and brings in
+the shared flag surface through ``_backend.add_common_args``. The adapter
+layer in ``config.from_args`` translates the parsed namespace back into a
+typed ``FetchOptions`` (or per-backend variant) and dispatches into the
+backend's ``run``.
 """
 
 from __future__ import annotations

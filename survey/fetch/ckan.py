@@ -23,17 +23,17 @@ import argparse
 import json
 import os
 from dataclasses import dataclass
-from pathlib import Path
 from typing import Iterator
 from urllib.parse import urlencode
 
-from . import _http, storage
-from ._backend import add_common_args
-from ._download import Candidate, download_loop
+from . import _http
+from ._backend import add_common_args, run_paginated
+from ._download import Candidate
+from ._filters import is_safe_http_url
 from ._log import get_logger
+from ._pagination import paginate
 from ._state import State
 from .config import CkanOptions, FetchOptions, from_args
-from .manifest import ManifestWriter
 
 logger = get_logger("ckan")
 
@@ -79,15 +79,34 @@ def options_from_args(args: argparse.Namespace) -> CkanOptions:
 
 
 def _resolve_endpoint(opts: CkanOptions) -> str:
+    """Resolve the CKAN endpoint and reject unsafe inputs.
+
+    Rejects schemes other than http/https, userinfo (``user:pass@``), private
+    or loopback hosts, and (when not ``--allow-http``) plain ``http://``.
+    """
     if opts.endpoint:
-        return opts.endpoint.rstrip("/")
-    return (os.environ.get(_LEGACY_ENV_OVERRIDE) or _DEFAULT_ENDPOINT).rstrip("/")
+        endpoint = opts.endpoint.rstrip("/")
+    else:
+        endpoint = (
+            os.environ.get(_LEGACY_ENV_OVERRIDE) or _DEFAULT_ENDPOINT
+        ).rstrip("/")
+    require_https = not opts.base.allow_http
+    if not is_safe_http_url(endpoint + "/", require_https=require_https):
+        raise ValueError(
+            f"unsafe or non-https CKAN endpoint: {endpoint!r} "
+            f"(pass --allow-http to permit plain http)"
+        )
+    return endpoint
 
 
-def _ckan_search(endpoint: str, start: int, rows: int) -> dict:
+def _ckan_search(
+    endpoint: str, start: int, rows: int, *, require_https: bool = True
+) -> dict:
     params = urlencode({"q": "res_format:CSV", "rows": rows, "start": start})
     body, _ = _http.get_bytes(
-        f"{endpoint}/api/3/action/package_search?{params}", timeout=_REQUEST_TIMEOUT
+        f"{endpoint}/api/3/action/package_search?{params}",
+        timeout=_REQUEST_TIMEOUT,
+        require_https=require_https,
     )
     return json.loads(body)
 
@@ -113,62 +132,82 @@ def _walk_resources(packages: list[dict]) -> Iterator[_CkanResource]:
             )
 
 
-def _iter_candidates(
-    endpoint: str, source: str, get_start, set_start
-) -> Iterator[Candidate]:
-    """Walk CKAN pages from the resume offset, yielding ``Candidate`` objects.
+def _candidates_factory_for(endpoint: str, source: str):
+    def _factory(base: FetchOptions, state: State, dry_run: bool) -> Iterator[Candidate]:
+        require_https = not base.allow_http
 
-    Persists the *next* page's ``start`` offset *before* yielding the current
-    page's candidates. If the consumer stops mid-page (cap_hit), the cursor
-    already points at the next page and a re-run skips this partially
-    processed one (sha-dedup keeps it safe).
-    """
-    start: int = get_start()
-    if start > 0:
-        logger.info(f"resuming from persisted offset start={start}")
+        def get_cursor() -> int:
+            cursors = state.get(_CURSOR_KEY) or {}
+            try:
+                return int(cursors.get(source, 0) or 0)
+            except (TypeError, ValueError):
+                return 0
 
-    while True:
-        try:
-            page = _ckan_search(endpoint, start=start, rows=_PAGE_SIZE)
-        except _SEARCH_ERRORS as exc:
-            logger.error(f"page request failed at start={start}: {exc!r}; stopping")
-            return
-        if not page.get("success"):
-            logger.error(
-                f"endpoint reported success=false: "
-                f"{page.get('error') or page.get('message')}"
+        def set_cursor(value: int) -> None:
+            cursors = dict(state.get(_CURSOR_KEY) or {})
+            cursors[source] = int(value)
+            state.set(_CURSOR_KEY, cursors)
+
+        initial = get_cursor()
+        if initial > 0:
+            logger.info(f"resuming from persisted offset start={initial}")
+
+        def fetch_page(start: int) -> dict:
+            return _ckan_search(
+                endpoint, start=start, rows=_PAGE_SIZE, require_https=require_https
             )
-            return
-        results = (page.get("result") or {}).get("results") or []
-        if not results:
-            # Catalog exhausted; reset cursor.
-            set_start(0)
-            return
-        next_start = start + len(results)
-        # Persist next cursor *before* yielding so cap_hit mid-page is safe.
-        set_start(next_start)
-        for r in _walk_resources(results):
-            yield Candidate(
-                url=r.url,
-                origin=source,
-                picked_reason=f"ckan:{r.package_title or r.resource_name}"[:180],
-                size_hint=r.size_hint,
-            )
-        start = next_start
+
+        def advance(start: int, page: dict) -> "tuple[int, bool] | None":
+            if not page.get("success"):
+                logger.error(
+                    f"endpoint reported success=false: "
+                    f"{page.get('error') or page.get('message')}"
+                )
+                return None
+            results = (page.get("result") or {}).get("results") or []
+            if not results:
+                return (0, True)
+            return (start + len(results), False)
+
+        def extract(page: dict) -> Iterator[Candidate]:
+            results = (page.get("result") or {}).get("results") or []
+            for r in _walk_resources(results):
+                yield Candidate(
+                    url=r.url,
+                    origin=source,
+                    picked_reason=f"ckan:{r.package_title or r.resource_name}"[:180],
+                    size_hint=r.size_hint,
+                )
+
+        return paginate(
+            fetch_page=fetch_page,
+            advance=advance,
+            extract=extract,
+            get_cursor=get_cursor,
+            set_cursor=set_cursor,
+            logger=logger,
+            search_errors=_SEARCH_ERRORS,
+            dry_run=dry_run,
+        )
+
+    return _factory
 
 
 def run(opts: CkanOptions) -> int:
     base: FetchOptions = opts.base
-    out_dir: Path = Path(base.out_dir).resolve()
-    endpoint = _resolve_endpoint(opts)
+    try:
+        endpoint = _resolve_endpoint(opts)
+    except ValueError as exc:
+        logger.error(str(exc))
+        return 2
     source = opts.source
-    state = State(out_dir)
+    require_https = not base.allow_http
 
     logger.info(f"source={source} endpoint={endpoint}")
 
     # Probe so the user gets a clear failure mode for unreachable endpoints.
     try:
-        probe = _ckan_search(endpoint, start=0, rows=1)
+        probe = _ckan_search(endpoint, start=0, rows=1, require_https=require_https)
         if not probe.get("success"):
             logger.error(
                 f"endpoint reported success=false; aborting "
@@ -181,44 +220,9 @@ def run(opts: CkanOptions) -> int:
         logger.error(f"endpoint unreachable ({exc!r}); skipping {source}")
         return 1
 
-    def get_start() -> int:
-        cursors = state.get(_CURSOR_KEY) or {}
-        try:
-            return int(cursors.get(source, 0) or 0)
-        except (TypeError, ValueError):
-            return 0
-
-    def set_start(value: int) -> None:
-        cursors = dict(state.get(_CURSOR_KEY) or {})
-        cursors[source] = int(value)
-        state.set(_CURSOR_KEY, cursors)
-
-    candidates = _iter_candidates(endpoint, source, get_start, set_start)
-
-    if base.dry_run:
-        n = 0
-        for cand in candidates:
-            if base.max_files is not None and n >= base.max_files:
-                break
-            logger.info(f"[dry-run] {source} {cand.size_hint or '?'}B {cand.url}")
-            n += 1
-        logger.info(f"dry-run done: {n} candidates")
-        return 0
-
-    def _stage(origin: str, url: str):
-        return storage.stage_path(origin, url, base.data_root)
-
-    with ManifestWriter(out_dir) as mw:
-        summary = download_loop(
-            candidates,
-            opts=base,
-            mw=mw,
-            exclusive_stage=_stage,
-            on_cap_hit=lambda _last: None,  # cursor already persisted on page advance
-        )
-
-    logger.info(
-        f"{source}: seen={summary.n_seen}, kept={summary.n_kept}, "
-        f"skipped={summary.n_skipped}, bytes_this_run={summary.bytes_this_run:,}"
+    return run_paginated(
+        base,
+        source=source,
+        candidates_factory=_candidates_factory_for(endpoint, source),
+        logger=logger,
     )
-    return 0

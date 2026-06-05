@@ -1,13 +1,12 @@
 """Per-source corpus storage layout.
 
-Files are staged under ``<root>/<source>/csv/`` (the same shape
-the eurostat downloader uses), keyed by a sanitised basename derived from
-the source URL. Collisions get a numeric suffix (``foo.csv``,
-``foo__1.csv``, …) so we don't deduplicate or skip — every fetched file
-lands on disk under a stable, human-readable name.
+Files are staged under ``<root>/<source>/csv/``, keyed by a sanitised
+basename derived from the source URL. Collisions get a numeric suffix
+(``foo.csv``, ``foo__1.csv``, …) so we don't deduplicate or skip — every
+fetched file lands on disk under a stable, human-readable name.
 
 The ``<source>`` segment is the manifest ``origin`` (``data.gov``,
-``data.gov.uk``, ``hf``, ``kaggle``, …) sanitised for filesystem use.
+``data.gov.uk``, ``data.europa.eu``, …) sanitised for filesystem use.
 """
 
 from __future__ import annotations

@@ -1,9 +1,9 @@
 """Shared content / URL filters used by every fetch backend.
 
-The canonical version of ``looks_like_csv`` was the zip-aware copy in
-``data_europa_eu.py`` — every other backend silently lacked the zip
-rejection and would happily feed a ``application/zip`` body into the
-manifest. Centralising it here closes that drift.
+``looks_like_csv`` rejects responses whose ``Content-Type`` or first kilobyte
+indicates HTML, JSON, XML, or a ZIP archive — common shapes catalogs serve
+in lieu of the advertised CSV. Keeping this in one place prevents the per-
+backend drift that historically let zip bodies into the manifest.
 
 ``is_safe_http_url`` is a real SSRF screen, not just a scheme check:
 
@@ -98,11 +98,12 @@ def _host_is_safe(host: str) -> bool:
     )
 
 
-def is_safe_http_url(url: str) -> bool:
+def is_safe_http_url(url: str, *, require_https: bool = False) -> bool:
     """Reject URLs that aren't safe to send to ``urllib.request.urlopen``.
 
     Used both at candidate-extraction time (catch malformed catalog
     entries) and inside the redirect handler (catch hostile redirects).
+    When ``require_https`` is true, ``http://`` URLs are rejected.
     """
     if not url or not isinstance(url, str):
         return False
@@ -111,6 +112,8 @@ def is_safe_http_url(url: str) -> bool:
     except ValueError:
         return False
     if parsed.scheme not in ("http", "https"):
+        return False
+    if require_https and parsed.scheme != "https":
         return False
     if not parsed.netloc:
         return False

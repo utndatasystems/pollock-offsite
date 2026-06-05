@@ -1,13 +1,14 @@
 """Tier 0 -- corpus assembly.
 
-``BACKENDS`` is the registry of fetch backends; each value is a module that
-satisfies the ``Backend`` Protocol (``name``, ``add_subparser``,
-``options_from_args``, ``run``).
+``BACKENDS`` is the registry of fetch backends; each value satisfies the
+``Backend`` Protocol (``name``, ``add_subparser``, ``options_from_args``,
+``run``). Real backends are modules; deferred backends are
+``SimpleNamespace`` instances built by ``_stub.make_stub`` so the same
+Protocol applies uniformly.
 
-The public ``run_fetch(args)`` shim is what ``survey/cli.py fetch --source X``
-dispatches into: it looks up the backend by name, builds the right typed
-options via the backend's ``options_from_args``, and calls ``run``. The
-fetch-only CLI (``python -m survey.fetch``) uses the same registry directly.
+The fetch CLI (``python -m survey.fetch <backend>``) iterates this registry
+to wire up subparsers and dispatches the parsed namespace into the matched
+backend's ``run``.
 """
 
 from __future__ import annotations
@@ -36,44 +37,34 @@ __all__ = (
     "MANIFEST_FIELDS",
     "ManifestRow",
     "manifest_path",
-    "run_fetch",
 )
 
 
 def _build_registry() -> "dict[str, Backend]":
-    """Register every backend module.
+    """Register every backend.
 
     The three full backends (``data.gov``, ``data.gov.uk``, ``data.europa.eu``)
-    do real work; ``inside_airbnb`` / ``hf`` / ``kaggle`` are stubs that exit
-    ``2`` with a "not yet supported in v1" message. Keeping the stubs
-    registered means they show up in ``--help`` and route through the same
-    ``run_fetch`` shim as the full backends.
+    do real work; ``inside_airbnb`` / ``hf`` / ``kaggle`` are factory-built
+    stubs that exit ``2`` with a "not yet supported in v1" message. Keeping
+    the stubs registered means they still show up in ``--help``.
     """
-    from . import ckan, data_europa_eu, datagov, hf, inside_airbnb, kaggle
+    from . import ckan, data_europa_eu, datagov
+    from ._stub import make_stub
 
     return {
         datagov.name: datagov,
         ckan.name: ckan,
         data_europa_eu.name: data_europa_eu,
-        inside_airbnb.name: inside_airbnb,
-        hf.name: hf,
-        kaggle.name: kaggle,
+        "inside_airbnb": make_stub(
+            "inside_airbnb", "Inside Airbnb (deferred; not yet supported in v1)."
+        ),
+        "hf": make_stub(
+            "hf", "Hugging Face Hub (deferred; not yet supported in v1)."
+        ),
+        "kaggle": make_stub(
+            "kaggle", "Kaggle (deferred; not yet supported in v1)."
+        ),
     }
 
 
 BACKENDS: "dict[str, Backend]" = _build_registry()
-
-
-def run_fetch(args) -> int:
-    """Dispatch ``survey/cli.py fetch --source X`` to the matching backend.
-
-    Reads ``args.source``, looks up the backend module in ``BACKENDS``, builds
-    its typed options via the module's ``options_from_args``, and calls
-    ``run``.
-    """
-    source = getattr(args, "source", None)
-    if source in BACKENDS:
-        backend = BACKENDS[source]
-        return backend.run(backend.options_from_args(args))
-
-    raise NotImplementedError(f"fetch source {source!r} not implemented yet")

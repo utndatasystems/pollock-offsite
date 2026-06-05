@@ -24,6 +24,7 @@ import hashlib
 import http.client
 import os
 import urllib.error
+import urllib.parse
 import urllib.request
 from pathlib import Path
 from typing import BinaryIO
@@ -58,11 +59,18 @@ class UnsafeRedirectError(urllib.error.HTTPError):
 
 
 class SafeHTTPRedirectHandler(urllib.request.HTTPRedirectHandler):
-    """Reject redirects that try to escape http(s) or hit private hosts."""
+    """Reject redirects that try to escape http(s), downgrade scheme, or hit private hosts."""
 
     def redirect_request(self, req, fp, code, msg, headers, newurl):
         if not _filters.is_safe_http_url(newurl):
             raise UnsafeRedirectError(newurl, "fails SSRF screen")
+        try:
+            old_scheme = urllib.parse.urlsplit(req.full_url).scheme
+            new_scheme = urllib.parse.urlsplit(newurl).scheme
+        except ValueError:
+            raise UnsafeRedirectError(newurl, "unparseable redirect URL")
+        if old_scheme == "https" and new_scheme != "https":
+            raise UnsafeRedirectError(newurl, "scheme downgrade https->http")
         return super().redirect_request(req, fp, code, msg, headers, newurl)
 
 
@@ -81,29 +89,37 @@ def _request(url: str, *, method: str | None = None) -> urllib.request.Request:
     return urllib.request.Request(url, headers=headers)
 
 
-def get_bytes(url: str, *, timeout: int = _DEFAULT_TIMEOUT) -> tuple[bytes, str]:
+def get_bytes(
+    url: str, *, timeout: int = _DEFAULT_TIMEOUT, require_https: bool = False
+) -> tuple[bytes, str]:
     """Fetch a URL fully into memory. Returns ``(body, lower-cased-content-type)``."""
-    if not _filters.is_safe_http_url(url):
+    if not _filters.is_safe_http_url(url, require_https=require_https):
         raise ValueError(f"unsafe URL: {url!r}")
     with _OPENER.open(_request(url), timeout=timeout) as resp:
         return resp.read(), (resp.headers.get("Content-Type") or "").lower()
 
 
 def get_text(
-    url: str, *, timeout: int = _DEFAULT_TIMEOUT, encoding: str = "utf-8"
+    url: str,
+    *,
+    timeout: int = _DEFAULT_TIMEOUT,
+    encoding: str = "utf-8",
+    require_https: bool = False,
 ) -> str:
     """Fetch a URL and decode as text. Use this for HTML/JSON pages, not CSVs."""
-    body, _ = get_bytes(url, timeout=timeout)
+    body, _ = get_bytes(url, timeout=timeout, require_https=require_https)
     return body.decode(encoding)
 
 
-def head_size(url: str, *, timeout: int = _DEFAULT_HEAD_TIMEOUT) -> int | None:
+def head_size(
+    url: str, *, timeout: int = _DEFAULT_HEAD_TIMEOUT, require_https: bool = False
+) -> int | None:
     """HEAD the URL and return Content-Length, or ``None`` if unavailable.
 
     Soft-fails (returns ``None``) on any HTTP/network error. Callers should
     treat ``None`` as "unknown size" and decide whether to GET anyway.
     """
-    if not _filters.is_safe_http_url(url):
+    if not _filters.is_safe_http_url(url, require_https=require_https):
         return None
     try:
         with _OPENER.open(_request(url, method="HEAD"), timeout=timeout) as resp:
@@ -120,7 +136,8 @@ def stream_to_file(
     max_bytes: int,
     timeout: int = _DEFAULT_TIMEOUT,
     chunk: int = _DEFAULT_CHUNK_BYTES,
-) -> tuple[int, str]:
+    require_https: bool = False,
+) -> tuple[int, str, str]:
     """Stream ``url`` to ``output``, hashing on the fly.
 
     ``output`` may be a ``Path`` (we open + manage it) or an already-open
@@ -129,9 +146,10 @@ def stream_to_file(
 
     Aborts with ``ValueError`` and unlinks the partial output if the running
     total would exceed ``max_bytes``. Aborts and unlinks on any HTTP error.
-    Returns ``(bytes_written, sha256_hexdigest)`` on success.
+    Returns ``(bytes_written, sha256_hexdigest, content_type)`` on success;
+    ``content_type`` is the lowercased response Content-Type or empty string.
     """
-    if not _filters.is_safe_http_url(url):
+    if not _filters.is_safe_http_url(url, require_https=require_https):
         raise ValueError(f"unsafe URL: {url!r}")
 
     own_file = isinstance(output, Path)
@@ -145,8 +163,10 @@ def stream_to_file(
 
     h = hashlib.sha256()
     total = 0
+    content_type = ""
     try:
         with _OPENER.open(_request(url), timeout=timeout) as resp:
+            content_type = (resp.headers.get("Content-Type") or "").lower()
             while True:
                 buf = resp.read(chunk)
                 if not buf:
@@ -172,4 +192,4 @@ def stream_to_file(
     else:
         if own_file:
             f.close()
-    return total, h.hexdigest()
+    return total, h.hexdigest(), content_type

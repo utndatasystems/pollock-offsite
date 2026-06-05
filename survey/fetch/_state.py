@@ -1,15 +1,14 @@
 """Atomic JSON key-value store for fetch-stage cursors and counters.
 
-Replaces the per-backend dotfiles (``.fetch_state.json``,
-``.datagov_cursors.json``, ``.data_europa_eu_state.json``) with a single
-``<out_dir>/.pollock_survey_state.json``. Writes are eager: every ``set``
-re-encodes and ``os.replace``s the file so a killed run never leaves a
-corrupt JSON behind.
+State lives at ``<out_dir>/.pollock_survey_state.json``. Writes are eager:
+every ``set`` re-encodes and ``os.replace``s the file so a killed run
+never leaves a corrupt JSON behind.
 
-On first instantiation the legacy files are merged into the new schema
-(keys ``bytes_used``, ``datagov_cursors``, ``data_europa_eu_next_page``)
-and the originals are moved under ``<out_dir>/.legacy-state-backup/``
-as a recovery snapshot.
+On first instantiation the legacy files (``.fetch_state.json``,
+``.datagov_cursors.json``, ``.data_europa_eu_state.json``) are merged into
+the new schema (keys ``bytes_used``, ``datagov_cursors``,
+``data_europa_eu_next_page``) and the originals are moved under
+``<out_dir>/.legacy-state-backup/`` as a recovery snapshot.
 """
 
 from __future__ import annotations

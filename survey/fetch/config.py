@@ -31,6 +31,7 @@ class FetchOptions:
     user_agent: str | None = None
     log_level: str = "INFO"
     compress: Literal["none", "gzip", "zstd"] = "none"
+    allow_http: bool = False
 
 
 @dataclass(frozen=True)
@@ -80,15 +81,16 @@ def _base_from_args(args: argparse.Namespace) -> FetchOptions:
         user_agent=getattr(args, "user_agent", None),
         log_level=getattr(args, "log_level", "INFO") or "INFO",
         compress=getattr(args, "compress", "none") or "none",
+        allow_http=bool(getattr(args, "allow_http", False)),
     )
 
 
 def from_args(args: argparse.Namespace, backend: str) -> BackendOptions:
     """Adapt an argparse namespace to a per-backend options dataclass.
 
-    Reads only fields the top-level ``survey/cli.py`` parser exposes today
-    (``out_dir``, ``max_files``, ``max_bytes``, ``dry_run``, ``datagov_query``).
-    Unknown attributes fall back to their dataclass defaults via ``getattr``.
+    Reads the shared flag surface defined in ``_backend.add_common_args``
+    (``out_dir``, ``max_files``, ``max_bytes``, ``dry_run``, …). Unknown
+    attributes fall back to their dataclass defaults via ``getattr``.
     """
     base = _base_from_args(args)
     if backend == "data.gov":

@@ -20,16 +20,15 @@ import argparse
 import json
 import urllib.parse
 from dataclasses import dataclass
-from pathlib import Path
 from typing import Iterator
 
-from . import _http, storage
-from ._backend import add_common_args
-from ._download import Candidate, download_loop
+from . import _http
+from ._backend import add_common_args, run_paginated
+from ._download import Candidate
 from ._log import get_logger
+from ._pagination import paginate
 from ._state import State
 from .config import DataGovOptions, FetchOptions, from_args
-from .manifest import ManifestWriter
 
 logger = get_logger("datagov")
 
@@ -69,17 +68,19 @@ def options_from_args(args: argparse.Namespace) -> DataGovOptions:
     return opts
 
 
-def _search_page(query: str, after: str | None) -> dict:
+def _search_page(query: str, after: str | None, *, require_https: bool = True) -> dict:
     params = {"q": query, "per_page": _PAGE_SIZE, "sort": "popularity"}
     if after:
         params["after"] = after
     body, _ = _http.get_bytes(
-        f"{_SEARCH_URL}?{urllib.parse.urlencode(params)}", timeout=_REQUEST_TIMEOUT
+        f"{_SEARCH_URL}?{urllib.parse.urlencode(params)}",
+        timeout=_REQUEST_TIMEOUT,
+        require_https=require_https,
     )
     return json.loads(body)
 
 
-def _extract(results: list[dict]) -> Iterator[_CsvHit]:
+def _extract_hits(results: list[dict]) -> Iterator[_CsvHit]:
     for ds in results:
         dcat = ds.get("dcat") or {}
         title = (dcat.get("title") or "").strip()
@@ -102,87 +103,63 @@ def _extract(results: list[dict]) -> Iterator[_CsvHit]:
             )
 
 
-def _iter_candidates(
-    query: str, get_after, set_after
-) -> Iterator[Candidate]:
-    """Walk pages and yield ``Candidate`` objects until the cursor is exhausted.
+def _candidates_factory_for(query: str):
+    def _factory(base: FetchOptions, state: State, dry_run: bool) -> Iterator[Candidate]:
+        require_https = not base.allow_http
 
-    Persists the *next* page's cursor *before* yielding the current page's
-    candidates. If the consumer stops mid-page (cap_hit), the cursor already
-    points at the next page, so a re-run skips this partially-processed page;
-    the leftover candidates we didn't reach are sacrificed (sha-dedup keeps it
-    safe across the page boundary on a re-run too).
-    """
-    after: str | None = get_after()
-    if after is not None:
-        logger.info(f"resuming from persisted cursor for query {query!r}")
+        def get_cursor() -> str | None:
+            cursors = state.get(_CURSOR_KEY) or {}
+            return cursors.get(query)
 
-    while True:
-        try:
-            page = _search_page(query, after)
-        except _SEARCH_ERRORS as exc:
-            logger.error(f"page request failed: {exc!r}; stopping")
-            return
-        results = page.get("results") or []
-        next_after = page.get("after")
-        # Persist next cursor *before* yielding so cap_hit mid-page is safe.
-        set_after(next_after)
-        for hit in _extract(results):
-            yield Candidate(
-                url=hit.url,
-                origin=name,
-                picked_reason=f"datagov:{hit.package_title or hit.resource_title}"[:180],
-                size_hint=hit.size_hint,
-            )
-        if not next_after:
-            return
-        after = next_after
+        def set_cursor(cursor: str | None) -> None:
+            cursors = dict(state.get(_CURSOR_KEY) or {})
+            if cursor is None:
+                cursors.pop(query, None)
+            else:
+                cursors[query] = cursor
+            state.set(_CURSOR_KEY, cursors)
+
+        if get_cursor() is not None:
+            logger.info(f"resuming from persisted cursor for query {query!r}")
+
+        def fetch_page(after: str | None) -> dict:
+            return _search_page(query, after, require_https=require_https)
+
+        def advance(_after: str | None, page: dict) -> "tuple[str | None, bool]":
+            results = page.get("results") or []
+            if not results:
+                return (None, True)
+            next_after = page.get("after")
+            return (next_after, not next_after)
+
+        def extract(page: dict) -> Iterator[Candidate]:
+            for hit in _extract_hits(page.get("results") or []):
+                yield Candidate(
+                    url=hit.url,
+                    origin=name,
+                    picked_reason=f"datagov:{hit.package_title or hit.resource_title}"[:180],
+                    size_hint=hit.size_hint,
+                )
+
+        return paginate(
+            fetch_page=fetch_page,
+            advance=advance,
+            extract=extract,
+            get_cursor=get_cursor,
+            set_cursor=set_cursor,
+            logger=logger,
+            search_errors=_SEARCH_ERRORS,
+            dry_run=dry_run,
+        )
+
+    return _factory
 
 
 def run(opts: DataGovOptions) -> int:
-    base: FetchOptions = opts.base
-    out_dir: Path = Path(base.out_dir).resolve()
-    state = State(out_dir)
     logger.info(f"query={opts.query!r}")
-
-    def get_after() -> str | None:
-        cursors = state.get(_CURSOR_KEY) or {}
-        return cursors.get(opts.query)
-
-    def set_after(cursor: str | None) -> None:
-        cursors = dict(state.get(_CURSOR_KEY) or {})
-        if cursor is None:
-            cursors.pop(opts.query, None)
-        else:
-            cursors[opts.query] = cursor
-        state.set(_CURSOR_KEY, cursors)
-
-    candidates = _iter_candidates(opts.query, get_after, set_after)
-
-    if base.dry_run:
-        n = 0
-        for cand in candidates:
-            if base.max_files is not None and n >= base.max_files:
-                break
-            logger.info(f"[dry-run] {cand.size_hint or '?'}B {cand.url}")
-            n += 1
-        logger.info(f"dry-run done: {n} candidates")
-        return 0
-
-    def _stage(origin: str, url: str):
-        return storage.stage_path(origin, url, base.data_root)
-
-    with ManifestWriter(out_dir) as mw:
-        summary = download_loop(
-            candidates,
-            opts=base,
-            mw=mw,
-            exclusive_stage=_stage,
-            on_cap_hit=lambda _last: None,  # cursor already persisted on page advance
-        )
-
-    logger.info(
-        f"done: seen={summary.n_seen}, kept={summary.n_kept}, "
-        f"skipped={summary.n_skipped}, bytes_this_run={summary.bytes_this_run:,}"
+    return run_paginated(
+        opts.base,
+        source=name,
+        candidates_factory=_candidates_factory_for(opts.query),
+        logger=logger,
     )
-    return 0

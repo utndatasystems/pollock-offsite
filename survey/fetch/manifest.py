@@ -5,14 +5,15 @@ staged source file:
 
     origin,url,sha256,bytes,source,picked_reason,fetched_at,local_path
 
-``origin``   — semantic origin (``data.gov``, ``data.gov.uk``, ``github``,
-                ``hf``, ``kaggle``, ``local``).
-``url``      — absolute URL or ``file://`` URI for local mode.
-``sha256``   — content hash of the *raw* (compressed) bytes.
-``bytes``    — size of the raw (compressed) file in bytes.
-``source``   — sub-source / dataset id when meaningful (e.g. eurostat).
-``picked_reason`` — why this file was selected (e.g. ``random``,
-                ``big-wide-rows``, ``local-walk``).
+``origin``   — semantic origin (``data.gov``, ``data.gov.uk``,
+                ``data.europa.eu``).
+``url``      — absolute URL the body was fetched from.
+``sha256``   — content hash of the raw downloaded bytes.
+``bytes``    — size of the file on disk in bytes.
+``source``   — catalog sub-source / dataset id when the backend tracks one;
+                otherwise the same as ``origin``.
+``picked_reason`` — provenance string built by the backend, of the form
+                ``<source>:<title>`` truncated to 180 characters.
 ``fetched_at`` — ISO-8601 UTC timestamp.
 ``local_path`` — absolute path on disk.
 
@@ -24,12 +25,11 @@ from __future__ import annotations
 
 import csv
 import hashlib
-import json
-import os
-import tempfile
 from dataclasses import asdict, dataclass
 from datetime import datetime, timezone
 from pathlib import Path
+
+from ._state import State
 
 MANIFEST_FIELDS = (
     "origin",
@@ -41,6 +41,10 @@ MANIFEST_FIELDS = (
     "fetched_at",
     "local_path",
 )
+
+# CSV-injection: a leading char in this set lets a spreadsheet treat the cell
+# as a formula. Prepend a single quote when found in attacker-influenced fields.
+_CSV_DANGEROUS_PREFIXES = ("=", "+", "-", "@", "\t", "\r")
 
 
 @dataclass
@@ -76,8 +80,11 @@ def manifest_path(out_dir: Path) -> Path:
     return out_dir / "manifest.csv"
 
 
-def fetch_state_path(out_dir: Path) -> Path:
-    return out_dir / ".fetch_state.json"
+def _csv_safe(value: str) -> str:
+    """Defang a CSV cell that could be parsed as a formula by a spreadsheet."""
+    if isinstance(value, str) and value.startswith(_CSV_DANGEROUS_PREFIXES):
+        return "'" + value
+    return value
 
 
 # Process-local cache for known hashes. Keyed by resolved out_dir to avoid
@@ -109,85 +116,49 @@ def load_known_hashes(out_dir: Path) -> set[str]:
     return seen
 
 
-def _atomic_write_text(path: Path, text: str) -> None:
-    """Write ``text`` to ``path`` via a sibling tempfile + os.replace."""
-    path.parent.mkdir(parents=True, exist_ok=True)
-    fd, tmp = tempfile.mkstemp(prefix=path.name + ".", suffix=".tmp", dir=str(path.parent))
-    try:
-        with os.fdopen(fd, "w", encoding="utf-8") as f:
-            f.write(text)
-        os.replace(tmp, path)
-    except BaseException:
-        try:
-            os.unlink(tmp)
-        except FileNotFoundError:
-            pass
-        raise
-
-
-def load_bytes_used(out_dir: Path) -> int:
-    p = fetch_state_path(out_dir)
-    if not p.exists():
-        return 0
-    try:
-        with open(p) as f:
-            return int(json.load(f).get("bytes_used", 0))
-    except Exception:
-        return 0
-
-
-def save_bytes_used(out_dir: Path, value: int) -> None:
-    _atomic_write_text(
-        fetch_state_path(out_dir), json.dumps({"bytes_used": int(value)})
-    )
-
-
 def append_rows(out_dir: Path, rows: list[ManifestRow]) -> None:
-    """Atomically append ``rows`` to the manifest CSV.
+    """Append ``rows`` to the manifest CSV.
 
-    Reads any existing rows, writes header+existing+new to a sibling
-    tempfile, then ``os.replace``s it into place. Costs O(file) per flush;
-    paired with ``ManifestWriter``'s ``flush_every=25`` that's acceptable.
+    Opens the file in append mode and writes the header row only when the
+    file does not already exist (or is empty). Per-flush cost is O(rows),
+    not O(file).
     """
     if not rows:
         return
     p = manifest_path(out_dir)
     p.parent.mkdir(parents=True, exist_ok=True)
-    fd, tmp = tempfile.mkstemp(prefix=p.name + ".", suffix=".tmp", dir=str(p.parent))
-    try:
-        with os.fdopen(fd, "w", encoding="utf-8", newline="") as out:
-            writer = csv.DictWriter(out, fieldnames=MANIFEST_FIELDS)
+    needs_header = not p.exists() or p.stat().st_size == 0
+    with open(p, "a", encoding="utf-8", newline="") as out:
+        writer = csv.DictWriter(out, fieldnames=MANIFEST_FIELDS)
+        if needs_header:
             writer.writeheader()
-            if p.exists():
-                with open(p, newline="") as src:
-                    reader = csv.DictReader(src)
-                    for row in reader:
-                        writer.writerow({k: row.get(k, "") for k in MANIFEST_FIELDS})
-            for r in rows:
-                writer.writerow(asdict(r))
-        os.replace(tmp, p)
-    except BaseException:
-        try:
-            os.unlink(tmp)
-        except FileNotFoundError:
-            pass
-        raise
+        for r in rows:
+            d = asdict(r)
+            d["url"] = _csv_safe(d.get("url", ""))
+            d["picked_reason"] = _csv_safe(d.get("picked_reason", ""))
+            writer.writerow(d)
 
 
 class ManifestWriter:
-    """Buffered, atomic-flushing manifest appender.
+    """Buffered manifest appender backed by ``State`` for the bytes counter.
 
     Use as a context manager. ``add(row)`` buffers; every ``flush_every``
-    rows the buffer is appended atomically. ``note_bytes(n)`` bumps the
-    in-memory bytes total without persisting until exit. Exit flushes the
-    remaining buffer and writes the bytes-used file once.
+    rows the buffer is appended. ``note_bytes(n)`` bumps the in-memory
+    bytes total without persisting until exit. Exit flushes the remaining
+    buffer and persists ``bytes_used`` to the shared ``State`` once.
     """
 
-    def __init__(self, out_dir: Path, *, flush_every: int = 25) -> None:
+    def __init__(
+        self, out_dir: Path, state: State, *, flush_every: int = 25
+    ) -> None:
         self.out_dir = out_dir
+        self._state = state
         self.flush_every = flush_every
         self._buffer: list[ManifestRow] = []
-        self._bytes_at_start = load_bytes_used(out_dir)
+        try:
+            self._bytes_at_start = int(state.get("bytes_used", 0) or 0)
+        except (TypeError, ValueError):
+            self._bytes_at_start = 0
         self._bytes_added = 0
         # Prime the hash cache so adds can keep it in sync cheaply.
         self._known_hashes = load_known_hashes(out_dir)
@@ -197,7 +168,7 @@ class ManifestWriter:
 
     def __exit__(self, exc_type, exc, tb) -> None:
         self.flush()
-        save_bytes_used(self.out_dir, self._bytes_at_start + self._bytes_added)
+        self._state.set("bytes_used", self._bytes_at_start + self._bytes_added)
 
     def add(self, row: ManifestRow) -> None:
         self._buffer.append(row)

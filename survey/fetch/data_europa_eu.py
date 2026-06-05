@@ -23,17 +23,16 @@ import argparse
 import json
 import urllib.parse
 from dataclasses import dataclass
-from pathlib import Path
 from typing import Iterator
 
-from . import _http, storage
-from ._backend import add_common_args
-from ._download import Candidate, download_loop
+from . import _http
+from ._backend import add_common_args, run_paginated
+from ._download import Candidate
 from ._filters import is_safe_http_url
 from ._log import get_logger
+from ._pagination import paginate
 from ._state import State
 from .config import DataEuropaEuOptions, FetchOptions, from_args
-from .manifest import ManifestWriter
 
 logger = get_logger("data_europa_eu")
 
@@ -85,7 +84,7 @@ def _pick_title(title_field) -> str:
     return ""
 
 
-def _search_page(page: int) -> dict:
+def _search_page(page: int, *, require_https: bool = True) -> dict:
     params = {
         "filter": "dataset",
         "facets[format][]": "CSV",
@@ -93,12 +92,14 @@ def _search_page(page: int) -> dict:
         "page": page,
     }
     body, _ = _http.get_bytes(
-        f"{_SEARCH_URL}?{urllib.parse.urlencode(params)}", timeout=_REQUEST_TIMEOUT
+        f"{_SEARCH_URL}?{urllib.parse.urlencode(params)}",
+        timeout=_REQUEST_TIMEOUT,
+        require_https=require_https,
     )
     return json.loads(body).get("result", {}) or {}
 
 
-def _extract(results: list[dict]) -> Iterator[_CsvHit]:
+def _extract_hits(results: list[dict], *, require_https: bool = False) -> Iterator[_CsvHit]:
     for ds in results:
         dataset_id = ds.get("id") or ""
         if not dataset_id:
@@ -112,7 +113,7 @@ def _extract(results: list[dict]) -> Iterator[_CsvHit]:
             if not access_url:
                 continue
             url = (access_url[0] or "").strip()
-            if not url or not is_safe_http_url(url):
+            if not url or not is_safe_http_url(url, require_https=require_https):
                 continue
             size_hint = d.get("byte_size")
             try:
@@ -124,94 +125,64 @@ def _extract(results: list[dict]) -> Iterator[_CsvHit]:
             )
 
 
-def _iter_candidates(get_page, set_page) -> Iterator[Candidate]:
-    """Walk pages from the persisted offset, yielding ``Candidate`` objects.
+def _candidates_factory(
+    base: FetchOptions, state: State, dry_run: bool
+) -> Iterator[Candidate]:
+    require_https = not base.allow_http
 
-    Persists the *next* page *before* yielding the current page's candidates.
-    If the consumer stops mid-page (cap_hit), the cursor already points at
-    the next page; a re-run skips this partially-processed page (sha-dedup
-    keeps it safe).
-    """
-    page: int = get_page()
-    if page > 0:
-        logger.info(f"resuming from page {page}")
-
-    total: int | None = None
-
-    while True:
+    def get_cursor() -> int:
         try:
-            current = _search_page(page)
-        except _SEARCH_ERRORS as exc:
-            logger.error(f"page request failed at page={page}: {exc!r}; stopping")
-            return
-        if total is None:
-            total = current.get("count")
-            if total is not None:
-                logger.info(f"catalog reports {total} CSV-flagged datasets")
+            return int(state.get(_CURSOR_KEY, 0) or 0)
+        except (TypeError, ValueError):
+            return 0
+
+    def set_cursor(value: int) -> None:
+        state.set(_CURSOR_KEY, int(value))
+
+    initial = get_cursor()
+    if initial > 0:
+        logger.info(f"resuming from page {initial}")
+
+    def fetch_page(page: int) -> dict:
+        return _search_page(page, require_https=require_https)
+
+    def advance(page: int, current: dict) -> "tuple[int, bool]":
         results = current.get("results") or []
+        total = current.get("count")
         if not results:
-            # Catalog exhausted; reset cursor.
-            set_page(0)
-            return
+            return (0, True)
         next_page = page + 1
-        # Persist next cursor *before* yielding so cap_hit mid-page is safe.
         if total is not None and next_page * _PAGE_SIZE >= total:
-            # End of catalog after this page; reset cursor.
-            set_page(0)
-        else:
-            set_page(next_page)
-        for hit in _extract(results):
+            return (0, True)
+        return (next_page, False)
+
+    def extract(current: dict) -> Iterator[Candidate]:
+        for hit in _extract_hits(
+            current.get("results") or [], require_https=require_https
+        ):
             yield Candidate(
                 url=hit.url,
                 origin=name,
                 picked_reason=f"data.europa.eu:{hit.title}"[:180],
                 size_hint=hit.size_hint,
             )
-        page = next_page
-        if total is not None and page * _PAGE_SIZE >= total:
-            return
+
+    return paginate(
+        fetch_page=fetch_page,
+        advance=advance,
+        extract=extract,
+        get_cursor=get_cursor,
+        set_cursor=set_cursor,
+        logger=logger,
+        search_errors=_SEARCH_ERRORS,
+        dry_run=dry_run,
+    )
 
 
 def run(opts: DataEuropaEuOptions) -> int:
-    base: FetchOptions = opts.base
-    out_dir: Path = Path(base.out_dir).resolve()
-    state = State(out_dir)
-
-    def get_page() -> int:
-        try:
-            return int(state.get(_CURSOR_KEY, 0) or 0)
-        except (TypeError, ValueError):
-            return 0
-
-    def set_page(value: int) -> None:
-        state.set(_CURSOR_KEY, int(value))
-
-    candidates = _iter_candidates(get_page, set_page)
-
-    if base.dry_run:
-        n = 0
-        for cand in candidates:
-            if base.max_files is not None and n >= base.max_files:
-                break
-            logger.info(f"[dry-run] {cand.size_hint or '?'}B {cand.url}")
-            n += 1
-        logger.info(f"dry-run done: {n} candidates")
-        return 0
-
-    def _stage(origin: str, url: str):
-        return storage.stage_path(origin, url, base.data_root)
-
-    with ManifestWriter(out_dir) as mw:
-        summary = download_loop(
-            candidates,
-            opts=base,
-            mw=mw,
-            exclusive_stage=_stage,
-            on_cap_hit=lambda _last: None,  # cursor already persisted on page advance
-        )
-
-    logger.info(
-        f"done: seen={summary.n_seen}, kept={summary.n_kept}, "
-        f"skipped={summary.n_skipped}, bytes_this_run={summary.bytes_this_run:,}"
+    return run_paginated(
+        opts.base,
+        source=name,
+        candidates_factory=_candidates_factory,
+        logger=logger,
     )
-    return 0
