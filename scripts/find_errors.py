@@ -519,7 +519,7 @@ def main():
     )
     parser.add_argument(
         "--output", default=None,
-        help="Output file path (default: {sut}_errors.txt)"
+        help="Output file path (default: results/{sut}/{dataset}/{sut}_errors.txt)"
     )
     parser.add_argument(
         "--max-details-per-type", type=int, default=3,
@@ -568,7 +568,7 @@ def main():
             for fname in all_files
         }
 
-    output_path = args.output or f"{sut}_errors.txt"
+    output_path = args.output or os.path.join(args.results_dir, sut, args.dataset, f"{sut}_errors.txt")
 
     def write_category_counts(out, grouped):
         if not grouped:

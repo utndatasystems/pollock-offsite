@@ -1,4 +1,4 @@
-import csv
+import custom_csv
 import io
 import json
 import os
@@ -20,7 +20,7 @@ def row_to_csv(row):
     if isinstance(row, str):
         return row
     buf = io.StringIO()
-    writer = csv.writer(buf, lineterminator="")
+    writer = custom_csv.writer(buf, lineterminator="")
     writer.writerow(row)
     return buf.getvalue()
 
@@ -29,7 +29,7 @@ def parse_single_csv_row(text):
     lines = [line for line in text.strip().splitlines() if line.strip()]
     if not lines:
         return None
-    return next(csv.reader([lines[0]]))
+    return next(custom_csv.reader([lines[0]]))
 
 
 def call_llm(messages):
@@ -88,6 +88,9 @@ def llm_repair_row(header, examples, malformed):
     ])
     answer = call_llm([{"role": "user", "content": content}])
     repaired = parse_single_csv_row(answer)
+
+    # print(f"content: {content}")
+    # repaired = ", , , , , , , , "*len(raw)
     if repaired is None or len(repaired) != len(header):
         return None
     return repaired
@@ -128,7 +131,7 @@ def repair_rows_with_replacements(rows, replacements):
 
 def load_clean_rows(clean_csv: str):
     with open(clean_csv, newline='') as f:
-        return list(csv.reader(f))
+        return list(custom_csv.reader(f))
 
 
 def repair_with_ground_truth(rows, malformed, clean_csv: str):
@@ -198,6 +201,55 @@ def repair_with_llm(rows, malformed):
     return repair_rows_with_replacements(rows, replacements)
 
 
+class ValidationReader:
+    """Wraps custom_csv.reader to collect malformed rows instead of raising.
+
+    Yields well-formed rows normally. After iteration, inspect
+    ``malformed_rows`` for everything that went wrong:
+
+      - C-level parse errors (unterminated quotes, etc.) come from the
+        underlying reader's ``malformed_rows`` attribute.
+      - Wrong field count (detected here at the Python level) is appended
+        by this wrapper.
+
+    Each entry is a dict with keys:
+      ``line_num`` – 1-based line number in the source file
+      ``raw``      – the raw line string (parse errors) or parsed field
+                     list (wrong-count rows)
+      ``reason``   – human-readable description of the problem
+    """
+
+    def __init__(self, f, expected_cols=None, dialect="excel", **fmtparams):
+        self._reader = custom_csv.reader(f, dialect, **fmtparams)
+        self._expected = expected_cols
+        self._structural_malformed = []
+
+    def __iter__(self):
+        return self
+
+    def __next__(self):
+        while True:
+            row = next(self._reader)
+            n = self._expected
+            if n is not None and len(row) != n:
+                self._structural_malformed.append({
+                    'line_num': self._reader.line_num,
+                    'raw': row,
+                    'reason': f'expected {n} fields, got {len(row)}',
+                })
+                continue
+            return row
+
+    @property
+    def malformed_rows(self):
+        """Combined list of all malformed rows (parse errors + wrong column count)."""
+        parse_errors = [
+            {'line_num': line_num, 'raw': raw, 'reason': reason}
+            for line_num, raw, reason in self._reader.malformed_rows
+        ]
+        return parse_errors + self._structural_malformed
+
+
 def parse_csv_with_validation(csv_input: str, clean_csv: str = None, cheat: bool = False, llm_repair: bool = False):
     """
     Parse a CSV, skipping malformed rows.
@@ -208,17 +260,17 @@ def parse_csv_with_validation(csv_input: str, clean_csv: str = None, cheat: bool
     """
     with open(csv_input, newline='') as f:
         try:
-            expected_cols = len(next(csv.reader(f)))
+            expected_cols = len(next(custom_csv.reader(f)))
         except StopIteration:
             return pd.DataFrame(), []
         f.seek(0)
-        vr = csv.ValidationReader(f, expected_cols=expected_cols, strict=True)
+        vr = ValidationReader(f, expected_cols=expected_cols, strict=True)
         rows = list(vr)
         malformed = vr.malformed_rows
     if not rows:
         return pd.DataFrame(), malformed
     if cheat and malformed and clean_csv is not None:
         return repair_with_ground_truth(rows, malformed, clean_csv), malformed
-    if llm_repair and malformed:
+    if llm_repair and malformed and len(malformed) < 10:
         return repair_with_llm(rows, malformed), malformed
     return dataframe_from_rows(rows), malformed
