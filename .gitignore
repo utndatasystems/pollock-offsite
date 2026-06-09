@@ -139,5 +139,6 @@ dmypy.json
 
 *.DS_Store
 
-
+# Custom data 
 */mycustomtest/
+data/csv_storm/*
