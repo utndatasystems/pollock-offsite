@@ -1,4 +1,5 @@
 from io import StringIO
+from itertools import islice
 import pandas as pd
 
 try:
@@ -6,8 +7,7 @@ try:
 except ImportError:
     from llm_utils import _build_prompt, _extract_sections, _query_llm
 
-
-def parse_csv(csv_path: str) -> pd.DataFrame:
+def parse_csv(csv_path: str, nrows: int | None = None) -> pd.DataFrame:
     """
     Parses CSV file and returns a repaired pandas DataFrame.
 
@@ -21,6 +21,7 @@ def parse_csv(csv_path: str) -> pd.DataFrame:
 
     Args:
         csv_path: Filesystem path to the corrupted CSV file.
+        nrows: Optional number of data rows to parse from the start of the CSV.
 
     Returns:
         A pandas DataFrame built from the repaired CSV text and:
@@ -35,14 +36,19 @@ def parse_csv(csv_path: str) -> pd.DataFrame:
     """
 
     with open(csv_path, "r", encoding="utf-8", errors="replace") as handle:
-        corrupted_csv = handle.read()
+        if nrows is None:
+            corrupted_csv = handle.read()
+        else:
+            if nrows < 0:
+                raise ValueError("nrows must be non-negative")
+            corrupted_csv = "".join(islice(handle, nrows + 1))
 
     prompt = _build_prompt(corrupted_csv)
     llm_output = _query_llm(prompt)
     fixed_csv, error_report = _extract_sections(llm_output)
 
     try:
-        df = pd.read_csv(StringIO(fixed_csv))
+        df = pd.read_csv(StringIO(fixed_csv), nrows=nrows)
     except pd.errors.ParserError:
         first_line = fixed_csv.splitlines()[0] if fixed_csv else ""
         if ";" in first_line and first_line.count(";") >= first_line.count(","):
@@ -51,7 +57,7 @@ def parse_csv(csv_path: str) -> pd.DataFrame:
             sep = "\t"
         else:
             sep = ","
-        df = pd.read_csv(StringIO(fixed_csv), sep=sep, engine="python")
+        df = pd.read_csv(StringIO(fixed_csv), sep=sep, engine="python", nrows=nrows)
 
     df.attrs["llm_error_report"] = error_report
     df.attrs["llm_prompt"] = prompt

@@ -7,7 +7,7 @@ import requests
 OPENAI_API_KEY_ENV = "OPENAI_API_KEY"
 OPENAI_MODEL_ENV = "OPENAI_MODEL"
 OPENAI_API_BASE_ENV = "OPENAI_API_BASE"
-OPENAI_DEFAULT_MODEL = "gpt-3.5-turbo"
+OPENAI_DEFAULT_MODEL = "gpt-4o-mini"
 
 
 def _build_prompt(csv_text: str) -> str:
@@ -75,7 +75,18 @@ def _query_llm(prompt: str) -> str:
         "max_tokens": 3000,
     }
     response = requests.post(url, headers=headers, json=payload, timeout=300)
-    response.raise_for_status()
+    try:
+        response.raise_for_status()
+    except requests.HTTPError as exc:
+        try:
+            error = response.json().get("error", {})
+            detail = error.get("message") or response.text
+            error_type = error.get("type")
+            if error_type:
+                detail = f"{error_type}: {detail}"
+        except ValueError:
+            detail = response.text
+        raise requests.HTTPError(f"{exc}\nOpenAI API error: {detail}", response=response) from exc
     body = response.json()
     if "choices" not in body or not body["choices"]:
         raise RuntimeError("Unexpected LLM response: missing choices")
