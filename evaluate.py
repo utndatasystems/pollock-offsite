@@ -112,7 +112,7 @@ def main():
     parser.add_argument("--sut", default=None, help="The single system to benchmark, if not running the evaluation for all of them")
     parser.add_argument("--dataset", default="polluted_files", help="The dataset containing the input CSV files")
     parser.add_argument("--result", default="./results", help="The root path where the results of the loading are")
-    parser.add_argument("--verbose", default=False, help="Whether to print filenames as they are processed")
+    parser.add_argument("--verbose", action="store_true", help="Whether to print filenames as they are processed")
     parser.add_argument("--njobs", default=100, help="The number of jobs to parallelize the computation")
 
     args = parser.parse_args()
@@ -121,7 +121,7 @@ def main():
     RESULT_DIR = args.result
     N_JOBS = int(args.njobs)
 
-    verbose = bool(args.verbose)
+    verbose = args.verbose
     systems = [s for s in next(os.walk(f"{RESULT_DIR}"))[1]
                if s != "archives" and os.path.isdir(f"{RESULT_DIR}/{s}/{dataset}/loading")]
 
