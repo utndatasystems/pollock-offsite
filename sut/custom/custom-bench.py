@@ -9,25 +9,53 @@ REPO_ROOT = abspath(join(dirname(__file__), '..', '..'))
 sys.path.insert(0, join(REPO_ROOT, 'sut'))
 
 import time
-from utils import print, save_time_df
-from solution import parse_csv_with_validation
 
 parser = argparse.ArgumentParser()
 parser.add_argument(
     "--cheat",
     action="store_true",
-    help="When malformed rows are detected, replace them with the ground-truth rows from data/<dataset>/clean",
+    help="Load the ground-truth file from data/<dataset>/clean instead of using LLM repair",
 )
 parser.add_argument(
     "--llm-repair",
     action="store_true",
-    help="When malformed rows are detected, ask the configured LLM to repair only those rows",
+    help="Deprecated/no-op: LLM repair is the default unless --cheat or --no-llm-repair is set",
+)
+parser.add_argument(
+    "--no-llm-repair",
+    action="store_true",
+    help="Disable LLM calls; load with CleverCSV/DuckDB dialect detection and skip rejected rows",
+)
+parser.add_argument(
+    "--llm-context-lines",
+    type=int,
+    default=10,
+    help="Number of sample/good lines included in LLM prompts",
+)
+parser.add_argument(
+    "--llm-sniff",
+    action="store_true",
+    help="Skip CleverCSV; use LLM alone for dialect detection",
 )
 args = parser.parse_args()
 if args.cheat and args.llm_repair:
     parser.error("--cheat and --llm-repair cannot be used together")
-if args.llm_repair and not os.environ.get("HEIMGARTEN_OPENAI_KEY"):
-    parser.error("--llm-repair requires HEIMGARTEN_OPENAI_KEY")
+if args.cheat and args.no_llm_repair:
+    parser.error("--cheat already disables LLM repair")
+if args.llm_sniff and args.no_llm_repair and not args.cheat:
+    parser.error("--llm-sniff requires LLM calls; remove --no-llm-repair or use --cheat")
+
+LLM_REPAIR = not args.cheat and not args.no_llm_repair
+LLM_SNIFF = args.llm_sniff
+if (LLM_REPAIR or LLM_SNIFF) and not (
+    os.environ.get("HEIMGARTEN_OPENAI_KEY")
+    or os.environ.get("LIGHTLLM_API_KEY")
+    or os.environ.get("OPENAI_API_KEY")
+):
+    parser.error("LLM repair is the default and requires HEIMGARTEN_OPENAI_KEY, LIGHTLLM_API_KEY, or OPENAI_API_KEY. Use --no-llm-repair or --cheat to avoid LLM calls.")
+
+from utils import print, save_time_df
+from solution import parse_csv_with_validation
 
 sut = 'custom'
 DATASET = os.environ.get('DATASET', 'polluted_files')
@@ -36,13 +64,14 @@ CLEAN_DIR = join(REPO_ROOT, 'data', DATASET, 'clean')
 OUT_DIR = join(REPO_ROOT, 'results', sut, DATASET, 'loading')
 TIME_DIR = join(REPO_ROOT, 'results', sut, DATASET)
 CHEAT = args.cheat
-LLM_REPAIR = args.llm_repair
+LLM_CONTEXT_LINES = max(0, args.llm_context_lines)
 
 os.makedirs(IN_DIR, exist_ok=True)
 os.makedirs(OUT_DIR, exist_ok=True)
 os.makedirs(TIME_DIR, exist_ok=True)
 
-N_REPETITIONS = int(os.environ.get("N_REPETITIONS", 3))
+default_repetitions = 1 if (CHEAT or LLM_REPAIR) else 3
+N_REPETITIONS = int(os.environ.get("N_REPETITIONS", default_repetitions))
 
 
 def malformed_report_path(filename):
@@ -68,11 +97,14 @@ def write_malformed_report(path, malformed=None, error=None):
 
         text_file.write(f"Malformed rows: {len(malformed)}\n")
         for row in malformed:
-            text_file.write(json.dumps({
+            payload = {
                 "line_num": row.get("line_num"),
                 "reason": row.get("reason"),
                 "raw": _json_safe_raw(row.get("raw")),
-            }, ensure_ascii=True))
+            }
+            if "repaired" in row:
+                payload["repaired"] = bool(row.get("repaired"))
+            text_file.write(json.dumps(payload, ensure_ascii=True))
             text_file.write("\n")
 
 times_dict = {}
@@ -92,13 +124,16 @@ for idx, file in enumerate(benchmark_files):
         try:
             start = time.time()
             clean_filepath = join(CLEAN_DIR, f)
-            llm_sidecar = join(OUT_DIR, f + ".llm.jsonl") if LLM_REPAIR else None
+            llm_sidecar = join(OUT_DIR, f + ".llm.jsonl")
             df, malformed = parse_csv_with_validation(
                 in_filepath,
                 clean_csv=clean_filepath,
                 cheat=CHEAT,
                 llm_repair=LLM_REPAIR,
+                llm_sniff=LLM_SNIFF,
                 sidecar_path=llm_sidecar,
+                llm_context_lines=LLM_CONTEXT_LINES,
+                reset_sidecar=(time_rep == 0),
             )
             end = time.time()
             if malformed:
@@ -106,7 +141,7 @@ for idx, file in enumerate(benchmark_files):
                 for row in malformed:
                     print(f"\t  line {row['line_num']}: {row['reason']} — {row['raw']!r}")
                 if CHEAT:
-                    print("\t  cheat mode: swapped malformed row(s) with ground truth")
+                    print("\t  cheat mode: loaded ground truth")
             df.to_csv(out_filepath, index=False)
             write_malformed_report(malformed_path, malformed=malformed)
         except Exception as e:
