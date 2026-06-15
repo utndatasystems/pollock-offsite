@@ -1,0 +1,257 @@
+SUT: custom
+Dataset: small_sample
+Results file: results/custom/small_sample/custom_results.csv
+Total files evaluated: 17
+Application errors: 0
+Wrong content:      8
+Malformed sidecars: 17 / 17
+
+======================================================================
+CUSTOM MALFORMED-ROW DETECTION
+======================================================================
+Scope: wrong-content files only
+Sidecar reports found: 8 / 8
+Files with detected malformed rows: 8 / 8 (100.0%)
+Total malformed rows logged: 165
+
+DETECTION RATIO BY POLLUTION TYPE
+     2/   2  100.0%  Row uses space as field delimiter  (2 row(s) logged)
+     1/   1  100.0%  Extra delimiter  (1 row(s) logged)
+     1/   1  100.0%  Extra unescaped quote  (1 row(s) logged)
+     1/   1  100.0%  Non-standard escape character (0x5C)  (6 row(s) logged)
+     1/   1  100.0%  Non-standard field delimiter (0x20)  (49 row(s) logged)
+     1/   1  100.0%  Non-standard field delimiter (0x2C_0x20)  (73 row(s) logged)
+     1/   1  100.0%  Non-standard quotation character (0x27)  (33 row(s) logged)
+
+MALFORMED ROW REASONS
+    44  expected 9 fields, got 10
+    42  expected 9 fields, got 11
+    33  ',' expected after '''
+    26  expected 9 fields, got 12
+     7  expected 9 fields, got 13
+     7  ',' expected after '"'
+     2  expected 9 fields, got 15
+     2  expected 9 fields, got 14
+     1  expected 9 fields, got 2
+     1  expected 9 fields, got 7
+
+======================================================================
+APPLICATION ERRORS BY POLLUTION TYPE - 0 files
+======================================================================
+  (none)
+
+======================================================================
+APPLICATION ERROR FILES BY POLLUTION TYPE
+======================================================================
+
+  (none)
+
+======================================================================
+WRONG CONTENT BY POLLUTION TYPE - 8 files
+======================================================================
+     2  Row uses space as field delimiter
+     1  Extra delimiter
+     1  Extra unescaped quote
+     1  Non-standard escape character (0x5C)
+     1  Non-standard field delimiter (0x20)
+     1  Non-standard field delimiter (0x2C_0x20)
+     1  Non-standard quotation character (0x27)
+
+======================================================================
+WRONG CONTENT FILES BY POLLUTION TYPE
+======================================================================
+
+----------------------------------------------------------------------
+POLLUTION TYPE: Row uses space as field delimiter
+FILES: 2
+VARIANTS: rows 3, 34 (2 unique)
+
+----------------------------------------------------------------------
+FILE: row_field_delimiter_3_0x20.csv
+POLLUTION: Row 3 uses space as field delimiter (opposed to the correct delimiter defined by the grammar)
+DIALECT: delimiter=',', quotechar='"', escapechar='"', row_delimiter='\r\n', encoding='ascii', header_lines=1, preamble_lines=0, n_columns=9
+SNIFFED: delimiter=',', quotechar='"'
+REFINED: delimiter=',', quotechar='"'
+MALFORMED ROWS DETECTED: 1
+  line 4: expected 9 fields, got 2 - ['30/01/2018 00:30 1 RI-8070 $80.08 Men\'s Ventilated Trail Shoes "Great grip and super extra breathability make thes...
+
+  ROWS: loaded 83
+
+  MISSING RECORDS (1 record(s) present in clean but absent in loaded output):
+    30/01/2018,00:30,1,RI-8070,$80.08,Men's Ventilated Trail Shoes,"Great grip and super extra breathability make these amazing ventilated hikers ideal for warm, dry conditions.",https://www.example.com/product/RI_8070.html,
+
+  EXTRA RECORDS (1 record(s) in loaded output not in clean file):
+    30/01/2018,00:30,1,RI-8070,$80.08,Men's Ventilated Trail Shoes,"""Great grip and super extra breathability make these amazing ventilated hikers ideal for warm, dry conditions.""","""https://www.example.com/product/RI_8070.html""",
+
+----------------------------------------------------------------------
+FILE: row_field_delimiter_34_0x20.csv
+POLLUTION: Row 34 uses space as field delimiter (opposed to the correct delimiter defined by the grammar)
+DIALECT: delimiter=',', quotechar='"', escapechar='"', row_delimiter='\r\n', encoding='ascii', header_lines=1, preamble_lines=0, n_columns=9
+SNIFFED: delimiter=',', quotechar='"'
+REFINED: delimiter=',', quotechar='"'
+MALFORMED ROWS DETECTED: 1
+  line 35: expected 9 fields, got 7 - ['27/03/2018 08:30 3 ON-1026 $20.65 "Tee', ' Traditional Fit', ' Short-Sleeve" "Made of soft cotton that resists wrin...
+
+  ROWS: loaded 83
+
+  MISSING RECORDS (1 record(s) present in clean but absent in loaded output):
+    27/03/2018,08:30,3,ON-1026,$20.65,"Tee, Traditional Fit, Short-Sleeve","Made of soft cotton that resists wrinkles, stains, shrinking, fading and pilling, our resilient tee keeps its shape wash after wash.",https://www.example.com/product/ON_1026.html,
+
+  EXTRA RECORDS (1 record(s) in loaded output not in clean file):
+    27/03/2018,08:30,3,ON-1026,$20.65,"""Tee, Traditional Fit"," Short-Sleeve"" ""Made of soft cotton that resists wrinkles, stains, shrinking, fading and pilling, our resilient tee keeps its shape wash after wash."" ""https://www.example.com/product/ON_1026.html"" ",,
+
+----------------------------------------------------------------------
+POLLUTION TYPE: Extra delimiter
+FILES: 1
+VARIANTS: rows 19 (1 unique); columns 4 (1 unique)
+
+----------------------------------------------------------------------
+FILE: row_more_sep_row19_col4.csv
+POLLUTION: Extra delimiter in row 19 at column 4
+DIALECT: delimiter=',', quotechar='"', escapechar='"', row_delimiter='\r\n', encoding='ascii', header_lines=1, preamble_lines=0, n_columns=9
+SNIFFED: delimiter=',', quotechar='"'
+REFINED: delimiter=',', quotechar='"'
+MALFORMED ROWS DETECTED: 1
+  line 20: expected 9 fields, got 10 - ['27/02/2018', '04:30', '0', 'ZN-2049', '', '$83.32', "Women's Hikers, Low Ventilated", 'Youll be light on your feet ...
+
+  ROWS: loaded 83
+
+  MISSING RECORDS (1 record(s) present in clean but absent in loaded output):
+    27/02/2018,04:30,0,ZN-2049,$83.32,"Women's Hikers, Low Ventilated","Youll be light on your feet with these ultralightweight, breathable hikers. But dont let the comfortable, airy construction fool you: they deliver all the protection and stability you expect from a trail shoe.",https://www.example.com/product/ZN_2049.html,
+
+  EXTRA RECORDS (1 record(s) in loaded output not in clean file):
+    27/02/2018,04:30,0,ZN-2049,,$83.32,"Women's Hikers, Low Ventilated","Youll be light on your feet with these ultralightweight, breathable hikers. But dont let the comfortable, airy construction fool you: they deliver all the protection and stability you expect from a trail shoe.",https://www.example.com/product/ZN_2049.html
+
+----------------------------------------------------------------------
+POLLUTION TYPE: Extra unescaped quote
+FILES: 1
+VARIANTS: rows 3 (1 unique); columns 5 (1 unique)
+
+----------------------------------------------------------------------
+FILE: row_extra_quote3_col5.csv
+POLLUTION: Extra unescaped quote in row 3, column 5
+DIALECT: delimiter=',', quotechar='"', escapechar='"', row_delimiter='\r\n', encoding='ascii', header_lines=1, preamble_lines=0, n_columns=9
+SNIFFED: delimiter=','
+REFINED: delimiter=',', quotechar='"'
+MALFORMED ROWS DETECTED: 1
+  line 4: ',' expected after '"' - 30/01/2018,00:30,1,RI-8070,$80.08,"Men's Ventilated Trail Shoes,"Great grip and super extra breathability make these ...
+
+  ROWS: loaded 82  ← expected 83
+
+  MISSING RECORDS (1 record(s) present in clean but absent in loaded output):
+    30/01/2018,00:30,1,RI-8070,$80.08,"""Men's Ventilated Trail Shoes","Great grip and super extra breathability make these amazing ventilated hikers ideal for warm, dry conditions.",https://www.example.com/product/RI_8070.html,
+
+----------------------------------------------------------------------
+POLLUTION TYPE: Non-standard escape character (0x5C)
+FILES: 1
+
+----------------------------------------------------------------------
+FILE: file_escape_char_0x5C.csv
+POLLUTION: Non-standard escape character (0x5C)
+DIALECT: delimiter=',', quotechar='"', escapechar='\\', row_delimiter='\r\n', encoding='ascii', header_lines=1, preamble_lines=0, n_columns=9
+SNIFFED: delimiter=',', quotechar='"', escapechar='\\'
+REFINED: delimiter=',', quotechar='"'
+MALFORMED ROWS DETECTED: 6
+  line 11: ',' expected after '"' - 18/02/2018,02:15,2,BH-9827,$78.07,"All-Weather Dining Table, Round 48\"","Made in the USA to our exacting standards, ...
+  line 13: ',' expected after '"' - 20/02/2018,02:45,1,BH-7531,$48.08,Women's  Fly Rod 8 Wt.,"Amazingly crisp action and a remarkably light feel in our 8...
+  line 22: ',' expected after '"' - 13/03/2018,05:00,0,GN-9860,$24.86,"Men's Boxer, 5\" Inseam","Perfect for a day on the bonefish flats, these boxers ar...
+  ... and 3 more
+
+  ROWS: loaded 83
+
+  MISSING RECORDS (4 record(s) present in clean but absent in loaded output):
+    18/02/2018,02:15,2,BH-9827,$78.07,"All-Weather Dining Table, Round 48""","Made in the USA to our exacting standards, this round patio table is durable enough to weather the elements year-round.",https://www.example.com/product/BH_9827.html,
+    20/02/2018,02:45,1,BH-7531,$48.08,Women's  Fly Rod 8 Wt.,"Amazingly crisp action and a remarkably light feel in our 8\'9"" length fly rod, impeccably designed for her.",https://www.example.com/product/BH_7531.html,
+    13/03/2018,05:00,0,GN-9860,$24.86,"Men's Boxer, 5"" Inseam","Perfect for a day on the bonefish flats, these boxers are breathable, quick drying and just may become your everyday underwear.",https://www.example.com/product/GN_9860.html,
+    ... and 1 more
+
+  EXTRA RECORDS (4 record(s) in loaded output not in clean file):
+    18/02/2018,02:15,2,BH-9827,$78.07,"All-Weather Dining Table, Round 48\""","Made in the USA to our exacting standards, this round patio table is durable enough to weather the elements year-round.",https://www.example.com/product/BH_9827.html,
+    20/02/2018,02:45,1,BH-7531,$48.08,Women's  Fly Rod 8 Wt.,"Amazingly crisp action and a remarkably light feel in our 8\'9\"" length fly rod, impeccably designed for her.",https://www.example.com/product/BH_7531.html,
+    13/03/2018,05:00,0,GN-9860,$24.86,"Men's Boxer, 5\"" Inseam","Perfect for a day on the bonefish flats, these boxers are breathable, quick drying and just may become your everyday underwear.",https://www.example.com/product/GN_9860.html,
+    ... and 1 more
+
+----------------------------------------------------------------------
+POLLUTION TYPE: Non-standard field delimiter (0x20)
+FILES: 1
+
+----------------------------------------------------------------------
+FILE: file_field_delimiter_0x20.csv
+POLLUTION: Non-standard field delimiter (0x20)
+DIALECT: delimiter=' ', quotechar='"', escapechar='"', row_delimiter='\r\n', encoding='ascii', header_lines=1, preamble_lines=0, n_columns=9
+SNIFFED: delimiter=' ', quotechar='"'
+REFINED: delimiter=' ', quotechar='"'
+MALFORMED ROWS DETECTED: 49
+  line 2: expected 9 fields, got 12 - ['28/01/2018', '00:00', '2', 'MG-8769', '$74.69', "Men's", 'Waterproof', 'Hiking', 'Boots', 'These waterproof hiking ...
+  line 3: expected 9 fields, got 11 - ['29/01/2018', '00:15', '0', 'RI-3895', '$29.81', 'Light-Up', 'Running', 'Jacket', "The next level of weather protect...
+  line 4: expected 9 fields, got 12 - ['30/01/2018', '00:30', '1', 'RI-8070', '$80.08', "Men's", 'Ventilated', 'Trail', 'Shoes', 'Great grip and super extr...
+  ... and 46 more
+
+  ROWS: loaded 34  ← expected 83
+
+  MISSING RECORDS (49 record(s) present in clean but absent in loaded output):
+    28/01/2018,00:00,2,MG-8769,$74.69,Men's Waterproof Hiking Boots,These waterproof hiking boots for men are rugged enough for peak performance yet light and quick enough to keep feet from feeling weighed down.,https://www.example.com/product/MG_8769.html,
+    29/01/2018,00:15,0,RI-3895,$29.81,Light-Up Running Jacket,"The next level of weather protection. This light-up jacket resists the elements and keeps you visible in low-light conditions. From running, biking or walking the dog, the durable construction and innovative safety features won't let you down.",https://www.example.com/product/RI_3895.html,
+    30/01/2018,00:30,1,RI-8070,$80.08,Men's Ventilated Trail Shoes,"Great grip and super extra breathability make these amazing ventilated hikers ideal for warm, dry conditions.",https://www.example.com/product/RI_8070.html,
+    ... and 46 more
+
+----------------------------------------------------------------------
+POLLUTION TYPE: Non-standard field delimiter (0x2C_0x20)
+FILES: 1
+
+----------------------------------------------------------------------
+FILE: file_field_delimiter_0x2C_0x20.csv
+POLLUTION: Non-standard field delimiter (0x2C_0x20)
+DIALECT: delimiter=', ', quotechar='"', escapechar='"', row_delimiter='\r\n', encoding='ascii', header_lines=1, preamble_lines=0, n_columns=9
+SNIFFED: delimiter=',', quotechar='"'
+REFINED: delimiter=',', quotechar='"'
+MALFORMED ROWS DETECTED: 73
+  line 3: expected 9 fields, got 11 - ['29/01/2018', ' 00:15', ' 0', ' RI-3895', ' $29.81', ' Light-Up Running Jacket', ' "The next level of weather protec...
+  line 4: expected 9 fields, got 10 - ['30/01/2018', ' 00:30', ' 1', ' RI-8070', ' $80.08', " Men's Ventilated Trail Shoes", ' "Great grip and super extra ...
+  line 6: expected 9 fields, got 12 - ['13/02/2018', ' 01:00', ' 9', ' CC-9259', ' $48.00', ' "Throw Pillow', ' Wooden Paddles"', ' "Add a pop of paddling ...
+  ... and 70 more
+
+  HEADER MISMATCH:
+    Expected: ['DATE', 'TIME', 'Qty', 'PRODUCTID', 'Price', 'ProductType', 'ProductDescription', 'URL', 'Comments']
+    Got:      ['DATE', ' TIME', ' Qty', ' PRODUCTID', ' Price', ' ProductType', ' "ProductDescription"', ' "URL"', ' Comments']
+
+  ROWS: loaded 10  ← expected 83
+
+  MISSING RECORDS (83 record(s) present in clean but absent in loaded output):
+    28/01/2018,00:00,2,MG-8769,$74.69,Men's Waterproof Hiking Boots,These waterproof hiking boots for men are rugged enough for peak performance yet light and quick enough to keep feet from feeling weighed down.,https://www.example.com/product/MG_8769.html,
+    29/01/2018,00:15,0,RI-3895,$29.81,Light-Up Running Jacket,"The next level of weather protection. This light-up jacket resists the elements and keeps you visible in low-light conditions. From running, biking or walking the dog, the durable construction and innovative safety features won't let you down.",https://www.example.com/product/RI_3895.html,
+    30/01/2018,00:30,1,RI-8070,$80.08,Men's Ventilated Trail Shoes,"Great grip and super extra breathability make these amazing ventilated hikers ideal for warm, dry conditions.",https://www.example.com/product/RI_8070.html,
+    ... and 80 more
+
+  EXTRA RECORDS (10 record(s) in loaded output not in clean file):
+    28/01/2018, 00:00, 2, MG-8769, $74.69, Men's Waterproof Hiking Boots," ""These waterproof hiking boots for men are rugged enough for peak performance yet light and quick enough to keep feet from feeling weighed down."""," ""https://www.example.com/product/MG_8769.html""", 
+    31/01/2018, 00:45, 1, RI-9546, $25.55, Switch Fly Rods," ""This lightweight fly rod delivers outstanding performance and can be used as either a traditional one-handed rod or as a two-handed spey rod. Two-handed technique is ideal for larger rivers and situations where there isn't space for a backcast."""," ""https://www.example.com/product/RI_9546.html""", 
+    23/02/2018, 03:30, 1, HK-5716, $46.01, Women's 3-in-1 Jacket," ""Our women's 3-in-1 jacket offers three times the value and versatility for the solution to year-round weather conditions."""," ""https://www.example.com/product/HK_5716.html""", 
+    ... and 7 more
+
+----------------------------------------------------------------------
+POLLUTION TYPE: Non-standard quotation character (0x27)
+FILES: 1
+
+----------------------------------------------------------------------
+FILE: file_quotation_char_0x27.csv
+POLLUTION: Non-standard quotation character (0x27)
+DIALECT: delimiter=',', quotechar="'", escapechar='"', row_delimiter='\r\n', encoding='ascii', header_lines=1, preamble_lines=0, n_columns=9
+SNIFFED: delimiter=','
+REFINED: delimiter=',', quotechar="'"
+MALFORMED ROWS DETECTED: 33
+  line 3: ',' expected after ''' - 29/01/2018,00:15,0,RI-3895,$29.81,Light-Up Running Jacket,'The next level of weather protection. This light-up jacket...
+  line 5: ',' expected after ''' - 31/01/2018,00:45,1,RI-9546,$25.55,Switch Fly Rods,'This lightweight fly rod delivers outstanding performance and can ...
+  line 7: ',' expected after ''' - 14/02/2018,01:15,1,CC-1697,$34.22,Men's Heavy-Duty Suspenders,'These tough Men's Heavy-Duty Suspenders are made to ho...
+  ... and 30 more
+
+  ROWS: loaded 50  ← expected 83
+
+  MISSING RECORDS (34 record(s) present in clean but absent in loaded output):
+    29/01/2018,00:15,0,RI-3895,$29.81,Light-Up Running Jacket,"The next level of weather protection. This light-up jacket resists the elements and keeps you visible in low-light conditions. From running, biking or walking the dog, the durable construction and innovative safety features won't let you down.",https://www.example.com/product/RI_3895.html,
+    31/01/2018,00:45,1,RI-9546,$25.55,Switch Fly Rods,This lightweight fly rod delivers outstanding performance and can be used as either a traditional one-handed rod or as a two-handed spey rod. Two-handed technique is ideal for larger rivers and situations where there isn't space for a backcast.,https://www.example.com/product/RI_9546.html,
+    14/02/2018,01:15,1,CC-1697,$34.22,Men's Heavy-Duty Suspenders,"These tough Men's Heavy-Duty Suspenders are made to hold up heavy wool pants without stretching in any way, shape or form.",https://www.example.com/product/CC_1697.html,
+    ... and 31 more
+
+  EXTRA RECORDS (1 record(s) in loaded output not in clean file):
+    18/02/2018,02:15,2,BH-9827,$78.07,"All-Weather Dining Table, Round 48""""","Made in the USA to our exacting standards, this round patio table is durable enough to weather the elements year-round.",https://www.example.com/product/BH_9827.html,

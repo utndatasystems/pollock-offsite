@@ -92,11 +92,13 @@ for idx, file in enumerate(benchmark_files):
         try:
             start = time.time()
             clean_filepath = join(CLEAN_DIR, f)
+            llm_sidecar = join(OUT_DIR, f + ".llm.jsonl") if LLM_REPAIR else None
             df, malformed = parse_csv_with_validation(
                 in_filepath,
                 clean_csv=clean_filepath,
                 cheat=CHEAT,
                 llm_repair=LLM_REPAIR,
+                sidecar_path=llm_sidecar,
             )
             end = time.time()
             if malformed:
@@ -105,8 +107,6 @@ for idx, file in enumerate(benchmark_files):
                     print(f"\t  line {row['line_num']}: {row['reason']} — {row['raw']!r}")
                 if CHEAT:
                     print("\t  cheat mode: swapped malformed row(s) with ground truth")
-                if LLM_REPAIR:
-                    print("\t  llm mode: asked model to repair malformed row(s)")
             df.to_csv(out_filepath, index=False)
             write_malformed_report(malformed_path, malformed=malformed)
         except Exception as e:

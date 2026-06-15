@@ -122,28 +122,45 @@ def header_record_cell_measures_csv(source_csv, loaded_csv, n_jobs=1):
     return header_p, header_r, header_f1, rec_p, rec_r, rec_f1, cell_p, cell_r, cell_f1
 
 
-def alex_compare(source_csv, loaded_csv, n_jobs=1):
+def _read_csv_rows(path):
+    with open(path, "r", encoding="utf-8-sig") as f:
+        return list(csv.reader(f, delimiter=",", quotechar='"', doublequote=True))
+
+
+def alex_compare(source_csv, loaded_csv, n_jobs=1, origin_csv=None):
     # Both files are parsed as normal comma-delimited CSV after conversion:
     # source_csv is the expected clean file, loaded_csv is the SUT output.
-    with open(source_csv, "r", encoding="utf-8-sig") as f:
-        reader = csv.reader(f, delimiter=",", quotechar='"', doublequote=True)
-        source_rows = [row for row in reader]
+    # origin_csv (optional) is the pre-pollution source; a cell is accepted if
+    # it matches either the clean value or the origin value at the same position.
+    source_rows = _read_csv_rows(source_csv)
 
     try:
-        with open(loaded_csv, "r", encoding="utf-8-sig") as f:
-            reader = csv.reader(f, delimiter=",", quotechar='"', doublequote=True)
-            loaded_rows = [row for row in reader]
-    except Exception as e:
+        loaded_rows = _read_csv_rows(loaded_csv)
+    except Exception:
         return False
-    
+
+    origin_rows = None
+    if origin_csv is not None:
+        try:
+            origin_rows = _read_csv_rows(origin_csv)
+        except Exception:
+            pass
+
     if len(source_rows) != len(loaded_rows):
         return False
-    
-    for r1, r2 in zip(source_rows, loaded_rows):
+
+    for i, (r1, r2) in enumerate(zip(source_rows, loaded_rows)):
         if len(r1) != len(r2):
             return False
-        for c1, c2 in zip(r1, r2):
-            if normalize_cell(c1) != normalize_cell(c2):
-                return False
+        for j, (c1, c2) in enumerate(zip(r1, r2)):
+            nc2 = normalize_cell(c2)
+            if normalize_cell(c1) == nc2:
+                continue
+            if (origin_rows is not None
+                    and i < len(origin_rows)
+                    and j < len(origin_rows[i])
+                    and normalize_cell(origin_rows[i][j]) == nc2):
+                continue
+            return False
 
     return True

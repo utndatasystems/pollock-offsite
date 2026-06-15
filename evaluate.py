@@ -58,7 +58,7 @@ def add_scores(results_df: pd.DataFrame, sut: str, weights: dict):
     results_df.attrs["weighted_score_10"] = weighted_score_10
     return results_df
 
-def evaluate_single_file(filename:str, dataset:str, sut:str, verbose=False, n_jobs=1):
+def evaluate_single_file(filename:str, dataset:str, sut:str, verbose=False, n_jobs=1, origin_csv=None):
     sut_dir = f"results/{sut}/{dataset}/loading/"
     # Each converted result is compared against the canonical clean CSV with
     # the same filename. The original polluted input lives in data/.../csv/.
@@ -74,7 +74,7 @@ def evaluate_single_file(filename:str, dataset:str, sut:str, verbose=False, n_jo
         dict_measures[sut + "_wrong"] = 1
         return dict_measures
     try:
-        correct = metrics.alex_compare(clean_path, loaded_path, n_jobs)
+        correct = metrics.alex_compare(clean_path, loaded_path, n_jobs, origin_csv=origin_csv)
         dict_measures[sut + "_correct"] = correct
         dict_measures[sut + "_wrong"] = not correct
     except Exception as e:
@@ -88,7 +88,7 @@ def evaluate_single_file(filename:str, dataset:str, sut:str, verbose=False, n_jo
     return dict_measures
 
 
-def evaluate_single_run(files: List[str], dataset: str, result_file:str, sut:str, verbose=False, n_jobs=1):
+def evaluate_single_run(files: List[str], dataset: str, result_file:str, sut:str, verbose=False, n_jobs=1, origin_csv=None):
     effective_jobs = max(1, min(int(n_jobs), os.cpu_count() or 1))
 
     if effective_jobs == 1:
@@ -97,11 +97,11 @@ def evaluate_single_run(files: List[str], dataset: str, result_file:str, sut:str
         for i, f in enumerate(files):
             if i % max(1, n // 10) == 0:
                 print(f"  {i}/{n} files...")
-            file_measures.append(evaluate_single_file(filename=f, dataset=dataset, sut=sut, verbose=verbose))
+            file_measures.append(evaluate_single_file(filename=f, dataset=dataset, sut=sut, verbose=verbose, origin_csv=origin_csv))
         print(f"  {n}/{n} files done.")
     # parallel
     else:
-        args = [{"filename": f, "dataset": dataset, "sut": sut, "verbose": verbose} for f in files]
+        args = [{"filename": f, "dataset": dataset, "sut": sut, "verbose": verbose, "origin_csv": origin_csv} for f in files]
         file_measures = pqdm(args, evaluate_single_file, n_jobs=effective_jobs, argument_type="kwargs")
     results_df = pd.DataFrame(file_measures)
     results_df.to_csv(result_file, index=False)
@@ -115,12 +115,22 @@ def main():
     parser.add_argument("--result", default="./results", help="The root path where the results of the loading are")
     parser.add_argument("--verbose", default=False, help="Whether to print filenames as they are processed")
     parser.add_argument("--njobs", default=100, help="The number of jobs to parallelize the computation")
+    parser.add_argument("--origin-csv", default=None,
+                        help="Pre-pollution source CSV; a cell is accepted if it matches either "
+                             "the clean value or this origin value (default: data/{dataset}/source.csv if it exists)")
 
     args = parser.parse_args()
     UPDATE_SYSTEM = args.sut
     dataset = args.dataset
     RESULT_DIR = args.result
     N_JOBS = int(args.njobs)
+
+    origin_csv = args.origin_csv
+    if origin_csv is None:
+        for candidate in [f"data/{dataset}/source.csv", "data/polluted_files/source.csv"]:
+            if os.path.exists(candidate):
+                origin_csv = candidate
+                break
     weights = load_weights(dataset)
 
     verbose = bool(args.verbose)
@@ -143,7 +153,7 @@ def main():
         result_file = f"{RESULT_DIR}/{s}/{dataset}/{s}_results.csv"
         if UPDATE_SYSTEM is None or s == UPDATE_SYSTEM:
             print(f"\n[{eval_systems.index(s) + 1}/{len(eval_systems)}] Evaluating {s}...")
-            evaluate_single_run(files=files, dataset=dataset, result_file=result_file, sut=s, n_jobs=N_JOBS, verbose=verbose)
+            evaluate_single_run(files=files, dataset=dataset, result_file=result_file, sut=s, n_jobs=N_JOBS, verbose=verbose, origin_csv=origin_csv)
         if not os.path.exists(result_file):
             continue
         df = pd.read_csv(result_file)

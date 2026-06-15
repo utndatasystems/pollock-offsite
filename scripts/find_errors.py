@@ -3,6 +3,7 @@
 
 import argparse
 import csv
+import io
 import json
 import os
 import re
@@ -197,6 +198,24 @@ def load_params(params_path):
         return {}
 
 
+def load_sidecar_dialect(sidecar_path):
+    """Return the dialect entry from a .llm.jsonl sidecar, or None if absent."""
+    try:
+        with open(sidecar_path, encoding="utf-8") as f:
+            for line in f:
+                try:
+                    entry = json.loads(line)
+                    if entry.get("type") == "dialect":
+                        return entry
+                except json.JSONDecodeError:
+                    continue
+    except FileNotFoundError:
+        pass
+    except Exception:
+        pass
+    return None
+
+
 def format_params(params):
     keys = ["delimiter", "quotechar", "escapechar", "row_delimiter",
             "encoding", "header_lines", "preamble_lines", "n_columns"]
@@ -320,11 +339,11 @@ def load_cached_results(results_csv, sut):
 
 
 def compare_loaded_to_clean(task):
-    fname, clean_path, loaded_path = task
-    return fname, alex_compare(clean_path, loaded_path)
+    fname, clean_path, loaded_path, origin_csv = task
+    return fname, alex_compare(clean_path, loaded_path, origin_csv=origin_csv)
 
 
-def build_results_cache(all_files, loading_dir, clean_dir, sut, results_csv):
+def build_results_cache(all_files, loading_dir, clean_dir, sut, results_csv, origin_csv=None):
     app_error_files = []
     compare_tasks = []
     for fname in all_files:
@@ -334,7 +353,7 @@ def build_results_cache(all_files, loading_dir, clean_dir, sut, results_csv):
             continue
         clean_path = os.path.join(clean_dir, fname)
         if os.path.exists(clean_path):
-            compare_tasks.append((fname, clean_path, loaded_path))
+            compare_tasks.append((fname, clean_path, loaded_path, origin_csv))
 
     compare_results = {}
     max_workers = min(os.cpu_count() or 1, 8)
@@ -362,10 +381,10 @@ def build_results_cache(all_files, loading_dir, clean_dir, sut, results_csv):
     return df
 
 
-def classify_files(all_files, results_csv, loading_dir, clean_dir, sut):
+def classify_files(all_files, results_csv, loading_dir, clean_dir, sut, origin_csv=None):
     df = load_cached_results(results_csv, sut)
     if df is None or set(df["file"]) != set(all_files):
-        df = build_results_cache(all_files, loading_dir, clean_dir, sut, results_csv)
+        df = build_results_cache(all_files, loading_dir, clean_dir, sut, results_csv, origin_csv=origin_csv)
 
     app_error_files = []
     wrong_content_files = []
@@ -384,6 +403,12 @@ def classify_files(all_files, results_csv, loading_dir, clean_dir, sut):
             wrong_content_files.append(fname)
 
     return app_error_files, wrong_content_files
+
+
+def format_record(row):
+    buf = io.StringIO()
+    csv.writer(buf).writerow(row)
+    return buf.getvalue().rstrip("\r\n")
 
 
 def diff_rows(clean_rows, loaded_rows, max_examples=3):
@@ -428,13 +453,16 @@ def diff_rows(clean_rows, loaded_rows, max_examples=3):
     return diag
 
 
-def write_file_section(f, filename, scores, diag, polluted_lines, params, poll_type, malformed_report=None):
+def write_file_section(f, filename, scores, diag, polluted_lines, params, poll_type, malformed_report=None, sidecar_dialect=None):
     sep = "-" * 70
     f.write(f"\n{sep}\n")
     f.write(f"FILE: {filename}\n")
     f.write(f"POLLUTION: {poll_type}\n")
     if params:
         f.write(f"DIALECT: {format_params(params)}\n")
+    if sidecar_dialect:
+        f.write(f"SNIFFED: {format_params(sidecar_dialect.get('sniffed', {}))}\n")
+        f.write(f"REFINED: {format_params(sidecar_dialect.get('final', {}))}\n")
 
     if malformed_report and malformed_report.get("exists"):
         status = malformed_report.get("status")
@@ -486,7 +514,7 @@ def write_file_section(f, filename, scores, diag, polluted_lines, params, poll_t
         cnt = diag["missing_count"]
         f.write(f"\n  MISSING RECORDS ({cnt} record(s) present in clean but absent in loaded output):\n")
         for ex in diag["missing_examples"]:
-            f.write(f"    {ex}\n")
+            f.write(f"    {format_record(ex)}\n")
         if cnt > len(diag["missing_examples"]):
             f.write(f"    ... and {cnt - len(diag['missing_examples'])} more\n")
 
@@ -495,7 +523,7 @@ def write_file_section(f, filename, scores, diag, polluted_lines, params, poll_t
         cnt = diag["extra_count"]
         f.write(f"\n  EXTRA RECORDS ({cnt} record(s) in loaded output not in clean file):\n")
         for ex in diag["extra_examples"]:
-            f.write(f"    {ex}\n")
+            f.write(f"    {format_record(ex)}\n")
         if cnt > len(diag["extra_examples"]):
             f.write(f"    ... and {cnt - len(diag['extra_examples'])} more\n")
 
@@ -529,6 +557,11 @@ def main():
         "--custom", action="store_true",
         help="Read custom malformed-row sidecars and report detection ratios by pollution type"
     )
+    parser.add_argument(
+        "--origin-csv", default=None,
+        help="Pre-pollution source CSV; a cell is accepted if it matches either the clean value "
+             "or this origin value (default: {polluted-dir}/source.csv if it exists)"
+    )
     args = parser.parse_args()
     if args.max_details_per_type < 0:
         parser.error("--max-details-per-type must be greater than or equal to 0")
@@ -539,6 +572,14 @@ def main():
     clean_dir   = os.path.join(args.polluted_dir, "clean")
     csv_dir     = os.path.join(args.polluted_dir, "csv")
     params_dir  = os.path.join(args.polluted_dir, "parameters")
+
+    origin_csv = args.origin_csv
+    if origin_csv is None:
+        for candidate in [os.path.join(args.polluted_dir, "source.csv"),
+                          "data/polluted_files/source.csv"]:
+            if os.path.exists(candidate):
+                origin_csv = candidate
+                break
 
     # Get file list from results CSV if available, otherwise scan the input dir.
     if os.path.exists(results_csv):
@@ -555,6 +596,7 @@ def main():
         loading_dir=loading_dir,
         clean_dir=clean_dir,
         sut=sut,
+        origin_csv=origin_csv,
     )
 
     app_error_groups = group_by_pollution(app_error_files)
@@ -602,6 +644,7 @@ def main():
     def write_app_error_file(out, fname):
         params = load_params(os.path.join(params_dir, fname + "_parameters.json"))
         polluted_lines = read_polluted_lines(os.path.join(csv_dir, fname))
+        sidecar_dialect = load_sidecar_dialect(os.path.join(loading_dir, fname + ".llm.jsonl"))
         write_file_section(
             out,
             fname,
@@ -611,6 +654,7 @@ def main():
             params,
             pollution_type(fname),
             malformed_reports.get(fname),
+            sidecar_dialect=sidecar_dialect,
         )
 
     def write_wrong_content_file(out, fname):
@@ -620,6 +664,7 @@ def main():
         clean_rows = read_csv_rows(clean_path)
         loaded_rows = read_csv_rows(loaded_path)
         diag = diff_rows(clean_rows, loaded_rows)
+        sidecar_dialect = load_sidecar_dialect(os.path.join(loading_dir, fname + ".llm.jsonl"))
         write_file_section(
             out,
             fname,
@@ -629,6 +674,7 @@ def main():
             params,
             pollution_type(fname),
             malformed_reports.get(fname),
+            sidecar_dialect=sidecar_dialect,
         )
 
     def write_grouped_file_sections(out, grouped, write_file):

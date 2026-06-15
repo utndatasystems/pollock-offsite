@@ -70,13 +70,41 @@ def example_rows_for_malformed(rows, malformed_line_num, n_examples=6):
     return examples[:n_examples]
 
 
-def llm_repair_row(header, examples, malformed):
+def llm_repair_row(header, examples, malformed, sidecar_path=None, dialect_kwargs=None):
     raw = malformed.get("raw")
     reason = malformed.get("reason", "unknown")
+
+    if dialect_kwargs:
+        dialect_desc = ", ".join(f"{k}={repr(v)}" for k, v in dialect_kwargs.items())
+        dialect_lines = [
+            f"The raw row below was read using this auto-inferred file dialect: {dialect_desc}",
+            'Your repaired output MUST use standard CSV: double-quote (") as quotechar, "" to escape a literal quote inside a field.',
+            "",
+        ]
+    else:
+        dialect_lines = []
+
     content = "\n".join([
-        "Repair one malformed CSV row.",
+        "Repair one malformed CSV row. Fix only the CSV structural problem — nothing else.",
         "Return exactly one CSV row and nothing else.",
         "The row must have exactly the same number of fields as the header.",
+        "",
+        *dialect_lines,
+        "CRITICAL — preserving field content is the highest priority:",
+        "Every character that belongs to a field value MUST appear in your output.",
+        "For quote characters specifically, apply this rule:",
+        "  - A quote in the MIDDLE of a field value is always content — preserve and encode it (e.g. as \"\").",
+        "  - A quote at the END of a field with no matching opening quote at the start is content — preserve it.",
+        "  - A quote at the START of a field with no matching closing quote at the end is content — preserve it.",
+        "  - Only a MATCHED pair (quote at the start AND a corresponding quote at the end) is structural",
+        "    (it is the field's own quoting mechanism) — do not treat those boundary quotes as literal content.",
+        "Silently dropping any character from a field — including a mid-field quote, a backslash,",
+        "a space, or a typo — is a worse outcome than leaving the row malformed.",
+        "When in doubt, keep the character and encode it properly rather than remove it.",
+        "",
+        "Also do NOT fix or normalise anything else inside field content: preserve typos,",
+        "double spaces, unusual capitalisation, and backslash characters that are part of the",
+        "field value but are not causing the structural CSV error.",
         "",
         f"Header: {row_to_csv(header)}",
         "",
@@ -87,10 +115,16 @@ def llm_repair_row(header, examples, malformed):
         f"Malformed raw row: {row_to_csv(raw)}",
     ])
     answer = call_llm([{"role": "user", "content": content}])
-    repaired = parse_single_csv_row(answer)
 
-    # print(f"content: {content}")
-    # repaired = ", , , , , , , , "*len(raw)
+    if sidecar_path:
+        with open(sidecar_path, "a", encoding="utf-8") as sf:
+            sf.write(json.dumps({
+                "line_num": malformed.get("line_num"),
+                "prompt": content,
+                "response": answer,
+            }) + "\n")
+
+    repaired = parse_single_csv_row(answer)
     if repaired is None or len(repaired) != len(header):
         return None
     return repaired
@@ -127,6 +161,95 @@ def repair_rows_with_replacements(rows, replacements):
         return dataframe_from_rows(rows)
 
     return pd.DataFrame(repaired_data, columns=header)
+
+
+def llm_inspect_header(csv_input: str, dialect_kwargs: dict, sidecar_path: str = None) -> dict:
+    """Ask the LLM how many leading rows are header, whether the header has structural errors,
+    and whether the auto-inferred quotechar/escapechar look correct.
+
+    Returns dict with:
+      header_rows  – int >= 1, number of leading rows that are header material
+      header_error – str describing a structural CSV error in the header, or None
+      quotechar    – str to override the sniffed quotechar, or None to keep it unchanged
+      escapechar   – str to override the sniffed escapechar, or None to keep it unchanged
+                     (use "" for either to mean "no quotechar/escapechar")
+    """
+    with open(csv_input, encoding='utf-8', errors='replace') as f:
+        first_lines = [f.readline() for _ in range(6)]
+    first_lines = [line.rstrip('\n\r') for line in first_lines if line]
+
+    dialect_desc = (
+        ", ".join(f"{k}={repr(v)}" for k, v in dialect_kwargs.items())
+        if dialect_kwargs else "none detected"
+    )
+
+    prompt = "\n".join([
+        "You are analyzing the beginning of a CSV file.",
+        "",
+        "Auto-inferred dialect (treat as a hint only — not confirmed correct):",
+        f"  {dialect_desc}",
+        "",
+        "First rows of the file (raw, unprocessed lines):",
+        *[f"  row {i + 1}: {line}" for i, line in enumerate(first_lines)],
+        "",
+        "Answer four questions:",
+        "1. How many of these leading rows are part of the header (column names, sub-headers,",
+        "   or descriptive rows before actual data begins)? Typically 1.",
+        "2. Is there a structural CSV error in any header row — for example a missing delimiter,",
+        "   malformed quoting, or a field count that does not match the rest of the file?",
+        "   If so, describe it concisely. Otherwise return null.",
+        "3. Does the auto-inferred quotechar look correct given the raw lines?",
+        "   If not, return the correct character (e.g. \"'\" or '\"').",
+        "   Return \"\" if there is no quote character. Return null to leave it unchanged.",
+        "   Only override if you are confident from the raw data.",
+        "4. Does the auto-inferred escapechar look correct given the raw lines?",
+        "   If not, return the correct character (e.g. \"\\\\\").",
+        "   Return \"\" if there is no escape character. Return null to leave it unchanged.",
+        "   Only override if you are confident from the raw data.",
+        "",
+        "Respond with JSON only, no prose.",
+        'Format: {"header_rows": <int>, "header_error": <string or null>, "quotechar": <string or null>, "escapechar": <string or null>}',
+    ])
+
+    answer = call_llm([{"role": "user", "content": prompt}])
+
+    if sidecar_path:
+        with open(sidecar_path, "a", encoding="utf-8") as sf:
+            sf.write(json.dumps({
+                "type": "header_inspection",
+                "prompt": prompt,
+                "response": answer,
+            }) + "\n")
+
+    try:
+        start = answer.find('{')
+        end = answer.rfind('}')
+        result = json.loads(answer[start:end + 1])
+        return {
+            "header_rows": max(1, int(result.get("header_rows", 1))),
+            "header_error": result.get("header_error") or None,
+            "quotechar": result.get("quotechar"),
+            "escapechar": result.get("escapechar"),
+        }
+    except Exception:
+        return {"header_rows": 1, "header_error": None, "quotechar": None, "escapechar": None}
+
+
+def sniff_dialect(csv_input):
+    import clevercsv
+    with open(csv_input, newline='', encoding='utf-8', errors='replace') as f:
+        sample = f.read(8192)
+    dialect = clevercsv.Sniffer().sniff(sample)
+    if dialect is None:
+        return {}
+    kwargs = {}
+    if dialect.delimiter:
+        kwargs['delimiter'] = dialect.delimiter
+    if dialect.quotechar:
+        kwargs['quotechar'] = dialect.quotechar
+    if dialect.escapechar:
+        kwargs['escapechar'] = dialect.escapechar
+    return kwargs
 
 
 def load_clean_rows(clean_csv: str):
@@ -177,7 +300,7 @@ def repair_with_ground_truth(rows, malformed, clean_csv: str):
     return pd.DataFrame(repaired_data, columns=clean_header)
 
 
-def repair_with_llm(rows, malformed):
+def repair_with_llm(rows, malformed, sidecar_path=None, dialect_kwargs=None):
     if not rows or not malformed:
         return dataframe_from_rows(rows)
 
@@ -190,7 +313,7 @@ def repair_with_llm(rows, malformed):
         line_num = int(line_num)
         examples = example_rows_for_malformed(rows, line_num)
         try:
-            repaired = llm_repair_row(header, examples, entry)
+            repaired = llm_repair_row(header, examples, entry, sidecar_path=sidecar_path, dialect_kwargs=dialect_kwargs)
         except Exception:
             repaired = None
         if repaired is not None:
@@ -250,7 +373,7 @@ class ValidationReader:
         return parse_errors + self._structural_malformed
 
 
-def parse_csv_with_validation(csv_input: str, clean_csv: str = None, cheat: bool = False, llm_repair: bool = False):
+def parse_csv_with_validation(csv_input: str, clean_csv: str = None, cheat: bool = False, llm_repair: bool = False, sidecar_path: str = None):
     """
     Parse a CSV, skipping malformed rows.
 
@@ -258,19 +381,65 @@ def parse_csv_with_validation(csv_input: str, clean_csv: str = None, cheat: bool
         (DataFrame of good rows, list of malformed row dicts)
         Each malformed dict has keys: line_num, raw, reason.
     """
+    dialect_kwargs = sniff_dialect(csv_input)
+    sniffed_dialect = dict(dialect_kwargs)
+    if llm_repair and sidecar_path is None:
+        sidecar_path = csv_input + ".llm.jsonl"
+
+    header_info = (
+        llm_inspect_header(csv_input, dialect_kwargs, sidecar_path=sidecar_path)
+        if llm_repair
+        else {"header_rows": 1, "header_error": None, "quotechar": None, "escapechar": None}
+    )
+
+    for key in ("quotechar", "escapechar"):
+        val = header_info.get(key)
+        if val is None:
+            continue
+        if val == "":
+            dialect_kwargs.pop(key, None)
+        else:
+            dialect_kwargs[key] = val
+
+    if sidecar_path:
+        with open(sidecar_path, "a", encoding="utf-8") as sf:
+            sf.write(json.dumps({
+                "type": "dialect",
+                "sniffed": sniffed_dialect,
+                "final": dict(dialect_kwargs),
+                "llm_corrections": {
+                    k: header_info.get(k)
+                    for k in ("quotechar", "escapechar")
+                    if header_info.get(k) is not None
+                },
+            }) + "\n")
+
     with open(csv_input, newline='') as f:
         try:
-            expected_cols = len(next(custom_csv.reader(f)))
+            expected_cols = len(next(custom_csv.reader(f, **dialect_kwargs)))
         except StopIteration:
             return pd.DataFrame(), []
         f.seek(0)
-        vr = ValidationReader(f, expected_cols=expected_cols, strict=True)
+        vr = ValidationReader(f, expected_cols=expected_cols, strict=True, **dialect_kwargs)
         rows = list(vr)
         malformed = vr.malformed_rows
+
     if not rows:
         return pd.DataFrame(), malformed
+
+    extra_header_rows = header_info["header_rows"] - 1
+    if extra_header_rows > 0 and len(rows) > extra_header_rows:
+        rows = [rows[0]] + rows[1 + extra_header_rows:]
+
+    if header_info["header_error"]:
+        malformed = [{
+            "line_num": 1,
+            "raw": rows[0],
+            "reason": f"header: {header_info['header_error']}",
+        }] + malformed
+
     if cheat and malformed and clean_csv is not None:
         return repair_with_ground_truth(rows, malformed, clean_csv), malformed
     if llm_repair and malformed and len(malformed) < 10:
-        return repair_with_llm(rows, malformed), malformed
+        return repair_with_llm(rows, malformed, sidecar_path=sidecar_path, dialect_kwargs=dialect_kwargs), malformed
     return dataframe_from_rows(rows), malformed
