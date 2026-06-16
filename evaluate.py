@@ -162,7 +162,7 @@ def main():
             print(f"Skipping {s}: result file uses old scoring columns. Rerun evaluate.py --sut {s} to update it.")
             continue
         df = add_scores(df, s, weights)
-        d_aggregate = {"".join(key.split("_")[1:]): val for key, val in df.sum(axis=0, numeric_only=True).items()}
+        d_aggregate = {key[len(s)+1:]: val for key, val in df.sum(axis=0, numeric_only=True).items() if key.startswith(f"{s}_")}
         d_aggregate["score_10"] = df.attrs["score_10"]
         d_aggregate["weighted_score_10"] = df.attrs["weighted_score_10"]
         d_aggregate.update({"sut": s})

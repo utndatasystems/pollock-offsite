@@ -13,9 +13,65 @@ import pandas as pd
 
 DEFAULT_LLM_ENDPOINT = "http://dep-eng-data-s-heimgarten.hosts.utn.de:4000/v1/chat/completions"
 DEFAULT_LLM_MODEL = "gpt-5.4"
+#DEFAULT_LLM_MODEL = "gpt-5.4-mini"
 TRACE_VERSION = 1
 
 _LLM_RESPONSE_CACHE: Dict[str, str] = {}
+_LLM_DRY_RUN_ESTIMATED_OUTPUT: Dict[str, int] = {}  # prompt_sha -> estimated chars for dry-run dedup
+_LLM_CACHE_PATH: Optional[str] = None
+_LLM_CACHE_ENABLED: bool = True
+_LLM_CACHE_LOADED: bool = False
+_LLM_CALL_STATS: Dict[str, int] = {
+    "total": 0, "cached": 0,
+    "input_chars_total": 0, "input_chars_cached": 0,
+    "output_chars_fresh": 0, "output_chars_cached": 0,
+}
+_LLM_DRY_RUN: bool = False
+
+
+def configure_llm_cache(path: Optional[str] = None, enabled: bool = True) -> None:
+    global _LLM_CACHE_PATH, _LLM_CACHE_ENABLED, _LLM_CACHE_LOADED
+    _LLM_CACHE_PATH = path
+    _LLM_CACHE_ENABLED = enabled
+    _LLM_CACHE_LOADED = False
+
+
+def configure_llm_dry_run(enabled: bool) -> None:
+    global _LLM_DRY_RUN
+    _LLM_DRY_RUN = enabled
+
+
+def get_llm_cache_stats() -> Dict[str, int]:
+    return dict(_LLM_CALL_STATS)
+
+
+def _ensure_cache_loaded() -> None:
+    global _LLM_CACHE_LOADED
+    if _LLM_CACHE_LOADED or not _LLM_CACHE_PATH:
+        return
+    _LLM_CACHE_LOADED = True
+    if not os.path.exists(_LLM_CACHE_PATH):
+        return
+    try:
+        with open(_LLM_CACHE_PATH, "r", encoding="utf-8") as f:
+            data = json.load(f)
+        if isinstance(data, dict):
+            _LLM_RESPONSE_CACHE.update(data)
+    except Exception:
+        pass
+
+
+def _save_cache_to_disk() -> None:
+    if not _LLM_CACHE_PATH:
+        return
+    try:
+        cache_dir = os.path.dirname(_LLM_CACHE_PATH)
+        if cache_dir:
+            os.makedirs(cache_dir, exist_ok=True)
+        with open(_LLM_CACHE_PATH, "w", encoding="utf-8") as f:
+            json.dump(_LLM_RESPONSE_CACHE, f, ensure_ascii=False, indent=2)
+    except Exception:
+        pass
 
 
 @dataclass
@@ -79,13 +135,26 @@ def _llm_api_key() -> Optional[str]:
 
 
 def _prompt_hash(prompt: str) -> str:
-    return hashlib.sha256(prompt.encode("utf-8")).hexdigest()
+    key = _llm_model() + "\x00" + prompt
+    return hashlib.sha256(key.encode("utf-8")).hexdigest()
 
 
-def call_llm(prompt: str, trace: TraceWriter, event_type: str) -> str:
+def call_llm(prompt: str, trace: TraceWriter, event_type: str, estimated_output_chars: int = 0) -> str:
+    if _LLM_CACHE_ENABLED:
+        _ensure_cache_loaded()
+
     prompt_sha = _prompt_hash(prompt)
-    if prompt_sha in _LLM_RESPONSE_CACHE:
+    _LLM_CALL_STATS["total"] += 1
+    _LLM_CALL_STATS["input_chars_total"] += len(prompt)
+
+    if _LLM_CACHE_ENABLED and prompt_sha in _LLM_RESPONSE_CACHE:
         response = _LLM_RESPONSE_CACHE[prompt_sha]
+        _LLM_CALL_STATS["cached"] += 1
+        _LLM_CALL_STATS["input_chars_cached"] += len(prompt)
+        # For in-run dry-run dedup hits use the stored estimate, not len("{}") = 2
+        out_chars = _LLM_DRY_RUN_ESTIMATED_OUTPUT.get(prompt_sha, len(response))
+        _LLM_CALL_STATS["output_chars_cached"] += out_chars
+        print(f"[LLM cache] reused cached result ({event_type})")
         trace.write(
             event_type,
             prompt_sha256=prompt_sha,
@@ -96,6 +165,13 @@ def call_llm(prompt: str, trace: TraceWriter, event_type: str) -> str:
             endpoint=_llm_endpoint(),
         )
         return response
+
+    if _LLM_DRY_RUN:
+        _LLM_CALL_STATS["output_chars_fresh"] += estimated_output_chars
+        _LLM_RESPONSE_CACHE[prompt_sha] = "{}"  # deduplicate within this run, never saved to disk
+        _LLM_DRY_RUN_ESTIMATED_OUTPUT[prompt_sha] = estimated_output_chars
+        trace.write(event_type, prompt_sha256=prompt_sha, prompt=prompt, dry_run=True)
+        return "{}"
 
     api_key = _llm_api_key()
     if not api_key:
@@ -121,7 +197,12 @@ def call_llm(prompt: str, trace: TraceWriter, event_type: str) -> str:
     with urllib.request.urlopen(request, timeout=90) as response_obj:
         data = json.loads(response_obj.read().decode("utf-8"))
     response = data["choices"][0]["message"]["content"]
-    _LLM_RESPONSE_CACHE[prompt_sha] = response
+    _LLM_CALL_STATS["output_chars_fresh"] += len(response)
+
+    if _LLM_CACHE_ENABLED:
+        _LLM_RESPONSE_CACHE[prompt_sha] = response
+        _save_cache_to_disk()
+
     trace.write(
         event_type,
         prompt_sha256=prompt_sha,
@@ -203,12 +284,15 @@ def _decode_token(value: Any) -> Optional[str]:
         "tab": "\t",
         "space": " ",
         "<space>": " ",
+        "0x20": " ",
         "comma-space": ", ",
     }
     return aliases.get(lowered, value)
 
 
 def _valid_delimiter(value: Any) -> Optional[str]:
+    if isinstance(value, str) and value == " ":
+        return " "
     value = _decode_token(value)
     if value is None:
         return None
@@ -318,7 +402,10 @@ def infer_dialect_with_llm(
     ]
     prompt = "\n".join(parts)
 
-    answer = call_llm(prompt, trace, "llm_dialect_inference")
+    # Estimate: fixed JSON skeleton (~120 chars) + column names from sample header line
+    header_line = sample_lines[0] if sample_lines else ""
+    estimated_output = 120 + len(header_line)
+    answer = call_llm(prompt, trace, "llm_dialect_inference", estimated_output_chars=estimated_output)
     try:
         parsed = _extract_json_object(answer)
         if isinstance(parsed, dict):
@@ -792,6 +879,8 @@ def infer_repairs_with_llm(
         "Preserve field content exactly: literal quotes, apostrophes, backslashes, spaces, typos, and casing are data.",
         "Do not CSV-escape inside field values. JSON escaping is allowed only because the response is JSON.",
         "The file may use a multi-character delimiter such as \", \"; use the dialect below as context.",
+        "Use the column names to guide how you split or merge tokens: each repaired value must be semantically",
+        "consistent with its column (e.g. a value in 'DATE' should look like a date, 'Price' like a price).",
         "",
         "Response shape:",
         '{"repairs": [{"line": <line number>, "fields": [<string>, ...]}]}',
@@ -800,7 +889,9 @@ def infer_repairs_with_llm(
         json.dumps(prompt_payload, ensure_ascii=False),
     ])
 
-    answer = call_llm(prompt, trace, "llm_faulty_line_repair")
+    # Estimate: output is repaired fields ≈ size of raw faulty lines + JSON overhead per item
+    estimated_output = sum(len(fl.get("raw") or "") for fl in faulty_lines) + len(faulty_lines) * 30
+    answer = call_llm(prompt, trace, "llm_faulty_line_repair", estimated_output_chars=estimated_output)
     try:
         parsed = _extract_json_object(answer)
     except Exception as exc:
@@ -1033,6 +1124,13 @@ def parse_csv_with_validation(
     raw_header_lines = _header_lines(csv_input, dialect)
     header = combine_header_rows(raw_header_lines, dialect)
     has_header = dialect.header_rows > 0
+
+    llm_columns = llm_mapping.get("column_names") if llm_mapping else None
+    if isinstance(llm_columns, list) and llm_columns and all(isinstance(c, str) for c in llm_columns):
+        header = [str(c) for c in llm_columns]
+        has_header = True
+        trace.write("llm_column_names_applied", columns=header)
+
     expected_columns = len(header) if has_header else infer_expected_columns(scoring_lines, dialect)
     if expected_columns == 0:
         trace.write("empty_or_unreadable_file")
