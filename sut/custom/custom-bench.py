@@ -13,6 +13,11 @@ import time
 
 parser = argparse.ArgumentParser()
 parser.add_argument(
+    "--overwrite",
+    action="store_true",
+    help="Re-process files even if output already exists (default: skip already-processed files)",
+)
+parser.add_argument(
     "--cheat",
     action="store_true",
     help="Load the ground-truth file from data/<dataset>/clean instead of using LLM repair",
@@ -140,7 +145,7 @@ for idx, file in enumerate(benchmark_files):
     out_filename = f'{f}_converted.csv'
     out_filepath = join(OUT_DIR, out_filename)
     malformed_path = malformed_report_path(f)
-    if not (CHEAT or LLM_REPAIR) and os.path.exists(out_filepath) and os.path.exists(malformed_path):
+    if not args.overwrite and os.path.exists(out_filepath) and os.path.exists(malformed_path):
         continue
     print(f"({idx}/{len(benchmark_files)}) {f}")
 
