@@ -117,7 +117,9 @@ def main():
     parser.add_argument("--njobs", default=100, help="The number of jobs to parallelize the computation")
     parser.add_argument("--origin-csv", default=None,
                         help="Pre-pollution source CSV; a cell is accepted if it matches either "
-                             "the clean value or this origin value (default: data/{dataset}/source.csv if it exists)")
+                             "the clean value or this origin value")
+    parser.add_argument("--use-origin-csv", action="store_true", default=False,
+                        help="Auto-detect and use data/{dataset}/source.csv as origin fallback (default: off)")
 
     args = parser.parse_args()
     UPDATE_SYSTEM = args.sut
@@ -126,7 +128,7 @@ def main():
     N_JOBS = int(args.njobs)
 
     origin_csv = args.origin_csv
-    if origin_csv is None:
+    if origin_csv is None and args.use_origin_csv:
         for candidate in [f"data/{dataset}/source.csv", "data/polluted_files/source.csv"]:
             if os.path.exists(candidate):
                 origin_csv = candidate
