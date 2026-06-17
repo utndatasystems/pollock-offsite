@@ -1,0 +1,2 @@
+Malformed rows: 1
+{"line_num": 65, "reason": "MISSING COLUMNS: Expected Number of Columns: 9 Found: 7; MISSING COLUMNS: Expected Number of Columns: 9 Found: 8; UNQUOTED VALUE: Value with unterminated quote found.", "raw": "30/05/2018,23:00,\"1,CC-2828,$79.36,\"Camp Light, Two-Pack\",\"Collapsed or extended, our lightweight camp lights take up minimal space, making them handy to bring on hikes and camping trips, and easy to keep on hand in case of a power outage.\",\"https://www.example.com/product/CC_2828.html\",", "repaired": true}
