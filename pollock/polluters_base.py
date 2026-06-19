@@ -107,22 +107,6 @@ def addColumns(file: CSVFile, position, n_cols: int, col_names: list, cell_conte
             r.insert(row_pos, delimiter) if row_pos > 0 else r.insert(row_pos + 1, delimiter)
 
 
-def changeCell(file: CSVFile, row: int, col: int, new_content, table=0):
-    root = file.xml.getroot()
-    if type(row) == int and row < 0:
-        row = "last()-" + str(row + 1)
-    if type(col) == int and col < 0:
-        col = "last()-" + str(col + 1)
-
-    if col == "*":
-        query = root.xpath(f"//table[{table + 1}]/row[{row}]//cell")
-    else:
-        query = root.xpath(f"//table[{table + 1}]/row[{row}]/cell[{col}]")
-
-    for c in query:
-        [c.remove(child) for child in c]
-        insert_value_cell(file, c, new_content)
-
 def deleteCells(file: CSVFile, row: int, col, table=0):
     root = file.xml.getroot()
 

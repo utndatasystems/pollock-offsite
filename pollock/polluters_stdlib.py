@@ -344,47 +344,6 @@ def changeRowQuotationMark(file: CSVFile, row=1, target_quotation="'"):
     file.filename = f"row_quotation_mark_{row}{quote_string}.csv"
     file.xml.getroot().attrib["filename"] = file.filename
 
-def changeColumnHeader(file: CSVFile, col: int = None, target_header=None, extra_rows=0):
-    """
-        If col is none, apply to all of them-
-        If >0, extra rows expands the header on X many rows
-    """
-    colint = col
-    if type(col) == int and col < 0:
-        col = "last()-" + str(col + 1)
-
-    if type(col) == list:
-        [pb.changeCell(file, row=1, col=c, new_content=target_header) for c in col]
-    elif col is not None:
-        pb.changeCell(file, row=1, col=col, new_content=target_header)
-    elif col is None:
-        [pb.changeCell(file, row=1, col=c, new_content=target_header) for c in range(file.col_count)]
-
-    if extra_rows > 0:
-        if type(target_header) == str:
-            cell_content = [''] * (file.col_count)
-            if type(col) == list:
-                for c in cell_content:
-                    cell_content[c] = target_header
-            else:
-                cell_content[colint] = target_header
-        else:
-            cell_content = target_header
-        pb.addRows(file, n_rows=extra_rows, cell_content=cell_content, position=0, col_count=file.col_count)
-
-    if len(target_header) in range(1, 255):
-        strtype = "regular"
-    elif not len(target_header):
-        strtype = "empty"
-    else:
-        strtype = "large"
-    if not target_header.isalnum():
-        strtype += "_nonalnum"
-
-    file.filename = f"column_header_{col}_{strtype}{'_multiple' if extra_rows > 0 else ''}{'_nonunique' if type(col) == list else ''}.csv"
-    file.xml.getroot().attrib["filename"] = file.filename
-
-
 def addTable(file: CSVFile, n_rows, n_cols, empty_boundary=True):
     """Adds a table after the first one with n_rows and n_cols.
        Additionally, can be specified if the two are separated by empty delimited rows or not.
