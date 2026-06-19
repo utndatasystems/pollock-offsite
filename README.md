@@ -110,7 +110,7 @@ If you want to get a table of SuTs and their respective scores without having to
 
 
 ```
-python3 scripts/find_errors.py --sut <sut> 
+python3 eval/find_errors.py --sut <sut> 
 ```
 This writes a .txt file containing information about what errors the given SUT made into ```results/<sut>/<dataset>/<sut>_errors.txt```
 
