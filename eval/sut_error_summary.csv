@@ -1,0 +1,487 @@
+dataset,sut,pollution_group,total_files,failed_files,poor_files,error_files,failure_rate,poor_rate,error_rate,avg_header_f1,avg_record_f1,avg_cell_f1,min_cell_f1,worst_file
+polluted_files,clevercs,ALL,2290,0,756,756,0.000000,0.330131,0.330131,0.975014,0.839681,0.903536,0.111111,file_field_delimiter_0x2C_0x20.csv
+polluted_files,clevercs,Double trailing newline,1,0,0,0,0.000000,0.000000,0.000000,1.000000,0.994012,1.000000,1.000000,file_double_trailing_newline.csv
+polluted_files,clevercs,Empty file (0 bytes),1,0,0,0,0.000000,0.000000,0.000000,1.000000,1.000000,1.000000,1.000000,file_no_payload.csv
+polluted_files,clevercs,Extra delimiter in one single row,756,0,0,0,0.000000,0.000000,0.000000,0.999373,1.000000,0.999339,0.999339,row_more_sep_row17_col6.csv
+polluted_files,clevercs,Extra unescaped quote in one single row,756,0,746,746,0.000000,0.986772,0.986772,0.933862,0.529757,0.714420,0.407609,row_extra_quote25_col0.csv
+polluted_files,clevercs,"Header row only, no data",1,0,0,0,0.000000,0.000000,0.000000,1.000000,1.000000,1.000000,1.000000,file_header_only.csv
+polluted_files,clevercs,Missing delimiter in one single row,672,0,0,0,0.000000,0.000000,0.000000,0.997899,0.991071,0.998178,0.998015,row_less_sep_row57_col2.csv
+polluted_files,clevercs,Missing trailing newline,1,0,0,0,0.000000,0.000000,0.000000,1.000000,1.000000,1.000000,1.000000,file_no_trailing_newline.csv
+polluted_files,clevercs,Multi-row header (2 rows),1,0,1,1,0.000000,1.000000,1.000000,0.000000,0.994012,0.982249,0.982249,file_header_multirow_2.csv
+polluted_files,clevercs,Multi-row header (3 rows),1,0,1,1,0.000000,1.000000,1.000000,0.000000,0.988095,0.976471,0.976471,file_header_multirow_3.csv
+polluted_files,clevercs,No header row,1,0,0,0,0.000000,0.000000,0.000000,1.000000,1.000000,1.000000,1.000000,file_no_header.csv
+polluted_files,clevercs,Non-standard escape character (0x00),1,0,1,1,0.000000,1.000000,1.000000,0.777778,0.000000,0.664277,0.664277,file_escape_char_0x00.csv
+polluted_files,clevercs,Non-standard escape character (0x5C),1,0,0,0,0.000000,0.000000,0.000000,1.000000,1.000000,1.000000,1.000000,file_escape_char_0x5C.csv
+polluted_files,clevercs,Non-standard field delimiter (0x20),1,0,1,1,0.000000,1.000000,1.000000,1.000000,0.409639,0.880997,0.880997,file_field_delimiter_0x20.csv
+polluted_files,clevercs,Non-standard field delimiter (0x2C_0x20),1,0,1,1,0.000000,1.000000,1.000000,0.111111,0.000000,0.111111,0.111111,file_field_delimiter_0x2C_0x20.csv
+polluted_files,clevercs,Non-standard field delimiter (0x3B),1,0,0,0,0.000000,0.000000,0.000000,1.000000,1.000000,1.000000,1.000000,file_field_delimiter_0x3B.csv
+polluted_files,clevercs,Non-standard field delimiter (0x9),1,0,0,0,0.000000,0.000000,0.000000,1.000000,1.000000,1.000000,1.000000,file_field_delimiter_0x9.csv
+polluted_files,clevercs,Non-standard quotation character (0x27),1,0,1,1,0.000000,1.000000,1.000000,0.777778,0.000000,0.664277,0.664277,file_quotation_char_0x27.csv
+polluted_files,clevercs,Non-standard record delimiter (0xA),1,0,0,0,0.000000,0.000000,0.000000,1.000000,1.000000,1.000000,1.000000,file_record_delimiter_0xA.csv
+polluted_files,clevercs,Non-standard record delimiter (0xD),1,0,0,0,0.000000,0.000000,0.000000,1.000000,1.000000,1.000000,1.000000,file_record_delimiter_0xD.csv
+polluted_files,clevercs,One single row uses space as field delimiter,84,0,0,0,0.000000,0.000000,0.000000,0.988095,0.988095,0.993351,0.993351,row_field_delimiter_29_0x20.csv
+polluted_files,clevercs,Preamble rows before header,1,0,1,1,0.000000,1.000000,1.000000,0.000000,0.988095,0.988235,0.988235,file_preamble.csv
+polluted_files,clevercs,Single data row,1,0,0,0,0.000000,0.000000,0.000000,1.000000,1.000000,1.000000,1.000000,file_one_data_row.csv
+polluted_files,clevercs,Two tables with the same number of columns,1,0,1,1,0.000000,1.000000,1.000000,1.000000,0.666667,0.669323,0.669323,file_multitable_same.csv
+polluted_files,clevercs,"Two tables, first has fewer columns",1,0,1,1,0.000000,1.000000,1.000000,1.000000,0.666667,0.694853,0.694853,file_multitable_less.csv
+polluted_files,clevercs,"Two tables, first has more columns",1,0,1,1,0.000000,1.000000,1.000000,1.000000,0.666667,0.645602,0.645602,file_multitable_more.csv
+polluted_files,clevercs,Unknown,1,0,0,0,0.000000,0.000000,0.000000,1.000000,1.000000,1.000000,1.000000,source.csv
+polluted_files,csvcommons,ALL,2290,762,6,768,0.332751,0.002620,0.335371,0.664756,0.663921,0.666100,0.000000,row_extra_quote80_col1.csv
+polluted_files,csvcommons,Double trailing newline,1,0,0,0,0.000000,0.000000,0.000000,1.000000,1.000000,1.000000,1.000000,file_double_trailing_newline.csv
+polluted_files,csvcommons,Empty file (0 bytes),1,0,0,0,0.000000,0.000000,0.000000,1.000000,1.000000,1.000000,1.000000,file_no_payload.csv
+polluted_files,csvcommons,Extra delimiter in one single row,756,0,0,0,0.000000,0.000000,0.000000,0.999373,1.000000,0.999339,0.999339,row_more_sep_row17_col6.csv
+polluted_files,csvcommons,Extra unescaped quote in one single row,756,756,0,756,1.000000,0.000000,1.000000,0.000000,0.000000,0.000000,0.000000,row_extra_quote80_col1.csv
+polluted_files,csvcommons,"Header row only, no data",1,0,0,0,0.000000,0.000000,0.000000,1.000000,1.000000,1.000000,1.000000,file_header_only.csv
+polluted_files,csvcommons,Missing delimiter in one single row,672,1,0,1,0.001488,0.000000,0.001488,0.996674,0.989583,0.996585,0.000000,row_less_sep_row0_col8.csv
+polluted_files,csvcommons,Missing trailing newline,1,0,0,0,0.000000,0.000000,0.000000,1.000000,1.000000,1.000000,1.000000,file_no_trailing_newline.csv
+polluted_files,csvcommons,Multi-row header (2 rows),1,0,1,1,0.000000,1.000000,1.000000,0.000000,0.994012,0.982249,0.982249,file_header_multirow_2.csv
+polluted_files,csvcommons,Multi-row header (3 rows),1,0,1,1,0.000000,1.000000,1.000000,0.000000,0.988095,0.976471,0.976471,file_header_multirow_3.csv
+polluted_files,csvcommons,No header row,1,0,0,0,0.000000,0.000000,0.000000,1.000000,1.000000,1.000000,1.000000,file_no_header.csv
+polluted_files,csvcommons,Non-standard escape character (0x00),1,1,0,1,1.000000,0.000000,1.000000,0.000000,0.000000,0.000000,0.000000,file_escape_char_0x00.csv
+polluted_files,csvcommons,Non-standard escape character (0x5C),1,0,0,0,0.000000,0.000000,0.000000,1.000000,1.000000,1.000000,1.000000,file_escape_char_0x5C.csv
+polluted_files,csvcommons,Non-standard field delimiter (0x20),1,0,1,1,0.000000,1.000000,1.000000,1.000000,0.409639,0.880997,0.880997,file_field_delimiter_0x20.csv
+polluted_files,csvcommons,Non-standard field delimiter (0x2C_0x20),1,0,0,0,0.000000,0.000000,0.000000,1.000000,1.000000,1.000000,1.000000,file_field_delimiter_0x2C_0x20.csv
+polluted_files,csvcommons,Non-standard field delimiter (0x3B),1,0,0,0,0.000000,0.000000,0.000000,1.000000,1.000000,1.000000,1.000000,file_field_delimiter_0x3B.csv
+polluted_files,csvcommons,Non-standard field delimiter (0x9),1,0,0,0,0.000000,0.000000,0.000000,1.000000,1.000000,1.000000,1.000000,file_field_delimiter_0x9.csv
+polluted_files,csvcommons,Non-standard quotation character (0x27),1,1,0,1,1.000000,0.000000,1.000000,0.000000,0.000000,0.000000,0.000000,file_quotation_char_0x27.csv
+polluted_files,csvcommons,Non-standard record delimiter (0xA),1,0,0,0,0.000000,0.000000,0.000000,1.000000,1.000000,1.000000,1.000000,file_record_delimiter_0xA.csv
+polluted_files,csvcommons,Non-standard record delimiter (0xD),1,0,0,0,0.000000,0.000000,0.000000,1.000000,1.000000,1.000000,1.000000,file_record_delimiter_0xD.csv
+polluted_files,csvcommons,One single row uses space as field delimiter,84,0,2,2,0.000000,0.023810,0.023810,0.988095,0.988095,0.992080,0.989404,row_field_delimiter_34_0x20.csv
+polluted_files,csvcommons,Preamble rows before header,1,0,1,1,0.000000,1.000000,1.000000,0.000000,0.988095,0.988235,0.988235,file_preamble.csv
+polluted_files,csvcommons,Single data row,1,0,0,0,0.000000,0.000000,0.000000,1.000000,1.000000,1.000000,1.000000,file_one_data_row.csv
+polluted_files,csvcommons,Two tables with the same number of columns,1,1,0,1,1.000000,0.000000,1.000000,0.000000,0.000000,0.000000,0.000000,file_multitable_same.csv
+polluted_files,csvcommons,"Two tables, first has fewer columns",1,1,0,1,1.000000,0.000000,1.000000,0.000000,0.000000,0.000000,0.000000,file_multitable_less.csv
+polluted_files,csvcommons,"Two tables, first has more columns",1,1,0,1,1.000000,0.000000,1.000000,0.000000,0.000000,0.000000,0.000000,file_multitable_more.csv
+polluted_files,csvcommons,Unknown,1,0,0,0,0.000000,0.000000,0.000000,1.000000,1.000000,1.000000,1.000000,source.csv
+polluted_files,dataviz,ALL,2290,0,2289,2289,0.000000,0.999563,0.999563,0.679371,0.000873,0.641535,0.000000,file_header_only.csv
+polluted_files,dataviz,Double trailing newline,1,0,1,1,0.000000,1.000000,1.000000,0.777778,0.000000,0.769231,0.769231,file_double_trailing_newline.csv
+polluted_files,dataviz,Empty file (0 bytes),1,0,0,0,0.000000,0.000000,0.000000,1.000000,1.000000,1.000000,1.000000,file_no_payload.csv
+polluted_files,dataviz,Extra delimiter in one single row,756,0,756,756,0.000000,1.000000,1.000000,0.736842,0.000000,0.733083,0.731830,row_more_sep_row10_col0.csv
+polluted_files,dataviz,Extra unescaped quote in one single row,756,0,756,756,0.000000,1.000000,1.000000,0.575029,0.000000,0.484816,0.381944,row_extra_quote57_col2.csv
+polluted_files,dataviz,"Header row only, no data",1,0,1,1,0.000000,1.000000,1.000000,0.000000,1.000000,0.000000,0.000000,file_header_only.csv
+polluted_files,dataviz,Missing delimiter in one single row,672,0,672,672,0.000000,1.000000,1.000000,0.749959,0.000000,0.735004,0.381944,row_less_sep_row61_col6.csv
+polluted_files,dataviz,Missing trailing newline,1,0,1,1,0.000000,1.000000,1.000000,0.777778,0.000000,0.773810,0.773810,file_no_trailing_newline.csv
+polluted_files,dataviz,Multi-row header (2 rows),1,0,1,1,0.000000,1.000000,1.000000,0.000000,0.000000,0.763971,0.763971,file_header_multirow_2.csv
+polluted_files,dataviz,Multi-row header (3 rows),1,0,1,1,0.000000,1.000000,1.000000,0.000000,0.000000,0.759477,0.759477,file_header_multirow_3.csv
+polluted_files,dataviz,No header row,1,0,1,1,0.000000,1.000000,1.000000,0.000000,0.000000,0.773120,0.773120,file_no_header.csv
+polluted_files,dataviz,Non-standard escape character (0x00),1,0,1,1,0.000000,1.000000,1.000000,0.500000,0.000000,0.382937,0.382937,file_escape_char_0x00.csv
+polluted_files,dataviz,Non-standard escape character (0x5C),1,0,1,1,0.000000,1.000000,1.000000,0.500000,0.000000,0.382937,0.382937,file_escape_char_0x5C.csv
+polluted_files,dataviz,Non-standard field delimiter (0x20),1,0,1,1,0.000000,1.000000,1.000000,0.608696,0.000000,0.554865,0.554865,file_field_delimiter_0x20.csv
+polluted_files,dataviz,Non-standard field delimiter (0x2C_0x20),1,0,1,1,0.000000,1.000000,1.000000,0.777778,0.000000,0.773810,0.773810,file_field_delimiter_0x2C_0x20.csv
+polluted_files,dataviz,Non-standard field delimiter (0x3B),1,0,1,1,0.000000,1.000000,1.000000,0.777778,0.000000,0.773810,0.773810,file_field_delimiter_0x3B.csv
+polluted_files,dataviz,Non-standard field delimiter (0x9),1,0,1,1,0.000000,1.000000,1.000000,0.777778,0.000000,0.773810,0.773810,file_field_delimiter_0x9.csv
+polluted_files,dataviz,Non-standard quotation character (0x27),1,0,1,1,0.000000,1.000000,1.000000,0.500000,0.000000,0.382937,0.382937,file_quotation_char_0x27.csv
+polluted_files,dataviz,Non-standard record delimiter (0xA),1,0,1,1,0.000000,1.000000,1.000000,0.777778,0.000000,0.773810,0.773810,file_record_delimiter_0xA.csv
+polluted_files,dataviz,Non-standard record delimiter (0xD),1,0,1,1,0.000000,1.000000,1.000000,0.777778,0.000000,0.773810,0.773810,file_record_delimiter_0xD.csv
+polluted_files,dataviz,One single row uses space as field delimiter,84,0,84,84,0.000000,1.000000,1.000000,0.566799,0.000000,0.480619,0.378968,row_field_delimiter_29_0x20.csv
+polluted_files,dataviz,Preamble rows before header,1,0,1,1,0.000000,1.000000,1.000000,0.000000,0.000000,0.766013,0.766013,file_preamble.csv
+polluted_files,dataviz,Single data row,1,0,1,1,0.000000,1.000000,1.000000,0.777778,0.000000,0.611111,0.611111,file_one_data_row.csv
+polluted_files,dataviz,Two tables with the same number of columns,1,0,1,1,0.000000,1.000000,1.000000,0.777778,0.000000,0.520584,0.520584,file_multitable_same.csv
+polluted_files,dataviz,"Two tables, first has fewer columns",1,0,1,1,0.000000,1.000000,1.000000,0.777778,0.000000,0.520584,0.520584,file_multitable_less.csv
+polluted_files,dataviz,"Two tables, first has more columns",1,0,1,1,0.000000,1.000000,1.000000,0.736842,0.000000,0.484749,0.484749,file_multitable_more.csv
+polluted_files,dataviz,Unknown,1,0,1,1,0.000000,1.000000,1.000000,0.777778,0.000000,0.773810,0.773810,source.csv
+polluted_files,duckdbauto,ALL,2290,0,1343,1343,0.000000,0.586463,0.586463,0.981313,0.923273,0.975232,0.123512,file_field_delimiter_0x20.csv
+polluted_files,duckdbauto,Double trailing newline,1,0,0,0,0.000000,0.000000,0.000000,1.000000,0.927711,0.992063,0.992063,file_double_trailing_newline.csv
+polluted_files,duckdbauto,Empty file (0 bytes),1,0,0,0,0.000000,0.000000,0.000000,1.000000,1.000000,1.000000,1.000000,file_no_payload.csv
+polluted_files,duckdbauto,Extra delimiter in one single row,756,0,9,9,0.000000,0.011905,0.011905,0.999373,0.927711,0.991442,0.939850,row_more_sep_row0_col7.csv
+polluted_files,duckdbauto,Extra unescaped quote in one single row,756,0,661,661,0.000000,0.874339,0.874339,0.955860,0.926593,0.950777,0.551587,row_extra_quote83_col8.csv
+polluted_files,duckdbauto,"Header row only, no data",1,0,0,0,0.000000,0.000000,0.000000,1.000000,1.000000,1.000000,1.000000,file_header_only.csv
+polluted_files,duckdbauto,Missing delimiter in one single row,672,0,577,577,0.000000,0.858631,0.858631,0.996135,0.919428,0.987304,0.848073,row_less_sep_row44_col6.csv
+polluted_files,duckdbauto,Missing trailing newline,1,0,0,0,0.000000,0.000000,0.000000,1.000000,0.927711,0.992063,0.992063,file_no_trailing_newline.csv
+polluted_files,duckdbauto,Multi-row header (2 rows),1,0,1,1,0.000000,1.000000,1.000000,0.000000,0.922156,0.974359,0.974359,file_header_multirow_2.csv
+polluted_files,duckdbauto,Multi-row header (3 rows),1,0,1,1,0.000000,1.000000,1.000000,0.000000,0.916667,0.968627,0.968627,file_header_multirow_3.csv
+polluted_files,duckdbauto,No header row,1,0,1,1,0.000000,1.000000,1.000000,0.000000,0.921212,0.986028,0.986028,file_no_header.csv
+polluted_files,duckdbauto,Non-standard escape character (0x00),1,0,1,1,0.000000,1.000000,1.000000,0.900000,0.927711,0.886905,0.886905,file_escape_char_0x00.csv
+polluted_files,duckdbauto,Non-standard escape character (0x5C),1,0,1,1,0.000000,1.000000,1.000000,0.900000,0.927711,0.886905,0.886905,file_escape_char_0x5C.csv
+polluted_files,duckdbauto,Non-standard field delimiter (0x20),1,0,1,1,0.000000,1.000000,1.000000,0.000000,0.000000,0.123512,0.123512,file_field_delimiter_0x20.csv
+polluted_files,duckdbauto,Non-standard field delimiter (0x2C_0x20),1,0,1,1,0.000000,1.000000,1.000000,1.000000,0.000000,0.485450,0.485450,file_field_delimiter_0x2C_0x20.csv
+polluted_files,duckdbauto,Non-standard field delimiter (0x3B),1,0,0,0,0.000000,0.000000,0.000000,1.000000,0.927711,0.992063,0.992063,file_field_delimiter_0x3B.csv
+polluted_files,duckdbauto,Non-standard field delimiter (0x9),1,0,0,0,0.000000,0.000000,0.000000,1.000000,0.927711,0.992063,0.992063,file_field_delimiter_0x9.csv
+polluted_files,duckdbauto,Non-standard quotation character (0x27),1,0,1,1,0.000000,1.000000,1.000000,0.900000,0.710843,0.867857,0.867857,file_quotation_char_0x27.csv
+polluted_files,duckdbauto,Non-standard record delimiter (0xA),1,0,0,0,0.000000,0.000000,0.000000,1.000000,0.927711,0.992063,0.992063,file_record_delimiter_0xA.csv
+polluted_files,duckdbauto,Non-standard record delimiter (0xD),1,0,0,0,0.000000,0.000000,0.000000,1.000000,0.927711,0.992063,0.992063,file_record_delimiter_0xD.csv
+polluted_files,duckdbauto,One single row uses space as field delimiter,84,0,84,84,0.000000,1.000000,1.000000,0.988095,0.916601,0.981491,0.974359,row_field_delimiter_0_0x20.csv
+polluted_files,duckdbauto,Preamble rows before header,1,0,1,1,0.000000,1.000000,1.000000,0.000000,0.916667,0.980392,0.980392,file_preamble.csv
+polluted_files,duckdbauto,Single data row,1,0,0,0,0.000000,0.000000,0.000000,1.000000,1.000000,1.000000,1.000000,file_one_data_row.csv
+polluted_files,duckdbauto,Two tables with the same number of columns,1,0,1,1,0.000000,1.000000,1.000000,1.000000,0.618474,0.664011,0.664011,file_multitable_same.csv
+polluted_files,duckdbauto,"Two tables, first has fewer columns",1,0,1,1,0.000000,1.000000,1.000000,1.000000,0.618474,0.664011,0.664011,file_multitable_less.csv
+polluted_files,duckdbauto,"Two tables, first has more columns",1,0,1,1,0.000000,1.000000,1.000000,0.947368,0.618474,0.618302,0.618302,file_multitable_more.csv
+polluted_files,duckdbauto,Unknown,1,0,0,0,0.000000,0.000000,0.000000,1.000000,0.927711,0.992063,0.992063,source.csv
+polluted_files,duckdbparse,ALL,2290,0,145,145,0.000000,0.063319,0.063319,0.999563,0.991338,0.996115,0.669323,file_multitable_more.csv
+polluted_files,duckdbparse,Double trailing newline,1,0,0,0,0.000000,0.000000,0.000000,1.000000,1.000000,1.000000,1.000000,file_double_trailing_newline.csv
+polluted_files,duckdbparse,Empty file (0 bytes),1,0,0,0,0.000000,0.000000,0.000000,1.000000,1.000000,1.000000,1.000000,file_no_payload.csv
+polluted_files,duckdbparse,Extra delimiter in one single row,756,0,0,0,0.000000,0.000000,0.000000,1.000000,1.000000,1.000000,1.000000,row_more_sep_row17_col6.csv
+polluted_files,duckdbparse,Extra unescaped quote in one single row,756,0,56,56,0.000000,0.074074,0.074074,1.000000,0.985855,0.993344,0.985274,row_extra_quote77_col7.csv
+polluted_files,duckdbparse,"Header row only, no data",1,0,0,0,0.000000,0.000000,0.000000,1.000000,1.000000,1.000000,1.000000,file_header_only.csv
+polluted_files,duckdbparse,Missing delimiter in one single row,672,0,0,0,0.000000,0.000000,0.000000,1.000000,0.991071,0.997642,0.994709,row_less_sep_row44_col6.csv
+polluted_files,duckdbparse,Missing trailing newline,1,0,0,0,0.000000,0.000000,0.000000,1.000000,1.000000,1.000000,1.000000,file_no_trailing_newline.csv
+polluted_files,duckdbparse,Multi-row header (2 rows),1,0,0,0,0.000000,0.000000,0.000000,1.000000,1.000000,1.000000,1.000000,file_header_multirow_2.csv
+polluted_files,duckdbparse,Multi-row header (3 rows),1,0,0,0,0.000000,0.000000,0.000000,1.000000,1.000000,1.000000,1.000000,file_header_multirow_3.csv
+polluted_files,duckdbparse,No header row,1,0,0,0,0.000000,0.000000,0.000000,0.000000,0.993939,0.994012,0.994012,file_no_header.csv
+polluted_files,duckdbparse,Non-standard escape character (0x00),1,0,1,1,0.000000,1.000000,1.000000,1.000000,0.927711,0.977513,0.977513,file_escape_char_0x00.csv
+polluted_files,duckdbparse,Non-standard escape character (0x5C),1,0,0,0,0.000000,0.000000,0.000000,1.000000,0.987952,0.998677,0.998677,file_escape_char_0x5C.csv
+polluted_files,duckdbparse,Non-standard field delimiter (0x20),1,0,1,1,0.000000,1.000000,1.000000,1.000000,0.409639,0.818783,0.818783,file_field_delimiter_0x20.csv
+polluted_files,duckdbparse,Non-standard field delimiter (0x2C_0x20),1,0,0,0,0.000000,0.000000,0.000000,1.000000,1.000000,1.000000,1.000000,file_field_delimiter_0x2C_0x20.csv
+polluted_files,duckdbparse,Non-standard field delimiter (0x3B),1,0,0,0,0.000000,0.000000,0.000000,1.000000,1.000000,1.000000,1.000000,file_field_delimiter_0x3B.csv
+polluted_files,duckdbparse,Non-standard field delimiter (0x9),1,0,0,0,0.000000,0.000000,0.000000,1.000000,1.000000,1.000000,1.000000,file_field_delimiter_0x9.csv
+polluted_files,duckdbparse,Non-standard quotation character (0x27),1,0,1,1,0.000000,1.000000,1.000000,1.000000,0.539474,0.802309,0.802309,file_quotation_char_0x27.csv
+polluted_files,duckdbparse,Non-standard record delimiter (0xA),1,0,0,0,0.000000,0.000000,0.000000,1.000000,1.000000,1.000000,1.000000,file_record_delimiter_0xA.csv
+polluted_files,duckdbparse,Non-standard record delimiter (0xD),1,0,0,0,0.000000,0.000000,0.000000,1.000000,1.000000,1.000000,1.000000,file_record_delimiter_0xD.csv
+polluted_files,duckdbparse,One single row uses space as field delimiter,84,0,83,83,0.000000,0.988095,0.988095,1.000000,0.988095,0.989544,0.989418,row_field_delimiter_29_0x20.csv
+polluted_files,duckdbparse,Preamble rows before header,1,0,0,0,0.000000,0.000000,0.000000,1.000000,1.000000,1.000000,1.000000,file_preamble.csv
+polluted_files,duckdbparse,Single data row,1,0,0,0,0.000000,0.000000,0.000000,1.000000,1.000000,1.000000,1.000000,file_one_data_row.csv
+polluted_files,duckdbparse,Two tables with the same number of columns,1,0,1,1,0.000000,1.000000,1.000000,1.000000,0.666667,0.669323,0.669323,file_multitable_same.csv
+polluted_files,duckdbparse,"Two tables, first has fewer columns",1,0,1,1,0.000000,1.000000,1.000000,1.000000,0.666667,0.669323,0.669323,file_multitable_less.csv
+polluted_files,duckdbparse,"Two tables, first has more columns",1,0,1,1,0.000000,1.000000,1.000000,1.000000,0.666667,0.669323,0.669323,file_multitable_more.csv
+polluted_files,duckdbparse,Unknown,1,0,0,0,0.000000,0.000000,0.000000,1.000000,1.000000,1.000000,1.000000,source.csv
+polluted_files,libreoffice,ALL,2290,0,213,213,0.000000,0.093013,0.093013,0.991447,0.991149,0.992135,0.123512,file_field_delimiter_0x9.csv
+polluted_files,libreoffice,Double trailing newline,1,0,0,0,0.000000,0.000000,0.000000,1.000000,1.000000,1.000000,1.000000,file_double_trailing_newline.csv
+polluted_files,libreoffice,Empty file (0 bytes),1,0,0,0,0.000000,0.000000,0.000000,1.000000,1.000000,1.000000,1.000000,file_no_payload.csv
+polluted_files,libreoffice,Extra delimiter in one single row,756,0,9,9,0.000000,0.011905,0.011905,0.999373,1.000000,0.999373,0.947368,row_more_sep_row0_col7.csv
+polluted_files,libreoffice,Extra unescaped quote in one single row,756,0,89,89,0.000000,0.117725,0.117725,0.988343,0.990577,0.987826,0.897543,row_extra_quote59_col8.csv
+polluted_files,libreoffice,"Header row only, no data",1,0,0,0,0.000000,0.000000,0.000000,1.000000,1.000000,1.000000,1.000000,file_header_only.csv
+polluted_files,libreoffice,Missing delimiter in one single row,672,0,18,18,0.000000,0.026786,0.026786,0.996829,0.991062,0.996047,0.897619,row_less_sep_row44_col6.csv
+polluted_files,libreoffice,Missing trailing newline,1,0,0,0,0.000000,0.000000,0.000000,1.000000,1.000000,1.000000,1.000000,file_no_trailing_newline.csv
+polluted_files,libreoffice,Multi-row header (2 rows),1,0,1,1,0.000000,1.000000,1.000000,0.000000,0.994012,0.982249,0.982249,file_header_multirow_2.csv
+polluted_files,libreoffice,Multi-row header (3 rows),1,0,1,1,0.000000,1.000000,1.000000,0.000000,0.988095,0.976471,0.976471,file_header_multirow_3.csv
+polluted_files,libreoffice,No header row,1,0,1,1,0.000000,1.000000,1.000000,0.941176,1.000000,0.941176,0.941176,file_no_header.csv
+polluted_files,libreoffice,Non-standard escape character (0x00),1,0,0,0,0.000000,0.000000,0.000000,1.000000,0.963855,0.992063,0.992063,file_escape_char_0x00.csv
+polluted_files,libreoffice,Non-standard escape character (0x5C),1,0,1,1,0.000000,1.000000,1.000000,1.000000,0.927711,0.988095,0.988095,file_escape_char_0x5C.csv
+polluted_files,libreoffice,Non-standard field delimiter (0x20),1,0,1,1,0.000000,1.000000,1.000000,0.000000,0.000000,0.123512,0.123512,file_field_delimiter_0x20.csv
+polluted_files,libreoffice,Non-standard field delimiter (0x2C_0x20),1,0,1,1,0.000000,1.000000,1.000000,0.333333,0.000000,0.485450,0.485450,file_field_delimiter_0x2C_0x20.csv
+polluted_files,libreoffice,Non-standard field delimiter (0x3B),1,0,1,1,0.000000,1.000000,1.000000,0.000000,0.000000,0.123512,0.123512,file_field_delimiter_0x3B.csv
+polluted_files,libreoffice,Non-standard field delimiter (0x9),1,0,1,1,0.000000,1.000000,1.000000,0.000000,0.000000,0.123512,0.123512,file_field_delimiter_0x9.csv
+polluted_files,libreoffice,Non-standard quotation character (0x27),1,0,1,1,0.000000,1.000000,1.000000,0.608696,0.000000,0.575569,0.575569,file_quotation_char_0x27.csv
+polluted_files,libreoffice,Non-standard record delimiter (0xA),1,0,0,0,0.000000,0.000000,0.000000,1.000000,1.000000,1.000000,1.000000,file_record_delimiter_0xA.csv
+polluted_files,libreoffice,Non-standard record delimiter (0xD),1,0,0,0,0.000000,0.000000,0.000000,1.000000,1.000000,1.000000,1.000000,file_record_delimiter_0xD.csv
+polluted_files,libreoffice,One single row uses space as field delimiter,84,0,84,84,0.000000,1.000000,1.000000,0.988095,0.988095,0.988827,0.939776,row_field_delimiter_0_0x20.csv
+polluted_files,libreoffice,Preamble rows before header,1,0,1,1,0.000000,1.000000,1.000000,0.000000,0.988095,0.988235,0.988235,file_preamble.csv
+polluted_files,libreoffice,Single data row,1,0,0,0,0.000000,0.000000,0.000000,1.000000,1.000000,1.000000,1.000000,file_one_data_row.csv
+polluted_files,libreoffice,Two tables with the same number of columns,1,0,1,1,0.000000,1.000000,1.000000,1.000000,0.666667,0.669323,0.669323,file_multitable_same.csv
+polluted_files,libreoffice,"Two tables, first has fewer columns",1,0,1,1,0.000000,1.000000,1.000000,1.000000,0.666667,0.669323,0.669323,file_multitable_less.csv
+polluted_files,libreoffice,"Two tables, first has more columns",1,0,1,1,0.000000,1.000000,1.000000,0.947368,0.666667,0.623248,0.623248,file_multitable_more.csv
+polluted_files,libreoffice,Unknown,1,0,0,0,0.000000,0.000000,0.000000,1.000000,1.000000,1.000000,1.000000,source.csv
+polluted_files,mariadb,ALL,2290,1,58,59,0.000437,0.025328,0.025764,0.998690,0.989377,0.996566,0.000000,file_escape_char_0x5C.csv
+polluted_files,mariadb,Double trailing newline,1,0,0,0,0.000000,0.000000,0.000000,1.000000,0.994012,0.996704,0.996704,file_double_trailing_newline.csv
+polluted_files,mariadb,Empty file (0 bytes),1,0,0,0,0.000000,0.000000,0.000000,1.000000,1.000000,1.000000,1.000000,file_no_payload.csv
+polluted_files,mariadb,Extra delimiter in one single row,756,0,0,0,0.000000,0.000000,0.000000,1.000000,1.000000,1.000000,1.000000,row_more_sep_row17_col6.csv
+polluted_files,mariadb,Extra unescaped quote in one single row,756,0,0,0,0.000000,0.000000,0.000000,0.998677,0.987956,0.996393,0.992710,row_extra_quote41_col1.csv
+polluted_files,mariadb,"Header row only, no data",1,0,0,0,0.000000,0.000000,0.000000,1.000000,1.000000,1.000000,1.000000,file_header_only.csv
+polluted_files,mariadb,Missing delimiter in one single row,672,0,0,0,0.000000,0.000000,0.000000,1.000000,0.982756,0.996901,0.994709,row_less_sep_row44_col6.csv
+polluted_files,mariadb,Missing trailing newline,1,0,0,0,0.000000,0.000000,0.000000,1.000000,0.987952,0.998677,0.998677,file_no_trailing_newline.csv
+polluted_files,mariadb,Multi-row header (2 rows),1,0,0,0,0.000000,0.000000,0.000000,1.000000,0.994012,0.994083,0.994083,file_header_multirow_2.csv
+polluted_files,mariadb,Multi-row header (3 rows),1,0,1,1,0.000000,1.000000,1.000000,1.000000,0.988095,0.988235,0.988235,file_header_multirow_3.csv
+polluted_files,mariadb,No header row,1,0,0,0,0.000000,0.000000,0.000000,0.000000,0.993939,0.994012,0.994012,file_no_header.csv
+polluted_files,mariadb,Non-standard escape character (0x00),1,0,0,0,0.000000,0.000000,0.000000,1.000000,0.944785,0.990060,0.990060,file_escape_char_0x00.csv
+polluted_files,mariadb,Non-standard escape character (0x5C),1,1,0,1,1.000000,0.000000,1.000000,0.000000,0.000000,0.000000,0.000000,file_escape_char_0x5C.csv
+polluted_files,mariadb,Non-standard field delimiter (0x20),1,0,1,1,0.000000,1.000000,1.000000,1.000000,0.409639,0.818783,0.818783,file_field_delimiter_0x20.csv
+polluted_files,mariadb,Non-standard field delimiter (0x2C_0x20),1,0,0,0,0.000000,0.000000,0.000000,1.000000,1.000000,1.000000,1.000000,file_field_delimiter_0x2C_0x20.csv
+polluted_files,mariadb,Non-standard field delimiter (0x3B),1,0,0,0,0.000000,0.000000,0.000000,1.000000,1.000000,1.000000,1.000000,file_field_delimiter_0x3B.csv
+polluted_files,mariadb,Non-standard field delimiter (0x9),1,0,0,0,0.000000,0.000000,0.000000,1.000000,1.000000,1.000000,1.000000,file_field_delimiter_0x9.csv
+polluted_files,mariadb,Non-standard quotation character (0x27),1,0,0,0,0.000000,0.000000,0.000000,1.000000,1.000000,1.000000,1.000000,file_quotation_char_0x27.csv
+polluted_files,mariadb,Non-standard record delimiter (0xA),1,0,0,0,0.000000,0.000000,0.000000,1.000000,1.000000,1.000000,1.000000,file_record_delimiter_0xA.csv
+polluted_files,mariadb,Non-standard record delimiter (0xD),1,0,0,0,0.000000,0.000000,0.000000,1.000000,1.000000,1.000000,1.000000,file_record_delimiter_0xD.csv
+polluted_files,mariadb,One single row uses space as field delimiter,84,0,53,53,0.000000,0.630952,0.630952,1.000000,0.984882,0.989671,0.988734,row_field_delimiter_29_0x20.csv
+polluted_files,mariadb,Preamble rows before header,1,0,0,0,0.000000,0.000000,0.000000,1.000000,1.000000,1.000000,1.000000,file_preamble.csv
+polluted_files,mariadb,Single data row,1,0,0,0,0.000000,0.000000,0.000000,1.000000,1.000000,1.000000,1.000000,file_one_data_row.csv
+polluted_files,mariadb,Two tables with the same number of columns,1,0,1,1,0.000000,1.000000,1.000000,1.000000,0.669355,0.669619,0.669619,file_multitable_same.csv
+polluted_files,mariadb,"Two tables, first has fewer columns",1,0,1,1,0.000000,1.000000,1.000000,1.000000,0.988095,0.694534,0.694534,file_multitable_less.csv
+polluted_files,mariadb,"Two tables, first has more columns",1,0,1,1,0.000000,1.000000,1.000000,1.000000,0.666667,0.669323,0.669323,file_multitable_more.csv
+polluted_files,mariadb,Unknown,1,0,0,0,0.000000,0.000000,0.000000,1.000000,1.000000,1.000000,1.000000,source.csv
+polluted_files,mysql,ALL,2290,1,58,59,0.000437,0.025328,0.025764,0.998690,0.989377,0.996566,0.000000,file_escape_char_0x5C.csv
+polluted_files,mysql,Double trailing newline,1,0,0,0,0.000000,0.000000,0.000000,1.000000,0.994012,0.996704,0.996704,file_double_trailing_newline.csv
+polluted_files,mysql,Empty file (0 bytes),1,0,0,0,0.000000,0.000000,0.000000,1.000000,1.000000,1.000000,1.000000,file_no_payload.csv
+polluted_files,mysql,Extra delimiter in one single row,756,0,0,0,0.000000,0.000000,0.000000,1.000000,1.000000,1.000000,1.000000,row_more_sep_row17_col6.csv
+polluted_files,mysql,Extra unescaped quote in one single row,756,0,0,0,0.000000,0.000000,0.000000,0.998677,0.987956,0.996393,0.992710,row_extra_quote41_col1.csv
+polluted_files,mysql,"Header row only, no data",1,0,0,0,0.000000,0.000000,0.000000,1.000000,1.000000,1.000000,1.000000,file_header_only.csv
+polluted_files,mysql,Missing delimiter in one single row,672,0,0,0,0.000000,0.000000,0.000000,1.000000,0.982756,0.996901,0.994709,row_less_sep_row44_col6.csv
+polluted_files,mysql,Missing trailing newline,1,0,0,0,0.000000,0.000000,0.000000,1.000000,0.987952,0.998677,0.998677,file_no_trailing_newline.csv
+polluted_files,mysql,Multi-row header (2 rows),1,0,0,0,0.000000,0.000000,0.000000,1.000000,0.994012,0.994083,0.994083,file_header_multirow_2.csv
+polluted_files,mysql,Multi-row header (3 rows),1,0,1,1,0.000000,1.000000,1.000000,1.000000,0.988095,0.988235,0.988235,file_header_multirow_3.csv
+polluted_files,mysql,No header row,1,0,0,0,0.000000,0.000000,0.000000,0.000000,0.993939,0.994012,0.994012,file_no_header.csv
+polluted_files,mysql,Non-standard escape character (0x00),1,0,0,0,0.000000,0.000000,0.000000,1.000000,0.944785,0.990060,0.990060,file_escape_char_0x00.csv
+polluted_files,mysql,Non-standard escape character (0x5C),1,1,0,1,1.000000,0.000000,1.000000,0.000000,0.000000,0.000000,0.000000,file_escape_char_0x5C.csv
+polluted_files,mysql,Non-standard field delimiter (0x20),1,0,1,1,0.000000,1.000000,1.000000,1.000000,0.409639,0.818783,0.818783,file_field_delimiter_0x20.csv
+polluted_files,mysql,Non-standard field delimiter (0x2C_0x20),1,0,0,0,0.000000,0.000000,0.000000,1.000000,1.000000,1.000000,1.000000,file_field_delimiter_0x2C_0x20.csv
+polluted_files,mysql,Non-standard field delimiter (0x3B),1,0,0,0,0.000000,0.000000,0.000000,1.000000,1.000000,1.000000,1.000000,file_field_delimiter_0x3B.csv
+polluted_files,mysql,Non-standard field delimiter (0x9),1,0,0,0,0.000000,0.000000,0.000000,1.000000,1.000000,1.000000,1.000000,file_field_delimiter_0x9.csv
+polluted_files,mysql,Non-standard quotation character (0x27),1,0,0,0,0.000000,0.000000,0.000000,1.000000,1.000000,1.000000,1.000000,file_quotation_char_0x27.csv
+polluted_files,mysql,Non-standard record delimiter (0xA),1,0,0,0,0.000000,0.000000,0.000000,1.000000,1.000000,1.000000,1.000000,file_record_delimiter_0xA.csv
+polluted_files,mysql,Non-standard record delimiter (0xD),1,0,0,0,0.000000,0.000000,0.000000,1.000000,1.000000,1.000000,1.000000,file_record_delimiter_0xD.csv
+polluted_files,mysql,One single row uses space as field delimiter,84,0,53,53,0.000000,0.630952,0.630952,1.000000,0.984882,0.989671,0.988734,row_field_delimiter_29_0x20.csv
+polluted_files,mysql,Preamble rows before header,1,0,0,0,0.000000,0.000000,0.000000,1.000000,1.000000,1.000000,1.000000,file_preamble.csv
+polluted_files,mysql,Single data row,1,0,0,0,0.000000,0.000000,0.000000,1.000000,1.000000,1.000000,1.000000,file_one_data_row.csv
+polluted_files,mysql,Two tables with the same number of columns,1,0,1,1,0.000000,1.000000,1.000000,1.000000,0.669355,0.669619,0.669619,file_multitable_same.csv
+polluted_files,mysql,"Two tables, first has fewer columns",1,0,1,1,0.000000,1.000000,1.000000,1.000000,0.988095,0.694534,0.694534,file_multitable_less.csv
+polluted_files,mysql,"Two tables, first has more columns",1,0,1,1,0.000000,1.000000,1.000000,1.000000,0.666667,0.669323,0.669323,file_multitable_more.csv
+polluted_files,mysql,Unknown,1,0,0,0,0.000000,0.000000,0.000000,1.000000,1.000000,1.000000,1.000000,source.csv
+polluted_files,opencsv,ALL,2290,757,12,769,0.330568,0.005240,0.335808,0.666194,0.663976,0.666673,0.000000,row_extra_quote80_col1.csv
+polluted_files,opencsv,Double trailing newline,1,0,0,0,0.000000,0.000000,0.000000,1.000000,0.994012,0.999339,0.999339,file_double_trailing_newline.csv
+polluted_files,opencsv,Empty file (0 bytes),1,0,0,0,0.000000,0.000000,0.000000,1.000000,1.000000,1.000000,1.000000,file_no_payload.csv
+polluted_files,opencsv,Extra delimiter in one single row,756,0,0,0,0.000000,0.000000,0.000000,0.999373,1.000000,0.999339,0.999339,row_more_sep_row17_col6.csv
+polluted_files,opencsv,Extra unescaped quote in one single row,756,756,0,756,1.000000,0.000000,1.000000,0.000000,0.000000,0.000000,0.000000,row_extra_quote80_col1.csv
+polluted_files,opencsv,"Header row only, no data",1,0,0,0,0.000000,0.000000,0.000000,1.000000,1.000000,1.000000,1.000000,file_header_only.csv
+polluted_files,opencsv,Missing delimiter in one single row,672,0,0,0,0.000000,0.000000,0.000000,0.997770,0.991062,0.998063,0.993351,row_less_sep_row0_col8.csv
+polluted_files,opencsv,Missing trailing newline,1,0,0,0,0.000000,0.000000,0.000000,1.000000,1.000000,1.000000,1.000000,file_no_trailing_newline.csv
+polluted_files,opencsv,Multi-row header (2 rows),1,0,1,1,0.000000,1.000000,1.000000,0.000000,0.994012,0.982249,0.982249,file_header_multirow_2.csv
+polluted_files,opencsv,Multi-row header (3 rows),1,0,1,1,0.000000,1.000000,1.000000,0.000000,0.988095,0.976471,0.976471,file_header_multirow_3.csv
+polluted_files,opencsv,No header row,1,0,0,0,0.000000,0.000000,0.000000,1.000000,1.000000,1.000000,1.000000,file_no_header.csv
+polluted_files,opencsv,Non-standard escape character (0x00),1,0,1,1,0.000000,1.000000,1.000000,1.000000,0.554622,0.604779,0.604779,file_escape_char_0x00.csv
+polluted_files,opencsv,Non-standard escape character (0x5C),1,0,1,1,0.000000,1.000000,1.000000,0.222222,0.000000,0.373016,0.373016,file_escape_char_0x5C.csv
+polluted_files,opencsv,Non-standard field delimiter (0x20),1,0,1,1,0.000000,1.000000,1.000000,1.000000,0.409639,0.880997,0.880997,file_field_delimiter_0x20.csv
+polluted_files,opencsv,Non-standard field delimiter (0x2C_0x20),1,0,1,1,0.000000,1.000000,1.000000,0.111111,0.000000,0.100358,0.100358,file_field_delimiter_0x2C_0x20.csv
+polluted_files,opencsv,Non-standard field delimiter (0x3B),1,0,0,0,0.000000,0.000000,0.000000,1.000000,1.000000,1.000000,1.000000,file_field_delimiter_0x3B.csv
+polluted_files,opencsv,Non-standard field delimiter (0x9),1,0,0,0,0.000000,0.000000,0.000000,1.000000,1.000000,1.000000,1.000000,file_field_delimiter_0x9.csv
+polluted_files,opencsv,Non-standard quotation character (0x27),1,0,1,1,0.000000,1.000000,1.000000,0.222222,0.000000,0.259442,0.259442,file_quotation_char_0x27.csv
+polluted_files,opencsv,Non-standard record delimiter (0xA),1,0,0,0,0.000000,0.000000,0.000000,1.000000,1.000000,1.000000,1.000000,file_record_delimiter_0xA.csv
+polluted_files,opencsv,Non-standard record delimiter (0xD),1,0,0,0,0.000000,0.000000,0.000000,1.000000,1.000000,1.000000,1.000000,file_record_delimiter_0xD.csv
+polluted_files,opencsv,One single row uses space as field delimiter,84,1,2,3,0.011905,0.023810,0.035714,0.976190,0.971077,0.979711,0.000000,row_field_delimiter_83_0x20.csv
+polluted_files,opencsv,Preamble rows before header,1,0,0,0,0.000000,0.000000,0.000000,1.000000,1.000000,1.000000,1.000000,file_preamble.csv
+polluted_files,opencsv,Single data row,1,0,0,0,0.000000,0.000000,0.000000,1.000000,1.000000,1.000000,1.000000,file_one_data_row.csv
+polluted_files,opencsv,Two tables with the same number of columns,1,0,1,1,0.000000,1.000000,1.000000,1.000000,0.666667,0.669619,0.669619,file_multitable_same.csv
+polluted_files,opencsv,"Two tables, first has fewer columns",1,0,1,1,0.000000,1.000000,1.000000,1.000000,0.666667,0.695172,0.695172,file_multitable_less.csv
+polluted_files,opencsv,"Two tables, first has more columns",1,0,1,1,0.000000,1.000000,1.000000,1.000000,0.666667,0.645878,0.645878,file_multitable_more.csv
+polluted_files,opencsv,Unknown,1,0,0,0,0.000000,0.000000,0.000000,1.000000,1.000000,1.000000,1.000000,source.csv
+polluted_files,pandas,ALL,2290,2,209,211,0.000873,0.091266,0.092140,0.994017,0.977490,0.989905,0.000000,file_field_delimiter_0x9.csv
+polluted_files,pandas,Double trailing newline,1,0,0,0,0.000000,0.000000,0.000000,1.000000,1.000000,1.000000,1.000000,file_double_trailing_newline.csv
+polluted_files,pandas,Empty file (0 bytes),1,1,0,1,1.000000,0.000000,1.000000,0.000000,0.000000,0.000000,0.000000,file_no_payload.csv
+polluted_files,pandas,Extra delimiter in one single row,756,0,18,18,0.000000,0.023810,0.023810,0.999373,0.982195,0.992223,0.890212,row_more_sep_row1_col5.csv
+polluted_files,pandas,Extra unescaped quote in one single row,756,1,89,90,0.001323,0.117725,0.119048,0.994953,0.978598,0.989971,0.000000,row_extra_quote83_col8.csv
+polluted_files,pandas,"Header row only, no data",1,0,0,0,0.000000,0.000000,0.000000,1.000000,1.000000,1.000000,1.000000,file_header_only.csv
+polluted_files,pandas,Missing delimiter in one single row,672,0,8,8,0.000000,0.011905,0.011905,0.997899,0.979389,0.996871,0.939776,row_less_sep_row0_col1.csv
+polluted_files,pandas,Missing trailing newline,1,0,0,0,0.000000,0.000000,0.000000,1.000000,1.000000,1.000000,1.000000,file_no_trailing_newline.csv
+polluted_files,pandas,Multi-row header (2 rows),1,0,1,1,0.000000,1.000000,1.000000,0.000000,0.994012,0.982249,0.982249,file_header_multirow_2.csv
+polluted_files,pandas,Multi-row header (3 rows),1,0,1,1,0.000000,1.000000,1.000000,0.000000,0.988095,0.976471,0.976471,file_header_multirow_3.csv
+polluted_files,pandas,No header row,1,0,0,0,0.000000,0.000000,0.000000,0.888889,1.000000,0.998661,0.998661,file_no_header.csv
+polluted_files,pandas,Non-standard escape character (0x00),1,0,1,1,0.000000,1.000000,1.000000,1.000000,0.939024,0.979920,0.979920,file_escape_char_0x00.csv
+polluted_files,pandas,Non-standard escape character (0x5C),1,0,0,0,0.000000,0.000000,0.000000,1.000000,0.987952,0.998677,0.998677,file_escape_char_0x5C.csv
+polluted_files,pandas,Non-standard field delimiter (0x20),1,0,1,1,0.000000,1.000000,1.000000,0.000000,0.000000,0.000000,0.000000,file_field_delimiter_0x20.csv
+polluted_files,pandas,Non-standard field delimiter (0x2C_0x20),1,0,1,1,0.000000,1.000000,1.000000,0.111111,0.000000,0.025731,0.025731,file_field_delimiter_0x2C_0x20.csv
+polluted_files,pandas,Non-standard field delimiter (0x3B),1,0,1,1,0.000000,1.000000,1.000000,0.000000,0.000000,0.000000,0.000000,file_field_delimiter_0x3B.csv
+polluted_files,pandas,Non-standard field delimiter (0x9),1,0,1,1,0.000000,1.000000,1.000000,0.000000,0.000000,0.000000,0.000000,file_field_delimiter_0x9.csv
+polluted_files,pandas,Non-standard quotation character (0x27),1,0,1,1,0.000000,1.000000,1.000000,1.000000,0.699301,0.826054,0.826054,file_quotation_char_0x27.csv
+polluted_files,pandas,Non-standard record delimiter (0xA),1,0,0,0,0.000000,0.000000,0.000000,1.000000,1.000000,1.000000,1.000000,file_record_delimiter_0xA.csv
+polluted_files,pandas,Non-standard record delimiter (0xD),1,0,0,0,0.000000,0.000000,0.000000,1.000000,1.000000,1.000000,1.000000,file_record_delimiter_0xD.csv
+polluted_files,pandas,One single row uses space as field delimiter,84,0,84,84,0.000000,1.000000,1.000000,0.988095,0.976190,0.979992,0.197619,row_field_delimiter_0_0x20.csv
+polluted_files,pandas,Preamble rows before header,1,0,0,0,0.000000,0.000000,0.000000,1.000000,1.000000,1.000000,1.000000,file_preamble.csv
+polluted_files,pandas,Single data row,1,0,0,0,0.000000,0.000000,0.000000,1.000000,1.000000,1.000000,1.000000,file_one_data_row.csv
+polluted_files,pandas,Two tables with the same number of columns,1,0,1,1,0.000000,1.000000,1.000000,1.000000,0.666667,0.669323,0.669323,file_multitable_same.csv
+polluted_files,pandas,"Two tables, first has fewer columns",1,0,1,1,0.000000,1.000000,1.000000,1.000000,0.666667,0.669323,0.669323,file_multitable_less.csv
+polluted_files,pandas,"Two tables, first has more columns",1,0,0,0,0.000000,0.000000,0.000000,1.000000,1.000000,1.000000,1.000000,file_multitable_more.csv
+polluted_files,pandas,Unknown,1,0,0,0,0.000000,0.000000,0.000000,1.000000,1.000000,1.000000,1.000000,source.csv
+polluted_files,postgres,ALL,2290,2257,3,2260,0.985590,0.001310,0.986900,0.013974,0.014249,0.014251,0.000000,row_extra_quote80_col1.csv
+polluted_files,postgres,Double trailing newline,1,1,0,1,1.000000,0.000000,1.000000,0.000000,0.000000,0.000000,0.000000,file_double_trailing_newline.csv
+polluted_files,postgres,Empty file (0 bytes),1,0,0,0,0.000000,0.000000,0.000000,1.000000,1.000000,1.000000,1.000000,file_no_payload.csv
+polluted_files,postgres,Extra delimiter in one single row,756,747,0,747,0.988095,0.000000,0.988095,0.011905,0.011905,0.011905,0.000000,row_more_sep_row17_col6.csv
+polluted_files,postgres,Extra unescaped quote in one single row,756,756,0,756,1.000000,0.000000,1.000000,0.000000,0.000000,0.000000,0.000000,row_extra_quote80_col1.csv
+polluted_files,postgres,"Header row only, no data",1,0,0,0,0.000000,0.000000,0.000000,1.000000,1.000000,1.000000,1.000000,file_header_only.csv
+polluted_files,postgres,Missing delimiter in one single row,672,664,0,664,0.988095,0.000000,0.988095,0.011905,0.011905,0.011905,0.000000,row_less_sep_row57_col2.csv
+polluted_files,postgres,Missing trailing newline,1,0,0,0,0.000000,0.000000,0.000000,1.000000,1.000000,1.000000,1.000000,file_no_trailing_newline.csv
+polluted_files,postgres,Multi-row header (2 rows),1,0,0,0,0.000000,0.000000,0.000000,1.000000,0.994012,0.994083,0.994083,file_header_multirow_2.csv
+polluted_files,postgres,Multi-row header (3 rows),1,0,1,1,0.000000,1.000000,1.000000,1.000000,0.988095,0.988235,0.988235,file_header_multirow_3.csv
+polluted_files,postgres,No header row,1,0,0,0,0.000000,0.000000,0.000000,0.000000,0.993939,0.994012,0.994012,file_no_header.csv
+polluted_files,postgres,Non-standard escape character (0x00),1,1,0,1,1.000000,0.000000,1.000000,0.000000,0.000000,0.000000,0.000000,file_escape_char_0x00.csv
+polluted_files,postgres,Non-standard escape character (0x5C),1,0,0,0,0.000000,0.000000,0.000000,1.000000,1.000000,1.000000,1.000000,file_escape_char_0x5C.csv
+polluted_files,postgres,Non-standard field delimiter (0x20),1,1,0,1,1.000000,0.000000,1.000000,0.000000,0.000000,0.000000,0.000000,file_field_delimiter_0x20.csv
+polluted_files,postgres,Non-standard field delimiter (0x2C_0x20),1,1,0,1,1.000000,0.000000,1.000000,0.000000,0.000000,0.000000,0.000000,file_field_delimiter_0x2C_0x20.csv
+polluted_files,postgres,Non-standard field delimiter (0x3B),1,0,0,0,0.000000,0.000000,0.000000,1.000000,1.000000,1.000000,1.000000,file_field_delimiter_0x3B.csv
+polluted_files,postgres,Non-standard field delimiter (0x9),1,0,0,0,0.000000,0.000000,0.000000,1.000000,1.000000,1.000000,1.000000,file_field_delimiter_0x9.csv
+polluted_files,postgres,Non-standard quotation character (0x27),1,1,0,1,1.000000,0.000000,1.000000,0.000000,0.000000,0.000000,0.000000,file_quotation_char_0x27.csv
+polluted_files,postgres,Non-standard record delimiter (0xA),1,0,0,0,0.000000,0.000000,0.000000,1.000000,1.000000,1.000000,1.000000,file_record_delimiter_0xA.csv
+polluted_files,postgres,Non-standard record delimiter (0xD),1,0,0,0,0.000000,0.000000,0.000000,1.000000,1.000000,1.000000,1.000000,file_record_delimiter_0xD.csv
+polluted_files,postgres,One single row uses space as field delimiter,84,83,0,83,0.988095,0.000000,0.988095,0.011905,0.011905,0.011905,0.000000,row_field_delimiter_29_0x20.csv
+polluted_files,postgres,Preamble rows before header,1,0,1,1,0.000000,1.000000,1.000000,1.000000,0.988095,0.988235,0.988235,file_preamble.csv
+polluted_files,postgres,Single data row,1,0,0,0,0.000000,0.000000,0.000000,1.000000,1.000000,1.000000,1.000000,file_one_data_row.csv
+polluted_files,postgres,Two tables with the same number of columns,1,0,1,1,0.000000,1.000000,1.000000,1.000000,0.666667,0.669323,0.669323,file_multitable_same.csv
+polluted_files,postgres,"Two tables, first has fewer columns",1,1,0,1,1.000000,0.000000,1.000000,0.000000,0.000000,0.000000,0.000000,file_multitable_less.csv
+polluted_files,postgres,"Two tables, first has more columns",1,1,0,1,1.000000,0.000000,1.000000,0.000000,0.000000,0.000000,0.000000,file_multitable_more.csv
+polluted_files,postgres,Unknown,1,0,0,0,0.000000,0.000000,0.000000,1.000000,1.000000,1.000000,1.000000,source.csv
+polluted_files,pycsv,ALL,2290,1,1295,1296,0.000437,0.565502,0.565939,0.995764,0.923665,0.988539,0.000000,file_no_payload.csv
+polluted_files,pycsv,Double trailing newline,1,0,0,0,0.000000,0.000000,0.000000,1.000000,0.922156,0.991408,0.991408,file_double_trailing_newline.csv
+polluted_files,pycsv,Empty file (0 bytes),1,1,0,1,1.000000,0.000000,1.000000,0.000000,0.000000,0.000000,0.000000,file_no_payload.csv
+polluted_files,pycsv,Extra delimiter in one single row,756,0,0,0,0.000000,0.000000,0.000000,0.999373,0.927711,0.990753,0.990753,row_more_sep_row17_col6.csv
+polluted_files,pycsv,Extra unescaped quote in one single row,756,0,640,640,0.000000,0.846561,0.846561,0.996275,0.925700,0.988672,0.982781,row_extra_quote42_col8.csv
+polluted_files,pycsv,"Header row only, no data",1,0,0,0,0.000000,0.000000,0.000000,1.000000,1.000000,1.000000,1.000000,file_header_only.csv
+polluted_files,pycsv,Missing delimiter in one single row,672,0,563,563,0.000000,0.837798,0.837798,0.997899,0.921256,0.989666,0.986807,row_less_sep_row34_col6.csv
+polluted_files,pycsv,Missing trailing newline,1,0,0,0,0.000000,0.000000,0.000000,1.000000,0.927711,0.991408,0.991408,file_no_trailing_newline.csv
+polluted_files,pycsv,Multi-row header (2 rows),1,0,1,1,0.000000,1.000000,1.000000,0.000000,0.922156,0.973719,0.973719,file_header_multirow_2.csv
+polluted_files,pycsv,Multi-row header (3 rows),1,0,1,1,0.000000,1.000000,1.000000,0.000000,0.916667,0.967995,0.967995,file_header_multirow_3.csv
+polluted_files,pycsv,No header row,1,0,0,0,0.000000,0.000000,0.000000,1.000000,0.926829,0.991304,0.991304,file_no_header.csv
+polluted_files,pycsv,Non-standard escape character (0x00),1,0,0,0,0.000000,0.000000,0.000000,1.000000,0.963855,0.995373,0.995373,file_escape_char_0x00.csv
+polluted_files,pycsv,Non-standard escape character (0x5C),1,0,0,0,0.000000,0.000000,0.000000,1.000000,0.927711,0.991408,0.991408,file_escape_char_0x5C.csv
+polluted_files,pycsv,Non-standard field delimiter (0x20),1,0,1,1,0.000000,1.000000,1.000000,1.000000,0.349398,0.868649,0.868649,file_field_delimiter_0x20.csv
+polluted_files,pycsv,Non-standard field delimiter (0x2C_0x20),1,0,0,0,0.000000,0.000000,0.000000,1.000000,0.927711,0.991408,0.991408,file_field_delimiter_0x2C_0x20.csv
+polluted_files,pycsv,Non-standard field delimiter (0x3B),1,0,0,0,0.000000,0.000000,0.000000,1.000000,1.000000,1.000000,1.000000,file_field_delimiter_0x3B.csv
+polluted_files,pycsv,Non-standard field delimiter (0x9),1,0,0,0,0.000000,0.000000,0.000000,1.000000,1.000000,1.000000,1.000000,file_field_delimiter_0x9.csv
+polluted_files,pycsv,Non-standard quotation character (0x27),1,0,1,1,0.000000,1.000000,1.000000,1.000000,0.590361,0.925566,0.925566,file_quotation_char_0x27.csv
+polluted_files,pycsv,Non-standard record delimiter (0xA),1,0,0,0,0.000000,0.000000,0.000000,1.000000,0.927711,0.991408,0.991408,file_record_delimiter_0xA.csv
+polluted_files,pycsv,Non-standard record delimiter (0xD),1,0,0,0,0.000000,0.000000,0.000000,1.000000,0.927711,0.991408,0.991408,file_record_delimiter_0xD.csv
+polluted_files,pycsv,One single row uses space as field delimiter,84,0,84,84,0.000000,1.000000,1.000000,0.988095,0.916667,0.983561,0.980807,row_field_delimiter_34_0x20.csv
+polluted_files,pycsv,Preamble rows before header,1,0,1,1,0.000000,1.000000,1.000000,0.000000,0.916667,0.979752,0.979752,file_preamble.csv
+polluted_files,pycsv,Single data row,1,0,0,0,0.000000,0.000000,0.000000,1.000000,1.000000,1.000000,1.000000,file_one_data_row.csv
+polluted_files,pycsv,Two tables with the same number of columns,1,0,1,1,0.000000,1.000000,1.000000,1.000000,0.618474,0.663423,0.663423,file_multitable_same.csv
+polluted_files,pycsv,"Two tables, first has fewer columns",1,0,1,1,0.000000,1.000000,1.000000,1.000000,0.618474,0.688705,0.688705,file_multitable_less.csv
+polluted_files,pycsv,"Two tables, first has more columns",1,0,1,1,0.000000,1.000000,1.000000,1.000000,0.618474,0.639932,0.639932,file_multitable_more.csv
+polluted_files,pycsv,Unknown,1,0,0,0,0.000000,0.000000,0.000000,1.000000,0.927711,0.991408,0.991408,source.csv
+polluted_files,rcsv,ALL,2290,39,859,898,0.017031,0.375109,0.392140,0.975945,0.834023,0.855516,0.000000,row_extra_quote3_col1.csv
+polluted_files,rcsv,Double trailing newline,1,0,0,0,0.000000,0.000000,0.000000,1.000000,1.000000,1.000000,1.000000,file_double_trailing_newline.csv
+polluted_files,rcsv,Empty file (0 bytes),1,1,0,1,1.000000,0.000000,1.000000,0.000000,0.000000,0.000000,0.000000,file_no_payload.csv
+polluted_files,rcsv,Extra delimiter in one single row,756,0,45,45,0.000000,0.059524,0.059524,0.999373,0.952445,0.994152,0.890212,row_more_sep_row2_col4.csv
+polluted_files,rcsv,Extra unescaped quote in one single row,756,36,712,748,0.047619,0.941799,0.989418,0.941534,0.575769,0.583321,0.000000,row_extra_quote3_col1.csv
+polluted_files,rcsv,"Header row only, no data",1,0,0,0,0.000000,0.000000,0.000000,1.000000,1.000000,1.000000,1.000000,file_header_only.csv
+polluted_files,rcsv,Missing delimiter in one single row,672,0,8,8,0.000000,0.011905,0.011905,0.997899,0.980063,0.996996,0.939776,row_less_sep_row0_col1.csv
+polluted_files,rcsv,Missing trailing newline,1,0,0,0,0.000000,0.000000,0.000000,1.000000,1.000000,1.000000,1.000000,file_no_trailing_newline.csv
+polluted_files,rcsv,Multi-row header (2 rows),1,0,1,1,0.000000,1.000000,1.000000,0.000000,0.994012,0.982249,0.982249,file_header_multirow_2.csv
+polluted_files,rcsv,Multi-row header (3 rows),1,0,1,1,0.000000,1.000000,1.000000,0.000000,0.988095,0.976471,0.976471,file_header_multirow_3.csv
+polluted_files,rcsv,No header row,1,0,0,0,0.000000,0.000000,0.000000,0.000000,0.993939,0.994012,0.994012,file_no_header.csv
+polluted_files,rcsv,Non-standard escape character (0x00),1,0,1,1,0.000000,1.000000,1.000000,1.000000,0.503817,0.579783,0.579783,file_escape_char_0x00.csv
+polluted_files,rcsv,Non-standard escape character (0x5C),1,0,1,1,0.000000,1.000000,1.000000,1.000000,0.503817,0.579783,0.579783,file_escape_char_0x5C.csv
+polluted_files,rcsv,Non-standard field delimiter (0x20),1,0,1,1,0.000000,1.000000,1.000000,0.000000,0.000000,0.000000,0.000000,file_field_delimiter_0x20.csv
+polluted_files,rcsv,Non-standard field delimiter (0x2C_0x20),1,0,1,1,0.000000,1.000000,1.000000,1.000000,0.000000,0.341270,0.341270,file_field_delimiter_0x2C_0x20.csv
+polluted_files,rcsv,Non-standard field delimiter (0x3B),1,0,1,1,0.000000,1.000000,1.000000,0.000000,0.000000,0.000000,0.000000,file_field_delimiter_0x3B.csv
+polluted_files,rcsv,Non-standard field delimiter (0x9),1,0,1,1,0.000000,1.000000,1.000000,0.000000,0.000000,0.000000,0.000000,file_field_delimiter_0x9.csv
+polluted_files,rcsv,Non-standard quotation character (0x27),1,1,0,1,1.000000,0.000000,1.000000,0.000000,0.000000,0.000000,0.000000,file_quotation_char_0x27.csv
+polluted_files,rcsv,Non-standard record delimiter (0xA),1,0,0,0,0.000000,0.000000,0.000000,1.000000,1.000000,1.000000,1.000000,file_record_delimiter_0xA.csv
+polluted_files,rcsv,Non-standard record delimiter (0xD),1,0,0,0,0.000000,0.000000,0.000000,1.000000,1.000000,1.000000,1.000000,file_record_delimiter_0xD.csv
+polluted_files,rcsv,One single row uses space as field delimiter,84,1,83,84,0.011905,0.988095,1.000000,0.988095,0.976190,0.977639,0.000000,row_field_delimiter_0_0x20.csv
+polluted_files,rcsv,Preamble rows before header,1,0,0,0,0.000000,0.000000,0.000000,1.000000,1.000000,1.000000,1.000000,file_preamble.csv
+polluted_files,rcsv,Single data row,1,0,0,0,0.000000,0.000000,0.000000,1.000000,1.000000,1.000000,1.000000,file_one_data_row.csv
+polluted_files,rcsv,Two tables with the same number of columns,1,0,1,1,0.000000,1.000000,1.000000,1.000000,0.666667,0.669323,0.669323,file_multitable_same.csv
+polluted_files,rcsv,"Two tables, first has fewer columns",1,0,1,1,0.000000,1.000000,1.000000,1.000000,0.666667,0.669323,0.669323,file_multitable_less.csv
+polluted_files,rcsv,"Two tables, first has more columns",1,0,1,1,0.000000,1.000000,1.000000,1.000000,0.664000,0.666667,0.666667,file_multitable_more.csv
+polluted_files,rcsv,Unknown,1,0,0,0,0.000000,0.000000,0.000000,1.000000,1.000000,1.000000,1.000000,source.csv
+polluted_files,rhypoparsr,ALL,2290,0,2288,2288,0.000000,0.999127,0.999127,0.143755,0.144093,0.670679,0.000000,file_header_only.csv
+polluted_files,rhypoparsr,Double trailing newline,1,0,1,1,0.000000,1.000000,1.000000,0.000000,0.119760,0.673241,0.673241,file_double_trailing_newline.csv
+polluted_files,rhypoparsr,Empty file (0 bytes),1,0,0,0,0.000000,0.000000,0.000000,1.000000,1.000000,1.000000,1.000000,file_no_payload.csv
+polluted_files,rhypoparsr,Extra delimiter in one single row,756,0,756,756,0.000000,1.000000,1.000000,0.109788,0.118096,0.660890,0.002642,row_more_sep_row0_col1.csv
+polluted_files,rhypoparsr,Extra unescaped quote in one single row,756,0,756,756,0.000000,1.000000,1.000000,0.088624,0.192573,0.692913,0.671926,row_extra_quote57_col2.csv
+polluted_files,rhypoparsr,"Header row only, no data",1,0,1,1,0.000000,1.000000,1.000000,0.000000,1.000000,0.000000,0.000000,file_header_only.csv
+polluted_files,rhypoparsr,Missing delimiter in one single row,672,0,672,672,0.000000,1.000000,1.000000,0.247024,0.117442,0.659757,0.564815,row_less_sep_row56_col2.csv
+polluted_files,rhypoparsr,Missing trailing newline,1,0,1,1,0.000000,1.000000,1.000000,0.000000,0.119760,0.673241,0.673241,file_no_trailing_newline.csv
+polluted_files,rhypoparsr,Multi-row header (2 rows),1,0,1,1,0.000000,1.000000,1.000000,0.000000,0.119760,0.661407,0.661407,file_header_multirow_2.csv
+polluted_files,rhypoparsr,Multi-row header (3 rows),1,0,1,1,0.000000,1.000000,1.000000,0.000000,0.119048,0.657516,0.657516,file_header_multirow_3.csv
+polluted_files,rhypoparsr,No header row,1,0,1,1,0.000000,1.000000,1.000000,0.200000,0.000000,0.002674,0.002674,file_no_header.csv
+polluted_files,rhypoparsr,Non-standard escape character (0x00),1,0,1,1,0.000000,1.000000,1.000000,0.000000,0.119760,0.673241,0.673241,file_escape_char_0x00.csv
+polluted_files,rhypoparsr,Non-standard escape character (0x5C),1,0,1,1,0.000000,1.000000,1.000000,0.000000,0.119760,0.673241,0.673241,file_escape_char_0x5C.csv
+polluted_files,rhypoparsr,Non-standard field delimiter (0x20),1,0,1,1,0.000000,1.000000,1.000000,0.000000,0.000000,0.000000,0.000000,file_field_delimiter_0x20.csv
+polluted_files,rhypoparsr,Non-standard field delimiter (0x2C_0x20),1,0,1,1,0.000000,1.000000,1.000000,0.000000,0.119760,0.673241,0.673241,file_field_delimiter_0x2C_0x20.csv
+polluted_files,rhypoparsr,Non-standard field delimiter (0x3B),1,0,1,1,0.000000,1.000000,1.000000,0.000000,0.922156,0.986193,0.986193,file_field_delimiter_0x3B.csv
+polluted_files,rhypoparsr,Non-standard field delimiter (0x9),1,0,1,1,0.000000,1.000000,1.000000,0.000000,0.922156,0.986193,0.986193,file_field_delimiter_0x9.csv
+polluted_files,rhypoparsr,Non-standard quotation character (0x27),1,0,1,1,0.000000,1.000000,1.000000,0.000000,0.119760,0.673241,0.673241,file_quotation_char_0x27.csv
+polluted_files,rhypoparsr,Non-standard record delimiter (0xA),1,0,1,1,0.000000,1.000000,1.000000,0.000000,0.119760,0.673241,0.673241,file_record_delimiter_0xA.csv
+polluted_files,rhypoparsr,Non-standard record delimiter (0xD),1,0,1,1,0.000000,1.000000,1.000000,0.000000,0.119760,0.673241,0.673241,file_record_delimiter_0xD.csv
+polluted_files,rhypoparsr,One single row uses space as field delimiter,84,0,84,84,0.000000,1.000000,1.000000,0.107143,0.116986,0.665654,0.000000,row_field_delimiter_0_0x20.csv
+polluted_files,rhypoparsr,Preamble rows before header,1,0,0,0,0.000000,0.000000,0.000000,0.000000,0.958084,0.990138,0.990138,file_preamble.csv
+polluted_files,rhypoparsr,Single data row,1,0,1,1,0.000000,1.000000,1.000000,0.000000,0.000000,0.352941,0.352941,file_one_data_row.csv
+polluted_files,rhypoparsr,Two tables with the same number of columns,1,0,1,1,0.000000,1.000000,1.000000,1.000000,0.080321,0.464807,0.464807,file_multitable_same.csv
+polluted_files,rhypoparsr,"Two tables, first has fewer columns",1,0,1,1,0.000000,1.000000,1.000000,1.000000,0.080321,0.490483,0.490483,file_multitable_less.csv
+polluted_files,rhypoparsr,"Two tables, first has more columns",1,0,1,1,0.000000,1.000000,1.000000,1.000000,0.080321,0.455954,0.455954,file_multitable_more.csv
+polluted_files,rhypoparsr,Unknown,1,0,1,1,0.000000,1.000000,1.000000,0.000000,0.119760,0.673241,0.673241,source.csv
+polluted_files,spreaddesktop,ALL,2290,2,184,186,0.000873,0.080349,0.081223,0.992950,0.990756,0.992574,0.000000,file_no_payload.csv
+polluted_files,spreaddesktop,Double trailing newline,1,0,0,0,0.000000,0.000000,0.000000,1.000000,1.000000,1.000000,1.000000,file_double_trailing_newline.csv
+polluted_files,spreaddesktop,Empty file (0 bytes),1,1,0,1,1.000000,0.000000,1.000000,0.000000,0.000000,0.000000,0.000000,file_no_payload.csv
+polluted_files,spreaddesktop,Extra delimiter in one single row,756,0,9,9,0.000000,0.011905,0.011905,0.999373,1.000000,0.999373,0.947368,row_more_sep_row0_col7.csv
+polluted_files,spreaddesktop,Extra unescaped quote in one single row,756,0,61,61,0.000000,0.080688,0.080688,0.990515,0.988079,0.990070,0.856009,row_extra_quote44_col6.csv
+polluted_files,spreaddesktop,"Header row only, no data",1,0,1,1,0.000000,1.000000,1.000000,1.000000,1.000000,0.022989,0.022989,file_header_only.csv
+polluted_files,spreaddesktop,Missing delimiter in one single row,672,0,19,19,0.000000,0.028274,0.028274,0.996897,0.991071,0.995968,0.897619,row_less_sep_row44_col6.csv
+polluted_files,spreaddesktop,Missing trailing newline,1,0,0,0,0.000000,0.000000,0.000000,1.000000,1.000000,1.000000,1.000000,file_no_trailing_newline.csv
+polluted_files,spreaddesktop,Multi-row header (2 rows),1,0,1,1,0.000000,1.000000,1.000000,0.000000,0.994012,0.982249,0.982249,file_header_multirow_2.csv
+polluted_files,spreaddesktop,Multi-row header (3 rows),1,0,1,1,0.000000,1.000000,1.000000,0.000000,0.988095,0.976471,0.976471,file_header_multirow_3.csv
+polluted_files,spreaddesktop,No header row,1,0,1,1,0.000000,1.000000,1.000000,0.941176,1.000000,0.941176,0.941176,file_no_header.csv
+polluted_files,spreaddesktop,Non-standard escape character (0x00),1,0,1,1,0.000000,1.000000,1.000000,0.947368,0.927711,0.936090,0.936090,file_escape_char_0x00.csv
+polluted_files,spreaddesktop,Non-standard escape character (0x5C),1,0,1,1,0.000000,1.000000,1.000000,0.947368,0.927711,0.936090,0.936090,file_escape_char_0x5C.csv
+polluted_files,spreaddesktop,Non-standard field delimiter (0x20),1,0,1,1,0.000000,1.000000,1.000000,0.818182,0.409639,0.765152,0.765152,file_field_delimiter_0x20.csv
+polluted_files,spreaddesktop,Non-standard field delimiter (0x2C_0x20),1,0,1,1,0.000000,1.000000,1.000000,0.083333,0.000000,0.248016,0.248016,file_field_delimiter_0x2C_0x20.csv
+polluted_files,spreaddesktop,Non-standard field delimiter (0x3B),1,0,0,0,0.000000,0.000000,0.000000,1.000000,1.000000,1.000000,1.000000,file_field_delimiter_0x3B.csv
+polluted_files,spreaddesktop,Non-standard field delimiter (0x9),1,0,0,0,0.000000,0.000000,0.000000,1.000000,1.000000,1.000000,1.000000,file_field_delimiter_0x9.csv
+polluted_files,spreaddesktop,Non-standard quotation character (0x27),1,0,1,1,0.000000,1.000000,1.000000,0.900000,0.586826,0.845653,0.845653,file_quotation_char_0x27.csv
+polluted_files,spreaddesktop,Non-standard record delimiter (0xA),1,0,0,0,0.000000,0.000000,0.000000,1.000000,1.000000,1.000000,1.000000,file_record_delimiter_0xA.csv
+polluted_files,spreaddesktop,Non-standard record delimiter (0xD),1,0,0,0,0.000000,0.000000,0.000000,1.000000,1.000000,1.000000,1.000000,file_record_delimiter_0xD.csv
+polluted_files,spreaddesktop,One single row uses space as field delimiter,84,1,83,84,0.011905,0.988095,1.000000,0.976190,0.976334,0.977048,0.000000,row_field_delimiter_62_0x20.csv
+polluted_files,spreaddesktop,Preamble rows before header,1,0,0,0,0.000000,0.000000,0.000000,1.000000,1.000000,1.000000,1.000000,file_preamble.csv
+polluted_files,spreaddesktop,Single data row,1,0,0,0,0.000000,0.000000,0.000000,1.000000,1.000000,1.000000,1.000000,file_one_data_row.csv
+polluted_files,spreaddesktop,Two tables with the same number of columns,1,0,1,1,0.000000,1.000000,1.000000,1.000000,0.666667,0.669323,0.669323,file_multitable_same.csv
+polluted_files,spreaddesktop,"Two tables, first has fewer columns",1,0,1,1,0.000000,1.000000,1.000000,1.000000,0.664000,0.666667,0.666667,file_multitable_less.csv
+polluted_files,spreaddesktop,"Two tables, first has more columns",1,0,1,1,0.000000,1.000000,1.000000,0.947368,0.666667,0.623248,0.623248,file_multitable_more.csv
+polluted_files,spreaddesktop,Unknown,1,0,0,0,0.000000,0.000000,0.000000,1.000000,1.000000,1.000000,1.000000,source.csv
+polluted_files,spreadweb,ALL,2290,4,2283,2287,0.001747,0.996943,0.998690,0.986459,0.989019,0.931109,0.000000,row_extra_quote22_col0.csv
+polluted_files,spreadweb,Double trailing newline,1,0,1,1,0.000000,1.000000,1.000000,1.000000,1.000000,0.943122,0.943122,file_double_trailing_newline.csv
+polluted_files,spreadweb,Empty file (0 bytes),1,0,0,0,0.000000,0.000000,0.000000,1.000000,1.000000,1.000000,1.000000,file_no_payload.csv
+polluted_files,spreadweb,Extra delimiter in one single row,756,0,756,756,0.000000,1.000000,1.000000,0.999373,1.000000,0.942531,0.893484,row_more_sep_row0_col7.csv
+polluted_files,spreadweb,Extra unescaped quote in one single row,756,4,752,756,0.005291,0.994709,1.000000,0.971249,0.982203,0.915316,0.000000,row_extra_quote22_col0.csv
+polluted_files,spreadweb,"Header row only, no data",1,0,0,0,0.000000,0.000000,0.000000,1.000000,1.000000,1.000000,1.000000,file_header_only.csv
+polluted_files,spreadweb,Missing delimiter in one single row,672,0,672,672,0.000000,1.000000,1.000000,0.996897,0.991071,0.939277,0.846429,row_less_sep_row44_col6.csv
+polluted_files,spreadweb,Missing trailing newline,1,0,1,1,0.000000,1.000000,1.000000,1.000000,1.000000,0.943122,0.943122,file_no_trailing_newline.csv
+polluted_files,spreadweb,Multi-row header (2 rows),1,0,1,1,0.000000,1.000000,1.000000,0.000000,0.994012,0.925707,0.925707,file_header_multirow_2.csv
+polluted_files,spreadweb,Multi-row header (3 rows),1,0,1,1,0.000000,1.000000,1.000000,0.000000,0.988095,0.920261,0.920261,file_header_multirow_3.csv
+polluted_files,spreadweb,No header row,1,0,1,1,0.000000,1.000000,1.000000,0.941176,1.000000,0.880227,0.880227,file_no_header.csv
+polluted_files,spreadweb,Non-standard escape character (0x00),1,0,1,1,0.000000,1.000000,1.000000,0.947368,0.927711,0.936090,0.936090,file_escape_char_0x00.csv
+polluted_files,spreadweb,Non-standard escape character (0x5C),1,0,1,1,0.000000,1.000000,1.000000,0.000000,0.000000,0.000000,0.000000,file_escape_char_0x5C.csv
+polluted_files,spreadweb,Non-standard field delimiter (0x20),1,0,1,1,0.000000,1.000000,1.000000,0.818182,0.409639,0.718615,0.718615,file_field_delimiter_0x20.csv
+polluted_files,spreadweb,Non-standard field delimiter (0x2C_0x20),1,0,1,1,0.000000,1.000000,1.000000,1.000000,1.000000,0.943122,0.943122,file_field_delimiter_0x2C_0x20.csv
+polluted_files,spreadweb,Non-standard field delimiter (0x3B),1,0,1,1,0.000000,1.000000,1.000000,1.000000,1.000000,0.943122,0.943122,file_field_delimiter_0x3B.csv
+polluted_files,spreadweb,Non-standard field delimiter (0x9),1,0,1,1,0.000000,1.000000,1.000000,1.000000,1.000000,0.943122,0.943122,file_field_delimiter_0x9.csv
+polluted_files,spreadweb,Non-standard quotation character (0x27),1,0,1,1,0.000000,1.000000,1.000000,0.608696,0.000000,0.531056,0.531056,file_quotation_char_0x27.csv
+polluted_files,spreadweb,Non-standard record delimiter (0xA),1,0,1,1,0.000000,1.000000,1.000000,1.000000,1.000000,0.943122,0.943122,file_record_delimiter_0xA.csv
+polluted_files,spreadweb,Non-standard record delimiter (0xD),1,0,1,1,0.000000,1.000000,1.000000,0.023495,0.000000,0.879552,0.879552,file_record_delimiter_0xD.csv
+polluted_files,spreadweb,One single row uses space as field delimiter,84,0,84,84,0.000000,1.000000,1.000000,0.988095,0.988095,0.932586,0.879552,row_field_delimiter_0_0x20.csv
+polluted_files,spreadweb,Preamble rows before header,1,0,1,1,0.000000,1.000000,1.000000,0.000000,0.988095,0.932026,0.932026,file_preamble.csv
+polluted_files,spreadweb,Single data row,1,0,1,1,0.000000,1.000000,1.000000,1.000000,1.000000,0.944444,0.944444,file_one_data_row.csv
+polluted_files,spreadweb,Two tables with the same number of columns,1,0,1,1,0.000000,1.000000,1.000000,1.000000,0.666667,0.631253,0.631253,file_multitable_same.csv
+polluted_files,spreadweb,"Two tables, first has fewer columns",1,0,1,1,0.000000,1.000000,1.000000,1.000000,0.666667,0.631253,0.631253,file_multitable_less.csv
+polluted_files,spreadweb,"Two tables, first has more columns",1,0,1,1,0.000000,1.000000,1.000000,0.947368,0.666667,0.587799,0.587799,file_multitable_more.csv
+polluted_files,spreadweb,Unknown,1,0,0,0,0.000000,0.000000,0.000000,1.000000,1.000000,1.000000,1.000000,source.csv
+polluted_files,sqlite,ALL,2290,0,119,119,0.000000,0.051965,0.051965,0.995241,0.989148,0.993992,0.000000,file_field_delimiter_0x2C_0x20.csv
+polluted_files,sqlite,Double trailing newline,1,0,0,0,0.000000,0.000000,0.000000,1.000000,0.994012,0.994083,0.994083,file_double_trailing_newline.csv
+polluted_files,sqlite,Empty file (0 bytes),1,0,0,0,0.000000,0.000000,0.000000,1.000000,1.000000,1.000000,1.000000,file_no_payload.csv
+polluted_files,sqlite,Extra delimiter in one single row,756,0,9,9,0.000000,0.011905,0.011905,0.999373,1.000000,0.999373,0.947368,row_more_sep_row0_col7.csv
+polluted_files,sqlite,Extra unescaped quote in one single row,756,0,7,7,0.000000,0.009259,0.009259,0.996569,0.983964,0.993469,0.498016,row_extra_quote0_col0.csv
+polluted_files,sqlite,"Header row only, no data",1,0,1,1,0.000000,1.000000,1.000000,0.000000,1.000000,0.000000,0.000000,file_header_only.csv
+polluted_files,sqlite,Missing delimiter in one single row,672,0,8,8,0.000000,0.011905,0.011905,0.997770,0.991062,0.996928,0.939776,row_less_sep_row0_col1.csv
+polluted_files,sqlite,Missing trailing newline,1,0,0,0,0.000000,0.000000,0.000000,1.000000,1.000000,1.000000,1.000000,file_no_trailing_newline.csv
+polluted_files,sqlite,Multi-row header (2 rows),1,0,1,1,0.000000,1.000000,1.000000,0.000000,0.994012,0.982249,0.982249,file_header_multirow_2.csv
+polluted_files,sqlite,Multi-row header (3 rows),1,0,1,1,0.000000,1.000000,1.000000,0.000000,0.988095,0.976471,0.976471,file_header_multirow_3.csv
+polluted_files,sqlite,No header row,1,0,0,0,0.000000,0.000000,0.000000,0.888889,1.000000,0.998661,0.998661,file_no_header.csv
+polluted_files,sqlite,Non-standard escape character (0x00),1,0,0,0,0.000000,0.000000,0.000000,1.000000,0.963855,0.992063,0.992063,file_escape_char_0x00.csv
+polluted_files,sqlite,Non-standard escape character (0x5C),1,0,1,1,0.000000,1.000000,1.000000,1.000000,0.927711,0.988095,0.988095,file_escape_char_0x5C.csv
+polluted_files,sqlite,Non-standard field delimiter (0x20),1,0,1,1,0.000000,1.000000,1.000000,1.000000,0.409639,0.818783,0.818783,file_field_delimiter_0x20.csv
+polluted_files,sqlite,Non-standard field delimiter (0x2C_0x20),1,0,1,1,0.000000,1.000000,1.000000,0.000000,0.000000,0.000000,0.000000,file_field_delimiter_0x2C_0x20.csv
+polluted_files,sqlite,Non-standard field delimiter (0x3B),1,0,0,0,0.000000,0.000000,0.000000,1.000000,1.000000,1.000000,1.000000,file_field_delimiter_0x3B.csv
+polluted_files,sqlite,Non-standard field delimiter (0x9),1,0,0,0,0.000000,0.000000,0.000000,1.000000,1.000000,1.000000,1.000000,file_field_delimiter_0x9.csv
+polluted_files,sqlite,Non-standard quotation character (0x27),1,0,1,1,0.000000,1.000000,1.000000,0.777778,0.000000,0.638889,0.638889,file_quotation_char_0x27.csv
+polluted_files,sqlite,Non-standard record delimiter (0xA),1,0,0,0,0.000000,0.000000,0.000000,1.000000,1.000000,1.000000,1.000000,file_record_delimiter_0xA.csv
+polluted_files,sqlite,Non-standard record delimiter (0xD),1,0,1,1,0.000000,1.000000,1.000000,0.000000,0.000000,0.000000,0.000000,file_record_delimiter_0xD.csv
+polluted_files,sqlite,One single row uses space as field delimiter,84,0,84,84,0.000000,1.000000,1.000000,0.988095,0.976190,0.979992,0.197619,row_field_delimiter_0_0x20.csv
+polluted_files,sqlite,Preamble rows before header,1,0,0,0,0.000000,0.000000,0.000000,1.000000,1.000000,1.000000,1.000000,file_preamble.csv
+polluted_files,sqlite,Single data row,1,0,0,0,0.000000,0.000000,0.000000,1.000000,1.000000,1.000000,1.000000,file_one_data_row.csv
+polluted_files,sqlite,Two tables with the same number of columns,1,0,1,1,0.000000,1.000000,1.000000,1.000000,0.666667,0.669323,0.669323,file_multitable_same.csv
+polluted_files,sqlite,"Two tables, first has fewer columns",1,0,1,1,0.000000,1.000000,1.000000,1.000000,0.666667,0.669323,0.669323,file_multitable_less.csv
+polluted_files,sqlite,"Two tables, first has more columns",1,0,1,1,0.000000,1.000000,1.000000,1.000000,0.666667,0.669323,0.669323,file_multitable_more.csv
+polluted_files,sqlite,Unknown,1,0,0,0,0.000000,0.000000,0.000000,1.000000,1.000000,1.000000,1.000000,source.csv
+polluted_files,univocity,ALL,2290,1,14,15,0.000437,0.006114,0.006550,0.994357,0.990095,0.995253,0.000000,file_field_delimiter_0x9.csv
+polluted_files,univocity,Double trailing newline,1,0,0,0,0.000000,0.000000,0.000000,1.000000,1.000000,1.000000,1.000000,file_double_trailing_newline.csv
+polluted_files,univocity,Empty file (0 bytes),1,0,0,0,0.000000,0.000000,0.000000,1.000000,1.000000,1.000000,1.000000,file_no_payload.csv
+polluted_files,univocity,Extra delimiter in one single row,756,0,0,0,0.000000,0.000000,0.000000,0.999373,1.000000,0.999339,0.999339,row_more_sep_row17_col6.csv
+polluted_files,univocity,Extra unescaped quote in one single row,756,0,0,0,0.000000,0.000000,0.000000,0.996275,0.987422,0.996030,0.991385,row_extra_quote42_col8.csv
+polluted_files,univocity,"Header row only, no data",1,0,0,0,0.000000,0.000000,0.000000,1.000000,1.000000,1.000000,1.000000,file_header_only.csv
+polluted_files,univocity,Missing delimiter in one single row,672,0,0,0,0.000000,0.000000,0.000000,0.997899,0.991071,0.998070,0.995380,row_less_sep_row44_col6.csv
+polluted_files,univocity,Missing trailing newline,1,0,0,0,0.000000,0.000000,0.000000,1.000000,1.000000,1.000000,1.000000,file_no_trailing_newline.csv
+polluted_files,univocity,Multi-row header (2 rows),1,0,1,1,0.000000,1.000000,1.000000,0.000000,0.994012,0.982249,0.982249,file_header_multirow_2.csv
+polluted_files,univocity,Multi-row header (3 rows),1,0,1,1,0.000000,1.000000,1.000000,0.000000,0.988095,0.976471,0.976471,file_header_multirow_3.csv
+polluted_files,univocity,No header row,1,0,0,0,0.000000,0.000000,0.000000,1.000000,1.000000,1.000000,1.000000,file_no_header.csv
+polluted_files,univocity,Non-standard escape character (0x00),1,0,1,1,0.000000,1.000000,1.000000,1.000000,0.927711,0.986139,0.986139,file_escape_char_0x00.csv
+polluted_files,univocity,Non-standard escape character (0x5C),1,0,1,1,0.000000,1.000000,1.000000,1.000000,0.927711,0.986139,0.986139,file_escape_char_0x5C.csv
+polluted_files,univocity,Non-standard field delimiter (0x20),1,0,1,1,0.000000,1.000000,1.000000,0.000000,0.000000,0.000000,0.000000,file_field_delimiter_0x20.csv
+polluted_files,univocity,Non-standard field delimiter (0x2C_0x20),1,0,0,0,0.000000,0.000000,0.000000,1.000000,1.000000,1.000000,1.000000,file_field_delimiter_0x2C_0x20.csv
+polluted_files,univocity,Non-standard field delimiter (0x3B),1,0,1,1,0.000000,1.000000,1.000000,0.000000,0.000000,0.000000,0.000000,file_field_delimiter_0x3B.csv
+polluted_files,univocity,Non-standard field delimiter (0x9),1,0,1,1,0.000000,1.000000,1.000000,0.000000,0.000000,0.000000,0.000000,file_field_delimiter_0x9.csv
+polluted_files,univocity,Non-standard quotation character (0x27),1,0,1,1,0.000000,1.000000,1.000000,0.777778,0.000000,0.664277,0.664277,file_quotation_char_0x27.csv
+polluted_files,univocity,Non-standard record delimiter (0xA),1,0,0,0,0.000000,0.000000,0.000000,1.000000,1.000000,1.000000,1.000000,file_record_delimiter_0xA.csv
+polluted_files,univocity,Non-standard record delimiter (0xD),1,1,0,1,1.000000,0.000000,1.000000,0.000000,0.000000,0.000000,0.000000,file_record_delimiter_0xD.csv
+polluted_files,univocity,One single row uses space as field delimiter,84,0,2,2,0.000000,0.023810,0.023810,0.988095,0.988095,0.992080,0.989404,row_field_delimiter_34_0x20.csv
+polluted_files,univocity,Preamble rows before header,1,0,1,1,0.000000,1.000000,1.000000,0.000000,0.988095,0.988235,0.988235,file_preamble.csv
+polluted_files,univocity,Single data row,1,0,0,0,0.000000,0.000000,0.000000,1.000000,1.000000,1.000000,1.000000,file_one_data_row.csv
+polluted_files,univocity,Two tables with the same number of columns,1,0,1,1,0.000000,1.000000,1.000000,1.000000,0.666667,0.669323,0.669323,file_multitable_same.csv
+polluted_files,univocity,"Two tables, first has fewer columns",1,0,1,1,0.000000,1.000000,1.000000,1.000000,0.666667,0.694853,0.694853,file_multitable_less.csv
+polluted_files,univocity,"Two tables, first has more columns",1,0,1,1,0.000000,1.000000,1.000000,1.000000,0.666667,0.645602,0.645602,file_multitable_more.csv
+polluted_files,univocity,Unknown,1,0,0,0,0.000000,0.000000,0.000000,1.000000,1.000000,1.000000,1.000000,source.csv

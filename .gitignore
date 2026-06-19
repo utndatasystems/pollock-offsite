@@ -139,5 +139,10 @@ dmypy.json
 
 *.DS_Store
 
-
+# Custom data 
 */mycustomtest/
+data/csv_storm/*
+data/additional_csvs/insurance_complaints.csv
+data/additional_csvs/table.csv
+results/duckdbparse/polluted_files/duckdbparse_errors.txt
+results/pandas/polluted_files/pandas_errors.txt

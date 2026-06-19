@@ -1,0 +1,10 @@
+{
+  "files": [
+    "datagov_electric_vehicle_population_data.csv"
+  ],
+  "dataset": "web_csv_poc",
+  "sources": [
+    "data.gov"
+  ],
+  "errors": []
+}

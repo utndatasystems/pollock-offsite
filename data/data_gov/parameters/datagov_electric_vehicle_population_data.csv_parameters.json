@@ -1,0 +1,33 @@
+{
+  "encoding": "utf-8",
+  "encoding_confidence": 1.0,
+  "delimiter": ",",
+  "quotechar": "\"",
+  "escapechar": "\"",
+  "row_delimiter": "\n",
+  "header_lines": "1",
+  "preamble_lines": "0",
+  "footnote_lines": "0",
+  "column_names": [
+    "vin_1_10",
+    "county",
+    "city",
+    "state",
+    "zip_code",
+    "model_year",
+    "make",
+    "model",
+    "ev_type",
+    "cafv_type",
+    "electric_range",
+    "legislative_district",
+    "dol_vehicle_id",
+    "geocoded_column",
+    "electric_utility",
+    "_2020_census_tract"
+  ],
+  "n_columns": 16,
+  "source": "data.gov",
+  "source_url": "https://data.wa.gov/resource/f6w7-q2d2.csv?$limit=1000",
+  "source_description": "Washington State Electric Vehicle Population Data"
+}

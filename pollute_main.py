@@ -1,13 +1,57 @@
-from copy import deepcopy
 import argparse
 import os
-from pollock.CSVFile import CSVFile
+import pollock
 import pollock.polluters_stdlib as pl
+import random
+
+from copy import deepcopy
+from pollock.CSVFile import CSVFile
 from sut.utils import print
+from tqdm import tqdm
+from faker import Faker
+
+from pollock.polluters_utils import _set_polluted_filename
 
 parser = argparse.ArgumentParser()
-parser.add_argument("--source", default="./results/source.csv", help="Path to the source CSV file to pollute")
-parser.add_argument("--output", default="./data/polluted_files", help="Root output directory for polluted files")
+
+parser.add_argument(
+    "--source",
+    required=True,
+    choices=[
+        "./results/source.csv",
+    ],
+    help="Path to the source CSV file to pollute",
+)
+
+parser.add_argument(
+    "--output",
+    required=True,
+    choices=[
+        "./data/polluted_files",
+        "./data/data_gov",
+        "./data/csv_storm",
+        "./data/eurostat",
+        "./data/survey_sample",
+    ],
+    help="Root output directory for polluted files",
+)
+
+parser.add_argument(
+    "--polluters",
+    required=False,
+    choices=["pollock1.0", "pollock2.0"],
+    default="pollock1.0",
+    help="Which polluters to use for pollution process. Use pollock1.0 for original pollock pollutions only.",
+)
+
+parser.add_argument(
+    "--rng-seed",
+    required=False,
+    default=1337,
+    help="RNG seed",
+)
+
+
 args = parser.parse_args()
 
 OUT_CSV_PATH = os.path.join(args.output, "csv/")
@@ -17,11 +61,20 @@ OUT_PARAMETERS_PATH = os.path.join(args.output, "parameters/")
 os.makedirs(OUT_CSV_PATH, exist_ok=True)
 os.makedirs(OUT_CLEAN_PATH, exist_ok=True)
 os.makedirs(OUT_PARAMETERS_PATH, exist_ok=True)
-os.system('cd ' + OUT_CSV_PATH + ' && rm -f *.csv')
+
+print(f"Seeding RNG: {args.rng_seed}")
+random.seed(args.rng_seed)
+Faker.seed(args.rng_seed)
+
 
 def execute_polluter(file: CSVFile, polluter, new_filename=None, *args, **kwargs):
     t = deepcopy(file)
-    print("Executing", polluter.__name__, "with arguments", tuple(map(lambda x: str(x)[:300], [f"{k}:{v}" for k, v in kwargs.items()])))
+    print(
+        "Executing",
+        polluter.__name__,
+        "with arguments",
+        tuple(map(lambda x: str(x)[:300], [f"{k}:{v}" for k, v in kwargs.items()])),
+    )
     polluter(t, *args, **kwargs)
     if new_filename is not None:
         t.filename = new_filename
@@ -37,27 +90,85 @@ f = CSVFile(args.source, quote_all=True)
 execute_polluter(f, pl.dummyPolluter, "source.csv")
 
 # File payload polluters : 3 files
-execute_polluter(f, pl.changeDimension, target_dimension=0, new_filename="file_no_payload.csv")
-execute_polluter(f, pl.changeRowRecordDelimiter, row=-1, target_delimiter="", new_filename="file_no_trailing_newline.csv")
-execute_polluter(f, pl.changeRowRecordDelimiter, row=-1, target_delimiter="\r\n\r\n", new_filename="file_double_trailing_newline.csv")
+execute_polluter(
+    f, pl.changeDimension, target_dimension=0, new_filename="file_no_payload.csv"
+)
+execute_polluter(
+    f,
+    pl.changeRowRecordDelimiter,
+    row=-1,
+    target_delimiter="",
+    new_filename="file_no_trailing_newline.csv",
+)
+execute_polluter(
+    f,
+    pl.changeRowRecordDelimiter,
+    row=-1,
+    target_delimiter="\r\n\r\n",
+    new_filename="file_double_trailing_newline.csv",
+)
 
 # Header and preamble polluters : 7 files
-execute_polluter(f, pl.changeNumberRows, target_number_rows=f.row_count, remove_header=True, new_filename="file_no_header.csv")
-execute_polluter(f, pl.expandColumnHeader, extra_rows=1, new_filename="file_header_multirow_2.csv")  # 1 regular, on multiple rows
-execute_polluter(f, pl.expandColumnHeader, extra_rows=2, new_filename="file_header_multirow_3.csv")  # 1 regular, on multiple rows
-execute_polluter(f, pl.addPreamble, n_rows=1, delimiters=True, emptyrow=True, new_filename="file_preamble.csv")  # delimited, with empty
-execute_polluter(f, pl.addTable, new_filename="file_multitable_less.csv", n_rows=f.row_count-1, n_cols=f.col_count-1, empty_boundary=False)
-execute_polluter(f, pl.addTable, new_filename="file_multitable_same.csv", n_rows=f.row_count-1, n_cols=f.col_count, empty_boundary=False)
-execute_polluter(f, pl.addTable, new_filename="file_multitable_more.csv", n_rows=f.row_count-1, n_cols=f.col_count+1, empty_boundary=False)
+execute_polluter(
+    f,
+    pl.changeNumberRows,
+    target_number_rows=f.row_count,
+    remove_header=True,
+    new_filename="file_no_header.csv",
+)
+execute_polluter(
+    f, pl.expandColumnHeader, extra_rows=1, new_filename="file_header_multirow_2.csv"
+)  # 1 regular, on multiple rows
+execute_polluter(
+    f, pl.expandColumnHeader, extra_rows=2, new_filename="file_header_multirow_3.csv"
+)  # 1 regular, on multiple rows
+execute_polluter(
+    f,
+    pl.addPreamble,
+    n_rows=1,
+    delimiters=True,
+    emptyrow=True,
+    new_filename="file_preamble.csv",
+)  # delimited, with empty
+execute_polluter(
+    f,
+    pl.addTable,
+    new_filename="file_multitable_less.csv",
+    n_rows=f.row_count - 1,
+    n_cols=f.col_count - 1,
+    empty_boundary=False,
+)
+execute_polluter(
+    f,
+    pl.addTable,
+    new_filename="file_multitable_same.csv",
+    n_rows=f.row_count - 1,
+    n_cols=f.col_count,
+    empty_boundary=False,
+)
+execute_polluter(
+    f,
+    pl.addTable,
+    new_filename="file_multitable_more.csv",
+    n_rows=f.row_count - 1,
+    n_cols=f.col_count + 1,
+    empty_boundary=False,
+)
 
 # Data rows: 2 files
-execute_polluter(f, pl.changeNumberRows, new_filename="file_header_only.csv", target_number_rows=1)
-execute_polluter(f, pl.changeNumberRows, new_filename="file_one_data_row.csv", target_number_rows=2)
+execute_polluter(
+    f, pl.changeNumberRows, new_filename="file_header_only.csv", target_number_rows=1
+)
+execute_polluter(
+    f, pl.changeNumberRows, new_filename="file_one_data_row.csv", target_number_rows=2
+)
 
 # Add or remove one separator for each row/column : 1428 files
 # Add extra quote mark for each row/column : 756 files
 # Change delimiter for each row : 88 files
-for i in range(f.row_count):
+
+"""
+for i in tqdm(range(f.row_count)):
     for j in range(f.col_count):
         execute_polluter(f, pl.addRowFieldDelimiter, new_filename=f"row_more_sep_row{i}_col{j}.csv", row=i, col=j)  # row 1, empty
         if j > 0:
@@ -68,7 +179,7 @@ for i in range(f.row_count):
     del_string = ''.join([f'_0x{v:X}' for v in vals])
     target_filename = f"row_field_delimiter_{i}{del_string}.csv"
     execute_polluter(f, pl.changeRowFieldDelimiter, new_filename=target_filename, row=i, target_delimiter=" ")
-
+"""
 # Change record Delimiter : 2 files
 execute_polluter(f, pl.changeRecordDelimiter, target_delimiter="\n")
 execute_polluter(f, pl.changeRecordDelimiter, target_delimiter="\r")
@@ -81,9 +192,93 @@ execute_polluter(f, pl.changeFieldDelimiter, target_delimiter=" ")
 
 # Change quotation mark everywhere : 1 file
 execute_polluter(f, pl.changeQuotationChar, target_char="\u0027")
+execute_polluter(f, pl.changeQuotationChar, target_char="") # deleted quotation character everywhere
+
 
 # Change escape character : 2 files
-execute_polluter(f, pl.changeEscapeCharacter, target_escape="\u005C")  # backslash
+execute_polluter(f, pl.changeEscapeCharacter, target_escape="\u005c")  # backslash
 execute_polluter(f, pl.changeEscapeCharacter, target_escape="")
+
+
+# --- NEW POLLUTIONS FOR POLLOCK 2.0 ---
+
+if args.polluters == "pollock2.0":
+
+    # Multi-table / layout structure
+    execute_polluter(
+        f, pl.addTableSideways, n_rows=min(f.row_count, 5), n_cols=min(f.col_count, 5)
+    )
+    execute_polluter(
+        f, pl.multilineHeader, header_col=4, header_rows=3, content="ExampleLineHeader"
+    )
+    execute_polluter(f, pl.duplicateHeaderAsDataRow)
+    execute_polluter(f, pl.metadataAsHeader)
+    execute_polluter(f, pl.superheader)
+
+    # Row / column irregularities
+    execute_polluter(f, pl.moveHeaderRow)
+    execute_polluter(
+        f, pl.extremelyLongFields, row=2 if f.row_count >= 2 else 1, col=1, length=10000
+    )  # For the final evaluation, we have to make sure th insert something extremely long of the same data type as the original cell
+    execute_polluter(f, pl.addGroupSectionHeader, group_name="Region: North")
+    execute_polluter(f, pl.addTrailingCommentToFile, comment="This is a comment.")
+    execute_polluter(
+        f, pl.addTrailingCommentToFile, comment="Your advertisements here."
+    )
+    execute_polluter(f, pl.commentRow)
+    execute_polluter(f, pl.commentRow, row=0)
+    execute_polluter(f, pl.commentRow, comment_marker="//")
+    execute_polluter(f, pl.commentRow, comment_marker="<!--")
+    for i in range(10):
+        execute_polluter(f, pl.variableColumnCount)
+
+    # Delimiter / quoting / escaping edge cases
+    execute_polluter(
+        f,
+        pl.mixedDelimiters,
+        row=2 if f.row_count >= 2 else 1,
+        delimiters=[";"],
+        mode="within_row",
+    )
+    execute_polluter(
+        f,
+        pl.mixedDelimiters,
+        row=2 if f.row_count >= 2 else 1,
+        delimiters=[";"],
+        mode="within_row",
+        range_within_row=3,
+    )
+    execute_polluter(
+        f,
+        pl.mixedDelimiters,
+        row=2 if f.row_count >= 2 else 1,
+        delimiters=[";"],
+        mode="whole_row",
+    )
+    execute_polluter(f, pl.unescaped, row=2 if f.row_count >= 2 else 1, col=1)
+    execute_polluter(f, pl.doubleEscaping, row1=2, row2=3, col=1)
+    execute_polluter(f, pl.unquotedLists)
+
+    # Spreadsheet / Excel-style edge cases
+    execute_polluter(f, pl.excelExportAutoformat)
+    execute_polluter(f, pl.exelExportFormulas)
+
+    # Type ambiguity / mixed values
+    execute_polluter(f, pl.typeAmbiguity)
+    execute_polluter(f, pl.mixedTypes)
+    execute_polluter(f, pl.mixedTimeformats)
+
+    # Encoding / Unicode edge cases
+    execute_polluter(f, pl.encoding, target_encoding="utf-8")
+    execute_polluter(f, pl.encoding, target_encoding="windows-1252")
+    execute_polluter(f, pl.bomMarker)
+    execute_polluter(f, pl.weirdUnicode)
+    execute_polluter(f, pl.invisibleCharacters)
+    execute_polluter(f, pl.collations)
+
+    # Embedded semi-structured payloads
+    execute_polluter(f, pl.embeddedJSON)
+    execute_polluter(f, pl.embeddedCSV)
+
 
 print("Pollution process complete.")
