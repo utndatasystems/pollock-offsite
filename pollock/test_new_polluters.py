@@ -25,7 +25,6 @@ import pytest
 from lxml import etree
 from lxml.builder import E
 
-
 # Make `import pollock.polluters_stdlib` work whether pytest is started from
 # the project root or from inside the `pollock/` package directory.
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
@@ -35,6 +34,9 @@ if str(PROJECT_ROOT) not in sys.path:
 POLLUTERS_MODULE = os.environ.get("POLLUTERS_MODULE", "pollock.polluters_stdlib")
 p = importlib.import_module(POLLUTERS_MODULE)
 
+#TODO: add tests for pollock 1.0 pollutions functions as well
+
+#TODO: add tests for metrics/eval functions as well
 
 @dataclass
 class FakeCSVFile:
