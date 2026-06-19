@@ -315,6 +315,35 @@ def changeEscapeCharacter(file: CSVFile, target_escape="\\"):
     """
     file.escape_char = target_escape
     root = file.xml.getroot()
+
+    # Literal occurrences of the new escape character already present in the cell
+    # data must themselves be escaped, otherwise a parser using this escape
+    # character would consume them (e.g. a literal "\" before a quote/delimiter
+    # would be read as an escape sequence, dropping the backslash or breaking the
+    # field boundary). We represent the escape structurally -- by splitting the
+    # <value> on the escape char and inserting <escape_char> elements between the
+    # fragments -- exactly as escaped quotes are stored. This way the serialized
+    # CSV shows the doubled character while write_clean_csv (which reads only
+    # <value> text) still recovers the original single character. The quotation
+    # character is left untouched; its escaping is handled by the existing
+    # <escape_char> elements rewritten below.
+    if target_escape and target_escape != file.quotation_char:
+        for cell in root.xpath("//cell"):
+            for value in list(cell):
+                if (
+                    value.tag != "value"
+                    or not value.text
+                    or target_escape not in value.text
+                ):
+                    continue
+                parts = value.text.split(target_escape)
+                value.text = parts[0]
+                insert_at = cell.index(value) + 1
+                for part in parts[1:]:
+                    cell.insert(insert_at, E.escape_char(target_escape))
+                    cell.insert(insert_at + 1, E.value(target_escape + part))
+                    insert_at += 2
+
     query = root.xpath(f"//escape_char")
     for e in query:
         e.text = target_escape
@@ -596,7 +625,7 @@ def changeColumnHeader(
         strtype += "_nonalnum"
 
     _set_polluted_filename(
-        f"column_header_{col}_{strtype}{'_multiple' if extra_rows > 0 else ''}{'_nonunique' if type(col) == list else ''}.csv"
+        file, f"column_header_{col}_{strtype}{'_multiple' if extra_rows > 0 else ''}{'_nonunique' if type(col) == list else ''}.csv"
     )
 
 
@@ -612,7 +641,12 @@ def addTable(file: CSVFile, n_rows, n_cols, empty_boundary=True):
 
     content = []
     for i in range(n_rows):
-        content += [[x.text for x in old_table.xpath(f"//row[{i + 1}]//value")]]
+        content += [
+            [
+                "".join(v.text or "" for v in cell if v.tag == "value")
+                for cell in old_table.xpath(f"./row[{i + 1}]/cell")
+            ]
+        ]
 
     for i in range(n_rows):
         row_cells = content[i]
@@ -632,8 +666,9 @@ def addTable(file: CSVFile, n_rows, n_cols, empty_boundary=True):
         col_names = ["col" + str(i + 1) for i in range(cols_add)]
         content = []
         for i in range(1, n_rows):
+            last_cell = file.xml.xpath(f"//table[1]/row[{i + 1}]/cell[last()]")[0]
             content += [
-                file.xml.xpath(f"//table[1]//row[{i + 1}]/cell[last()]/value")[0].text
+                "".join(v.text or "" for v in last_cell if v.tag == "value")
             ]
 
         pb.addColumns(
