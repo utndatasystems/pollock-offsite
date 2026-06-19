@@ -127,7 +127,6 @@ def main():
     RESULT_DIR = args.result
     N_JOBS = int(args.njobs)
 
-<<<<<<< HEAD
     origin_csv = args.origin_csv
     if origin_csv is None and args.use_origin_csv:
         for candidate in [f"data/{dataset}/source.csv", "data/polluted_files/source.csv"]:
@@ -137,9 +136,6 @@ def main():
     weights = load_weights(dataset)
 
     verbose = bool(args.verbose)
-=======
-    verbose = args.verbose
->>>>>>> parser2.0
     systems = [s for s in next(os.walk(f"{RESULT_DIR}"))[1]
                if s != "archives" and os.path.isdir(f"{RESULT_DIR}/{s}/{dataset}/loading")]
 
