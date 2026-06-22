@@ -11,9 +11,9 @@ from typing import Any, Dict, Iterable, List, Optional, Tuple
 import pandas as pd
 
 
-DEFAULT_LLM_ENDPOINT = "http://dep-eng-data-s-heimgarten.hosts.utn.de:4000/v1/chat/completions"
-DEFAULT_LLM_MODEL = "gpt-5.4"
-#DEFAULT_LLM_MODEL = "gpt-5.4-mini"
+DEFAULT_OPENAI_ENDPOINT = "http://dep-eng-data-s-heimgarten.hosts.utn.de:4000/v1/chat/completions"
+DEFAULT_OPENAI_MODEL = "gpt-5.4"
+#DEFAULT_OPENAI_MODEL = "gpt-5.4-mini"
 TRACE_VERSION = 1
 
 _LLM_RESPONSE_CACHE: Dict[str, str] = {}
@@ -118,24 +118,20 @@ class TraceWriter:
             f.write("\n")
 
 
-def _llm_endpoint() -> str:
-    return os.environ.get("LIGHTLLM_ENDPOINT") or os.environ.get("LLM_ENDPOINT") or DEFAULT_LLM_ENDPOINT
+def _openai_endpoint() -> str:
+    return os.environ.get("OPENAI_ENDPOINT") or DEFAULT_OPENAI_ENDPOINT
 
 
-def _llm_model() -> str:
-    return os.environ.get("LIGHTLLM_MODEL") or os.environ.get("LLM_MODEL") or DEFAULT_LLM_MODEL
+def _openai_model() -> str:
+    return os.environ.get("OPENAI_MODEL") or DEFAULT_OPENAI_MODEL
 
 
-def _llm_api_key() -> Optional[str]:
-    return (
-        os.environ.get("HEIMGARTEN_OPENAI_KEY")
-        or os.environ.get("LIGHTLLM_API_KEY")
-        or os.environ.get("OPENAI_API_KEY")
-    )
+def _openai_api_key() -> Optional[str]:
+    return os.environ.get("OPENAI_API_KEY")
 
 
 def _prompt_hash(prompt: str) -> str:
-    key = _llm_model() + "\x00" + prompt
+    key = _openai_model() + "\x00" + prompt
     return hashlib.sha256(key.encode("utf-8")).hexdigest()
 
 
@@ -161,8 +157,8 @@ def call_llm(prompt: str, trace: TraceWriter, event_type: str, estimated_output_
             prompt=prompt,
             response=response,
             cached=True,
-            model=_llm_model(),
-            endpoint=_llm_endpoint(),
+            model=_openai_model(),
+            endpoint=_openai_endpoint(),
         )
         return response
 
@@ -173,20 +169,20 @@ def call_llm(prompt: str, trace: TraceWriter, event_type: str, estimated_output_
         trace.write(event_type, prompt_sha256=prompt_sha, prompt=prompt, dry_run=True)
         return "{}"
 
-    api_key = _llm_api_key()
+    api_key = _openai_api_key()
     if not api_key:
         raise RuntimeError(
-            "No LLM API key found. Set HEIMGARTEN_OPENAI_KEY, LIGHTLLM_API_KEY, or OPENAI_API_KEY."
+            "No OpenAI-compatible API key found. Set OPENAI_API_KEY."
         )
 
     payload = json.dumps({
-        "model": _llm_model(),
+        "model": _openai_model(),
         "messages": [{"role": "user", "content": prompt}],
         "temperature": 0,
     }).encode("utf-8")
 
     request = urllib.request.Request(
-        _llm_endpoint(),
+        _openai_endpoint(),
         data=payload,
         headers={
             "Content-Type": "application/json",
@@ -209,8 +205,8 @@ def call_llm(prompt: str, trace: TraceWriter, event_type: str, estimated_output_
         prompt=prompt,
         response=response,
         cached=False,
-        model=_llm_model(),
-        endpoint=_llm_endpoint(),
+        model=_openai_model(),
+        endpoint=_openai_endpoint(),
     )
     return response
 

@@ -1,0 +1,359 @@
+import json
+from collections import Counter, OrderedDict
+from dataclasses import dataclass
+from typing import Any, Dict, List, Optional, Tuple
+
+from llm import _extract_json_object, call_llm
+
+
+@dataclass
+class CSVDialect:
+    delimiter: str = ","
+    quotechar: Optional[str] = '"'
+    escapechar: Optional[str] = '"'
+    newline: Optional[str] = None
+    header_rows: int = 1
+    preamble_rows: int = 0
+
+    def as_trace_dict(self) -> Dict[str, Any]:
+        return {
+            "delimiter": self.delimiter,
+            "quotechar": self.quotechar,
+            "escapechar": self.escapechar,
+            "row_delimiter": self.newline,
+            "header_lines": self.header_rows,
+            "preamble_lines": self.preamble_rows,
+        }
+
+
+def _read_sample_lines(path: str, limit: int) -> List[str]:
+    lines: List[str] = []
+    with open(path, "r", encoding="utf-8-sig", errors="replace", newline="") as f:
+        for _ in range(max(0, limit)):
+            line = f.readline()
+            if line == "":
+                break
+            lines.append(line.rstrip("\r\n"))
+    return lines
+
+
+def _decode_token(value: Any) -> Optional[str]:
+    if value is None:
+        return None
+    if not isinstance(value, str):
+        value = str(value)
+    # Check for actual whitespace characters before stripping — a bare \t or \n
+    # from JSON decoding would be stripped to "" and misidentified as None.
+    whitespace_literals = {"\t": "\t", "\n": "\n", "\r\n": "\r\n", "\r": "\r"}
+    if value in whitespace_literals:
+        return whitespace_literals[value]
+    lowered = value.strip().lower()
+    if lowered in {"", "none", "null", "no", "false"}:
+        return None
+    aliases = {
+        "\\t": "\t",
+        "\\n": "\n",
+        "\\r": "\r",
+        "\\r\\n": "\r\n",
+        "<tab>": "\t",
+        "tab": "\t",
+        "space": " ",
+        "<space>": " ",
+        "0x20": " ",
+        "comma-space": ", ",
+    }
+    return aliases.get(lowered, value)
+
+
+def _valid_delimiter(value: Any) -> Optional[str]:
+    if isinstance(value, str) and value == " ":
+        return " "
+    value = _decode_token(value)
+    if value is None:
+        return None
+    if len(value.encode("utf-8")) > 4:
+        return None
+    return value
+
+
+def _valid_char(value: Any) -> Optional[str]:
+    value = _decode_token(value)
+    if value is None:
+        return None
+    if len(value) != 1:
+        return None
+    return value
+
+
+def _valid_newline(value: Any) -> Optional[str]:
+    value = _decode_token(value)
+    if value in {"\n", "\r", "\r\n"}:
+        return value
+    return None
+
+
+def _safe_nonnegative_int(value: Any, default: int = 0) -> int:
+    try:
+        return max(0, int(value))
+    except Exception:
+        return default
+
+
+def sniff_with_clevercsv(csv_input: str) -> Dict[str, Any]:
+    import clevercsv
+
+    with open(csv_input, "r", encoding="utf-8-sig", errors="replace", newline="") as f:
+        sample = f.read(65536)
+    dialect = clevercsv.Sniffer().sniff(sample)
+    if dialect is None:
+        return {}
+    return {
+        "delimiter": dialect.delimiter or None,
+        "quotechar": dialect.quotechar or None,
+        "escapechar": dialect.escapechar or dialect.quotechar or None,
+    }
+
+
+def _dialect_from_mapping(mapping: Dict[str, Any], base: Optional[CSVDialect] = None) -> CSVDialect:
+    base = base or CSVDialect()
+    delimiter = _valid_delimiter(mapping.get("delimiter", mapping.get("delim")))
+    quotechar = _valid_char(mapping.get("quotechar", mapping.get("quote")))
+    escapechar = _valid_char(mapping.get("escapechar", mapping.get("escape")))
+    newline = _valid_newline(mapping.get("row_delimiter", mapping.get("newline", mapping.get("new_line"))))
+
+    header_rows = _safe_nonnegative_int(
+        mapping.get("header_rows", mapping.get("header_lines", base.header_rows)),
+        base.header_rows,
+    )
+    preamble_rows = _safe_nonnegative_int(
+        mapping.get("preamble_rows", mapping.get("preamble_lines", base.preamble_rows)),
+        base.preamble_rows,
+    )
+
+    result = CSVDialect(
+        delimiter=delimiter or base.delimiter,
+        quotechar=quotechar if quotechar is not None else base.quotechar,
+        escapechar=escapechar if escapechar is not None else base.escapechar,
+        newline=newline or base.newline,
+        header_rows=header_rows,
+        preamble_rows=preamble_rows,
+    )
+    if result.quotechar and result.escapechar is None:
+        result.escapechar = result.quotechar
+    return result
+
+
+def infer_dialect_with_llm(
+    csv_input: str,
+    clever_dialect: Dict[str, Any],
+    context_lines: int,
+    trace: Any,
+) -> Dict[str, Any]:
+    sample_lines = _read_sample_lines(csv_input, context_lines)
+    sample = "\n".join(sample_lines)
+
+    parts = [
+        "You are a CSV dialect detector. Analyze this CSV file and",
+        "output ONLY a valid JSON object (no markdown, no explanation) with these keys:",
+        "",
+        '"delimiter": the exact field separator string (e.g. "," or "\\t" or ", " or " " or ";")',
+        '"quotechar": the quoting character (e.g. "\\"" or "\'")',
+        '"escapechar": the escape character used inside quotes (e.g. "\\"" or "\\\\" or "" for none/null)',
+        '"header_lines": integer - how many rows form the header (0=no header, 1=normal, 2+=multi-row where column names are joined with space)',
+        '"preamble_lines": integer - lines to skip before header (usually 0)',
+        '"n_columns": integer - number of columns',
+        '"column_names": array of strings - the column names (if multi-row header, join values with space)',
+        "",
+    ]
+    if clever_dialect:
+        parts += [
+            "CleverCSV guess:",
+            json.dumps(clever_dialect, ensure_ascii=False),
+            "",
+        ]
+    parts += [
+        "CSV file:",
+        sample,
+    ]
+    prompt = "\n".join(parts)
+
+    # Estimate: fixed JSON skeleton (~120 chars) + column names from sample header line
+    header_line = sample_lines[0] if sample_lines else ""
+    estimated_output = 120 + len(header_line)
+    answer = call_llm(prompt, trace, "llm_dialect_inference", estimated_output_chars=estimated_output)
+    try:
+        parsed = _extract_json_object(answer)
+        if isinstance(parsed, dict):
+            trace.write("llm_dialect_parsed", parsed=parsed)
+            return parsed
+    except Exception as exc:
+        trace.write("llm_dialect_parse_error", error=str(exc), response=answer)
+    return {}
+
+
+def parse_record(line: str, dialect: CSVDialect) -> List[str]:
+    delimiter = dialect.delimiter
+    quote = dialect.quotechar
+    escape = dialect.escapechar
+    fields: List[str] = []
+    current: List[str] = []
+    i = 0
+    in_quotes = False
+
+    while i < len(line):
+        if in_quotes:
+            if quote and escape == quote and line.startswith(quote + quote, i):
+                current.append(quote)
+                i += 2
+                continue
+            if quote and escape and escape != quote and line.startswith(escape + quote, i):
+                current.append(quote)
+                i += len(escape) + len(quote)
+                continue
+            if quote and line.startswith(quote, i):
+                in_quotes = False
+                i += len(quote)
+                continue
+            current.append(line[i])
+            i += 1
+            continue
+
+        if delimiter and line.startswith(delimiter, i):
+            fields.append("".join(current))
+            current = []
+            i += len(delimiter)
+            continue
+        if quote and line.startswith(quote, i) and not current:
+            in_quotes = True
+            i += len(quote)
+            continue
+        current.append(line[i])
+        i += 1
+
+    fields.append("".join(current))
+    return fields
+
+
+def _score_dialect(lines: List[str], dialect: CSVDialect) -> Tuple[int, int, int, int]:
+    useful = [line for line in lines[dialect.preamble_rows:] if line != ""]
+    if not useful:
+        return (0, 0, 0, 0)
+    data_lines = useful[dialect.header_rows:] if dialect.header_rows else useful
+    if not data_lines:
+        data_lines = useful
+    counts = [len(parse_record(line, dialect)) for line in data_lines]
+    if not counts:
+        return (0, 0, 0, 0)
+    count_counter = Counter(counts)
+    mode_count, mode_freq = count_counter.most_common(1)[0]
+    inconsistent = len(counts) - mode_freq
+    delimiter_bonus = len(dialect.delimiter)
+    return (mode_freq, -inconsistent, mode_count, delimiter_bonus)
+
+
+def reconcile_dialects(
+    clever_mapping: Dict[str, Any],
+    llm_mapping: Dict[str, Any],
+    scoring_lines: List[str],
+    trace: Any,
+) -> CSVDialect:
+    default = CSVDialect()
+    clever = _dialect_from_mapping(clever_mapping, default)
+    llm = _dialect_from_mapping(llm_mapping, clever) if llm_mapping else clever
+
+    candidates: "OrderedDict[str, CSVDialect]" = OrderedDict()
+    candidates["clevercsv"] = clever
+    if llm_mapping:
+        candidates["llm"] = llm
+        candidates["llm_delimiter_with_clever_quote"] = CSVDialect(
+            delimiter=llm.delimiter,
+            quotechar=clever.quotechar,
+            escapechar=clever.escapechar,
+            newline=llm.newline or clever.newline,
+            header_rows=llm.header_rows,
+            preamble_rows=llm.preamble_rows,
+        )
+        candidates["clever_delimiter_with_llm_quote"] = CSVDialect(
+            delimiter=clever.delimiter,
+            quotechar=llm.quotechar,
+            escapechar=llm.escapechar,
+            newline=llm.newline or clever.newline,
+            header_rows=llm.header_rows,
+            preamble_rows=llm.preamble_rows,
+        )
+
+    scored = []
+    for name, dialect in candidates.items():
+        scored.append((name, dialect, _score_dialect(scoring_lines, dialect)))
+
+    if llm_mapping and len(llm.delimiter) > 1:
+        best_name = "llm"
+        best_dialect = llm
+        best_score = _score_dialect(scoring_lines, llm)
+        forced_reason = "llm_multi_character_delimiter"
+    else:
+        best_name, best_dialect, best_score = max(
+            scored,
+            key=lambda item: (
+                item[2],
+                1 if item[0] == "llm" else 0,
+            ),
+        )
+        forced_reason = None
+
+    llm_layout_applied = False
+    if llm_mapping:
+        best_dialect = CSVDialect(
+            delimiter=best_dialect.delimiter,
+            quotechar=best_dialect.quotechar,
+            escapechar=best_dialect.escapechar,
+            newline=llm.newline or best_dialect.newline,
+            header_rows=llm.header_rows,
+            preamble_rows=llm.preamble_rows,
+        )
+        llm_layout_applied = True
+
+    trace.write(
+        "dialect_reconciliation",
+        candidates=[
+            {"name": name, "dialect": dialect.as_trace_dict(), "score": score}
+            for name, dialect, score in scored
+        ],
+        selected=best_name,
+        selected_score=best_score,
+        forced_reason=forced_reason,
+        llm_header_preamble_applied=llm_layout_applied,
+    )
+    trace.write(
+        "dialect",
+        sniffed=clever.as_trace_dict(),
+        llm=_dialect_from_mapping(llm_mapping, clever).as_trace_dict() if llm_mapping else None,
+        final=best_dialect.as_trace_dict(),
+    )
+    return best_dialect
+
+
+def combine_header_rows(lines: List[str], dialect: CSVDialect) -> List[str]:
+    parsed_rows = [parse_record(line, dialect) for line in lines]
+    if not parsed_rows:
+        return []
+    width = max(len(row) for row in parsed_rows)
+    header: List[str] = []
+    for col_idx in range(width):
+        pieces = []
+        for row in parsed_rows:
+            if col_idx < len(row):
+                pieces.append(row[col_idx])
+        header.append(" ".join(pieces))
+    return header
+
+
+def infer_expected_columns(lines: List[str], dialect: CSVDialect) -> int:
+    useful = [line for line in lines[dialect.preamble_rows:] if line != ""]
+    data_lines = useful[dialect.header_rows:] if dialect.header_rows else useful
+    if not data_lines:
+        data_lines = useful
+    counts = [len(parse_record(line, dialect)) for line in data_lines]
+    if not counts:
+        return 0
+    return Counter(counts).most_common(1)[0][0]

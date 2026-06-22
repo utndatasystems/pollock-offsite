@@ -51,7 +51,7 @@ parser.add_argument(
 parser.add_argument(
     "--model",
     default=None,
-    help="LLM model to use (overrides LLM_MODEL env var); also sets sut name to custom_<model>",
+    help="OpenAI-compatible model to use (overrides OPENAI_MODEL env var); also sets sut name to custom_<model>",
 )
 parser.add_argument(
     "--count-tokens",
@@ -67,14 +67,12 @@ if args.cheat and args.no_llm_repair:
 LLM_REPAIR = not args.cheat and not args.no_llm_repair
 LLM_SNIFF = not args.no_llm_sniff
 if (LLM_REPAIR or LLM_SNIFF) and not args.count_tokens and not (
-    os.environ.get("HEIMGARTEN_OPENAI_KEY")
-    or os.environ.get("LIGHTLLM_API_KEY")
-    or os.environ.get("OPENAI_API_KEY")
+    os.environ.get("OPENAI_API_KEY")
 ):
-    parser.error("LLM calls are enabled by default and require HEIMGARTEN_OPENAI_KEY, LIGHTLLM_API_KEY, or OPENAI_API_KEY. Use --no-llm-sniff --no-llm-repair, --cheat, or --count-tokens to avoid LLM calls.")
+    parser.error("LLM calls are enabled by default and require OPENAI_API_KEY. Use --no-llm-sniff --no-llm-repair, --cheat, or --count-tokens to avoid LLM calls.")
 
 if args.model:
-    os.environ["LLM_MODEL"] = args.model
+    os.environ["OPENAI_MODEL"] = args.model
 
 from utils import print, save_time_df
 from solution import parse_csv_with_validation, configure_llm_cache, configure_llm_dry_run, get_llm_cache_stats
