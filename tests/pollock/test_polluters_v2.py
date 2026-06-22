@@ -1,99 +1,23 @@
 """
-Pytest tests for the Pollock 2.0 polluter functions.
+Pollock 2.0 polluter tests.
 
-Usage:
-    # From the project root:
-    pytest pollock/test_new_polluters.py
+Run with:
+    pytest
 
-    # Or override the module path explicitly:
-    POLLUTERS_MODULE=pollock.polluters_stdlib_v2 pytest pollock/test_new_polluters.py
-
-These tests use a minimal CSVFile-like object with an lxml XML tree. The existing
-polluters_base helpers operate on duck-typed attributes, so a full CSVFile parser
-fixture is not required for structural tests.
+Or override the module under test:
+    POLLUTERS_MODULE=pollock.polluters_stdlib_v2 pytest
 """
 
 from __future__ import annotations
 
-import importlib
 import json
-import os
-import sys
-from dataclasses import dataclass
-from pathlib import Path
 
 import pytest
 from lxml import etree
-from lxml.builder import E
 
-# Make `import pollock.polluters_stdlib_v2` work whether pytest is started from
-# the project root or from inside the `pollock/` package directory.
-PROJECT_ROOT = Path(__file__).resolve().parents[1]
-if str(PROJECT_ROOT) not in sys.path:
-    sys.path.insert(0, str(PROJECT_ROOT))
+from tests._helpers import FakeCSVFile, assert_filename_synced, load_polluters_module, row, values
 
-POLLUTERS_MODULE = os.environ.get("POLLUTERS_MODULE", "pollock.polluters_stdlib_v2")
-p = importlib.import_module(POLLUTERS_MODULE)
-
-#TODO: add tests for pollock 1.0 pollutions functions as well
-
-#TODO: add tests for metrics/eval functions as well
-
-
-@dataclass
-class FakeCSVFile:
-    xml: etree._ElementTree
-    filename: str = "base.csv"
-    encoding: str = "utf-8"
-    field_delimiter: str = ","
-    record_delimiter: str = "\r\n"
-    quotation_char: str = '"'
-    escape_char: str = "\\"
-
-    @property
-    def row_count(self) -> int:
-        return len(self.xml.xpath("//table[1]/row"))
-
-    @property
-    def col_count(self) -> int:
-        first = self.xml.xpath("//table[1]/row[1]")
-        return len(first[0].xpath("./cell")) if first else 0
-
-
-def _cell(value: str, role: str = "data"):
-    cell = etree.Element("cell", role=role)
-    cell.append(E.value(value))
-    return cell
-
-
-def _row(values: list[str], role: str, field_delimiter=",", record_delimiter="\r\n"):
-    row = etree.Element("row", role=role)
-    for i, value in enumerate(values):
-        row.append(_cell(value, role=role))
-        if i < len(values) - 1:
-            row.append(E.field_delimiter(field_delimiter))
-    row.append(E.record_delimiter(record_delimiter))
-    return row
-
-
-@pytest.fixture
-def csv_file() -> FakeCSVFile:
-    root = etree.Element("csv", filename="base.csv", encoding="utf-8")
-    table = etree.SubElement(root, "table")
-    table.append(_row(["name", "city", "amount"], role="header"))
-    table.append(_row(["Alice", "Berlin", "10"], role="data"))
-    table.append(_row(["Bob", "Munich", "20"], role="data"))
-    return FakeCSVFile(xml=etree.ElementTree(root))
-
-
-def values(file: FakeCSVFile, xpath: str) -> list[str]:
-    return [x.text or "" for x in file.xml.xpath(xpath)]
-
-
-def assert_filename_synced(file: FakeCSVFile, expected_prefix: str | None = None):
-    assert file.filename == file.xml.getroot().attrib["filename"]
-    if expected_prefix is not None:
-        assert file.filename.startswith(expected_prefix)
+p = load_polluters_module()
 
 
 def test_multiline_header(csv_file):
@@ -162,7 +86,7 @@ def test_double_escaping(csv_file):
     p.doubleEscaping(csv_file, row1=2, row2=3, col=1)
 
     assert values(csv_file, "//table[1]/row[2]/cell[1]/value") == ['""hi""']
-    assert values(csv_file, "//table[1]/row[3]/cell[1]/value") == ['\\\"hi\\\"']
+    assert values(csv_file, "//table[1]/row[3]/cell[1]/value") == ['\\"hi\\"']
     assert_filename_synced(csv_file, "file_double_escaping")
 
 
@@ -220,16 +144,16 @@ def test_invisible_characters(csv_file, monkeypatch):
     p.invisibleCharacters(csv_file, row=1, col=1)
     after = values(csv_file, "//table[1]/row[2]/cell[2]/value")[0]
     assert after != before
-    assert after.startswith("​")
+    assert after.startswith("\u200b")
     assert_filename_synced(csv_file, "file_invisible_characters")
 
 
 def test_mixed_timeformats():
     root = etree.Element("csv", filename="base.csv", encoding="utf-8")
     table = etree.SubElement(root, "table")
-    table.append(_row(["date", "amount", "note"], role="header"))
-    table.append(_row(["2024-05-27", "100", "meeting"], role="data"))
-    table.append(_row(["2024-05-28", "200", "followup"], role="data"))
+    table.append(row(["date", "amount", "note"], role="header"))
+    table.append(row(["2024-05-27", "100", "meeting"], role="data"))
+    table.append(row(["2024-05-28", "200", "followup"], role="data"))
     file = FakeCSVFile(xml=etree.ElementTree(root))
 
     before = values(file, "//table[1]/row/cell/value")
@@ -296,7 +220,6 @@ def test_add_table_sideways(csv_file):
 
 
 def test_encoding_alias(csv_file):
-    # This checks the wrapper works with a plain supported encoding string.
     p.encoding(csv_file, "utf-8")
 
     assert csv_file.encoding == "utf-8"
