@@ -416,7 +416,8 @@ def doubleEscaping(file: CSVFile, row1=2, row2=3, col=1):  # checked manually
 def variableColumnCount(file: CSVFile, row: int | None = None):
     """Creates rows with fewer and more fields than the header."""
     if row is None:
-        row = random.randint(1, _safe_row_count(file))
+        # Pick a data row that both the add and delete paths can address.
+        row = random.randint(1, max(1, _safe_row_count(file) - 1))
     col = random.randrange(_safe_col_count(file))
 
     if random.randint(0, 1) == 1:
