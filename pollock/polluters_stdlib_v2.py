@@ -762,7 +762,9 @@ def mixedTimeformats(file: CSVFile, max_num_to_change=100):
 
     for entry in matching_cells[:max_num_to_change]:
         row_idx, col_idx, _ = entry
-        pb.changeCell(file, row=row_idx, col=col_idx, new_content=randomDateStr())
+        # Change cells with random date strings in various formats
+        # pd.ChangeCell uses 1-based indexing for rows and columns, so we need to add 1 to both indices
+        pb.changeCell(file, row=row_idx + 1, col=col_idx + 1, new_content=randomDateStr())
 
     _set_polluted_filename(file, f"file_mixed_time_formats.csv")
 
