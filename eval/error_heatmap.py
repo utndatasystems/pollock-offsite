@@ -94,4 +94,4 @@ cbar = fig.colorbar(im, ax=ax)
 cbar.set_label("Full Correctness (%)")
 
 plt.tight_layout()
-plt.savefig("eval/error_heatmap.png", dpi=300)
+plt.savefig("eval/CIDR_plots/error_heatmap.png", dpi=300)
