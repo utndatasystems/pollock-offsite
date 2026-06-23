@@ -217,3 +217,22 @@ Since not every pollution is equally likely to be found "in the wild", the Pollo
 2. DuckDB-Auto had a bug where it correctly read datetime but wrote it in a different format than expected by the benchmark, which is why its score in the original repo is lower.
 3. Most non-python SuTs require Docker. Their original and mostly broken dependencies were updated and they should run now. However, the score might have moved slightly due to changes in how csvs are parsed between the old and new versions of the suts as some legacy docker containers were not distributed anymore.
 
+
+# README Alex:
+Remove:
+rm results/duckdbauto/polluted_files/loading/*_converted.csv
+
+My benchmark:
+python3 sut/custom/custom-bench.py
+
+Evaluate my benchmark:
+python3 evaluate.py --sut custom
+
+Replot:
+python3 scripts/results_tables.py
+
+See errors:
+python3 eval/find_errors.py custom
+
+Small bench:
+DATASET=small_sample python3 evaluate.py --sut custom --dataset small_sample

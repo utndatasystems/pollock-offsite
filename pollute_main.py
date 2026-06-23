@@ -1,7 +1,8 @@
 import argparse
 import os
 import pollock
-import pollock.polluters_stdlib as pl
+import pollock.polluters_stdlib_v1 as pl
+import pollock.polluters_stdlib_v2 as pl2
 import random
 
 from copy import deepcopy
@@ -206,43 +207,43 @@ if args.polluters == "pollock2.0":
 
     # Multi-table / layout structure
     execute_polluter(
-        f, pl.addTableSideways, n_rows=min(f.row_count, 5), n_cols=min(f.col_count, 5)
+        f, pl2.addTableSideways, n_rows=min(f.row_count, 5), n_cols=min(f.col_count, 5)
     )
     execute_polluter(
-        f, pl.multilineHeader, header_col=4, header_rows=3, content="ExampleLineHeader"
+        f, pl2.multilineHeader, header_col=4, header_rows=3, content="ExampleLineHeader"
     )
-    execute_polluter(f, pl.duplicateHeaderAsDataRow)
-    execute_polluter(f, pl.metadataAsHeader)
-    execute_polluter(f, pl.superheader)
+    execute_polluter(f, pl2.duplicateHeaderAsDataRow)
+    execute_polluter(f, pl2.metadataAsHeader)
+    execute_polluter(f, pl2.superheader)
 
     # Row / column irregularities
-    execute_polluter(f, pl.moveHeaderRow)
+    execute_polluter(f, pl2.moveHeaderRow)
     execute_polluter(
-        f, pl.extremelyLongFields, row=2 if f.row_count >= 2 else 1, col=1, length=10000
+        f, pl2.extremelyLongFields, row=2 if f.row_count >= 2 else 1, col=1, length=10000
     )  # For the final evaluation, we have to make sure th insert something extremely long of the same data type as the original cell
-    execute_polluter(f, pl.addGroupSectionHeader, group_name="Region: North")
-    execute_polluter(f, pl.addTrailingCommentToFile, comment="This is a comment.")
+    execute_polluter(f, pl2.addGroupSectionHeader, group_name="Region: North")
+    execute_polluter(f, pl2.addTrailingCommentToFile, comment="This is a comment.")
     execute_polluter(
-        f, pl.addTrailingCommentToFile, comment="Your advertisements here."
+        f, pl2.addTrailingCommentToFile, comment="Your advertisements here."
     )
-    execute_polluter(f, pl.commentRow)
-    execute_polluter(f, pl.commentRow, row=0)
-    execute_polluter(f, pl.commentRow, comment_marker="//")
-    execute_polluter(f, pl.commentRow, comment_marker="<!--")
+    execute_polluter(f, pl2.commentRow)
+    execute_polluter(f, pl2.commentRow, row=0)
+    execute_polluter(f, pl2.commentRow, comment_marker="//")
+    execute_polluter(f, pl2.commentRow, comment_marker="<!--")
     for i in range(10):
-        execute_polluter(f, pl.variableColumnCount)
+        execute_polluter(f, pl2.variableColumnCount)
 
     # Delimiter / quoting / escaping edge cases
     execute_polluter(
         f,
-        pl.mixedDelimiters,
+        pl2.mixedDelimiters,
         row=2 if f.row_count >= 2 else 1,
         delimiters=[";"],
         mode="within_row",
     )
     execute_polluter(
         f,
-        pl.mixedDelimiters,
+        pl2.mixedDelimiters,
         row=2 if f.row_count >= 2 else 1,
         delimiters=[";"],
         mode="within_row",
@@ -250,35 +251,35 @@ if args.polluters == "pollock2.0":
     )
     execute_polluter(
         f,
-        pl.mixedDelimiters,
+        pl2.mixedDelimiters,
         row=2 if f.row_count >= 2 else 1,
         delimiters=[";"],
         mode="whole_row",
     )
-    execute_polluter(f, pl.unescaped, row=2 if f.row_count >= 2 else 1, col=1)
-    execute_polluter(f, pl.doubleEscaping, row1=2, row2=3, col=1)
-    execute_polluter(f, pl.unquotedLists)
+    execute_polluter(f, pl2.unescaped, row=2 if f.row_count >= 2 else 1, col=1)
+    execute_polluter(f, pl2.doubleEscaping, row1=2, row2=3, col=1)
+    execute_polluter(f, pl2.unquotedLists)
 
     # Spreadsheet / Excel-style edge cases
-    execute_polluter(f, pl.excelExportAutoformat)
-    execute_polluter(f, pl.exelExportFormulas)
+    execute_polluter(f, pl2.excelExportAutoformat)
+    execute_polluter(f, pl2.exelExportFormulas)
 
     # Type ambiguity / mixed values
-    execute_polluter(f, pl.typeAmbiguity)
-    execute_polluter(f, pl.mixedTypes)
-    execute_polluter(f, pl.mixedTimeformats)
+    execute_polluter(f, pl2.typeAmbiguity)
+    execute_polluter(f, pl2.mixedTypes)
+    execute_polluter(f, pl2.mixedTimeformats)
 
     # Encoding / Unicode edge cases
-    execute_polluter(f, pl.encoding, target_encoding="utf-8")
-    execute_polluter(f, pl.encoding, target_encoding="windows-1252")
-    execute_polluter(f, pl.bomMarker)
-    execute_polluter(f, pl.weirdUnicode)
-    execute_polluter(f, pl.invisibleCharacters)
-    execute_polluter(f, pl.collations)
+    execute_polluter(f, pl2.encoding, target_encoding="utf-8")
+    execute_polluter(f, pl2.encoding, target_encoding="windows-1252")
+    execute_polluter(f, pl2.bomMarker)
+    execute_polluter(f, pl2.weirdUnicode)
+    execute_polluter(f, pl2.invisibleCharacters)
+    execute_polluter(f, pl2.collations)
 
     # Embedded semi-structured payloads
-    execute_polluter(f, pl.embeddedJSON)
-    execute_polluter(f, pl.embeddedCSV)
+    execute_polluter(f, pl2.embeddedJSON)
+    execute_polluter(f, pl2.embeddedCSV)
 
 
 print("Pollution process complete.")

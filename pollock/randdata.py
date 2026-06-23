@@ -1,5 +1,6 @@
 import json
 import random
+import string
 import sys
 
 from datetime import datetime
@@ -156,20 +157,8 @@ def randomString(
     max_length: int = 30,
 ) -> str:
     target_length = random.randint(min_length, max_length)
-
-    generators = [
-        faker.word,
-        faker.name,
-        faker.email,
-        faker.user_name,
-        faker.company,
-        faker.city,
-        faker.uuid4,
-    ]
-
-    value = faker.random_element(generators)()
-
-    return value[:target_length]
+    alphabet = string.ascii_letters + string.digits
+    return "".join(random.choices(alphabet, k=target_length))
 
 
 def randomBoolStr() -> str:
