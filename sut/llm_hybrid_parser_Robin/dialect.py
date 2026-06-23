@@ -120,6 +120,39 @@ def sniff_with_clevercsv(csv_input: str) -> Dict[str, Any]:
     }
 
 
+def sniff_with_duckdb(csv_input: str) -> Dict[str, Any]:
+    """Sniff a dialect with DuckDB's sniff_csv(), returning the same mapping
+    shape as sniff_with_clevercsv (delimiter/quotechar/escapechar)."""
+    import duckdb
+
+    def _clean(value: Any) -> Optional[str]:
+        if value is None:
+            return None
+        value = str(value)
+        # DuckDB reports the literal "(empty)" when no quote/escape was detected.
+        if value == "" or value == "(empty)":
+            return None
+        return value
+
+    conn = duckdb.connect(database=":memory:")
+    try:
+        row = conn.execute(
+            "SELECT Delimiter, Quote, Escape FROM sniff_csv(?, ignore_errors=true)", [csv_input]
+        ).fetchone()
+    except Exception:
+        return {}
+    finally:
+        conn.close()
+    if row is None:
+        return {}
+    delimiter, quotechar, escapechar = (_clean(v) for v in row)
+    return {
+        "delimiter": delimiter,
+        "quotechar": quotechar,
+        "escapechar": escapechar or quotechar,
+    }
+
+
 def _dialect_from_mapping(mapping: Dict[str, Any], base: Optional[CSVDialect] = None) -> CSVDialect:
     base = base or CSVDialect()
     delimiter = _valid_delimiter(mapping.get("delimiter", mapping.get("delim")))
@@ -151,9 +184,10 @@ def _dialect_from_mapping(mapping: Dict[str, Any], base: Optional[CSVDialect] = 
 
 def infer_dialect_with_llm(
     csv_input: str,
-    clever_dialect: Dict[str, Any],
+    sniff_dialect: Dict[str, Any],
     context_lines: int,
     trace: Any,
+    sniffer_label: str = "CleverCSV",
 ) -> Dict[str, Any]:
     sample_lines = _read_sample_lines(csv_input, context_lines)
     sample = "\n".join(sample_lines)
@@ -171,10 +205,10 @@ def infer_dialect_with_llm(
         '"column_names": array of strings - the column names (if multi-row header, join values with space)',
         "",
     ]
-    if clever_dialect:
+    if sniff_dialect:
         parts += [
-            "CleverCSV guess:",
-            json.dumps(clever_dialect, ensure_ascii=False),
+            f"{sniffer_label} guess:",
+            json.dumps(sniff_dialect, ensure_ascii=False),
             "",
         ]
     parts += [
@@ -258,30 +292,33 @@ def _score_dialect(lines: List[str], dialect: CSVDialect) -> Tuple[int, int, int
 
 
 def dialect_from_mappings(
-    clever_mapping: Dict[str, Any],
+    sniff_mapping: Dict[str, Any],
     llm_mapping: Dict[str, Any],
     scoring_lines: List[str],
     trace: Any,
+    sniffer_name: str = "clevercsv",
 ) -> CSVDialect:
     """Build the final CSV dialect from the available dialect sources.
 
-    Normalizes each raw mapping into a validated CSVDialect, then only runs the
-    scoring-based reconciliation when *both* a CleverCSV sniff and an LLM guess
-    exist. With a single source there is nothing to choose between, so the lone
-    dialect (which already carries its own layout) is returned directly.
+    `sniff_mapping` is a non-LLM sniffer's guess (CleverCSV or DuckDB), labelled
+    by `sniffer_name`. Normalizes each raw mapping into a validated CSVDialect,
+    then only runs the scoring-based reconciliation when *both* a sniff and an
+    LLM guess exist. With a single source there is nothing to choose between, so
+    the lone dialect (which already carries its own layout) is returned directly.
     """
     default = CSVDialect()
-    clever = _dialect_from_mapping(clever_mapping, default)
-    llm = _dialect_from_mapping(llm_mapping, clever) if llm_mapping else clever
+    sniff = _dialect_from_mapping(sniff_mapping, default)
+    llm = _dialect_from_mapping(llm_mapping, sniff) if llm_mapping else sniff
 
-    if clever_mapping and llm_mapping:
-        final = reconcile_dialects(clever, llm, scoring_lines, trace)
+    if sniff_mapping and llm_mapping:
+        final = reconcile_dialects(sniff, llm, scoring_lines, trace, sniffer_name)
     else:
-        final = llm if llm_mapping else clever
+        final = llm if llm_mapping else sniff
 
     trace.write(
         "dialect",
-        sniffed=clever.as_trace_dict() if clever_mapping else None,
+        sniffed=sniff.as_trace_dict() if sniff_mapping else None,
+        sniffer=sniffer_name if sniff_mapping else None,
         llm=llm.as_trace_dict() if llm_mapping else None,
         final=final.as_trace_dict(),
     )
@@ -289,33 +326,34 @@ def dialect_from_mappings(
 
 
 def reconcile_dialects(
-    clever: CSVDialect,
+    sniff: CSVDialect,
     llm: CSVDialect,
     scoring_lines: List[str],
     trace: Any,
+    sniffer_name: str = "clevercsv",
 ) -> CSVDialect:
-    """Pick the best delimiter/quote between a CleverCSV sniff and an LLM guess.
+    """Pick the best delimiter/quote between a non-LLM sniff and an LLM guess.
 
     Only called when both sources are present. Scores the two dialects plus two
     cross-combinations against the sample lines; the LLM always owns the
     header/preamble/newline layout of whichever delimiter+quote wins.
     """
     candidates: "OrderedDict[str, CSVDialect]" = OrderedDict()
-    candidates["clevercsv"] = clever
+    candidates[sniffer_name] = sniff
     candidates["llm"] = llm
-    candidates["llm_delimiter_with_clever_quote"] = CSVDialect(
+    candidates[f"llm_delimiter_with_{sniffer_name}_quote"] = CSVDialect(
         delimiter=llm.delimiter,
-        quotechar=clever.quotechar,
-        escapechar=clever.escapechar,
-        newline=llm.newline or clever.newline,
+        quotechar=sniff.quotechar,
+        escapechar=sniff.escapechar,
+        newline=llm.newline or sniff.newline,
         header_rows=llm.header_rows,
         preamble_rows=llm.preamble_rows,
     )
-    candidates["clever_delimiter_with_llm_quote"] = CSVDialect(
-        delimiter=clever.delimiter,
+    candidates[f"{sniffer_name}_delimiter_with_llm_quote"] = CSVDialect(
+        delimiter=sniff.delimiter,
         quotechar=llm.quotechar,
         escapechar=llm.escapechar,
-        newline=llm.newline or clever.newline,
+        newline=llm.newline or sniff.newline,
         header_rows=llm.header_rows,
         preamble_rows=llm.preamble_rows,
     )

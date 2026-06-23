@@ -45,6 +45,13 @@ parser.add_argument(
          "Tags results under the sut name suffix '_clevercsv'.",
 )
 parser.add_argument(
+    "--duckdb-sniff",
+    action="store_true",
+    help="Also run DuckDB's sniff_csv and reconcile it with the LLM dialect, the same way "
+         "--clevercsv does (default: off). Mutually exclusive with --clevercsv. "
+         "Tags results under the sut name suffix '_duckdb'.",
+)
+parser.add_argument(
     "--no-llm-cache",
     action="store_true",
     help="Disable persistent LLM response cache (caching is on by default)",
@@ -66,14 +73,18 @@ if args.cheat and args.no_llm_repair:
 LLM_REPAIR = not args.cheat and not args.no_llm_repair
 LLM_DIALECT = not args.no_llm_dialect
 USE_CLEVERCSV = args.clevercsv
-if not LLM_DIALECT and not USE_CLEVERCSV:
-    parser.error("--no-llm-dialect removes the LLM dialect source; pass --clevercsv so a "
-                 "dialect source remains")
+USE_DUCKDB_SNIFF = args.duckdb_sniff
+if USE_CLEVERCSV and USE_DUCKDB_SNIFF:
+    parser.error("--clevercsv and --duckdb-sniff are mutually exclusive; pick one non-LLM sniffer")
+if not LLM_DIALECT and not (USE_CLEVERCSV or USE_DUCKDB_SNIFF):
+    parser.error("--no-llm-dialect removes the LLM dialect source; pass --clevercsv or "
+                 "--duckdb-sniff so a dialect source remains")
 if (LLM_REPAIR or LLM_DIALECT) and not args.count_tokens and not (
     os.environ.get("OPENAI_API_KEY")
 ):
     parser.error("LLM calls are enabled by default and require OPENAI_API_KEY. Use --no-llm-dialect "
-                 "--no-llm-repair (with --clevercsv), --cheat, or --count-tokens to avoid LLM calls.")
+                 "--no-llm-repair (with --clevercsv or --duckdb-sniff), --cheat, or --count-tokens "
+                 "to avoid LLM calls.")
 
 if args.model:
     os.environ["OPENAI_MODEL"] = args.model
@@ -88,6 +99,8 @@ else:
     sut = 'llm_hybrid_parser'
 if USE_CLEVERCSV:
     sut += '_clevercsv' if LLM_DIALECT else '_clevercsv_only'
+elif USE_DUCKDB_SNIFF:
+    sut += '_duckdb' if LLM_DIALECT else '_duckdb_only'
 DATASET = os.environ.get('DATASET', 'polluted_files')
 IN_DIR = join(REPO_ROOT, 'data', DATASET, 'csv')
 CLEAN_DIR = join(REPO_ROOT, 'data', DATASET, 'clean')
@@ -166,6 +179,7 @@ for idx, file in enumerate(benchmark_files):
                 llm_repair=LLM_REPAIR,
                 llm_dialect=LLM_DIALECT,
                 use_clevercsv=USE_CLEVERCSV,
+                use_duckdb_sniff=USE_DUCKDB_SNIFF,
                 sidecar_path=llm_sidecar,
                 llm_context_lines=LLM_CONTEXT_LINES,
                 reset_sidecar=(time_rep == 0),

@@ -13,6 +13,7 @@ from dialect import (
     infer_dialect_with_llm,
     infer_expected_columns,
     sniff_with_clevercsv,
+    sniff_with_duckdb,
 )
 from llm import configure_llm_cache, configure_llm_dry_run, get_llm_cache_stats
 from loader import (
@@ -63,13 +64,15 @@ def parse_csv_with_validation(
     llm_repair: bool = True,
     llm_dialect: bool = True,
     use_clevercsv: bool = False,
+    use_duckdb_sniff: bool = False,
     sidecar_path: str = None,
     llm_context_lines: int = 10,
     reset_sidecar: bool = True,
 ) -> Tuple[pd.DataFrame, List[Dict[str, Any]]]:
     """
-    Load a polluted CSV using CleverCSV + optional LLM dialect inference, DuckDB
-    reject tables, and optional LLM repairs for rejected lines.
+    Load a polluted CSV using an optional non-LLM sniffer (CleverCSV or DuckDB) +
+    optional LLM dialect inference, DuckDB reject tables, and optional LLM repairs
+    for rejected lines.
 
     Returns:
         (DataFrame ready for benchmark output, original DuckDB reject summaries)
@@ -83,23 +86,34 @@ def parse_csv_with_validation(
         llm_repair=llm_repair and not cheat,
         llm_dialect=llm_dialect,
         use_clevercsv=use_clevercsv,
+        use_duckdb_sniff=use_duckdb_sniff,
         llm_context_lines=llm_context_lines,
     )
 
-    clever_mapping: Dict[str, Any] = {}
+    # Non-LLM dialect sniffer: CleverCSV or DuckDB (mutually exclusive, both optional).
+    sniff_mapping: Dict[str, Any] = {}
+    sniffer_name = "clevercsv"
+    sniffer_label = "CleverCSV"
     if use_clevercsv:
-        clever_mapping = sniff_with_clevercsv(csv_input)
-        trace.write("clevercsv_dialect", dialect=clever_mapping)
+        sniff_mapping = sniff_with_clevercsv(csv_input)
+        trace.write("clevercsv_dialect", dialect=sniff_mapping)
+    elif use_duckdb_sniff:
+        sniffer_name = "duckdb"
+        sniffer_label = "DuckDB"
+        sniff_mapping = sniff_with_duckdb(csv_input)
+        trace.write("duckdb_dialect", dialect=sniff_mapping)
 
     llm_mapping: Dict[str, Any] = {}
     if llm_dialect:
         try:
-            llm_mapping = infer_dialect_with_llm(csv_input, clever_mapping, llm_context_lines, trace)
+            llm_mapping = infer_dialect_with_llm(
+                csv_input, sniff_mapping, llm_context_lines, trace, sniffer_label
+            )
         except Exception as exc:
             trace.write("llm_dialect_error", error=str(exc))
 
     scoring_lines = _read_sample_lines(csv_input, SCORING_LINE_LIMIT)
-    dialect = dialect_from_mappings(clever_mapping, llm_mapping, scoring_lines, trace)
+    dialect = dialect_from_mappings(sniff_mapping, llm_mapping, scoring_lines, trace, sniffer_name)
 
     raw_header_lines = _header_lines(csv_input, dialect)
     header = combine_header_rows(raw_header_lines, dialect)

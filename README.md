@@ -163,12 +163,12 @@ The rows with N/A are SuTs where the license agreement prohibits public benchmar
 
 ## 1. Pollution - more details
 
-The file ```results/source.csv``` with 83 data rows + a header is the ONLY file that is polluted. 
-Every polluted file is derived from ```results/source.csv```.
-The file properties were chosen to include various datatypes and a length that matches the median of the survey done on government CSV-files in the Pollock Paper.
+The original benchmark pollutes ```results/source.csv```, which has 83 data rows + a header.
+For custom runs, pass any local CSV with ```--source``` and a dataset directory with ```--output```.
+The original file properties were chosen to include various datatypes and a length that matches the median of the survey done on government CSV-files in the Pollock Paper.
 
 The paper describes the pollution process further but basically it works like this:  
-**Take the base-dialect of the ```results/source.csv``` file and change things about this dialect. Think: separator, quote character, escape character, header/no header/multi-header.**
+**Take the base-dialect of the source CSV file and change things about this dialect. Think: separator, quote character, escape character, header/no header/multi-header.**
 Sometimes this is done on a per-line or even per-line + per-column level. The type of pollution is indicated in the filename of the csv file.
 **Additionally, it does things like adding additional stray quote characters into fields or leave out a separator**. These pollutions can change what the semantic content of a file is, which is why the benchmark has to save a clean version of each polluted file in ```data/polluted_files/clean/```.
 
