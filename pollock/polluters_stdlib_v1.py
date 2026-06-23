@@ -1,3 +1,9 @@
+"""CSV pollution helpers used to generate Pollock benchmark variants.
+
+Each function tweaks one part of a CSV file, such as delimiters, headers,
+row counts, or table structure.
+"""
+
 import random
 import unicodedata
 import string
@@ -25,7 +31,7 @@ from pollock.polluters_utils import (
 
 
 def dummyPolluter(file: CSVFile):
-    """dummy Polluter that does nothing"""
+    """Dummy Polluter - does nothing"""
     pass
 
 
@@ -33,7 +39,7 @@ def dummyPolluter(file: CSVFile):
 
 
 def changeDimension(file: CSVFile, target_dimension=-1):
-    """TODO: documentation here"""
+    """Resize the file to a target text length."""
     content = []
     for i in range(file.row_count):
         texts = [x.text or "" for x in file.xml.xpath(f"//row[{i + 1}]//*[not(*)]")]
@@ -64,7 +70,7 @@ def changeDimension(file: CSVFile, target_dimension=-1):
 
 
 def changeEncoding(file: CSVFile, target_encoding: constants.Encoding):
-    """TODO: documentation here"""
+    """Change the declared file encoding."""
     target = (
         target_encoding.value
         if type(target_encoding) == constants.Encoding
@@ -78,7 +84,7 @@ def changeEncoding(file: CSVFile, target_encoding: constants.Encoding):
 
 
 def changeNumberColumns(file: CSVFile, target_number_cols: int):
-    """TODO: documentation here"""
+    """Add or remove columns until the file has the requested width."""
     if target_number_cols < file.col_count:
         cols_delete = list(range(target_number_cols, file.col_count))
         pb.deleteColumns(file, col=cols_delete)
@@ -112,7 +118,7 @@ def changeNumberColumns(file: CSVFile, target_number_cols: int):
 
 
 def changeNumberRows(file: CSVFile, target_number_rows: int, remove_header=False):
-    """TODO: documentation here"""
+    """Add or remove rows until the file has the requested height."""
     last_row_cells = [x for x in file.xml.xpath("//row[last()]//cell")]
     last_row_content = [
         "".join(v.text or "") for c in last_row_cells for v in c if v.tag == "value"
@@ -140,7 +146,7 @@ def changeNumberRows(file: CSVFile, target_number_rows: int, remove_header=False
 
 
 def expandColumnHeader(file: CSVFile, extra_rows=1):
-    """TODO: documentation here"""
+    """Repeat the header across extra header rows."""
     header = [x for x in file.xml.xpath(f"//row[{1}]//value//node()[not(node())]")]
     pb.addRows(file, cell_content=header, n_rows=extra_rows, position=0, role="header")
 
@@ -150,7 +156,7 @@ def expandColumnHeader(file: CSVFile, extra_rows=1):
 def addPreamble(
     file: CSVFile, n_rows=1, delimiters=False, emptyrow=False, cell_content="PREAMBLE"
 ):
-    """
+    """Insert rows before the table as a preamble.
     :param file:
     :param n_rows: number of rows for the preamble
     :param delimiters: if True, creates a row with as many delimited cells as the other rows
@@ -206,13 +212,12 @@ def addPreamble(
 def addFootnote(
     file: CSVFile, n_rows=1, delimiters=False, emptyrow=False, cell_content="FOOTNOTE"
 ):
-    """
+    """Insert rows after the table as a footnote.
     :param file:
     :param n_rows: number of rows for the preamble
     :param delimiters: if True, creates a row with as many delimited cells as the other rows
     :param emptyrow:  if True, leaves an empty row between the preamble and the data
-    :param cell_content: the content of the preamble cell(s). Either list or single value
-    """
+    :param cell_content: the content of the preamble cell(s). Either list or single value"""
     if emptyrow:
         pb.addRows(
             file, n_rows=1, position=-1, col_count=file.col_count, role="footnote"
@@ -250,7 +255,7 @@ def addFootnote(
 
 
 def changeRecordDelimiter(file: CSVFile, target_delimiter="\r\n"):
-    """TODO: documentation here"""
+    """Change the record delimiter used between rows."""
     file.record_delimiter = target_delimiter
     root = file.xml.getroot()
     query = root.xpath(f"//record_delimiter")
@@ -264,7 +269,7 @@ def changeRecordDelimiter(file: CSVFile, target_delimiter="\r\n"):
 
 
 def changeFieldDelimiter(file: CSVFile, target_delimiter=";"):
-    """TODO: documentation here"""
+    """Change the field delimiter used between columns."""
     file.field_delimiter = target_delimiter
     root = file.xml.getroot()
     query = root.xpath(f"//field_delimiter")
@@ -278,7 +283,7 @@ def changeFieldDelimiter(file: CSVFile, target_delimiter=";"):
 
 
 def changeEscapeCharacter(file: CSVFile, target_escape="\\"):
-    """
+    """Change the escape character used for quoted content.
     Replaces the CSV escape character used to escape quotation marks and other
     special characters (everywhere in the file).
 
@@ -312,7 +317,7 @@ def changeEscapeCharacter(file: CSVFile, target_escape="\\"):
             | He said "hi"     |
             | Path: C:\temp    |
             +------------------+
-    """
+            """
     file.escape_char = target_escape
     root = file.xml.getroot()
 
@@ -381,6 +386,7 @@ def changeQuotationChar(file: CSVFile, target_char="\u0022"):
             Alice,Berlin,10
             Bob,Munich,20
     """
+
     file.quotation_char = target_char
     root = file.xml.getroot()
 
@@ -407,7 +413,7 @@ def changeQuotationChar(file: CSVFile, target_char="\u0022"):
         f"file_quotation_char{quote_string}.csv",
     )
 
-def addSynthethicRowID(file: CSVFile): # comment Luisa, what is the CSV standard for row ids? Is this even a pollution or a new, correct csv?
+def addSynthethicRowID(file: CSVFile):
     """
     Adds a synthetic row identifier column as the first column of the table.
 
@@ -443,7 +449,7 @@ def addSynthethicRowID(file: CSVFile): # comment Luisa, what is the CSV standard
 
 
 def changeRowNumberFields(file: CSVFile, row=1, target_n_cells=1):
-    """TODO: documentation here"""
+    """Change how many fields a single row contains."""
     if type(row) == int and row < 0:
         row = "last()-" + str(row + 1)
 
@@ -477,7 +483,7 @@ def changeRowNumberFields(file: CSVFile, row=1, target_n_cells=1):
 
 
 def addRowFieldDelimiter(file: CSVFile, row, col, n_separators=1):
-    """TODO: documentation here"""
+    """Insert an extra field delimiter into one row."""
     if type(row) == int and row < 0:
         row = "last()-" + str(row + 1)
 
@@ -496,7 +502,7 @@ def addRowFieldDelimiter(file: CSVFile, row, col, n_separators=1):
 
 
 def deleteRowFieldDelimiter(file: CSVFile, row, col):
-    """TODO: documentation here"""
+    """Remove a field delimiter from one row."""
     if type(row) == int and row < 0:
         row = "last()-" + str(row + 1)
     root = file.xml.getroot()
@@ -514,7 +520,7 @@ def deleteRowFieldDelimiter(file: CSVFile, row, col):
 
 
 def addRowQuoteMark(file: CSVFile, row, col):
-    """TODO: documentation here"""
+    """Add an opening quote to one cell in a row."""
     if type(row) == int and row < 0:
         row = "last()-" + str(row + 1)
     root = file.xml.getroot()
@@ -530,7 +536,7 @@ def addRowQuoteMark(file: CSVFile, row, col):
 
 
 def changeRowRecordDelimiter(file: CSVFile, row=1, target_delimiter="\r\n"):
-    """TODO: documentation here"""
+    """Change the record delimiter used by one row."""
     if type(row) == int and row < 0:
         row = "last()-" + str(row + 1)
 
@@ -543,9 +549,7 @@ def changeRowRecordDelimiter(file: CSVFile, row=1, target_delimiter="\r\n"):
 
 
 def changeRowFieldDelimiter(file: CSVFile, row=1, target_delimiter=";"):
-    """
-    Row indexing is 1-based! Follows xquery
-    """
+    """Change the field delimiter used by one row."""
     if type(row) == int and row < 0:
         row = "last()-" + str(row + 1)
 
@@ -560,9 +564,7 @@ def changeRowFieldDelimiter(file: CSVFile, row=1, target_delimiter=";"):
 
 
 def changeRowQuotationMark(file: CSVFile, row=1, target_quotation="'"):
-    """
-    Row indexing is 1-based! Follows xquery
-    """
+    """Change the quotation mark used by one row. Row indexing is 1-based. Follows xquery."""
     if type(row) == int and row < 0:
         row = "last()-" + str(row + 1)
 
@@ -579,10 +581,9 @@ def changeRowQuotationMark(file: CSVFile, row=1, target_quotation="'"):
 def changeColumnHeader(
     file: CSVFile, col: int = None, target_header=None, extra_rows=0
 ):
-    """
+    """Change one or more header cells, optionally across extra header rows.
     If col is none, apply to all of them-
-    If >0, extra rows expands the header on X many rows
-    """
+    If >0, extra rows expands the header on X many rows"""
     colint = col
     if type(col) == int and col < 0:
         col = "last()-" + str(col + 1)
@@ -630,9 +631,7 @@ def changeColumnHeader(
 
 
 def addTable(file: CSVFile, n_rows, n_cols, empty_boundary=True):
-    """Adds a table after the first one with n_rows and n_cols.
-    Additionally, can be specified if the two are separated by empty delimited rows or not.
-    """
+    """Append a second table with the requested shape."""
 
     random.seed(constants.RAND_SEED)
     root = file.xml.getroot()
