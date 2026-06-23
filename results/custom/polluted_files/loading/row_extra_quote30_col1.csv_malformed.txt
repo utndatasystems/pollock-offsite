@@ -1,2 +1,0 @@
-Malformed rows: 1
-{"line_num": 31, "reason": "',' expected after '\"'", "raw": "22/03/2018,\"07:15,3,BH-1732,$65.46,\"Waterproof Boots, Tall\",\"Industry-leading insulation and innovative construction allow us to make these super-warm winter boots 50% lighter than traditional boots.\",\"https://www.example.com/product/BH_1732.html\",\r\n"}

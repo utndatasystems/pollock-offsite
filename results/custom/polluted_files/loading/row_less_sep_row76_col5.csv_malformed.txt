@@ -1,2 +1,0 @@
-Malformed rows: 1
-{"line_num": 77, "reason": "expected 9 fields, got 8", "raw": ["15/07/2018", "16:45", "20", "RI-7676", "$7.49Kids' Hydration Pack", "Designed after the most popular adult hydration pack, this hydration pack measures up to your kids' trail hydration needs and your highest expectations.", "https://www.example.com/product/RI_7676.html", ""]}

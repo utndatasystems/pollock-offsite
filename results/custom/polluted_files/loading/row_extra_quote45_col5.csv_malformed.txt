@@ -1,2 +1,0 @@
-Malformed rows: 1
-{"line_num": 46, "reason": "',' expected after '\"'", "raw": "20/04/2018,12:45,15,YY-8954,$64.19,\"\"Travel Lock, Combination Cable\",\"This luggage lock helps keep your belongings secure while traveling. Allows your luggage to go through airport security and arrive at your destination fully locked.\",\"https://www.example.com/product/YY_8954.html\",\r\n"}

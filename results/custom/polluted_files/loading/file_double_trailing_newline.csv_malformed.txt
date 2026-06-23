@@ -1,2 +1,0 @@
-Malformed rows: 1
-{"line_num": 85, "reason": "expected 9 fields, got 0", "raw": []}

@@ -1,2 +1,0 @@
-Malformed rows: 1
-{"line_num": 6, "reason": "',' expected after '\"'", "raw": "13/02/2018,01:00,9,\"CC-9259,$48.00,\"Throw Pillow, Wooden Paddles\",\"Add a pop of paddling fun to your bed, chair or sofa with this whimsical throw pillow, handhooked on front for a timeless style.\",\"https://www.example.com/product/CC_9259.html\",\r\n"}

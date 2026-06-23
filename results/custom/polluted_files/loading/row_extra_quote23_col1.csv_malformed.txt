@@ -1,2 +1,0 @@
-Malformed rows: 1
-{"line_num": 24, "reason": "',' expected after '\"'", "raw": "15/03/2018,\"05:30,1,YY-4017,$69.52,Leather Sofa,\"Our American-made leather sofa exhibits quality craftsmanship in every detail and delivers lasting comfort through and through.\",\"https://www.example.com/product/YY_4017.html\",\r\n"}

@@ -1,2 +1,0 @@
-Malformed rows: 1
-{"line_num": 74, "reason": "',' expected after '\"'", "raw": "30/06/2018,10:15,2,GN-1306,$78.95,National Park Patch,\"Were proud to offer the National Park collectible patch, featuring an embroidered scene of a breathtaking, rugged coastline.\",\"\"https://www.example.com/product/GN_1306.html\",\r\n"}

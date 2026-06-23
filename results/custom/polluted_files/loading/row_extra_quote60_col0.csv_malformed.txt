@@ -1,2 +1,0 @@
-Malformed rows: 1
-{"line_num": 61, "reason": "',' expected after '\"'", "raw": "\"25/05/2018,21:45,0,GN-3028,$12.98,\"Swimwear, Print\",\"With flattering coverage, amazing stay-put shape and quick-dry comfort, our best-value one-piece bathing suit is designed for sun and surf. Made from premium Italian swim fabric in fun wave print.\",\"https://www.example.com/product/GN_3028.html\",\r\n"}

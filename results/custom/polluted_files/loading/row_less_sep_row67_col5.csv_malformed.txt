@@ -1,2 +1,0 @@
-Malformed rows: 1
-{"line_num": 68, "reason": "expected 9 fields, got 8", "raw": ["22/06/2018", "23:30", "1", "YY-2632", "$27.84Women's Capris", "These great cargo capris pants for women are designed for performance, with built-in UPF 50+ to keep you cool, dry, and protected from the sun while you're out enjoying it.", "https://www.example.com/product/YY_2632.html", ""]}

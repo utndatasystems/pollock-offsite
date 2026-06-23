@@ -1,2 +1,0 @@
-Malformed rows: 1
-{"line_num": 78, "reason": "expected 9 fields, got 8", "raw": ["16/07/2018", "17:00", "3", "RI-5314$76.26", "Fishing Sunglasses", "These sunglasses are made for fishermen with large faces. The taller lens shape and thicker temples provide additional sun protection, great for fishermen who spend a lot of time on the water.", "https://www.example.com/product/RI_5314.html", ""]}

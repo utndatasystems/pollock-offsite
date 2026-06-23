@@ -1,2 +1,0 @@
-Malformed rows: 1
-{"line_num": 57, "reason": "expected 9 fields, got 10", "raw": ["21/05/2018", "", "20:45", "21", "ZN-5503", "$88.45", "Coffee Table", "Spend more time relaxing outside with our low-maintenance coffee table. Like all of our furniture, it won't chip, peel, warp or crack.", "https://www.example.com/product/ZN_5503.html", ""]}

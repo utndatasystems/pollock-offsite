@@ -1,2 +1,0 @@
-Malformed rows: 1
-{"line_num": 58, "reason": "expected 9 fields, got 2", "raw": ["22/05/2018 21:00 19 ZN-4103 $68.74 Baseball Hat \"This sun-blocking baseball hat features a rear flap for extra coverage. It provides UPF 50+ rated sun protection", " the highest possible.\" \"https://www.example.com/product/ZN_4103.html\" "]}

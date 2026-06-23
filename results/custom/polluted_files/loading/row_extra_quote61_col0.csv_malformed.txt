@@ -1,2 +1,0 @@
-Malformed rows: 1
-{"line_num": 62, "reason": "',' expected after '\"'", "raw": "\"26/05/2018,22:00,2,YY-4147,$11.06,Women's Sandals,\"You wont find a sandal with better control or support than this. Its loaded with features like secure double-strap webbing, a podiatrist-certified footbed and a toe loop for extra forefoot stability.\",\"https://www.example.com/product/YY_4147.html\",\r\n"}

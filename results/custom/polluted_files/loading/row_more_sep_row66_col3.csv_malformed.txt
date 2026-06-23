@@ -1,2 +1,0 @@
-Malformed rows: 1
-{"line_num": 67, "reason": "expected 9 fields, got 10", "raw": ["21/06/2018", "23:15", "1", "", "CC-5815", "$13.57", "Field Watch", "Inspired by watches worn by World War II infantrymen, this updated design makes it easy to tell time at a glance. New smaller size is perfect for men and women who want a classic field watch that's perfect for all occasions, both indoor and outdoor.", "https://www.example.com/product/CC_5815.html", ""]}

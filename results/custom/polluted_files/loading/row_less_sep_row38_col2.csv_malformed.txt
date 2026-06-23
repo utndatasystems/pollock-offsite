@@ -1,2 +1,0 @@
-Malformed rows: 1
-{"line_num": 39, "reason": "expected 9 fields, got 8", "raw": ["31/03/2018", "09:300", "AN-9388", "$64.02", "Linen Shirt, Slightly Fitted Short-Sleeve Stripe", "Lightweight and breathable, this colorful shirt will be a warm-weather mainstay year after year. Light and comfortable, perfect for summer.", "https://www.example.com/product/AN_9388.html", ""]}

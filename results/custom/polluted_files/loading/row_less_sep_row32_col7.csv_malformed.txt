@@ -1,2 +1,0 @@
-Malformed rows: 1
-{"line_num": 33, "reason": "expected 9 fields, got 8", "raw": ["25/03/2018", "08:00", "0", "BH-1061", "$62.55", "Base Layer, Pants", "Our exclusive wool performance fabric makes these pants an ideal base layer for cool-weather sports.\"https://www.example.com/product/BH_1061.html", ""]}

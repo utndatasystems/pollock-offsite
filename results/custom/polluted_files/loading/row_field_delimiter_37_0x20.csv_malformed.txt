@@ -1,2 +1,0 @@
-Malformed rows: 1
-{"line_num": 38, "reason": "expected 9 fields, got 3", "raw": ["30/03/2018 09:15 0 AN-1646 $78.74 \"Rolling Duffle", " Extra-Large\" \"We kept the heritage-inspired design of our spacious rolling duffle", " then added thoughtful details like easy-rolling spinner wheels.\" \"https://www.example.com/product/AN_1646.html\" "]}

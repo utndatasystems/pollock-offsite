@@ -1,2 +1,0 @@
-Malformed rows: 1
-{"line_num": 16, "reason": "expected 9 fields, got 8", "raw": ["23/02/2018", "03:30", "1", "HK-5716", "$46.01", "Women's 3-in-1 Jacket", "Our women's 3-in-1 jacket offers three times the value and versatility for the solution to year-round weather conditions.\"https://www.example.com/product/HK_5716.html", ""]}

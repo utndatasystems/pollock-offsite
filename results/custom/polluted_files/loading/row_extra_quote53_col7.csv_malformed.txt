@@ -1,2 +1,0 @@
-Malformed rows: 1
-{"line_num": 54, "reason": "',' expected after '\"'", "raw": "18/05/2018,20:00,30,AN-2099,$64.14,Sandals,\"An exclusive, these colorblocked sandals are an absolutely beautiful and incredibly comfortable addition to your warm-weather wardrobe.\",\"\"https://www.example.com/product/AN_2099.html\",\r\n"}

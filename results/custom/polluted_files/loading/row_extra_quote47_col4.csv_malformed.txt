@@ -1,2 +1,0 @@
-Malformed rows: 1
-{"line_num": 48, "reason": "',' expected after '\"'", "raw": "23/04/2018,13:30,26,BH-2268,\"$43.61,Men's Shorts,\"We used performance-packed swim fabric to create board shorts that keep up during the most rigorous adventures, with enough style for heading into town afterward.\",\"https://www.example.com/product/BH_2268.html\",\r\n"}

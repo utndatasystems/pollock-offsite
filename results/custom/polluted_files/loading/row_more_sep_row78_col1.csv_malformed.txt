@@ -1,2 +1,0 @@
-Malformed rows: 1
-{"line_num": 79, "reason": "expected 9 fields, got 10", "raw": ["17/07/2018", "", "16:30", "0", "YY-7734", "$73.42", "Havana Hat", "The perfect complement to any summertime style: this fedora hat offers UPF 50+ protection and won't crunch or bend during your travels.", "https://www.example.com/product/YY_7734.html", ""]}
