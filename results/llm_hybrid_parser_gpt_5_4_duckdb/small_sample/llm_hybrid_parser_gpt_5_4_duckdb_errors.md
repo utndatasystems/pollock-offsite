@@ -5,7 +5,7 @@
 | Results file | `results/llm_hybrid_parser_gpt_5_4_duckdb/small_sample/llm_hybrid_parser_gpt_5_4_duckdb_results.csv` |
 | Total files evaluated | 17 |
 | Application errors | 0 |
-| Wrong content | 2 |
+| Wrong content | 1 |
 
 
 ## Application Errors — 0 files
@@ -14,35 +14,11 @@
 
 *(none)*
 
-## Wrong Content — 2 files
+## Wrong Content — 1 files
 
 | N | Type |
 |--:|------|
-| 1 | Non-standard escape character (0x5C) |
 | 1 | Non-standard field delimiter (0x20) |
-
-
-### Non-standard escape character (0x5C) — 1 file
-
-
-#### `file_escape_char_0x5C.csv`
-
-- **Sniffed:** `delimiter=','`, `quotechar='"'`, `escapechar='\\'`, `row_delimiter=None`, `header_lines=1`, `preamble_lines=0`
-- **Refined:** `delimiter=','`, `quotechar='"'`, `escapechar='\\'`, `row_delimiter=None`, `header_lines=1`, `preamble_lines=0`
-
-*Rows loaded: 83*
-
-**Diff:** 1 expected-but-missing, 1 unexpected-extra
-
-- ```
-  Expected: 20/02/2018,02:45,1,BH-7531,$48.08,Women's  Fly Rod 8 Wt.,"Amazingly crisp action and a remarkably light feel i
-  Got:      20/02/2018,02:45,1,BH-7531,$48.08,Women's  Fly Rod 8 Wt.,"Amazingly crisp action and a remarkably light feel i
-  ```
-
-  ```
-  Exp. ctd: n our 8\'9"" length fly rod, impeccably designed for her.",https://www.example.com/product/BH_7531.html,
-  Got ctd.: n our 8'9"" length fly rod, impeccably designed for her.",https://www.example.com/product/BH_7531.html,
-  ```
 
 
 ### Non-standard field delimiter (0x20) — 1 file

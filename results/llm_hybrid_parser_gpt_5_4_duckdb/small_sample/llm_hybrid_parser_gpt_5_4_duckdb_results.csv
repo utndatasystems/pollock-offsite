@@ -4,7 +4,7 @@ row_field_delimiter_3_0x20.csv,True,False
 row_more_sep_row19_col4.csv,True,False
 file_field_delimiter_0x2C_0x20.csv,True,False
 file_field_delimiter_0x9.csv,True,False
-file_escape_char_0x5C.csv,False,True
+file_escape_char_0x5C.csv,True,False
 file_field_delimiter_0x3B.csv,True,False
 row_field_delimiter_34_0x20.csv,True,False
 row_less_sep_row3_col1.csv,True,False
