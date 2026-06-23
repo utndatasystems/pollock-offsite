@@ -23,14 +23,9 @@ parser.add_argument(
     help="Load the ground-truth file from data/<dataset>/clean instead of using LLM repair",
 )
 parser.add_argument(
-    "--llm-repair",
-    action="store_true",
-    help="Deprecated/no-op: LLM repair is the default unless --cheat or --no-llm-repair is set",
-)
-parser.add_argument(
     "--no-llm-repair",
     action="store_true",
-    help="Disable LLM calls; load with CleverCSV/DuckDB dialect detection and skip rejected rows",
+    help="Disable LLM repair of malformed rows; skip rejected rows instead (dialect detection unaffected)",
 )
 parser.add_argument(
     "--llm-context-lines",
@@ -39,9 +34,15 @@ parser.add_argument(
     help="Number of sample/good lines included in LLM prompts",
 )
 parser.add_argument(
-    "--no-llm-sniff",
+    "--no-llm-dialect",
     action="store_true",
-    help="Disable LLM dialect detection; use CleverCSV only",
+    help="Disable LLM dialect detection (requires --clevercsv so a dialect source remains)",
+)
+parser.add_argument(
+    "--clevercsv",
+    action="store_true",
+    help="Also run CleverCSV and reconcile it with the LLM dialect (default: LLM dialect only). "
+         "Tags results under the sut name suffix '_clevercsv'.",
 )
 parser.add_argument(
     "--no-llm-cache",
@@ -59,17 +60,20 @@ parser.add_argument(
     help="Dry-run: build all prompts and count tokens without calling the LLM",
 )
 args = parser.parse_args()
-if args.cheat and args.llm_repair:
-    parser.error("--cheat and --llm-repair cannot be used together")
 if args.cheat and args.no_llm_repair:
     parser.error("--cheat already disables LLM repair")
 
 LLM_REPAIR = not args.cheat and not args.no_llm_repair
-LLM_SNIFF = not args.no_llm_sniff
-if (LLM_REPAIR or LLM_SNIFF) and not args.count_tokens and not (
+LLM_DIALECT = not args.no_llm_dialect
+USE_CLEVERCSV = args.clevercsv
+if not LLM_DIALECT and not USE_CLEVERCSV:
+    parser.error("--no-llm-dialect removes the LLM dialect source; pass --clevercsv so a "
+                 "dialect source remains")
+if (LLM_REPAIR or LLM_DIALECT) and not args.count_tokens and not (
     os.environ.get("OPENAI_API_KEY")
 ):
-    parser.error("LLM calls are enabled by default and require OPENAI_API_KEY. Use --no-llm-sniff --no-llm-repair, --cheat, or --count-tokens to avoid LLM calls.")
+    parser.error("LLM calls are enabled by default and require OPENAI_API_KEY. Use --no-llm-dialect "
+                 "--no-llm-repair (with --clevercsv), --cheat, or --count-tokens to avoid LLM calls.")
 
 if args.model:
     os.environ["OPENAI_MODEL"] = args.model
@@ -79,9 +83,11 @@ from solution import parse_csv_with_validation, configure_llm_cache, configure_l
 
 if args.model:
     _model_slug = re.sub(r'[^a-z0-9]+', '_', args.model.lower()).strip('_')
-    sut = f'custom_{_model_slug}'
+    sut = f'llm_hybrid_parser_{_model_slug}'
 else:
-    sut = 'custom'
+    sut = 'llm_hybrid_parser'
+if USE_CLEVERCSV:
+    sut += '_clevercsv' if LLM_DIALECT else '_clevercsv_only'
 DATASET = os.environ.get('DATASET', 'polluted_files')
 IN_DIR = join(REPO_ROOT, 'data', DATASET, 'csv')
 CLEAN_DIR = join(REPO_ROOT, 'data', DATASET, 'clean')
@@ -158,7 +164,8 @@ for idx, file in enumerate(benchmark_files):
                 clean_csv=clean_filepath,
                 cheat=CHEAT,
                 llm_repair=LLM_REPAIR,
-                llm_sniff=LLM_SNIFF,
+                llm_dialect=LLM_DIALECT,
+                use_clevercsv=USE_CLEVERCSV,
                 sidecar_path=llm_sidecar,
                 llm_context_lines=LLM_CONTEXT_LINES,
                 reset_sidecar=(time_rep == 0),
@@ -189,7 +196,7 @@ for idx, file in enumerate(benchmark_files):
 
 save_time_df(TIME_DIR, sut, times_dict)
 
-if LLM_REPAIR or LLM_SNIFF:
+if LLM_REPAIR or LLM_DIALECT:
     stats = get_llm_cache_stats()
     if stats["total"] > 0:
         print(f"LLM calls: {stats['cached']}/{stats['total']} served from cache")

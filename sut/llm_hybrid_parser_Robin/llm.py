@@ -31,6 +31,7 @@ def configure_llm_cache(path: Optional[str] = None, enabled: bool = True) -> Non
 
 def configure_llm_dry_run(enabled: bool) -> None:
     global _LLM_DRY_RUN
+
     _LLM_DRY_RUN = enabled
 
 

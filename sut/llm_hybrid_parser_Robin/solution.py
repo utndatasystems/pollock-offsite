@@ -9,9 +9,9 @@ from dialect import (
     _header_lines,
     _read_sample_lines,
     combine_header_rows,
+    dialect_from_mappings,
     infer_dialect_with_llm,
     infer_expected_columns,
-    reconcile_dialects,
     sniff_with_clevercsv,
 )
 from llm import configure_llm_cache, configure_llm_dry_run, get_llm_cache_stats
@@ -61,7 +61,8 @@ def parse_csv_with_validation(
     clean_csv: str = None,
     cheat: bool = False,
     llm_repair: bool = True,
-    llm_sniff: bool = False,
+    llm_dialect: bool = True,
+    use_clevercsv: bool = False,
     sidecar_path: str = None,
     llm_context_lines: int = 10,
     reset_sidecar: bool = True,
@@ -80,24 +81,25 @@ def parse_csv_with_validation(
         clean_csv=clean_csv,
         cheat=cheat,
         llm_repair=llm_repair and not cheat,
-        llm_sniff=llm_sniff,
+        llm_dialect=llm_dialect,
+        use_clevercsv=use_clevercsv,
         llm_context_lines=llm_context_lines,
     )
 
     clever_mapping: Dict[str, Any] = {}
-    if not llm_sniff:
+    if use_clevercsv:
         clever_mapping = sniff_with_clevercsv(csv_input)
         trace.write("clevercsv_dialect", dialect=clever_mapping)
 
     llm_mapping: Dict[str, Any] = {}
-    if llm_sniff or (llm_repair and not cheat):
+    if llm_dialect:
         try:
             llm_mapping = infer_dialect_with_llm(csv_input, clever_mapping, llm_context_lines, trace)
         except Exception as exc:
             trace.write("llm_dialect_error", error=str(exc))
 
     scoring_lines = _read_sample_lines(csv_input, SCORING_LINE_LIMIT)
-    dialect = reconcile_dialects(clever_mapping, llm_mapping, scoring_lines, trace)
+    dialect = dialect_from_mappings(clever_mapping, llm_mapping, scoring_lines, trace)
 
     raw_header_lines = _header_lines(csv_input, dialect)
     header = combine_header_rows(raw_header_lines, dialect)

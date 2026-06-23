@@ -36,6 +36,12 @@ def _read_sample_lines(path: str, limit: int) -> List[str]:
             lines.append(line.rstrip("\r\n"))
     return lines
 
+def _header_lines(csv_input: str, dialect: CSVDialect) -> List[str]:
+    if dialect.header_rows <= 0:
+        return []
+    lines = _read_sample_lines(csv_input, dialect.preamble_rows + dialect.header_rows)
+    return lines[dialect.preamble_rows:dialect.preamble_rows + dialect.header_rows]
+
 
 def _decode_token(value: Any) -> Optional[str]:
     if value is None:
@@ -251,42 +257,74 @@ def _score_dialect(lines: List[str], dialect: CSVDialect) -> Tuple[int, int, int
     return (mode_freq, -inconsistent, mode_count, delimiter_bonus)
 
 
-def reconcile_dialects(
+def dialect_from_mappings(
     clever_mapping: Dict[str, Any],
     llm_mapping: Dict[str, Any],
     scoring_lines: List[str],
     trace: Any,
 ) -> CSVDialect:
+    """Build the final CSV dialect from the available dialect sources.
+
+    Normalizes each raw mapping into a validated CSVDialect, then only runs the
+    scoring-based reconciliation when *both* a CleverCSV sniff and an LLM guess
+    exist. With a single source there is nothing to choose between, so the lone
+    dialect (which already carries its own layout) is returned directly.
+    """
     default = CSVDialect()
     clever = _dialect_from_mapping(clever_mapping, default)
     llm = _dialect_from_mapping(llm_mapping, clever) if llm_mapping else clever
 
+    if clever_mapping and llm_mapping:
+        final = reconcile_dialects(clever, llm, scoring_lines, trace)
+    else:
+        final = llm if llm_mapping else clever
+
+    trace.write(
+        "dialect",
+        sniffed=clever.as_trace_dict() if clever_mapping else None,
+        llm=llm.as_trace_dict() if llm_mapping else None,
+        final=final.as_trace_dict(),
+    )
+    return final
+
+
+def reconcile_dialects(
+    clever: CSVDialect,
+    llm: CSVDialect,
+    scoring_lines: List[str],
+    trace: Any,
+) -> CSVDialect:
+    """Pick the best delimiter/quote between a CleverCSV sniff and an LLM guess.
+
+    Only called when both sources are present. Scores the two dialects plus two
+    cross-combinations against the sample lines; the LLM always owns the
+    header/preamble/newline layout of whichever delimiter+quote wins.
+    """
     candidates: "OrderedDict[str, CSVDialect]" = OrderedDict()
     candidates["clevercsv"] = clever
-    if llm_mapping:
-        candidates["llm"] = llm
-        candidates["llm_delimiter_with_clever_quote"] = CSVDialect(
-            delimiter=llm.delimiter,
-            quotechar=clever.quotechar,
-            escapechar=clever.escapechar,
-            newline=llm.newline or clever.newline,
-            header_rows=llm.header_rows,
-            preamble_rows=llm.preamble_rows,
-        )
-        candidates["clever_delimiter_with_llm_quote"] = CSVDialect(
-            delimiter=clever.delimiter,
-            quotechar=llm.quotechar,
-            escapechar=llm.escapechar,
-            newline=llm.newline or clever.newline,
-            header_rows=llm.header_rows,
-            preamble_rows=llm.preamble_rows,
-        )
+    candidates["llm"] = llm
+    candidates["llm_delimiter_with_clever_quote"] = CSVDialect(
+        delimiter=llm.delimiter,
+        quotechar=clever.quotechar,
+        escapechar=clever.escapechar,
+        newline=llm.newline or clever.newline,
+        header_rows=llm.header_rows,
+        preamble_rows=llm.preamble_rows,
+    )
+    candidates["clever_delimiter_with_llm_quote"] = CSVDialect(
+        delimiter=clever.delimiter,
+        quotechar=llm.quotechar,
+        escapechar=llm.escapechar,
+        newline=llm.newline or clever.newline,
+        header_rows=llm.header_rows,
+        preamble_rows=llm.preamble_rows,
+    )
 
     scored = []
     for name, dialect in candidates.items():
         scored.append((name, dialect, _score_dialect(scoring_lines, dialect)))
 
-    if llm_mapping and len(llm.delimiter) > 1:
+    if len(llm.delimiter) > 1:
         best_name = "llm"
         best_dialect = llm
         best_score = _score_dialect(scoring_lines, llm)
@@ -301,17 +339,16 @@ def reconcile_dialects(
         )
         forced_reason = None
 
-    llm_layout_applied = False
-    if llm_mapping:
-        best_dialect = CSVDialect(
-            delimiter=best_dialect.delimiter,
-            quotechar=best_dialect.quotechar,
-            escapechar=best_dialect.escapechar,
-            newline=llm.newline or best_dialect.newline,
-            header_rows=llm.header_rows,
-            preamble_rows=llm.preamble_rows,
-        )
-        llm_layout_applied = True
+    # LLM owns the header/preamble/newline layout regardless of which
+    # delimiter+quote candidate won the scoring.
+    best_dialect = CSVDialect(
+        delimiter=best_dialect.delimiter,
+        quotechar=best_dialect.quotechar,
+        escapechar=best_dialect.escapechar,
+        newline=llm.newline or best_dialect.newline,
+        header_rows=llm.header_rows,
+        preamble_rows=llm.preamble_rows,
+    )
 
     trace.write(
         "dialect_reconciliation",
@@ -322,13 +359,7 @@ def reconcile_dialects(
         selected=best_name,
         selected_score=best_score,
         forced_reason=forced_reason,
-        llm_header_preamble_applied=llm_layout_applied,
-    )
-    trace.write(
-        "dialect",
-        sniffed=clever.as_trace_dict(),
-        llm=_dialect_from_mapping(llm_mapping, clever).as_trace_dict() if llm_mapping else None,
-        final=best_dialect.as_trace_dict(),
+        llm_header_preamble_applied=True,
     )
     return best_dialect
 
@@ -357,3 +388,4 @@ def infer_expected_columns(lines: List[str], dialect: CSVDialect) -> int:
     if not counts:
         return 0
     return Counter(counts).most_common(1)[0][0]
+
