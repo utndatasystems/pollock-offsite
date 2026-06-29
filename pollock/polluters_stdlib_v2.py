@@ -851,3 +851,57 @@ def addFootnote(
     )
 
 
+def tableToWhitespaceFormattedTable(file: CSVFile, pad_cells=True):  # checked manually
+    """
+    Converts a CSV table to a whitespace-formatted table by replacing the field delimiters with spaces.
+
+    Example:
+
+    head1,head2,head3
+    1,somestring,3.14
+
+    Becomes:
+
+    head1 head2      head3
+    1     somestring 3.14
+    """
+    root = file.xml.getroot()
+    rows = list(root.iter("row"))
+    quote_char = file.quotation_char or '"'
+    doubled_quote = quote_char * 2
+
+    pb.changeColumnDelimiters(file, col="*", new_delimiter=" ")
+
+    # All strings are quoted and properly escaped.
+    for row in rows:
+        for node in row.xpath("./cell[@type='TYPE_STRING']"):
+            text = "".join(value.text or "" for value in node.xpath("./value"))
+            if quote_char in text:
+                text = text.replace(quote_char, doubled_quote)
+            del node[:]
+            node.append(E.value(f"{quote_char}{text}{quote_char}"))
+
+    if pad_cells:
+        column_widths: list[int] = []
+        # Cound maximum length of stringified content of cells in each column
+        for row in rows:
+            for col_idx, cell in enumerate(row.xpath("./cell")):
+                cell_text_len = sum(len(value_node.text or "") for value_node in cell.xpath("./value"))
+
+                if col_idx == len(column_widths):
+                    column_widths.append(cell_text_len)
+                elif cell_text_len > column_widths[col_idx]:
+                    column_widths[col_idx] = cell_text_len
+
+        for row in rows:
+            for col_idx, cell in enumerate(row.xpath("./cell")):
+                values = cell.xpath("./value")
+                if not values:
+                    continue
+
+                cell_text_len = sum(len(value_node.text or "") for value_node in values)
+                pad = column_widths[col_idx] - cell_text_len
+                if pad > 0:
+                    values[-1].text = (values[-1].text or "") + (" " * pad)
+
+    _set_polluted_filename(file, f"file_whitespace_delimiter_cells_{'padded' if pad_cells else 'unpadded'}.csv")

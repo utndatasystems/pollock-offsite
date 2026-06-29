@@ -259,6 +259,8 @@ if args.polluters == "pollock2.0":
     execute_polluter(f, pl2.unescaped, row=2 if f.row_count >= 2 else 1, col=1)
     execute_polluter(f, pl2.doubleEscaping, row1=2, row2=3, col=1)
     execute_polluter(f, pl2.unquotedLists)
+    execute_polluter(f, pl2.tableToWhitespaceFormattedTable, pad_cells=True)
+    execute_polluter(f, pl2.tableToWhitespaceFormattedTable, pad_cells=False)
 
     # Spreadsheet / Excel-style edge cases
     execute_polluter(f, pl2.excelExportAutoformat)
