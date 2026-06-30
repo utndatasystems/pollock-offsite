@@ -803,3 +803,51 @@ def moveHeaderRow(file: CSVFile, row: int | None = None):
 
     pb.moveRow(file, 0, row)
     _set_polluted_filename(file, f"file_move_header_row{row}.csv")
+
+
+def addFootnote(
+    file: CSVFile, n_rows=1, delimiters=False, emptyrow=False, cell_content="FOOTNOTE"
+):
+    """
+    :param file:
+    :param n_rows: number of rows for the preamble
+    :param delimiters: if True, creates a row with as many delimited cells as the other rows
+    :param emptyrow:  if True, leaves an empty row between the preamble and the data
+    :param cell_content: the content of the preamble cell(s). Either list or single value
+    """
+    if emptyrow:
+        pb.addRows(
+            file, n_rows=1, position=-1, col_count=file.col_count, role="footnote"
+        )
+
+    if delimiters:
+        cell_content = (
+            [cell_content] + [""] * (file.col_count - 1)
+            if type(cell_content) == str
+            else cell_content
+        )
+        pb.addRows(
+            file,
+            n_rows=n_rows,
+            cell_content=cell_content,
+            position=-1,
+            col_count=file.col_count,
+            role="footnote",
+        )
+
+    else:
+        pb.addRows(
+            file,
+            n_rows=n_rows,
+            cell_content=cell_content,
+            position=-1,
+            col_count=1,
+            role="footnote",
+        )
+
+    _set_polluted_filename(
+        file,
+        f"file_footnote_{n_rows}_{'not_' if not delimiters else ''}delimited{'_empty_row' if emptyrow else ''}.csv",
+    )
+
+
