@@ -68,6 +68,7 @@ def parse_csv_with_validation(
     sidecar_path: str = None,
     llm_context_lines: int = 10,
     reset_sidecar: bool = True,
+    special_prompt: bool = False,
 ) -> Tuple[pd.DataFrame, List[Dict[str, Any]]]:
     """
     Load a polluted CSV using an optional non-LLM sniffer (CleverCSV or DuckDB) +
@@ -88,6 +89,7 @@ def parse_csv_with_validation(
         use_clevercsv=use_clevercsv,
         use_duckdb_sniff=use_duckdb_sniff,
         llm_context_lines=llm_context_lines,
+        special_prompt=special_prompt,
     )
 
     # Non-LLM dialect sniffer: CleverCSV or DuckDB (mutually exclusive, both optional).
@@ -107,7 +109,11 @@ def parse_csv_with_validation(
     if llm_dialect:
         try:
             llm_mapping = infer_dialect_with_llm(
-                csv_input, sniff_mapping, llm_context_lines, trace, sniffer_label
+                csv_input,
+                sniff_mapping,
+                llm_context_lines,
+                trace,
+                sniffer_label,
             )
         except Exception as exc:
             trace.write("llm_dialect_error", error=str(exc))
@@ -152,7 +158,15 @@ def parse_csv_with_validation(
     malformed = rejects_to_malformed(rejects)
 
     if llm_repair and rejects:
-        repairs = infer_repairs_with_llm(header, dialect, df, rejects, llm_context_lines, trace)
+        repairs = infer_repairs_with_llm(
+            header,
+            dialect,
+            df,
+            rejects,
+            llm_context_lines,
+            trace,
+            special_prompt=special_prompt,
+        )
         for item in malformed:
             if item["line_num"] in repairs:
                 item["repaired"] = False

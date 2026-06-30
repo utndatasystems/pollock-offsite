@@ -1,0 +1,633 @@
+SUT: llm_hybrid_parser_gpt_5_4_duckdb_special_prompt
+Dataset: polluted_files
+Results file: results/llm_hybrid_parser_gpt_5_4_duckdb_special_prompt/polluted_files/llm_hybrid_parser_gpt_5_4_duckdb_special_prompt_results.csv
+Total files evaluated: 2291
+Application errors: 2291
+Wrong content:      0
+Malformed sidecars: 0 / 2291
+
+======================================================================
+CUSTOM MALFORMED-ROW DETECTION
+======================================================================
+Scope: wrong-content files only
+Sidecar reports found: 0 / 0
+Files with detected malformed rows: 0 / 0
+Total malformed rows logged: 0
+
+DETECTION RATIO BY POLLUTION TYPE
+  (none)
+
+MALFORMED ROW REASONS
+  (none)
+
+======================================================================
+APPLICATION ERRORS BY POLLUTION TYPE - 2291 files
+======================================================================
+   756  Extra delimiter
+   756  Extra unescaped quote
+   672  Missing delimiter
+    84  Row uses space as field delimiter
+     2  Unknown
+     1  Double trailing newline
+     1  Empty file (0 bytes)
+     1  Header row only, no data
+     1  Missing trailing newline
+     1  Multi-row header (2 rows)
+     1  Multi-row header (3 rows)
+     1  No header row
+     1  Non-standard escape character (0x00)
+     1  Non-standard escape character (0x5C)
+     1  Non-standard field delimiter (0x20)
+     1  Non-standard field delimiter (0x2C_0x20)
+     1  Non-standard field delimiter (0x3B)
+     1  Non-standard field delimiter (0x9)
+     1  Non-standard quotation character (0x27)
+     1  Non-standard record delimiter (0xA)
+     1  Non-standard record delimiter (0xD)
+     1  Preamble rows before header
+     1  Single data row
+     1  Two tables with the same number of columns
+     1  Two tables, first has fewer columns
+     1  Two tables, first has more columns
+
+======================================================================
+APPLICATION ERROR FILES BY POLLUTION TYPE
+======================================================================
+
+----------------------------------------------------------------------
+POLLUTION TYPE: Extra delimiter
+FILES: 756
+VARIANTS: rows 0-83 (84 unique); columns 0-8 (9 unique)
+SHOWING: 3 example file(s); 753 more grouped under this pollution type.
+
+----------------------------------------------------------------------
+FILE: row_more_sep_row0_col0.csv
+POLLUTION: Extra delimiter in row 0 at column 0
+DIALECT: delimiter=',', quotechar='"', escapechar='"', row_delimiter='\r\n', encoding='ascii', header_lines=1, preamble_lines=0, n_columns=9
+
+  SUT failed to load the file.
+  First lines of polluted input:
+    ,DATE,TIME,Qty,PRODUCTID,Price,ProductType,"ProductDescription","URL",Comments
+    28/01/2018,00:00,2,MG-8769,$74.69,Men's Waterproof Hiking Boots,"These waterproof hiking boots for men are rugged enough for peak performance yet light and quick enough to keep feet from feeling weighed down.","https://www.example.com/product/MG_8769.html",
+    29/01/2018,00:15,0,RI-3895,$29.81,Light-Up Running Jacket,"The next level of weather protection. This light-up jacket resists the elements and keeps you visible in low-light conditions. From running, biking or walking the dog, the durable construction and innovative safety features won't let you down.","https://www.example.com/product/RI_3895.html",
+    30/01/2018,00:30,1,RI-8070,$80.08,Men's Ventilated Trail Shoes,"Great grip and super extra breathability make these amazing ventilated hikers ideal for warm, dry conditions.","https://www.example.com/product/RI_8070.html",
+    31/01/2018,00:45,1,RI-9546,$25.55,Switch Fly Rods,"This lightweight fly rod delivers outstanding performance and can be used as either a traditional one-handed rod or as a two-handed spey rod. Two-handed technique is ideal for larger rivers and situations where there isn't space for a backcast.","https://www.example.com/product/RI_9546.html",
+
+----------------------------------------------------------------------
+FILE: row_more_sep_row0_col1.csv
+POLLUTION: Extra delimiter in row 0 at column 1
+DIALECT: delimiter=',', quotechar='"', escapechar='"', row_delimiter='\r\n', encoding='ascii', header_lines=1, preamble_lines=0, n_columns=9
+
+  SUT failed to load the file.
+  First lines of polluted input:
+    DATE,,TIME,Qty,PRODUCTID,Price,ProductType,"ProductDescription","URL",Comments
+    28/01/2018,00:00,2,MG-8769,$74.69,Men's Waterproof Hiking Boots,"These waterproof hiking boots for men are rugged enough for peak performance yet light and quick enough to keep feet from feeling weighed down.","https://www.example.com/product/MG_8769.html",
+    29/01/2018,00:15,0,RI-3895,$29.81,Light-Up Running Jacket,"The next level of weather protection. This light-up jacket resists the elements and keeps you visible in low-light conditions. From running, biking or walking the dog, the durable construction and innovative safety features won't let you down.","https://www.example.com/product/RI_3895.html",
+    30/01/2018,00:30,1,RI-8070,$80.08,Men's Ventilated Trail Shoes,"Great grip and super extra breathability make these amazing ventilated hikers ideal for warm, dry conditions.","https://www.example.com/product/RI_8070.html",
+    31/01/2018,00:45,1,RI-9546,$25.55,Switch Fly Rods,"This lightweight fly rod delivers outstanding performance and can be used as either a traditional one-handed rod or as a two-handed spey rod. Two-handed technique is ideal for larger rivers and situations where there isn't space for a backcast.","https://www.example.com/product/RI_9546.html",
+
+----------------------------------------------------------------------
+FILE: row_more_sep_row0_col2.csv
+POLLUTION: Extra delimiter in row 0 at column 2
+DIALECT: delimiter=',', quotechar='"', escapechar='"', row_delimiter='\r\n', encoding='ascii', header_lines=1, preamble_lines=0, n_columns=9
+
+  SUT failed to load the file.
+  First lines of polluted input:
+    DATE,TIME,,Qty,PRODUCTID,Price,ProductType,"ProductDescription","URL",Comments
+    28/01/2018,00:00,2,MG-8769,$74.69,Men's Waterproof Hiking Boots,"These waterproof hiking boots for men are rugged enough for peak performance yet light and quick enough to keep feet from feeling weighed down.","https://www.example.com/product/MG_8769.html",
+    29/01/2018,00:15,0,RI-3895,$29.81,Light-Up Running Jacket,"The next level of weather protection. This light-up jacket resists the elements and keeps you visible in low-light conditions. From running, biking or walking the dog, the durable construction and innovative safety features won't let you down.","https://www.example.com/product/RI_3895.html",
+    30/01/2018,00:30,1,RI-8070,$80.08,Men's Ventilated Trail Shoes,"Great grip and super extra breathability make these amazing ventilated hikers ideal for warm, dry conditions.","https://www.example.com/product/RI_8070.html",
+    31/01/2018,00:45,1,RI-9546,$25.55,Switch Fly Rods,"This lightweight fly rod delivers outstanding performance and can be used as either a traditional one-handed rod or as a two-handed spey rod. Two-handed technique is ideal for larger rivers and situations where there isn't space for a backcast.","https://www.example.com/product/RI_9546.html",
+
+----------------------------------------------------------------------
+POLLUTION TYPE: Extra unescaped quote
+FILES: 756
+VARIANTS: rows 0-83 (84 unique); columns 0-8 (9 unique)
+SHOWING: 3 example file(s); 753 more grouped under this pollution type.
+
+----------------------------------------------------------------------
+FILE: row_extra_quote0_col0.csv
+POLLUTION: Extra unescaped quote in row 0, column 0
+DIALECT: delimiter=',', quotechar='"', escapechar='"', row_delimiter='\r\n', encoding='ascii', header_lines=1, preamble_lines=0, n_columns=9
+
+  SUT failed to load the file.
+  First lines of polluted input:
+    "DATE,TIME,Qty,PRODUCTID,Price,ProductType,"ProductDescription","URL",Comments
+    28/01/2018,00:00,2,MG-8769,$74.69,Men's Waterproof Hiking Boots,"These waterproof hiking boots for men are rugged enough for peak performance yet light and quick enough to keep feet from feeling weighed down.","https://www.example.com/product/MG_8769.html",
+    29/01/2018,00:15,0,RI-3895,$29.81,Light-Up Running Jacket,"The next level of weather protection. This light-up jacket resists the elements and keeps you visible in low-light conditions. From running, biking or walking the dog, the durable construction and innovative safety features won't let you down.","https://www.example.com/product/RI_3895.html",
+    30/01/2018,00:30,1,RI-8070,$80.08,Men's Ventilated Trail Shoes,"Great grip and super extra breathability make these amazing ventilated hikers ideal for warm, dry conditions.","https://www.example.com/product/RI_8070.html",
+    31/01/2018,00:45,1,RI-9546,$25.55,Switch Fly Rods,"This lightweight fly rod delivers outstanding performance and can be used as either a traditional one-handed rod or as a two-handed spey rod. Two-handed technique is ideal for larger rivers and situations where there isn't space for a backcast.","https://www.example.com/product/RI_9546.html",
+
+----------------------------------------------------------------------
+FILE: row_extra_quote0_col1.csv
+POLLUTION: Extra unescaped quote in row 0, column 1
+DIALECT: delimiter=',', quotechar='"', escapechar='"', row_delimiter='\r\n', encoding='ascii', header_lines=1, preamble_lines=0, n_columns=9
+
+  SUT failed to load the file.
+  First lines of polluted input:
+    DATE,"TIME,Qty,PRODUCTID,Price,ProductType,"ProductDescription","URL",Comments
+    28/01/2018,00:00,2,MG-8769,$74.69,Men's Waterproof Hiking Boots,"These waterproof hiking boots for men are rugged enough for peak performance yet light and quick enough to keep feet from feeling weighed down.","https://www.example.com/product/MG_8769.html",
+    29/01/2018,00:15,0,RI-3895,$29.81,Light-Up Running Jacket,"The next level of weather protection. This light-up jacket resists the elements and keeps you visible in low-light conditions. From running, biking or walking the dog, the durable construction and innovative safety features won't let you down.","https://www.example.com/product/RI_3895.html",
+    30/01/2018,00:30,1,RI-8070,$80.08,Men's Ventilated Trail Shoes,"Great grip and super extra breathability make these amazing ventilated hikers ideal for warm, dry conditions.","https://www.example.com/product/RI_8070.html",
+    31/01/2018,00:45,1,RI-9546,$25.55,Switch Fly Rods,"This lightweight fly rod delivers outstanding performance and can be used as either a traditional one-handed rod or as a two-handed spey rod. Two-handed technique is ideal for larger rivers and situations where there isn't space for a backcast.","https://www.example.com/product/RI_9546.html",
+
+----------------------------------------------------------------------
+FILE: row_extra_quote0_col2.csv
+POLLUTION: Extra unescaped quote in row 0, column 2
+DIALECT: delimiter=',', quotechar='"', escapechar='"', row_delimiter='\r\n', encoding='ascii', header_lines=1, preamble_lines=0, n_columns=9
+
+  SUT failed to load the file.
+  First lines of polluted input:
+    DATE,TIME,"Qty,PRODUCTID,Price,ProductType,"ProductDescription","URL",Comments
+    28/01/2018,00:00,2,MG-8769,$74.69,Men's Waterproof Hiking Boots,"These waterproof hiking boots for men are rugged enough for peak performance yet light and quick enough to keep feet from feeling weighed down.","https://www.example.com/product/MG_8769.html",
+    29/01/2018,00:15,0,RI-3895,$29.81,Light-Up Running Jacket,"The next level of weather protection. This light-up jacket resists the elements and keeps you visible in low-light conditions. From running, biking or walking the dog, the durable construction and innovative safety features won't let you down.","https://www.example.com/product/RI_3895.html",
+    30/01/2018,00:30,1,RI-8070,$80.08,Men's Ventilated Trail Shoes,"Great grip and super extra breathability make these amazing ventilated hikers ideal for warm, dry conditions.","https://www.example.com/product/RI_8070.html",
+    31/01/2018,00:45,1,RI-9546,$25.55,Switch Fly Rods,"This lightweight fly rod delivers outstanding performance and can be used as either a traditional one-handed rod or as a two-handed spey rod. Two-handed technique is ideal for larger rivers and situations where there isn't space for a backcast.","https://www.example.com/product/RI_9546.html",
+
+----------------------------------------------------------------------
+POLLUTION TYPE: Missing delimiter
+FILES: 672
+VARIANTS: rows 0-83 (84 unique); columns 1-8 (8 unique)
+SHOWING: 3 example file(s); 669 more grouped under this pollution type.
+
+----------------------------------------------------------------------
+FILE: row_less_sep_row0_col1.csv
+POLLUTION: Missing delimiter in row 0 at column 1
+DIALECT: delimiter=',', quotechar='"', escapechar='"', row_delimiter='\r\n', encoding='ascii', header_lines=1, preamble_lines=0, n_columns=9
+
+  SUT failed to load the file.
+  First lines of polluted input:
+    DATETIME,Qty,PRODUCTID,Price,ProductType,"ProductDescription","URL",Comments
+    28/01/2018,00:00,2,MG-8769,$74.69,Men's Waterproof Hiking Boots,"These waterproof hiking boots for men are rugged enough for peak performance yet light and quick enough to keep feet from feeling weighed down.","https://www.example.com/product/MG_8769.html",
+    29/01/2018,00:15,0,RI-3895,$29.81,Light-Up Running Jacket,"The next level of weather protection. This light-up jacket resists the elements and keeps you visible in low-light conditions. From running, biking or walking the dog, the durable construction and innovative safety features won't let you down.","https://www.example.com/product/RI_3895.html",
+    30/01/2018,00:30,1,RI-8070,$80.08,Men's Ventilated Trail Shoes,"Great grip and super extra breathability make these amazing ventilated hikers ideal for warm, dry conditions.","https://www.example.com/product/RI_8070.html",
+    31/01/2018,00:45,1,RI-9546,$25.55,Switch Fly Rods,"This lightweight fly rod delivers outstanding performance and can be used as either a traditional one-handed rod or as a two-handed spey rod. Two-handed technique is ideal for larger rivers and situations where there isn't space for a backcast.","https://www.example.com/product/RI_9546.html",
+
+----------------------------------------------------------------------
+FILE: row_less_sep_row0_col2.csv
+POLLUTION: Missing delimiter in row 0 at column 2
+DIALECT: delimiter=',', quotechar='"', escapechar='"', row_delimiter='\r\n', encoding='ascii', header_lines=1, preamble_lines=0, n_columns=9
+
+  SUT failed to load the file.
+  First lines of polluted input:
+    DATE,TIMEQty,PRODUCTID,Price,ProductType,"ProductDescription","URL",Comments
+    28/01/2018,00:00,2,MG-8769,$74.69,Men's Waterproof Hiking Boots,"These waterproof hiking boots for men are rugged enough for peak performance yet light and quick enough to keep feet from feeling weighed down.","https://www.example.com/product/MG_8769.html",
+    29/01/2018,00:15,0,RI-3895,$29.81,Light-Up Running Jacket,"The next level of weather protection. This light-up jacket resists the elements and keeps you visible in low-light conditions. From running, biking or walking the dog, the durable construction and innovative safety features won't let you down.","https://www.example.com/product/RI_3895.html",
+    30/01/2018,00:30,1,RI-8070,$80.08,Men's Ventilated Trail Shoes,"Great grip and super extra breathability make these amazing ventilated hikers ideal for warm, dry conditions.","https://www.example.com/product/RI_8070.html",
+    31/01/2018,00:45,1,RI-9546,$25.55,Switch Fly Rods,"This lightweight fly rod delivers outstanding performance and can be used as either a traditional one-handed rod or as a two-handed spey rod. Two-handed technique is ideal for larger rivers and situations where there isn't space for a backcast.","https://www.example.com/product/RI_9546.html",
+
+----------------------------------------------------------------------
+FILE: row_less_sep_row0_col3.csv
+POLLUTION: Missing delimiter in row 0 at column 3
+DIALECT: delimiter=',', quotechar='"', escapechar='"', row_delimiter='\r\n', encoding='ascii', header_lines=1, preamble_lines=0, n_columns=9
+
+  SUT failed to load the file.
+  First lines of polluted input:
+    DATE,TIME,QtyPRODUCTID,Price,ProductType,"ProductDescription","URL",Comments
+    28/01/2018,00:00,2,MG-8769,$74.69,Men's Waterproof Hiking Boots,"These waterproof hiking boots for men are rugged enough for peak performance yet light and quick enough to keep feet from feeling weighed down.","https://www.example.com/product/MG_8769.html",
+    29/01/2018,00:15,0,RI-3895,$29.81,Light-Up Running Jacket,"The next level of weather protection. This light-up jacket resists the elements and keeps you visible in low-light conditions. From running, biking or walking the dog, the durable construction and innovative safety features won't let you down.","https://www.example.com/product/RI_3895.html",
+    30/01/2018,00:30,1,RI-8070,$80.08,Men's Ventilated Trail Shoes,"Great grip and super extra breathability make these amazing ventilated hikers ideal for warm, dry conditions.","https://www.example.com/product/RI_8070.html",
+    31/01/2018,00:45,1,RI-9546,$25.55,Switch Fly Rods,"This lightweight fly rod delivers outstanding performance and can be used as either a traditional one-handed rod or as a two-handed spey rod. Two-handed technique is ideal for larger rivers and situations where there isn't space for a backcast.","https://www.example.com/product/RI_9546.html",
+
+----------------------------------------------------------------------
+POLLUTION TYPE: Row uses space as field delimiter
+FILES: 84
+VARIANTS: rows 0-83 (84 unique)
+SHOWING: 3 example file(s); 81 more grouped under this pollution type.
+
+----------------------------------------------------------------------
+FILE: row_field_delimiter_0_0x20.csv
+POLLUTION: Row 0 uses space as field delimiter (opposed to the correct delimiter defined by the grammar)
+DIALECT: delimiter=',', quotechar='"', escapechar='"', row_delimiter='\r\n', encoding='ascii', header_lines=1, preamble_lines=0, n_columns=9
+
+  SUT failed to load the file.
+  First lines of polluted input:
+    DATE TIME Qty PRODUCTID Price ProductType "ProductDescription" "URL" Comments
+    28/01/2018,00:00,2,MG-8769,$74.69,Men's Waterproof Hiking Boots,"These waterproof hiking boots for men are rugged enough for peak performance yet light and quick enough to keep feet from feeling weighed down.","https://www.example.com/product/MG_8769.html",
+    29/01/2018,00:15,0,RI-3895,$29.81,Light-Up Running Jacket,"The next level of weather protection. This light-up jacket resists the elements and keeps you visible in low-light conditions. From running, biking or walking the dog, the durable construction and innovative safety features won't let you down.","https://www.example.com/product/RI_3895.html",
+    30/01/2018,00:30,1,RI-8070,$80.08,Men's Ventilated Trail Shoes,"Great grip and super extra breathability make these amazing ventilated hikers ideal for warm, dry conditions.","https://www.example.com/product/RI_8070.html",
+    31/01/2018,00:45,1,RI-9546,$25.55,Switch Fly Rods,"This lightweight fly rod delivers outstanding performance and can be used as either a traditional one-handed rod or as a two-handed spey rod. Two-handed technique is ideal for larger rivers and situations where there isn't space for a backcast.","https://www.example.com/product/RI_9546.html",
+
+----------------------------------------------------------------------
+FILE: row_field_delimiter_1_0x20.csv
+POLLUTION: Row 1 uses space as field delimiter (opposed to the correct delimiter defined by the grammar)
+DIALECT: delimiter=',', quotechar='"', escapechar='"', row_delimiter='\r\n', encoding='ascii', header_lines=1, preamble_lines=0, n_columns=9
+
+  SUT failed to load the file.
+  First lines of polluted input:
+    DATE,TIME,Qty,PRODUCTID,Price,ProductType,"ProductDescription","URL",Comments
+    28/01/2018 00:00 2 MG-8769 $74.69 Men's Waterproof Hiking Boots "These waterproof hiking boots for men are rugged enough for peak performance yet light and quick enough to keep feet from feeling weighed down." "https://www.example.com/product/MG_8769.html" 
+    29/01/2018,00:15,0,RI-3895,$29.81,Light-Up Running Jacket,"The next level of weather protection. This light-up jacket resists the elements and keeps you visible in low-light conditions. From running, biking or walking the dog, the durable construction and innovative safety features won't let you down.","https://www.example.com/product/RI_3895.html",
+    30/01/2018,00:30,1,RI-8070,$80.08,Men's Ventilated Trail Shoes,"Great grip and super extra breathability make these amazing ventilated hikers ideal for warm, dry conditions.","https://www.example.com/product/RI_8070.html",
+    31/01/2018,00:45,1,RI-9546,$25.55,Switch Fly Rods,"This lightweight fly rod delivers outstanding performance and can be used as either a traditional one-handed rod or as a two-handed spey rod. Two-handed technique is ideal for larger rivers and situations where there isn't space for a backcast.","https://www.example.com/product/RI_9546.html",
+
+----------------------------------------------------------------------
+FILE: row_field_delimiter_2_0x20.csv
+POLLUTION: Row 2 uses space as field delimiter (opposed to the correct delimiter defined by the grammar)
+DIALECT: delimiter=',', quotechar='"', escapechar='"', row_delimiter='\r\n', encoding='ascii', header_lines=1, preamble_lines=0, n_columns=9
+
+  SUT failed to load the file.
+  First lines of polluted input:
+    DATE,TIME,Qty,PRODUCTID,Price,ProductType,"ProductDescription","URL",Comments
+    28/01/2018,00:00,2,MG-8769,$74.69,Men's Waterproof Hiking Boots,"These waterproof hiking boots for men are rugged enough for peak performance yet light and quick enough to keep feet from feeling weighed down.","https://www.example.com/product/MG_8769.html",
+    29/01/2018 00:15 0 RI-3895 $29.81 Light-Up Running Jacket "The next level of weather protection. This light-up jacket resists the elements and keeps you visible in low-light conditions. From running, biking or walking the dog, the durable construction and innovative safety features won't let you down." "https://www.example.com/product/RI_3895.html" 
+    30/01/2018,00:30,1,RI-8070,$80.08,Men's Ventilated Trail Shoes,"Great grip and super extra breathability make these amazing ventilated hikers ideal for warm, dry conditions.","https://www.example.com/product/RI_8070.html",
+    31/01/2018,00:45,1,RI-9546,$25.55,Switch Fly Rods,"This lightweight fly rod delivers outstanding performance and can be used as either a traditional one-handed rod or as a two-handed spey rod. Two-handed technique is ideal for larger rivers and situations where there isn't space for a backcast.","https://www.example.com/product/RI_9546.html",
+
+----------------------------------------------------------------------
+POLLUTION TYPE: Unknown
+FILES: 2
+
+----------------------------------------------------------------------
+FILE: file_quotation_char_none.csv
+POLLUTION: Unknown
+DIALECT: delimiter=',', quotechar='', escapechar='"', row_delimiter='\r\n', encoding='ascii', header_lines=1, preamble_lines=0, n_columns=9
+
+  SUT failed to load the file.
+  First lines of polluted input:
+    DATE,TIME,Qty,PRODUCTID,Price,ProductType,ProductDescription,URL,Comments
+    28/01/2018,00:00,2,MG-8769,$74.69,Men's Waterproof Hiking Boots,These waterproof hiking boots for men are rugged enough for peak performance yet light and quick enough to keep feet from feeling weighed down.,https://www.example.com/product/MG_8769.html,
+    29/01/2018,00:15,0,RI-3895,$29.81,Light-Up Running Jacket,The next level of weather protection. This light-up jacket resists the elements and keeps you visible in low-light conditions. From running, biking or walking the dog, the durable construction and innovative safety features won't let you down.,https://www.example.com/product/RI_3895.html,
+    30/01/2018,00:30,1,RI-8070,$80.08,Men's Ventilated Trail Shoes,Great grip and super extra breathability make these amazing ventilated hikers ideal for warm, dry conditions.,https://www.example.com/product/RI_8070.html,
+    31/01/2018,00:45,1,RI-9546,$25.55,Switch Fly Rods,This lightweight fly rod delivers outstanding performance and can be used as either a traditional one-handed rod or as a two-handed spey rod. Two-handed technique is ideal for larger rivers and situations where there isn't space for a backcast.,https://www.example.com/product/RI_9546.html,
+
+----------------------------------------------------------------------
+FILE: source.csv
+POLLUTION: Unknown
+DIALECT: delimiter=',', quotechar='"', escapechar='"', row_delimiter='\r\n', encoding='ascii', header_lines=1, preamble_lines=0, n_columns=9
+
+  SUT failed to load the file.
+  First lines of polluted input:
+    DATE,TIME,Qty,PRODUCTID,Price,ProductType,"ProductDescription","URL",Comments
+    28/01/2018,00:00,2,MG-8769,$74.69,Men's Waterproof Hiking Boots,"These waterproof hiking boots for men are rugged enough for peak performance yet light and quick enough to keep feet from feeling weighed down.","https://www.example.com/product/MG_8769.html",
+    29/01/2018,00:15,0,RI-3895,$29.81,Light-Up Running Jacket,"The next level of weather protection. This light-up jacket resists the elements and keeps you visible in low-light conditions. From running, biking or walking the dog, the durable construction and innovative safety features won't let you down.","https://www.example.com/product/RI_3895.html",
+    30/01/2018,00:30,1,RI-8070,$80.08,Men's Ventilated Trail Shoes,"Great grip and super extra breathability make these amazing ventilated hikers ideal for warm, dry conditions.","https://www.example.com/product/RI_8070.html",
+    31/01/2018,00:45,1,RI-9546,$25.55,Switch Fly Rods,"This lightweight fly rod delivers outstanding performance and can be used as either a traditional one-handed rod or as a two-handed spey rod. Two-handed technique is ideal for larger rivers and situations where there isn't space for a backcast.","https://www.example.com/product/RI_9546.html",
+
+----------------------------------------------------------------------
+POLLUTION TYPE: Double trailing newline
+FILES: 1
+
+----------------------------------------------------------------------
+FILE: file_double_trailing_newline.csv
+POLLUTION: Double trailing newline
+DIALECT: delimiter=',', quotechar='"', escapechar='"', row_delimiter='\r\n', encoding='ascii', header_lines=1, preamble_lines=0, n_columns=9
+
+  SUT failed to load the file.
+  First lines of polluted input:
+    DATE,TIME,Qty,PRODUCTID,Price,ProductType,"ProductDescription","URL",Comments
+    28/01/2018,00:00,2,MG-8769,$74.69,Men's Waterproof Hiking Boots,"These waterproof hiking boots for men are rugged enough for peak performance yet light and quick enough to keep feet from feeling weighed down.","https://www.example.com/product/MG_8769.html",
+    29/01/2018,00:15,0,RI-3895,$29.81,Light-Up Running Jacket,"The next level of weather protection. This light-up jacket resists the elements and keeps you visible in low-light conditions. From running, biking or walking the dog, the durable construction and innovative safety features won't let you down.","https://www.example.com/product/RI_3895.html",
+    30/01/2018,00:30,1,RI-8070,$80.08,Men's Ventilated Trail Shoes,"Great grip and super extra breathability make these amazing ventilated hikers ideal for warm, dry conditions.","https://www.example.com/product/RI_8070.html",
+    31/01/2018,00:45,1,RI-9546,$25.55,Switch Fly Rods,"This lightweight fly rod delivers outstanding performance and can be used as either a traditional one-handed rod or as a two-handed spey rod. Two-handed technique is ideal for larger rivers and situations where there isn't space for a backcast.","https://www.example.com/product/RI_9546.html",
+
+----------------------------------------------------------------------
+POLLUTION TYPE: Empty file (0 bytes)
+FILES: 1
+
+----------------------------------------------------------------------
+FILE: file_no_payload.csv
+POLLUTION: Empty file (0 bytes)
+DIALECT: delimiter='', quotechar='', escapechar='', row_delimiter='', encoding='ascii', header_lines=0, preamble_lines=0, n_columns=0
+
+  SUT failed to load the file.
+  First lines of polluted input:
+    
+    
+    
+    
+    
+
+----------------------------------------------------------------------
+POLLUTION TYPE: Header row only, no data
+FILES: 1
+
+----------------------------------------------------------------------
+FILE: file_header_only.csv
+POLLUTION: Header row only, no data
+DIALECT: delimiter=',', quotechar='"', escapechar='', row_delimiter='\r\n', encoding='ascii', header_lines=1, preamble_lines=0, n_columns=0
+
+  SUT failed to load the file.
+  First lines of polluted input:
+    DATE,TIME,Qty,PRODUCTID,Price,ProductType,"ProductDescription","URL",Comments
+    
+    
+    
+    
+
+----------------------------------------------------------------------
+POLLUTION TYPE: Missing trailing newline
+FILES: 1
+
+----------------------------------------------------------------------
+FILE: file_no_trailing_newline.csv
+POLLUTION: Missing trailing newline
+DIALECT: delimiter=',', quotechar='"', escapechar='"', row_delimiter='\r\n', encoding='ascii', header_lines=1, preamble_lines=0, n_columns=9
+
+  SUT failed to load the file.
+  First lines of polluted input:
+    DATE,TIME,Qty,PRODUCTID,Price,ProductType,"ProductDescription","URL",Comments
+    28/01/2018,00:00,2,MG-8769,$74.69,Men's Waterproof Hiking Boots,"These waterproof hiking boots for men are rugged enough for peak performance yet light and quick enough to keep feet from feeling weighed down.","https://www.example.com/product/MG_8769.html",
+    29/01/2018,00:15,0,RI-3895,$29.81,Light-Up Running Jacket,"The next level of weather protection. This light-up jacket resists the elements and keeps you visible in low-light conditions. From running, biking or walking the dog, the durable construction and innovative safety features won't let you down.","https://www.example.com/product/RI_3895.html",
+    30/01/2018,00:30,1,RI-8070,$80.08,Men's Ventilated Trail Shoes,"Great grip and super extra breathability make these amazing ventilated hikers ideal for warm, dry conditions.","https://www.example.com/product/RI_8070.html",
+    31/01/2018,00:45,1,RI-9546,$25.55,Switch Fly Rods,"This lightweight fly rod delivers outstanding performance and can be used as either a traditional one-handed rod or as a two-handed spey rod. Two-handed technique is ideal for larger rivers and situations where there isn't space for a backcast.","https://www.example.com/product/RI_9546.html",
+
+----------------------------------------------------------------------
+POLLUTION TYPE: Multi-row header (2 rows)
+FILES: 1
+
+----------------------------------------------------------------------
+FILE: file_header_multirow_2.csv
+POLLUTION: Multi-row header (2 rows)
+DIALECT: delimiter=',', quotechar='"', escapechar='"', row_delimiter='\r\n', encoding='ascii', header_lines=2, preamble_lines=0, n_columns=9
+
+  SUT failed to load the file.
+  First lines of polluted input:
+    DATE,TIME,Qty,PRODUCTID,Price,ProductType,ProductDescription,URL,Comments
+    DATE,TIME,Qty,PRODUCTID,Price,ProductType,"ProductDescription","URL",Comments
+    28/01/2018,00:00,2,MG-8769,$74.69,Men's Waterproof Hiking Boots,"These waterproof hiking boots for men are rugged enough for peak performance yet light and quick enough to keep feet from feeling weighed down.","https://www.example.com/product/MG_8769.html",
+    29/01/2018,00:15,0,RI-3895,$29.81,Light-Up Running Jacket,"The next level of weather protection. This light-up jacket resists the elements and keeps you visible in low-light conditions. From running, biking or walking the dog, the durable construction and innovative safety features won't let you down.","https://www.example.com/product/RI_3895.html",
+    30/01/2018,00:30,1,RI-8070,$80.08,Men's Ventilated Trail Shoes,"Great grip and super extra breathability make these amazing ventilated hikers ideal for warm, dry conditions.","https://www.example.com/product/RI_8070.html",
+
+----------------------------------------------------------------------
+POLLUTION TYPE: Multi-row header (3 rows)
+FILES: 1
+
+----------------------------------------------------------------------
+FILE: file_header_multirow_3.csv
+POLLUTION: Multi-row header (3 rows)
+DIALECT: delimiter=',', quotechar='"', escapechar='"', row_delimiter='\r\n', encoding='ascii', header_lines=3, preamble_lines=0, n_columns=9
+
+  SUT failed to load the file.
+  First lines of polluted input:
+    DATE,TIME,Qty,PRODUCTID,Price,ProductType,ProductDescription,URL,Comments
+    DATE,TIME,Qty,PRODUCTID,Price,ProductType,ProductDescription,URL,Comments
+    DATE,TIME,Qty,PRODUCTID,Price,ProductType,"ProductDescription","URL",Comments
+    28/01/2018,00:00,2,MG-8769,$74.69,Men's Waterproof Hiking Boots,"These waterproof hiking boots for men are rugged enough for peak performance yet light and quick enough to keep feet from feeling weighed down.","https://www.example.com/product/MG_8769.html",
+    29/01/2018,00:15,0,RI-3895,$29.81,Light-Up Running Jacket,"The next level of weather protection. This light-up jacket resists the elements and keeps you visible in low-light conditions. From running, biking or walking the dog, the durable construction and innovative safety features won't let you down.","https://www.example.com/product/RI_3895.html",
+
+----------------------------------------------------------------------
+POLLUTION TYPE: No header row
+FILES: 1
+
+----------------------------------------------------------------------
+FILE: file_no_header.csv
+POLLUTION: No header row
+DIALECT: delimiter=',', quotechar='"', escapechar='"', row_delimiter='\r\n', encoding='ascii', header_lines=0, preamble_lines=0, n_columns=9
+
+  SUT failed to load the file.
+  First lines of polluted input:
+    28/01/2018,00:00,2,MG-8769,$74.69,Men's Waterproof Hiking Boots,"These waterproof hiking boots for men are rugged enough for peak performance yet light and quick enough to keep feet from feeling weighed down.","https://www.example.com/product/MG_8769.html",
+    29/01/2018,00:15,0,RI-3895,$29.81,Light-Up Running Jacket,"The next level of weather protection. This light-up jacket resists the elements and keeps you visible in low-light conditions. From running, biking or walking the dog, the durable construction and innovative safety features won't let you down.","https://www.example.com/product/RI_3895.html",
+    30/01/2018,00:30,1,RI-8070,$80.08,Men's Ventilated Trail Shoes,"Great grip and super extra breathability make these amazing ventilated hikers ideal for warm, dry conditions.","https://www.example.com/product/RI_8070.html",
+    31/01/2018,00:45,1,RI-9546,$25.55,Switch Fly Rods,"This lightweight fly rod delivers outstanding performance and can be used as either a traditional one-handed rod or as a two-handed spey rod. Two-handed technique is ideal for larger rivers and situations where there isn't space for a backcast.","https://www.example.com/product/RI_9546.html",
+    13/02/2018,01:00,9,CC-9259,$48.00,"Throw Pillow, Wooden Paddles","Add a pop of paddling fun to your bed, chair or sofa with this whimsical throw pillow, handhooked on front for a timeless style.","https://www.example.com/product/CC_9259.html",
+
+----------------------------------------------------------------------
+POLLUTION TYPE: Non-standard escape character (0x00)
+FILES: 1
+
+----------------------------------------------------------------------
+FILE: file_escape_char_0x00.csv
+POLLUTION: Non-standard escape character (0x00)
+DIALECT: delimiter=',', quotechar='"', escapechar='', row_delimiter='\r\n', encoding='ascii', header_lines=1, preamble_lines=0, n_columns=9
+
+  SUT failed to load the file.
+  First lines of polluted input:
+    DATE,TIME,Qty,PRODUCTID,Price,ProductType,"ProductDescription","URL",Comments
+    28/01/2018,00:00,2,MG-8769,$74.69,Men's Waterproof Hiking Boots,"These waterproof hiking boots for men are rugged enough for peak performance yet light and quick enough to keep feet from feeling weighed down.","https://www.example.com/product/MG_8769.html",
+    29/01/2018,00:15,0,RI-3895,$29.81,Light-Up Running Jacket,"The next level of weather protection. This light-up jacket resists the elements and keeps you visible in low-light conditions. From running, biking or walking the dog, the durable construction and innovative safety features won't let you down.","https://www.example.com/product/RI_3895.html",
+    30/01/2018,00:30,1,RI-8070,$80.08,Men's Ventilated Trail Shoes,"Great grip and super extra breathability make these amazing ventilated hikers ideal for warm, dry conditions.","https://www.example.com/product/RI_8070.html",
+    31/01/2018,00:45,1,RI-9546,$25.55,Switch Fly Rods,"This lightweight fly rod delivers outstanding performance and can be used as either a traditional one-handed rod or as a two-handed spey rod. Two-handed technique is ideal for larger rivers and situations where there isn't space for a backcast.","https://www.example.com/product/RI_9546.html",
+
+----------------------------------------------------------------------
+POLLUTION TYPE: Non-standard escape character (0x5C)
+FILES: 1
+
+----------------------------------------------------------------------
+FILE: file_escape_char_0x5C.csv
+POLLUTION: Non-standard escape character (0x5C)
+DIALECT: delimiter=',', quotechar='"', escapechar='\\', row_delimiter='\r\n', encoding='ascii', header_lines=1, preamble_lines=0, n_columns=9
+
+  SUT failed to load the file.
+  First lines of polluted input:
+    DATE,TIME,Qty,PRODUCTID,Price,ProductType,"ProductDescription","URL",Comments
+    28/01/2018,00:00,2,MG-8769,$74.69,Men's Waterproof Hiking Boots,"These waterproof hiking boots for men are rugged enough for peak performance yet light and quick enough to keep feet from feeling weighed down.","https://www.example.com/product/MG_8769.html",
+    29/01/2018,00:15,0,RI-3895,$29.81,Light-Up Running Jacket,"The next level of weather protection. This light-up jacket resists the elements and keeps you visible in low-light conditions. From running, biking or walking the dog, the durable construction and innovative safety features won't let you down.","https://www.example.com/product/RI_3895.html",
+    30/01/2018,00:30,1,RI-8070,$80.08,Men's Ventilated Trail Shoes,"Great grip and super extra breathability make these amazing ventilated hikers ideal for warm, dry conditions.","https://www.example.com/product/RI_8070.html",
+    31/01/2018,00:45,1,RI-9546,$25.55,Switch Fly Rods,"This lightweight fly rod delivers outstanding performance and can be used as either a traditional one-handed rod or as a two-handed spey rod. Two-handed technique is ideal for larger rivers and situations where there isn't space for a backcast.","https://www.example.com/product/RI_9546.html",
+
+----------------------------------------------------------------------
+POLLUTION TYPE: Non-standard field delimiter (0x20)
+FILES: 1
+
+----------------------------------------------------------------------
+FILE: file_field_delimiter_0x20.csv
+POLLUTION: Non-standard field delimiter (0x20)
+DIALECT: delimiter=' ', quotechar='"', escapechar='"', row_delimiter='\r\n', encoding='ascii', header_lines=1, preamble_lines=0, n_columns=9
+
+  SUT failed to load the file.
+  First lines of polluted input:
+    DATE TIME Qty PRODUCTID Price ProductType "ProductDescription" "URL" Comments
+    28/01/2018 00:00 2 MG-8769 $74.69 Men's Waterproof Hiking Boots "These waterproof hiking boots for men are rugged enough for peak performance yet light and quick enough to keep feet from feeling weighed down." "https://www.example.com/product/MG_8769.html" 
+    29/01/2018 00:15 0 RI-3895 $29.81 Light-Up Running Jacket "The next level of weather protection. This light-up jacket resists the elements and keeps you visible in low-light conditions. From running, biking or walking the dog, the durable construction and innovative safety features won't let you down." "https://www.example.com/product/RI_3895.html" 
+    30/01/2018 00:30 1 RI-8070 $80.08 Men's Ventilated Trail Shoes "Great grip and super extra breathability make these amazing ventilated hikers ideal for warm, dry conditions." "https://www.example.com/product/RI_8070.html" 
+    31/01/2018 00:45 1 RI-9546 $25.55 Switch Fly Rods "This lightweight fly rod delivers outstanding performance and can be used as either a traditional one-handed rod or as a two-handed spey rod. Two-handed technique is ideal for larger rivers and situations where there isn't space for a backcast." "https://www.example.com/product/RI_9546.html" 
+
+----------------------------------------------------------------------
+POLLUTION TYPE: Non-standard field delimiter (0x2C_0x20)
+FILES: 1
+
+----------------------------------------------------------------------
+FILE: file_field_delimiter_0x2C_0x20.csv
+POLLUTION: Non-standard field delimiter (0x2C_0x20)
+DIALECT: delimiter=', ', quotechar='"', escapechar='"', row_delimiter='\r\n', encoding='ascii', header_lines=1, preamble_lines=0, n_columns=9
+
+  SUT failed to load the file.
+  First lines of polluted input:
+    DATE, TIME, Qty, PRODUCTID, Price, ProductType, "ProductDescription", "URL", Comments
+    28/01/2018, 00:00, 2, MG-8769, $74.69, Men's Waterproof Hiking Boots, "These waterproof hiking boots for men are rugged enough for peak performance yet light and quick enough to keep feet from feeling weighed down.", "https://www.example.com/product/MG_8769.html", 
+    29/01/2018, 00:15, 0, RI-3895, $29.81, Light-Up Running Jacket, "The next level of weather protection. This light-up jacket resists the elements and keeps you visible in low-light conditions. From running, biking or walking the dog, the durable construction and innovative safety features won't let you down.", "https://www.example.com/product/RI_3895.html", 
+    30/01/2018, 00:30, 1, RI-8070, $80.08, Men's Ventilated Trail Shoes, "Great grip and super extra breathability make these amazing ventilated hikers ideal for warm, dry conditions.", "https://www.example.com/product/RI_8070.html", 
+    31/01/2018, 00:45, 1, RI-9546, $25.55, Switch Fly Rods, "This lightweight fly rod delivers outstanding performance and can be used as either a traditional one-handed rod or as a two-handed spey rod. Two-handed technique is ideal for larger rivers and situations where there isn't space for a backcast.", "https://www.example.com/product/RI_9546.html", 
+
+----------------------------------------------------------------------
+POLLUTION TYPE: Non-standard field delimiter (0x3B)
+FILES: 1
+
+----------------------------------------------------------------------
+FILE: file_field_delimiter_0x3B.csv
+POLLUTION: Non-standard field delimiter (0x3B)
+DIALECT: delimiter=';', quotechar='"', escapechar='"', row_delimiter='\r\n', encoding='ascii', header_lines=1, preamble_lines=0, n_columns=9
+
+  SUT failed to load the file.
+  First lines of polluted input:
+    DATE;TIME;Qty;PRODUCTID;Price;ProductType;"ProductDescription";"URL";Comments
+    28/01/2018;00:00;2;MG-8769;$74.69;Men's Waterproof Hiking Boots;"These waterproof hiking boots for men are rugged enough for peak performance yet light and quick enough to keep feet from feeling weighed down.";"https://www.example.com/product/MG_8769.html";
+    29/01/2018;00:15;0;RI-3895;$29.81;Light-Up Running Jacket;"The next level of weather protection. This light-up jacket resists the elements and keeps you visible in low-light conditions. From running, biking or walking the dog, the durable construction and innovative safety features won't let you down.";"https://www.example.com/product/RI_3895.html";
+    30/01/2018;00:30;1;RI-8070;$80.08;Men's Ventilated Trail Shoes;"Great grip and super extra breathability make these amazing ventilated hikers ideal for warm, dry conditions.";"https://www.example.com/product/RI_8070.html";
+    31/01/2018;00:45;1;RI-9546;$25.55;Switch Fly Rods;"This lightweight fly rod delivers outstanding performance and can be used as either a traditional one-handed rod or as a two-handed spey rod. Two-handed technique is ideal for larger rivers and situations where there isn't space for a backcast.";"https://www.example.com/product/RI_9546.html";
+
+----------------------------------------------------------------------
+POLLUTION TYPE: Non-standard field delimiter (0x9)
+FILES: 1
+
+----------------------------------------------------------------------
+FILE: file_field_delimiter_0x9.csv
+POLLUTION: Non-standard field delimiter (0x9)
+DIALECT: delimiter='\t', quotechar='"', escapechar='"', row_delimiter='\r\n', encoding='ascii', header_lines=1, preamble_lines=0, n_columns=9
+
+  SUT failed to load the file.
+  First lines of polluted input:
+    DATE	TIME	Qty	PRODUCTID	Price	ProductType	"ProductDescription"	"URL"	Comments
+    28/01/2018	00:00	2	MG-8769	$74.69	Men's Waterproof Hiking Boots	"These waterproof hiking boots for men are rugged enough for peak performance yet light and quick enough to keep feet from feeling weighed down."	"https://www.example.com/product/MG_8769.html"	
+    29/01/2018	00:15	0	RI-3895	$29.81	Light-Up Running Jacket	"The next level of weather protection. This light-up jacket resists the elements and keeps you visible in low-light conditions. From running, biking or walking the dog, the durable construction and innovative safety features won't let you down."	"https://www.example.com/product/RI_3895.html"	
+    30/01/2018	00:30	1	RI-8070	$80.08	Men's Ventilated Trail Shoes	"Great grip and super extra breathability make these amazing ventilated hikers ideal for warm, dry conditions."	"https://www.example.com/product/RI_8070.html"	
+    31/01/2018	00:45	1	RI-9546	$25.55	Switch Fly Rods	"This lightweight fly rod delivers outstanding performance and can be used as either a traditional one-handed rod or as a two-handed spey rod. Two-handed technique is ideal for larger rivers and situations where there isn't space for a backcast."	"https://www.example.com/product/RI_9546.html"	
+
+----------------------------------------------------------------------
+POLLUTION TYPE: Non-standard quotation character (0x27)
+FILES: 1
+
+----------------------------------------------------------------------
+FILE: file_quotation_char_0x27.csv
+POLLUTION: Non-standard quotation character (0x27)
+DIALECT: delimiter=',', quotechar="'", escapechar='"', row_delimiter='\r\n', encoding='ascii', header_lines=1, preamble_lines=0, n_columns=9
+
+  SUT failed to load the file.
+  First lines of polluted input:
+    DATE,TIME,Qty,PRODUCTID,Price,ProductType,'ProductDescription','URL',Comments
+    28/01/2018,00:00,2,MG-8769,$74.69,Men's Waterproof Hiking Boots,'These waterproof hiking boots for men are rugged enough for peak performance yet light and quick enough to keep feet from feeling weighed down.','https://www.example.com/product/MG_8769.html',
+    29/01/2018,00:15,0,RI-3895,$29.81,Light-Up Running Jacket,'The next level of weather protection. This light-up jacket resists the elements and keeps you visible in low-light conditions. From running, biking or walking the dog, the durable construction and innovative safety features won't let you down.','https://www.example.com/product/RI_3895.html',
+    30/01/2018,00:30,1,RI-8070,$80.08,Men's Ventilated Trail Shoes,'Great grip and super extra breathability make these amazing ventilated hikers ideal for warm, dry conditions.','https://www.example.com/product/RI_8070.html',
+    31/01/2018,00:45,1,RI-9546,$25.55,Switch Fly Rods,'This lightweight fly rod delivers outstanding performance and can be used as either a traditional one-handed rod or as a two-handed spey rod. Two-handed technique is ideal for larger rivers and situations where there isn't space for a backcast.','https://www.example.com/product/RI_9546.html',
+
+----------------------------------------------------------------------
+POLLUTION TYPE: Non-standard record delimiter (0xA)
+FILES: 1
+
+----------------------------------------------------------------------
+FILE: file_record_delimiter_0xA.csv
+POLLUTION: Non-standard record delimiter (0xA)
+DIALECT: delimiter=',', quotechar='"', escapechar='"', row_delimiter='\n', encoding='ascii', header_lines=1, preamble_lines=0, n_columns=9
+
+  SUT failed to load the file.
+  First lines of polluted input:
+    DATE,TIME,Qty,PRODUCTID,Price,ProductType,"ProductDescription","URL",Comments
+    28/01/2018,00:00,2,MG-8769,$74.69,Men's Waterproof Hiking Boots,"These waterproof hiking boots for men are rugged enough for peak performance yet light and quick enough to keep feet from feeling weighed down.","https://www.example.com/product/MG_8769.html",
+    29/01/2018,00:15,0,RI-3895,$29.81,Light-Up Running Jacket,"The next level of weather protection. This light-up jacket resists the elements and keeps you visible in low-light conditions. From running, biking or walking the dog, the durable construction and innovative safety features won't let you down.","https://www.example.com/product/RI_3895.html",
+    30/01/2018,00:30,1,RI-8070,$80.08,Men's Ventilated Trail Shoes,"Great grip and super extra breathability make these amazing ventilated hikers ideal for warm, dry conditions.","https://www.example.com/product/RI_8070.html",
+    31/01/2018,00:45,1,RI-9546,$25.55,Switch Fly Rods,"This lightweight fly rod delivers outstanding performance and can be used as either a traditional one-handed rod or as a two-handed spey rod. Two-handed technique is ideal for larger rivers and situations where there isn't space for a backcast.","https://www.example.com/product/RI_9546.html",
+
+----------------------------------------------------------------------
+POLLUTION TYPE: Non-standard record delimiter (0xD)
+FILES: 1
+
+----------------------------------------------------------------------
+FILE: file_record_delimiter_0xD.csv
+POLLUTION: Non-standard record delimiter (0xD)
+DIALECT: delimiter=',', quotechar='"', escapechar='"', row_delimiter='\r', encoding='ascii', header_lines=1, preamble_lines=0, n_columns=9
+
+  SUT failed to load the file.
+  First lines of polluted input:
+    DATE,TIME,Qty,PRODUCTID,Price,ProductType,"ProductDescription","URL",Comments
+    28/01/2018,00:00,2,MG-8769,$74.69,Men's Waterproof Hiking Boots,"These waterproof hiking boots for men are rugged enough for peak performance yet light and quick enough to keep feet from feeling weighed down.","https://www.example.com/product/MG_8769.html",
+    29/01/2018,00:15,0,RI-3895,$29.81,Light-Up Running Jacket,"The next level of weather protection. This light-up jacket resists the elements and keeps you visible in low-light conditions. From running, biking or walking the dog, the durable construction and innovative safety features won't let you down.","https://www.example.com/product/RI_3895.html",
+    30/01/2018,00:30,1,RI-8070,$80.08,Men's Ventilated Trail Shoes,"Great grip and super extra breathability make these amazing ventilated hikers ideal for warm, dry conditions.","https://www.example.com/product/RI_8070.html",
+    31/01/2018,00:45,1,RI-9546,$25.55,Switch Fly Rods,"This lightweight fly rod delivers outstanding performance and can be used as either a traditional one-handed rod or as a two-handed spey rod. Two-handed technique is ideal for larger rivers and situations where there isn't space for a backcast.","https://www.example.com/product/RI_9546.html",
+
+----------------------------------------------------------------------
+POLLUTION TYPE: Preamble rows before header
+FILES: 1
+
+----------------------------------------------------------------------
+FILE: file_preamble.csv
+POLLUTION: Preamble rows before header
+DIALECT: delimiter=',', quotechar='"', escapechar='"', row_delimiter='\r\n', encoding='ascii', header_lines=1, preamble_lines=2, n_columns=9
+
+  SUT failed to load the file.
+  First lines of polluted input:
+    PREAMBLE,,,,,,,,
+    ,,,,,,,,
+    DATE,TIME,Qty,PRODUCTID,Price,ProductType,"ProductDescription","URL",Comments
+    28/01/2018,00:00,2,MG-8769,$74.69,Men's Waterproof Hiking Boots,"These waterproof hiking boots for men are rugged enough for peak performance yet light and quick enough to keep feet from feeling weighed down.","https://www.example.com/product/MG_8769.html",
+    29/01/2018,00:15,0,RI-3895,$29.81,Light-Up Running Jacket,"The next level of weather protection. This light-up jacket resists the elements and keeps you visible in low-light conditions. From running, biking or walking the dog, the durable construction and innovative safety features won't let you down.","https://www.example.com/product/RI_3895.html",
+
+----------------------------------------------------------------------
+POLLUTION TYPE: Single data row
+FILES: 1
+
+----------------------------------------------------------------------
+FILE: file_one_data_row.csv
+POLLUTION: Single data row
+DIALECT: delimiter=',', quotechar='"', escapechar='', row_delimiter='\r\n', encoding='ascii', header_lines=1, preamble_lines=0, n_columns=9
+
+  SUT failed to load the file.
+  First lines of polluted input:
+    DATE,TIME,Qty,PRODUCTID,Price,ProductType,"ProductDescription","URL",Comments
+    28/01/2018,00:00,2,MG-8769,$74.69,Men's Waterproof Hiking Boots,"These waterproof hiking boots for men are rugged enough for peak performance yet light and quick enough to keep feet from feeling weighed down.","https://www.example.com/product/MG_8769.html",
+    
+    
+    
+
+----------------------------------------------------------------------
+POLLUTION TYPE: Two tables with the same number of columns
+FILES: 1
+
+----------------------------------------------------------------------
+FILE: file_multitable_same.csv
+POLLUTION: Two tables with the same number of columns
+DIALECT: delimiter=',', quotechar='"', escapechar='"', row_delimiter='\r\n', encoding='ascii', header_lines=1, preamble_lines=0, n_columns=9
+
+  SUT failed to load the file.
+  First lines of polluted input:
+    DATE,TIME,Qty,PRODUCTID,Price,ProductType,"ProductDescription","URL",Comments
+    28/01/2018,00:00,2,MG-8769,$74.69,Men's Waterproof Hiking Boots,"These waterproof hiking boots for men are rugged enough for peak performance yet light and quick enough to keep feet from feeling weighed down.","https://www.example.com/product/MG_8769.html",
+    29/01/2018,00:15,0,RI-3895,$29.81,Light-Up Running Jacket,"The next level of weather protection. This light-up jacket resists the elements and keeps you visible in low-light conditions. From running, biking or walking the dog, the durable construction and innovative safety features won't let you down.","https://www.example.com/product/RI_3895.html",
+    30/01/2018,00:30,1,RI-8070,$80.08,Men's Ventilated Trail Shoes,"Great grip and super extra breathability make these amazing ventilated hikers ideal for warm, dry conditions.","https://www.example.com/product/RI_8070.html",
+    31/01/2018,00:45,1,RI-9546,$25.55,Switch Fly Rods,"This lightweight fly rod delivers outstanding performance and can be used as either a traditional one-handed rod or as a two-handed spey rod. Two-handed technique is ideal for larger rivers and situations where there isn't space for a backcast.","https://www.example.com/product/RI_9546.html",
+
+----------------------------------------------------------------------
+POLLUTION TYPE: Two tables, first has fewer columns
+FILES: 1
+
+----------------------------------------------------------------------
+FILE: file_multitable_less.csv
+POLLUTION: Two tables, first has fewer columns
+DIALECT: delimiter=',', quotechar='"', escapechar='"', row_delimiter='\r\n', encoding='ascii', header_lines=1, preamble_lines=0, n_columns=9
+
+  SUT failed to load the file.
+  First lines of polluted input:
+    DATE,TIME,Qty,PRODUCTID,Price,ProductType,"ProductDescription","URL",Comments
+    28/01/2018,00:00,2,MG-8769,$74.69,Men's Waterproof Hiking Boots,"These waterproof hiking boots for men are rugged enough for peak performance yet light and quick enough to keep feet from feeling weighed down.","https://www.example.com/product/MG_8769.html",
+    29/01/2018,00:15,0,RI-3895,$29.81,Light-Up Running Jacket,"The next level of weather protection. This light-up jacket resists the elements and keeps you visible in low-light conditions. From running, biking or walking the dog, the durable construction and innovative safety features won't let you down.","https://www.example.com/product/RI_3895.html",
+    30/01/2018,00:30,1,RI-8070,$80.08,Men's Ventilated Trail Shoes,"Great grip and super extra breathability make these amazing ventilated hikers ideal for warm, dry conditions.","https://www.example.com/product/RI_8070.html",
+    31/01/2018,00:45,1,RI-9546,$25.55,Switch Fly Rods,"This lightweight fly rod delivers outstanding performance and can be used as either a traditional one-handed rod or as a two-handed spey rod. Two-handed technique is ideal for larger rivers and situations where there isn't space for a backcast.","https://www.example.com/product/RI_9546.html",
+
+----------------------------------------------------------------------
+POLLUTION TYPE: Two tables, first has more columns
+FILES: 1
+
+----------------------------------------------------------------------
+FILE: file_multitable_more.csv
+POLLUTION: Two tables, first has more columns
+DIALECT: delimiter=',', quotechar='"', escapechar='"', row_delimiter='\r\n', encoding='ascii', header_lines=1, preamble_lines=0, n_columns=9
+
+  SUT failed to load the file.
+  First lines of polluted input:
+    DATE,TIME,Qty,PRODUCTID,Price,ProductType,"ProductDescription","URL",Comments
+    28/01/2018,00:00,2,MG-8769,$74.69,Men's Waterproof Hiking Boots,"These waterproof hiking boots for men are rugged enough for peak performance yet light and quick enough to keep feet from feeling weighed down.","https://www.example.com/product/MG_8769.html",
+    29/01/2018,00:15,0,RI-3895,$29.81,Light-Up Running Jacket,"The next level of weather protection. This light-up jacket resists the elements and keeps you visible in low-light conditions. From running, biking or walking the dog, the durable construction and innovative safety features won't let you down.","https://www.example.com/product/RI_3895.html",
+    30/01/2018,00:30,1,RI-8070,$80.08,Men's Ventilated Trail Shoes,"Great grip and super extra breathability make these amazing ventilated hikers ideal for warm, dry conditions.","https://www.example.com/product/RI_8070.html",
+    31/01/2018,00:45,1,RI-9546,$25.55,Switch Fly Rods,"This lightweight fly rod delivers outstanding performance and can be used as either a traditional one-handed rod or as a two-handed spey rod. Two-handed technique is ideal for larger rivers and situations where there isn't space for a backcast.","https://www.example.com/product/RI_9546.html",
+
+======================================================================
+WRONG CONTENT BY POLLUTION TYPE - 0 files
+======================================================================
+  (none)
+
+======================================================================
+WRONG CONTENT FILES BY POLLUTION TYPE
+======================================================================
+
+  (none)

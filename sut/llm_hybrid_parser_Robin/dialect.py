@@ -426,4 +426,3 @@ def infer_expected_columns(lines: List[str], dialect: CSVDialect) -> int:
     if not counts:
         return 0
     return Counter(counts).most_common(1)[0][0]
-

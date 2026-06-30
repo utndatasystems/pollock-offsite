@@ -11,6 +11,55 @@ from dialect import CSVDialect, parse_record
 from llm import _extract_json_object, call_llm
 
 
+DEFAULT_REPAIR_PROMPT = """
+Repair faulty CSV records. Return JSON only, no Markdown, no commentary.
+For each input line, output the repaired content as a list of field values, not as CSV text.
+Return unescaped field values.
+Do not CSV-escape inside field values.
+JSON escaping is allowed only because the response is JSON.
+""".strip()
+
+SPECIAL_REPAIR_PROMPT = """
+Repair faulty CSV records. Return JSON only, no Markdown, no commentary.
+For each input line, return unescaped field values, not CSV text.
+Do not CSV-escape inside field values.
+JSON escaping is allowed only because the response is JSON.
+
+Make sure the output has the expected number of columns as fields. 
+Use the automatically-detected dialect and the good examples as a hint.
+In ambiguous scenarios that require a decision try to use semantic information from the column names and the successfully parsed rows. (e.g. too few delimiters -> where to split; or too many delimiters -> where to ignore the delimiter) 
+
+Repair structural damage and not data.
+Quotes that form valid CSV quoting are syntax. Stray, extra, or unbalanced quotes are data: keep them in the nearest value while repairing the field boundaries around them.
+A trailing delimiter indicates a final empty field.
+
+Priority order: exactly expected_column_count fields; each value fits its column; preserve original cell text.
+""".strip()
+
+# """
+# Repair faulty CSV records. Return JSON only, no Markdown, no commentary.
+# For each input line, return unescaped field values, not CSV text.
+# Do not CSV-escape inside field values; JSON escaping is allowed only because the response is JSON.
+
+# Use dialect, columns, expected_column_count, and good_examples as constraints.
+# Priority order: exactly expected_column_count fields; each value fits its column; preserve original cell text.
+
+# Repair structural damage, not data: extra delimiters, missing delimiters, and broken quote syntax.
+# Do not keep corrupt delimiters as field text or shift later values into the wrong columns.
+# A trailing delimiter is an empty final field only when expected_column_count includes it; never move it into the previous value.
+
+# Quotes that form valid CSV quoting are syntax. Stray, extra, or unbalanced quotes are data: keep them in the nearest value while repairing the field boundaries around them.
+# """.strip()
+
+
+
+def _repair_instruction_text(special_prompt: bool) -> str:
+    if not special_prompt:
+        return DEFAULT_REPAIR_PROMPT
+
+    return SPECIAL_REPAIR_PROMPT
+
+
 def _unique_duckdb_columns(count: int) -> Dict[str, str]:
     return {f"_c{i}": "VARCHAR" for i in range(count)}
 
@@ -280,6 +329,7 @@ def infer_repairs_with_llm(
     rejects: List[Dict[str, Any]],
     context_lines: int,
     trace: Any,
+    special_prompt: bool = False,
 ) -> Dict[int, List[str]]:
     faulty_lines = _dedupe_rejects_for_prompt(rejects)
     if not faulty_lines:
@@ -293,14 +343,7 @@ def infer_repairs_with_llm(
         "faulty_lines": faulty_lines,
     }
     prompt = "\n".join([
-        "Repair faulty CSV records. Return JSON only.",
-        "Return unescaped field values, not CSV text.",
-        "For each faulty line, output exactly one repair with exactly the expected number of fields.",
-        "Preserve field content exactly: literal quotes, apostrophes, backslashes, spaces, typos, and casing are data.",
-        "Do not CSV-escape inside field values. JSON escaping is allowed only because the response is JSON.",
-        "The file may use a multi-character delimiter such as \", \"; use the dialect below as context.",
-        "Use the column names to guide how you split or merge tokens: each repaired value must be semantically",
-        "consistent with its column (e.g. a value in 'DATE' should look like a date, 'Price' like a price).",
+        _repair_instruction_text(special_prompt),
         "",
         "Response shape:",
         '{"repairs": [{"line": <line number>, "fields": [<string>, ...]}]}',
@@ -495,4 +538,3 @@ def splice_clean_rows(
                 rows.append(clean_df.iloc[i].tolist())
 
     return pd.DataFrame(rows, columns=clean_df.columns)
-
