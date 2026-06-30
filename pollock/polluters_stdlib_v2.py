@@ -851,19 +851,29 @@ def addFootnote(
     )
 
 
-def tableToWhitespaceFormattedTable(file: CSVFile, pad_cells=True):  # checked manually
+def tableToWhitespaceFormattedTable(
+    file: CSVFile, pad_cells=True, quote_strings=True
+):  # checked manually
     """
     Converts a CSV table to a whitespace-formatted table by replacing the field delimiters with spaces.
 
     Example:
-
+    ```
     head1,head2,head3
     1,somestring,3.14
+    ```
 
-    Becomes:
-
+    Becomes (if pad_cells=True):
+    ```
     head1 head2      head3
     1     somestring 3.14
+    ```
+
+    Padding cells creates a "visually aligned" table, which is easy for humans, but difficult for machines.
+    It is guaranteed that columns are separated by at least one space.
+
+    This function also allows quoting string cells because the might contain spaces.
+    Not quoting strings only makes sense if `pad_cells` is True. A human can still dinguish columns in this case.
     """
     root = file.xml.getroot()
     rows = list(root.iter("row"))
@@ -872,21 +882,22 @@ def tableToWhitespaceFormattedTable(file: CSVFile, pad_cells=True):  # checked m
 
     pb.changeColumnDelimiters(file, col="*", new_delimiter=" ")
 
-    # Quote string cells first so delimiter padding can be computed from the
-    # quoted width, not the raw cell value.
-    for row in rows:
-        for cell in row.xpath("./cell[@type='TYPE_STRING']"):
-            if len(cell) == 0 or cell[0].tag != "quotation_char":
-                cell.insert(0, E.quotation_char(quote_char))
-            if cell[-1].tag != "quotation_char":
-                cell.append(E.quotation_char(quote_char))
-            for value in cell.xpath("./value"):
-                if value.text and quote_char in value.text:
-                    value.text = value.text.replace(quote_char, doubled_quote)
+    if quote_strings:
+        # Quote string cells first so delimiter padding can be computed from the
+        # quoted width, not the raw cell value.
+        for row in rows:
+            for cell in row.xpath("./cell[@type='TYPE_STRING']"):
+                if len(cell) == 0 or cell[0].tag != "quotation_char":
+                    cell.insert(0, E.quotation_char(quote_char))
+                if cell[-1].tag != "quotation_char":
+                    cell.append(E.quotation_char(quote_char))
+                for value in cell.xpath("./value"):
+                    if value.text and quote_char in value.text:
+                        value.text = value.text.replace(quote_char, doubled_quote)
 
     if pad_cells:
         column_widths: list[int] = []
-        # Count maximum width of the already-quoted cell content in each column.
+        # Count maximum width of the current cell content in each column.
         for row in rows:
             for col_idx, cell in enumerate(row.xpath("./cell")):
                 cell_text_len = sum(len(node.text or "") for node in cell)
@@ -904,4 +915,9 @@ def tableToWhitespaceFormattedTable(file: CSVFile, pad_cells=True):  # checked m
                 pad = column_widths[col_idx] - cell_text_len
                 delimiter.text = " " * (pad + 1 if pad > 0 else 1)
 
-    _set_polluted_filename(file, f"file_whitespace_delimiter_cells_{'padded' if pad_cells else 'unpadded'}.csv")
+    _set_polluted_filename(
+        file,
+        "file_whitespace_delimiter_cells_"
+        f"{'quoted' if quote_strings else 'unquoted'}_"
+        f"{'padded' if pad_cells else 'unpadded'}.csv",
+    )
