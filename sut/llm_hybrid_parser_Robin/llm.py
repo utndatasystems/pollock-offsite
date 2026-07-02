@@ -20,6 +20,7 @@ _LLM_CALL_STATS: Dict[str, int] = {
     "output_chars_fresh": 0, "output_chars_cached": 0,
 }
 _LLM_DRY_RUN: bool = False
+_LLM_VERBOSE: bool = False
 
 
 def configure_llm_cache(path: Optional[str] = None, enabled: bool = True) -> None:
@@ -33,6 +34,24 @@ def configure_llm_dry_run(enabled: bool) -> None:
     global _LLM_DRY_RUN
 
     _LLM_DRY_RUN = enabled
+
+
+def configure_llm_verbose(enabled: bool) -> None:
+    global _LLM_VERBOSE
+
+    _LLM_VERBOSE = enabled
+
+
+def _print_verbose(event_type: str, prompt: str, response: str, cached: bool) -> None:
+    if not _LLM_VERBOSE:
+        return
+    tag = "cached" if cached else "fresh"
+    print(f"\n===== LLM {event_type} ({tag}) =====")
+    print("----- prompt -----")
+    print(prompt)
+    print("----- response -----")
+    print(response)
+    print("===== end =====\n")
 
 
 def get_llm_cache_stats() -> Dict[str, int]:
@@ -110,6 +129,7 @@ def call_llm(prompt: str, trace: Any, event_type: str, estimated_output_chars: i
             model=_openai_model(),
             endpoint=_openai_endpoint(),
         )
+        _print_verbose(event_type, prompt, response, cached=True)
         return response
 
     if _LLM_DRY_RUN:
@@ -158,6 +178,7 @@ def call_llm(prompt: str, trace: Any, event_type: str, estimated_output_chars: i
         model=_openai_model(),
         endpoint=_openai_endpoint(),
     )
+    _print_verbose(event_type, prompt, response, cached=False)
     return response
 
 

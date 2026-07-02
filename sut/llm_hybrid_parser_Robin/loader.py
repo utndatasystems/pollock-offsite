@@ -19,39 +19,58 @@ Do not CSV-escape inside field values.
 JSON escaping is allowed only because the response is JSON.
 """.strip()
 
-SPECIAL_REPAIR_PROMPT = """
-Repair faulty CSV records. Return JSON only, no Markdown, no commentary.
-For each input line, return unescaped field values, not CSV text.
-Do not CSV-escape inside field values.
-JSON escaping is allowed only because the response is JSON.
-
-Make sure the output has the expected number of columns as fields. 
-Use the automatically-detected dialect and the good examples as a hint.
-In ambiguous scenarios that require a decision try to use semantic information from the column names and the successfully parsed rows. (e.g. too few delimiters -> where to split; or too many delimiters -> where to ignore the delimiter) 
-
-Repair structural damage and not data.
-Quotes that form valid CSV quoting are syntax. Stray, extra, or unbalanced quotes are data: keep them in the nearest value while repairing the field boundaries around them.
-A trailing delimiter indicates a final empty field.
-
-Priority order: exactly expected_column_count fields; each value fits its column; preserve original cell text.
-""".strip()
-
-# """
+# SPECIAL_REPAIR_PROMPT = """
 # Repair faulty CSV records. Return JSON only, no Markdown, no commentary.
 # For each input line, return unescaped field values, not CSV text.
-# Do not CSV-escape inside field values; JSON escaping is allowed only because the response is JSON.
+# Do not CSV-escape inside field values.
+# JSON escaping is allowed only because the response is JSON.
 
-# Use dialect, columns, expected_column_count, and good_examples as constraints.
-# Priority order: exactly expected_column_count fields; each value fits its column; preserve original cell text.
+# Make sure the output has the expected number of columns as fields. 
+# Use the automatically-detected dialect and the good examples as a hint.
+# In ambiguous scenarios that require a decision try to use semantic information from the column names and the successfully parsed rows. (e.g. too few delimiters -> where to split; or too many delimiters -> where to ignore the delimiter) 
 
-# Repair structural damage, not data: extra delimiters, missing delimiters, and broken quote syntax.
-# Do not keep corrupt delimiters as field text or shift later values into the wrong columns.
-# A trailing delimiter is an empty final field only when expected_column_count includes it; never move it into the previous value.
-
+# Repair structural damage and not data.
 # Quotes that form valid CSV quoting are syntax. Stray, extra, or unbalanced quotes are data: keep them in the nearest value while repairing the field boundaries around them.
+# A trailing delimiter indicates a final empty field.
+
+# Priority order: exactly expected_column_count fields; each value fits its column; preserve original cell text.
 # """.strip()
 
 
+# SPECIAL_REPAIR_PROMPT = """
+# Repair faulty CSV records. Return JSON only.
+# Return unescaped field values, not CSV text.
+# For each faulty line, output exactly one repair with exactly the expected number of fields.
+# Preserve field content exactly: literal quotes, apostrophes, backslashes, spaces, typos, and casing are data.
+# Do not CSV-escape inside field values. JSON escaping is allowed only because the response is JSON.
+# The file may use a multi-character delimiter such as ", "; use the dialect below as context.
+# Use the column names to guide how you split or merge tokens: each repaired value must be semantically
+# consistent with its column (e.g. a value in 'DATE' should look like a date, 'Price' like a price).
+# """.strip()
+
+
+SPECIAL_REPAIR_PROMPT = """
+Repair faulty CSV records. Return JSON only, no Markdown, no commentary.
+For each input line, return the respective field values, not CSV text.
+Do not CSV-escape inside field values; JSON escaping is allowed only because the response is JSON.
+
+Use the good examples as a guide for alignment, order of the data cells by looking at patterns and semantics.
+Don't do cleaning of cell data, so keep accidental double whitespaces, typos etc.
+Dialect delimiters at the start or end of a row as well as double delimiters in the middle of a row denote empty fields. These should be preserved and included as an empty string in your output list. Only drop them if they shift the columns in a way that would not be consistent with the example rows or that would break the expected number of columns.
+Keep in mind that literal quote characters in field text are escaped with the escape character that can also be a quote.
+
+Priority order: exactly hit the expected column count; each value fits its column semantically (e.g. from header or example rows); preserve original cell text.
+""".strip()
+
+#Do not keep corrupt delimiters as field text in order to not shift later values into the wrong columns.
+
+#Quote characters take precedence: Keep all quotes as literal cell data except those that successfully enclose a field. If the quote was never opened or never closed, KEEP IT.
+
+
+# Only dialect quote characters that correctly enclose the full content of a cell or appear directly in front of another dialect quote character can be ignored in the literal field output.
+# Stray or unclosed or unescaped or escaped quotes (with the dialect escape character in front) are cell data. Keep them but don't forget to use JSON-escaping.
+#
+# Trailing delimiters indicate NULL final fields that should be included. Their column alignment relative to example rows should be taken into account just like for the other fields.
 
 def _repair_instruction_text(special_prompt: bool) -> str:
     if not special_prompt:
@@ -241,7 +260,15 @@ def rejects_to_malformed(rejects: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
     return malformed
 
 
-def find_width_rejects(csv_input: str, dialect: CSVDialect, expected_columns: int) -> List[Dict[str, Any]]:
+def _scan_rows_by_width(
+    csv_input: str, dialect: CSVDialect, expected_columns: int
+) -> Tuple[List[Tuple[int, List[str]]], List[Dict[str, Any]]]:
+    """Single pass over data lines, classifying each by parse_record width.
+
+    Returns (good_rows, rejects): good_rows are (line_num, fields) with exactly
+    expected_columns; rejects are the width-mismatch reject dicts.
+    """
+    good_rows: List[Tuple[int, List[str]]] = []
     rejects: List[Dict[str, Any]] = []
     skip_rows = dialect.preamble_rows + dialect.header_rows
     with open(csv_input, "r", encoding="utf-8-sig", errors="replace", newline="") as f:
@@ -253,6 +280,7 @@ def find_width_rejects(csv_input: str, dialect: CSVDialect, expected_columns: in
                 continue
             fields = parse_record(raw, dialect)
             if len(fields) == expected_columns:
+                good_rows.append((line_num, fields))
                 continue
             error_type = "TOO MANY COLUMNS" if len(fields) > expected_columns else "MISSING COLUMNS"
             rejects.append({
@@ -266,6 +294,11 @@ def find_width_rejects(csv_input: str, dialect: CSVDialect, expected_columns: in
                 "error_message": f"Expected Number of Columns: {expected_columns} Found: {len(fields)}",
                 "source": "local_width_validation",
             })
+    return good_rows, rejects
+
+
+def find_width_rejects(csv_input: str, dialect: CSVDialect, expected_columns: int) -> List[Dict[str, Any]]:
+    _, rejects = _scan_rows_by_width(csv_input, dialect, expected_columns)
     return rejects
 
 
@@ -291,11 +324,31 @@ def merge_rejects(*reject_groups: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
     return merged
 
 
-def _good_examples(df: pd.DataFrame, header: List[str], limit: int) -> List[Dict[str, Any]]:
-    examples = []
-    for _, row in df.head(max(0, limit)).iterrows():
-        values = [_coerce_cell(value) for value in row.tolist()]
-        examples.append({"fields": values})
+def _good_examples(
+    csv_input: str,
+    dialect: CSVDialect,
+    expected_columns: int,
+    reject_lines: set,
+    limit: int,
+) -> List[Dict[str, Any]]:
+    """LLM alignment examples: rows both parsers accept.
+
+    _scan_rows_by_width already width-verifies each line (shared with
+    find_width_rejects); we additionally drop any line in reject_lines (the merged
+    reject set), which for a width-matched row means DuckDB rejected it. So a
+    lucky-count misparse DuckDB accepts but the width check rejects (e.g. a
+    space-split "Tropic Cap") never reaches the prompt as a good example.
+    """
+    if limit <= 0:
+        return []
+    good_rows, _ = _scan_rows_by_width(csv_input, dialect, expected_columns)
+    examples: List[Dict[str, Any]] = []
+    for line_num, fields in good_rows:
+        if line_num in reject_lines:
+            continue
+        examples.append({"fields": [_coerce_cell(value) for value in fields]})
+        if len(examples) >= limit:
+            break
     return examples
 
 
@@ -325,7 +378,7 @@ def _dedupe_rejects_for_prompt(rejects: List[Dict[str, Any]]) -> List[Dict[str, 
 def infer_repairs_with_llm(
     header: List[str],
     dialect: CSVDialect,
-    good_df: pd.DataFrame,
+    csv_input: str,
     rejects: List[Dict[str, Any]],
     context_lines: int,
     trace: Any,
@@ -335,11 +388,12 @@ def infer_repairs_with_llm(
     if not faulty_lines:
         return {}
 
+    reject_lines = {int(r["line"]) for r in rejects if r.get("line") is not None}
     prompt_payload = {
         "expected_column_count": len(header),
         "columns": header,
         "dialect": dialect.as_trace_dict(),
-        "good_examples": _good_examples(good_df, header, context_lines),
+        "good_examples": _good_examples(csv_input, dialect, len(header), reject_lines, context_lines),
         "faulty_lines": faulty_lines,
     }
     prompt = "\n".join([
