@@ -1,0 +1,2 @@
+Malformed rows: 1
+{"line_num": 34, "reason": "TOO MANY COLUMNS: Expected Number of Columns: 9 Found: 10", "raw": "26/03/2018,,08:15,2,ON-7017,$0.9,\"Quarter-Zip Hoodie, Camo\",\"This camo quarter-zip hoodie is an extremely versatile mid layer thats great for all hunting seasons. Its made from warm, breathable fleece and features an innovative lightweight hood with a built-in face mask.\",\"https://www.example.com/product/ON_7017.html\",", "repaired": true}

@@ -70,6 +70,7 @@ def parse_csv_with_validation(
     llm_context_lines: int = 10,
     reset_sidecar: bool = True,
     special_prompt: bool = False,
+    verbose: bool = False,
 ) -> Tuple[pd.DataFrame, List[Dict[str, Any]]]:
     """
     Load a polluted CSV using an optional non-LLM sniffer (CleverCSV or DuckDB) +
@@ -119,7 +120,8 @@ def parse_csv_with_validation(
         except Exception as exc:
             trace.write("llm_dialect_error", error=str(exc))
 
-    print(f"llm mapping: {llm_mapping}")
+    if verbose:
+        print(f"llm mapping: {llm_mapping}")
     scoring_lines = _read_sample_lines(csv_input, SCORING_LINE_LIMIT)
     dialect = dialect_from_mappings(sniff_mapping, llm_mapping, scoring_lines, trace, sniffer_name)
 

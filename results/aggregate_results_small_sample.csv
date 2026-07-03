@@ -1,11 +1,11 @@
 sut,correct,wrong,score_10,weighted_score_10,score
-llm_hybrid_parser_gpt_5_4_duckdb_special_prompt,17,6,7.391304347826087,7.391304347826087,17
+llm_hybrid_parser_gpt_5_4_duckdb_special_prompt,21,2,9.130434782608695,9.130434782608695,21
 llm_hybrid_parser_gpt_5_4_mini_clevercsv,13,10,5.6521739130434785,5.6521739130434785,13
 llm_hybrid_parser,1,22,0.43478260869565216,0.43478260869565216,1
 duckdbauto,2,21,0.8695652173913043,0.8695652173913043,2
 llm_hybrid_parser_gpt_5_4_mini_duckdb_special_prompt,13,10,5.6521739130434785,5.6521739130434785,13
 llm_hybrid_parser_gpt_5_4_mini,12,11,5.217391304347826,5.217391304347826,12
-llm_hybrid_parser_gpt_5_4_clevercsv_special_prompt,23,0,10.0,10.0,23
+llm_hybrid_parser_gpt_5_4_clevercsv_special_prompt,21,2,9.130434782608695,9.130434782608695,21
 llm_hybrid_parser_gpt_5_4_mini_duckdb,12,11,5.217391304347826,5.217391304347826,12
 llm_hybrid_parser_gpt_5_4_mini_clevercsv_special_prompt,13,10,5.6521739130434785,5.6521739130434785,13
 llm_hybrid_parser_gpt_5_4_duckdb,16,7,6.956521739130435,6.956521739130435,16

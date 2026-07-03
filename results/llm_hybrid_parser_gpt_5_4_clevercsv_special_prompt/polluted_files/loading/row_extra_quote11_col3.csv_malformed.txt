@@ -1,0 +1,2 @@
+Malformed rows: 1
+{"line_num": 12, "reason": "MISSING COLUMNS: Expected Number of Columns: 9 Found: 8; UNQUOTED VALUE: Value with unterminated quote found.", "raw": "19/02/2018,02:30,1,\"BH-7885,$52.45,Women's No-Show Socks,\"The warmth and comfort of wool, these socks are designed in a minimal, no-show style that is of pure elegance and design.\",\"https://www.example.com/product/BH_7885.html\",", "repaired": true}

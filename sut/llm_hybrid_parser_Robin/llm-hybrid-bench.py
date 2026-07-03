@@ -107,6 +107,7 @@ if args.model:
 
 from utils import print, save_time_df
 from solution import parse_csv_with_validation, configure_llm_cache, configure_llm_dry_run, configure_llm_verbose, get_llm_cache_stats
+from llm import _openai_model
 
 if args.model:
     _model_slug = re.sub(r'[^a-z0-9]+', '_', args.model.lower()).strip('_')
@@ -131,7 +132,12 @@ os.makedirs(IN_DIR, exist_ok=True)
 os.makedirs(OUT_DIR, exist_ok=True)
 os.makedirs(TIME_DIR, exist_ok=True)
 
-_cache_path = None if args.no_llm_cache else join(REPO_ROOT, 'results', sut, 'llm_cache.json')
+# Shared LLM cache: one file per model, reused across every parser config. The cache key
+# already embeds the model (see llm._prompt_hash), so different models never collide and
+# identical prompts across parsers hit the same entry. Named after the resolved model so
+# the filename matches the model baked into the keys.
+_cache_slug = re.sub(r'[^a-z0-9]+', '_', _openai_model().lower()).strip('_')
+_cache_path = None if args.no_llm_cache else join(REPO_ROOT, 'results', '_llm_cache', f'{_cache_slug}.json')
 configure_llm_cache(path=_cache_path, enabled=not args.no_llm_cache)
 configure_llm_dry_run(args.count_tokens)
 configure_llm_verbose(args.verbose)
@@ -208,9 +214,10 @@ for idx, file in enumerate(benchmark_files):
                 llm_context_lines=LLM_CONTEXT_LINES,
                 reset_sidecar=(time_rep == 0),
                 special_prompt=args.special_prompt,
+                verbose=args.verbose,
             )
             end = time.time()
-            if malformed:
+            if malformed and args.verbose:
                 print(f"\t{len(malformed)} malformed row(s):")
                 for row in malformed:
                     print(f"\t  line {row['line_num']}: {row['reason']} — {row['raw']!r}")

@@ -138,7 +138,8 @@ def main():
 
     verbose = bool(args.verbose)
     systems = [s for s in next(os.walk(f"{RESULT_DIR}"))[1]
-               if s != "archives" and os.path.isdir(f"{RESULT_DIR}/{s}/{dataset}/loading")]
+               if s != "archives" and not s.startswith("_")
+               and os.path.isdir(f"{RESULT_DIR}/{s}/{dataset}/loading")]
 
     sut_dirs = {s for s in os.listdir("sut") if os.path.isdir(f"sut/{s}") and not s.startswith("_")}
     no_results = sorted(sut_dirs - set(systems))
