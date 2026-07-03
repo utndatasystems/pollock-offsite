@@ -258,6 +258,7 @@ class CSVFile:
         self.xml.write(out_path + self.filename + ".xml", pretty_print=pretty)
 
     def write_clean_csv(self, out_path="./"):
+        #TODO: implement multiple clean csv files / multiple ground truth
 
         header_rows = self.xml.xpath("/file/table/row[@role='header']")
         if len(header_rows):
