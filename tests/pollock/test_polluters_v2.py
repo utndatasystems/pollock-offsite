@@ -239,3 +239,33 @@ def test_encoding_alias(csv_file):
     assert csv_file.encoding == "utf-8"
     assert csv_file.xml.getroot().attrib["encoding"] == "utf-8"
     assert_filename_synced(csv_file, "file_encoding_utf-8")
+
+
+@pytest.mark.parametrize(
+    "blank_line, expected_new_rows, expected_prefix",
+    [
+        (False, 1, "file_footnote_1"),
+        (True, 2, "file_footnote_1_blank_line"),
+    ],
+)
+def test_add_footnote(csv_file, blank_line, expected_new_rows, expected_prefix):
+    before = csv_file.row_count
+
+    p.addFootnote(csv_file, blank_line=blank_line, cell_content="FOOTNOTE")
+
+    assert csv_file.row_count == before + expected_new_rows
+
+    # The last row is always the footnote content row
+    last_row_index = csv_file.row_count
+    last_row_values = values(csv_file, f"//table[1]/row[{last_row_index}]/cell/value")
+
+    # Single-cell footnote
+    assert last_row_values == ["FOOTNOTE"]
+
+    if blank_line:
+        # The second-to-last row is a truly blank line — no cells at all
+        separator_index = csv_file.row_count - 1
+        separator_values = values(csv_file, f"//table[1]/row[{separator_index}]/cell/value")
+        assert separator_values == []
+
+    assert_filename_synced(csv_file, expected_prefix)

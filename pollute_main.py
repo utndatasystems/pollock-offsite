@@ -1,6 +1,5 @@
 import argparse
 import os
-import pollock
 import pollock.polluters_stdlib_v1 as pl
 import pollock.polluters_stdlib_v2 as pl2
 import random
@@ -215,6 +214,14 @@ if args.polluters == "pollock2.0":
     execute_polluter(f, pl2.duplicateHeaderAsDataRow)
     execute_polluter(f, pl2.metadataAsHeader)
     execute_polluter(f, pl2.superheader)
+
+    # Footnote
+    # Simple
+    execute_polluter(f, pl2.addFootnote, n_rows=1, blank_line=False)
+    # Multi-line
+    execute_polluter(f, pl2.addFootnote, n_rows=3, blank_line=False)
+    # Multi-line with blank line to separate
+    execute_polluter(f, pl2.addFootnote, n_rows=3, blank_line=True)
 
     # Row / column irregularities
     execute_polluter(f, pl2.moveHeaderRow)
