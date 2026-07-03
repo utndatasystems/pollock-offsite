@@ -220,7 +220,7 @@ if args.polluters == "pollock2.0":
     execute_polluter(f, pl2.addFootnote, n_rows=1, blank_line=False)
     # Multi-line
     execute_polluter(f, pl2.addFootnote, n_rows=3, blank_line=False)
-    # Multi-line with empty row to separate
+    # Multi-line with blank line to separate
     execute_polluter(f, pl2.addFootnote, n_rows=3, blank_line=True)
 
     # Row / column irregularities
