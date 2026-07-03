@@ -286,38 +286,7 @@ def changeEscapeCharacter(file: CSVFile, target_escape="\\"):
     """Change the escape character used for quoted content.
     Replaces the CSV escape character used to escape quotation marks and other
     special characters (everywhere in the file).
-
-    Common values:
-        "\\\\"   -> backslash (\)
-        "\\u0022" -> double quote (")
-        ""       -> no escape character
-
-    Example:
-
-        Before (escape character = \\):
-            +------------------+
-            | comment          |
-            +------------------+
-            | He said \"hi\"   |
-            | Path: C:\\temp   |
-            +------------------+
-
-        After (escape character = "):
-            +------------------+
-            | comment          |
-            +------------------+
-            | He said ""hi""   |
-            | Path: C:\temp    |
-            +------------------+
-
-        After (no escape character):
-            +------------------+
-            | comment          |
-            +------------------+
-            | He said "hi"     |
-            | Path: C:\temp    |
-            +------------------+
-            """
+    """
     file.escape_char = target_escape
     root = file.xml.getroot()
 
@@ -325,9 +294,9 @@ def changeEscapeCharacter(file: CSVFile, target_escape="\\"):
     # data must themselves be escaped, otherwise a parser using this escape
     # character would consume them (e.g. a literal "\" before a quote/delimiter
     # would be read as an escape sequence, dropping the backslash or breaking the
-    # field boundary). We represent the escape structurally -- by splitting the
+    # field boundary). We represent the escape structurally, by splitting the
     # <value> on the escape char and inserting <escape_char> elements between the
-    # fragments -- exactly as escaped quotes are stored. This way the serialized
+    # fragments, exactly as escaped quotes are stored. This way the serialized
     # CSV shows the doubled character while write_clean_csv (which reads only
     # <value> text) still recovers the original single character. The quotation
     # character is left untouched; its escaping is handled by the existing

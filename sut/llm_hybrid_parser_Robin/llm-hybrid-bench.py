@@ -71,6 +71,17 @@ parser.add_argument(
     action="store_true",
     help="Use the alternate LLM repair prompt",
 )
+parser.add_argument(
+    "--file",
+    default=None,
+    help="Process only this single file from the dataset's csv/ dir (basename or path). "
+         "Output is written to the usual dataset location; existing output is overwritten.",
+)
+parser.add_argument(
+    "--verbose",
+    action="store_true",
+    help="Print each LLM prompt and response (dialect + repair) to the console",
+)
 args = parser.parse_args()
 if args.cheat and args.no_llm_repair:
     parser.error("--cheat already disables LLM repair")
@@ -95,7 +106,7 @@ if args.model:
     os.environ["OPENAI_MODEL"] = args.model
 
 from utils import print, save_time_df
-from solution import parse_csv_with_validation, configure_llm_cache, configure_llm_dry_run, get_llm_cache_stats
+from solution import parse_csv_with_validation, configure_llm_cache, configure_llm_dry_run, configure_llm_verbose, get_llm_cache_stats
 
 if args.model:
     _model_slug = re.sub(r'[^a-z0-9]+', '_', args.model.lower()).strip('_')
@@ -123,6 +134,7 @@ os.makedirs(TIME_DIR, exist_ok=True)
 _cache_path = None if args.no_llm_cache else join(REPO_ROOT, 'results', sut, 'llm_cache.json')
 configure_llm_cache(path=_cache_path, enabled=not args.no_llm_cache)
 configure_llm_dry_run(args.count_tokens)
+configure_llm_verbose(args.verbose)
 
 default_repetitions = 1 if (CHEAT or LLM_REPAIR) else 3
 N_REPETITIONS = int(os.environ.get("N_REPETITIONS", default_repetitions))
@@ -163,13 +175,18 @@ def write_malformed_report(path, malformed=None, error=None):
 
 times_dict = {}
 benchmark_files = os.listdir(IN_DIR)
+if args.file:
+    target = os.path.basename(args.file)
+    if target not in benchmark_files:
+        parser.error(f"--file {target!r} not found in {IN_DIR}")
+    benchmark_files = [target]
 for idx, file in enumerate(benchmark_files):
     f = os.path.basename(file)
     in_filepath = join(IN_DIR, f)
     out_filename = f'{f}_converted.csv'
     out_filepath = join(OUT_DIR, out_filename)
     malformed_path = malformed_report_path(f)
-    if not args.overwrite and os.path.exists(out_filepath) and os.path.exists(malformed_path):
+    if not args.overwrite and not args.file and os.path.exists(out_filepath) and os.path.exists(malformed_path):
         continue
     print(f"({idx}/{len(benchmark_files)}) {f}")
 

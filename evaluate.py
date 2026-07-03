@@ -69,21 +69,19 @@ def evaluate_single_file(filename:str, dataset:str, sut:str, verbose=False, n_jo
     if verbose:
         print(f"'{filename}'")
     if not os.path.exists(loaded_path):
-        __builtin__.print(f"[{filename}] wrong")
         dict_measures[sut + "_correct"] = 0
         dict_measures[sut + "_wrong"] = 1
         return dict_measures
     try:
         correct = metrics.alex_compare(clean_path, loaded_path, n_jobs, origin_csv=origin_csv)
-        dict_measures[sut + "_correct"] = correct
-        dict_measures[sut + "_wrong"] = not correct
+        dict_measures[sut + "_correct"] = int(correct)
+        dict_measures[sut + "_wrong"] = int(not correct)
     except Exception as e:
         print("Exception:", traceback.format_exc())
         if not verbose:
             print("On file:", filename)
-        __builtin__.print(f"[{filename}] wrong")
-        dict_measures[sut + "_correct"] = False
-        dict_measures[sut + "_wrong"] = True
+        dict_measures[sut + "_correct"] = 0
+        dict_measures[sut + "_wrong"] = 1
 
     return dict_measures
 

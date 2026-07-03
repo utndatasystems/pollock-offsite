@@ -15,7 +15,7 @@ from dialect import (
     sniff_with_clevercsv,
     sniff_with_duckdb,
 )
-from llm import configure_llm_cache, configure_llm_dry_run, get_llm_cache_stats
+from llm import configure_llm_cache, configure_llm_dry_run, configure_llm_verbose, get_llm_cache_stats
 from loader import (
     finalize_dataframe,
     find_width_rejects,
@@ -118,6 +118,7 @@ def parse_csv_with_validation(
         except Exception as exc:
             trace.write("llm_dialect_error", error=str(exc))
 
+    print(f"llm mapping: {llm_mapping}")
     scoring_lines = _read_sample_lines(csv_input, SCORING_LINE_LIMIT)
     dialect = dialect_from_mappings(sniff_mapping, llm_mapping, scoring_lines, trace, sniffer_name)
 
@@ -161,7 +162,7 @@ def parse_csv_with_validation(
         repairs = infer_repairs_with_llm(
             header,
             dialect,
-            df,
+            csv_input,
             rejects,
             llm_context_lines,
             trace,
