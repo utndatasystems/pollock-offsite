@@ -835,49 +835,37 @@ def moveHeaderRow(file: CSVFile, row: int | None = None):
     _set_polluted_filename(file, f"file_move_header_row{row}.csv")
 
 
+@manually_verified
 def addFootnote(
-    file: CSVFile, n_rows=1, delimiters=False, emptyrow=False, cell_content="FOOTNOTE"
+    file: CSVFile, n_rows=1, blank_line=False, cell_content="FOOTNOTE"
 ):
     """
     :param file:
-    :param n_rows: number of rows for the preamble
-    :param delimiters: if True, creates a row with as many delimited cells as the other rows
-    :param emptyrow:  if True, leaves an empty row between the preamble and the data
-    :param cell_content: the content of the preamble cell(s). Either list or single value
+    :param n_rows: number of rows for the footnote
+    :param blank_line: if True, inserts a truly blank line (just a newline) between the data and the footnote
+    :param cell_content: the content of the footnote cell(s). Either list or single value
     """
-    if emptyrow:
-        pb.addRows(
-            file, n_rows=1, position=-1, col_count=file.col_count, role="footnote"
-        )
-
-    if delimiters:
-        cell_content = (
-            [cell_content] + [""] * (file.col_count - 1)
-            if type(cell_content) == str
-            else cell_content
-        )
+    if blank_line:
+        # col_count=0 produces a row with no cells — just the record delimiter,
+        # i.e. a truly empty line rather than a row of empty cells.
         pb.addRows(
             file,
-            n_rows=n_rows,
-            cell_content=cell_content,
-            position=-1,
-            col_count=file.col_count,
+            n_rows=1,
+            position=_safe_row_count(file),
+            col_count=0,
             role="footnote",
         )
 
-    else:
-        pb.addRows(
-            file,
-            n_rows=n_rows,
-            cell_content=cell_content,
-            position=-1,
-            col_count=1,
-            role="footnote",
-        )
+    pb.addRows(
+        file,
+        n_rows=n_rows,
+        cell_content=cell_content,
+        position=_safe_row_count(file),
+        col_count=1,
+        role="footnote",
+    )
 
     _set_polluted_filename(
         file,
-        f"file_footnote_{n_rows}_{'not_' if not delimiters else ''}delimited{'_empty_row' if emptyrow else ''}.csv",
+        f"file_footnote_{n_rows}{'_blank_line' if blank_line else ''}.csv",
     )
-
-
