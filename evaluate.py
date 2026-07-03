@@ -100,7 +100,10 @@ def evaluate_single_run(files: List[str], dataset: str, result_file:str, sut:str
     # parallel
     else:
         args = [{"filename": f, "dataset": dataset, "sut": sut, "verbose": verbose, "origin_csv": origin_csv} for f in files]
-        file_measures = pqdm(args, evaluate_single_file, n_jobs=effective_jobs, argument_type="kwargs")
+        # fork() in a multi-threaded parent triggers a DeprecationWarning on Py3.12; silence it at fork time
+        with warnings.catch_warnings():
+            warnings.filterwarnings("ignore", message=r"This process .* is multi-threaded")
+            file_measures = pqdm(args, evaluate_single_file, n_jobs=effective_jobs, argument_type="kwargs")
     results_df = pd.DataFrame(file_measures)
     results_df.to_csv(result_file, index=False)
     if verbose: print(results_df)
