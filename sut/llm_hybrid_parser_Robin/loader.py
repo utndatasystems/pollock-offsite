@@ -57,10 +57,26 @@ Do not CSV-escape inside field values; JSON escaping is allowed only because the
 Use the good examples as a guide for alignment, order of the data cells by looking at patterns and semantics.
 Don't do cleaning of cell data, so keep accidental double whitespaces, typos etc.
 Dialect delimiters at the start or end of a row as well as double delimiters in the middle of a row denote empty fields. These should be preserved and included as an empty string in your output list. Only drop them if they shift the columns in a way that would not be consistent with the example rows or that would break the expected number of columns.
-Keep in mind that literal quote characters in field text are escaped with the escape character that can also be a quote.
+Keep in mind that literal quote characters in field text are escaped with the escape character that can also be a quote. In this case, keep one as literal field text. 
+Also keep faulty non-escaped quote characters e.g. those that are just opened and never closed.
 
 Priority order: exactly hit the expected column count; each value fits its column semantically (e.g. from header or example rows); preserve original cell text.
 """.strip()
+
+# SPECIAL_REPAIR_PROMPT = """
+# Repair faulty CSV records. Return JSON only, no Markdown, no commentary.
+# For each input line, return the respective field values, not CSV text.
+# Do not CSV-escape inside field values; JSON escaping is allowed only because the response is JSON.
+
+# Use the good examples as a guide for alignment, order of the data cells by looking at patterns and semantics.
+# Don't do cleaning of cell data, so keep accidental double whitespaces, typos etc.
+# Dialect delimiters at the start or end of a row as well as double delimiters in the middle of a row denote empty fields. These should be preserved and included as an empty string in your output list. Only drop them if they shift the columns in a way that would be inconsistent with the example rows or that would break the expected number of columns.
+# Keep in mind that literal quote characters in field text are escaped with the escape character that can also be a quote. Unterminated quotes that produce the error UNQUOTED VALUE should be put into the JSON field text as \" even if they seem erroneous. e.g. <previous field><delimiter>"<this is field text><delimiter> -> keep the unclosed quote as field text. Same with quotes at the end of fields.
+
+# Priority order: exactly hit the expected column count; each value fits its column semantically (e.g. from header or example rows); preserve original cell text.
+# """.strip()
+
+
 
 #Do not keep corrupt delimiters as field text in order to not shift later values into the wrong columns.
 
@@ -103,6 +119,39 @@ def _records_from_df(df: pd.DataFrame) -> List[Dict[str, Any]]:
     return clean_df.to_dict(orient="records")
 
 
+def _strip_leading_lines(csv_input: str, n_lines: int) -> str:
+    """Write a temp copy of csv_input with the first n_lines physical lines removed.
+
+    The remainder is copied byte-for-byte (line endings, later-line content, etc.
+    preserved) so DuckDB parses the data region identically to the original minus the
+    skipped rows.
+    """
+    with open(csv_input, "rb") as fh:
+        data = fh.read()
+    idx = 0
+    for _ in range(n_lines):
+        nl = data.find(b"\n", idx)
+        if nl == -1:
+            idx = len(data)
+            break
+        idx = nl + 1
+    tmp = tempfile.NamedTemporaryFile(
+        "wb", prefix="pollock_stripped_", suffix=".csv", delete=False
+    )
+    try:
+        tmp.write(data[idx:])
+    finally:
+        tmp.close()
+    return tmp.name
+
+
+def _safe_unlink(path: str) -> None:
+    try:
+        os.unlink(path)
+    except OSError:
+        pass
+
+
 def load_with_duckdb(
     csv_input: str,
     dialect: CSVDialect,
@@ -110,6 +159,7 @@ def load_with_duckdb(
     trace: Any,
     stage: str,
     store_rejects: bool = True,
+    strip_skipped: bool = False,
 ) -> Tuple[pd.DataFrame, List[Dict[str, Any]], List[Dict[str, Any]]]:
     import duckdb
 
@@ -117,13 +167,22 @@ def load_with_duckdb(
     scan_table = f"reject_scans_{stage}_{os.getpid()}_{int(time.time() * 1000000)}"
     rejects_table = f"reject_errors_{stage}_{os.getpid()}_{int(time.time() * 1000000)}"
     columns = _unique_duckdb_columns(expected_columns)
+    skip_rows = dialect.preamble_rows + dialect.header_rows
+    # DuckDB's `skip` still tokenizes the skipped lines, so a malformed (e.g. unterminated
+    # quote) preamble/header can bleed into the first data rows or silently drop everything.
+    # When asked, physically remove those lines and read the remainder with skip=0 instead.
+    stripped_path = (
+        _strip_leading_lines(csv_input, skip_rows) if strip_skipped and skip_rows > 0 else None
+    )
+    read_path = stripped_path if stripped_path is not None else csv_input
+    effective_skip = 0 if stripped_path is not None else skip_rows
     options = {
         "auto_detect": False,
         "delim": dialect.delimiter,
         "quote": dialect.quotechar or "",
         "escape": dialect.escapechar or "",
         "header": False,
-        "skip": dialect.preamble_rows + dialect.header_rows,
+        "skip": effective_skip,
         "columns": columns,
         "store_rejects": bool(store_rejects),
         "rejects_scan": scan_table,
@@ -134,13 +193,13 @@ def load_with_duckdb(
         "parallel": False,
     }
     csv_args = [
-        _sql_string(csv_input),
+        _sql_string(read_path),
         "auto_detect = false",
         f"delim = {_sql_string(dialect.delimiter)}",
         f"quote = {_sql_string(dialect.quotechar or '')}",
         f"escape = {_sql_string(dialect.escapechar or '')}",
         "header = false",
-        f"skip = {dialect.preamble_rows + dialect.header_rows}",
+        f"skip = {effective_skip}",
         f"columns = {_sql_columns(columns)}",
         f"store_rejects = {_sql_bool(bool(store_rejects))}",
         f"rejects_scan = {_sql_string(scan_table)}",
@@ -159,6 +218,7 @@ def load_with_duckdb(
         "duckdb_load_start",
         stage=stage,
         path=csv_input,
+        stripped=stripped_path is not None,
         options={k: v for k, v in options.items() if k != "columns"},
         columns=list(options["columns"].keys()),
     )
@@ -166,6 +226,8 @@ def load_with_duckdb(
         df = conn.execute(sql).df()
     except Exception as exc:
         trace.write("duckdb_load_error", stage=stage, error=str(exc), sql=sql)
+        if stripped_path is not None:
+            _safe_unlink(stripped_path)
         raise
 
     scans: List[Dict[str, Any]] = []
@@ -182,6 +244,18 @@ def load_with_duckdb(
             rejects = _records_from_df(rejects_df)
         except Exception as exc:
             trace.write("duckdb_reject_errors_error", stage=stage, error=str(exc))
+
+    if stripped_path is not None:
+        # Reject line numbers are relative to the stripped copy (read with skip=0). Shift
+        # them back by skip_rows so downstream reject/repair bookkeeping matches the
+        # original file, exactly as if we had read it with skip=skip_rows.
+        for reject in rejects:
+            if reject.get("line") is not None:
+                try:
+                    reject["line"] = int(reject["line"]) + skip_rows
+                except (TypeError, ValueError):
+                    pass
+        _safe_unlink(stripped_path)
 
     trace.write(
         "duckdb_load_result",

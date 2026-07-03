@@ -193,15 +193,16 @@ def infer_dialect_with_llm(
     sample = "\n".join(sample_lines)
 
     parts = [
-        "You are a CSV dialect detector. Analyze this CSV file and",
-        "output ONLY a valid JSON object (no markdown, no explanation) with these keys:",
+        "You are a CSV dialect detector. Analyze this CSV file and return the intended dialect of the file based on the header and example rows.",
+        "Making sure the example rows fit the header semantically and in column count after a split on the delimiter is your top priority",
+        "Output ONLY a valid JSON object (no markdown, no explanation) with these keys:",
         "",
         '"delimiter": the exact literal separator string that appears between adjacent fields in the file. Can be multi-char (e.g. "," or "\\t" or ", " (comma+space) or " " or ";")',
         '"quotechar": the quoting character (e.g. "\\"" or "\'")',
         '"escapechar": the escape character used inside quotes (e.g. "\\"" or "\\\\" or "" for none/null)',
         '"header_lines": integer - how many rows form the header (0=no header, 1=normal, 2+=multi-row where column names are joined with space)',
         '"preamble_lines": integer - lines to skip before header (usually 0)',
-        '"column_names": array of strings - the column names, ideally consistent with a string split based on the delimiter (if multi-row header, join values with space;)',
+        '"column_names": array of strings - the column names, ideally consistent with a string split based on the delimiter (if multi-row header, join values of the different rows with space;)',
         '"n_columns": integer - number of columns',
         "",
     ]

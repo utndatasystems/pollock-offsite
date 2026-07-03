@@ -17,6 +17,7 @@ from dialect import (
 )
 from llm import configure_llm_cache, configure_llm_dry_run, configure_llm_verbose, get_llm_cache_stats
 from loader import (
+    _scan_rows_by_width,
     finalize_dataframe,
     find_width_rejects,
     infer_repairs_with_llm,
@@ -152,7 +153,24 @@ def parse_csv_with_validation(
     )
 
     df, duckdb_rejects, _ = load_with_duckdb(csv_input, dialect, expected_columns, trace, "initial")
-    width_rejects = find_width_rejects(csv_input, dialect, expected_columns)
+    # Single width scan (reused below): good_rows doubles as an independent row count.
+    good_rows, width_rejects = _scan_rows_by_width(csv_input, dialect, expected_columns)
+
+    # Strict-mode silent drop: a skipped-but-strict-invalid header can make DuckDB return
+    # 0 rows with 0 rejects and no error, because `skip` still tokenizes the header. If the
+    # same-dialect line scan finds well-formed rows, reload with the header physically
+    # stripped so the malformed header can't poison the data region.
+    if len(df) == 0 and good_rows:
+        trace.write("strict_mode_zero_rows_fallback", scanned_good_rows=len(good_rows))
+        df, duckdb_rejects, _ = load_with_duckdb(
+            csv_input,
+            dialect,
+            expected_columns,
+            trace,
+            "initial_stripped",
+            strip_skipped=True,
+        )
+
     if width_rejects:
         trace.write("local_width_validation_result", stage="initial", reject_errors=width_rejects)
     rejects = merge_rejects(duckdb_rejects, width_rejects)
