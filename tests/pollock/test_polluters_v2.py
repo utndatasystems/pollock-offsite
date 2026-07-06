@@ -20,14 +20,28 @@ from tests._helpers import FakeCSVFile, assert_filename_synced, load_polluters_m
 p = load_polluters_module()
 
 
-def test_multiline_header(csv_file):
-    p.multilineHeader(csv_file, header_rows=3, content="Line")
+def test_multiline_header():
+    root = etree.Element("csv", filename="base.csv", encoding="utf-8")
+    table = etree.SubElement(root, "table")
+    header = row(["name", "city", "amount", "date", "code", "state"], role="header")
+    for idx in (3, 4):
+        etree.SubElement(header.xpath("./cell")[idx], "quotation_char").text = '"'
+    table.append(header)
+    table.append(row(["Alice", "Berlin", "10", "2024-01-01", "A1", "DE"], role="data"))
+    table.append(row(["Bob", "Munich", "20", "2024-01-02", "B2", "DE"], role="data"))
+    csv_file = FakeCSVFile(xml=etree.ElementTree(root))
 
-    assert csv_file.row_count == 6
-    assert values(csv_file, "//table[1]/row[1]/cell[1]/value") == ["Line1"]
-    assert values(csv_file, "//table[1]/row[2]/cell[1]/value") == ["Line2"]
-    assert values(csv_file, "//table[1]/row[3]/cell[1]/value") == ["Line3"]
-    assert_filename_synced(csv_file, "file_multiline_header")
+    p.multilineHeader(csv_file, header_rows=2)
+
+    assert csv_file.row_count == 4
+    assert values(csv_file, "//table[1]/row[1]/cell/value") == ["name", "city", "amount"]
+    assert values(csv_file, "//table[1]/row[2]/cell/value") == ["date", "code", "state"]
+    assert csv_file.xml.xpath("//table[1]/row[2]/cell[1]/quotation_char")
+    assert csv_file.xml.xpath("//table[1]/row[2]/cell[2]/quotation_char")
+    assert not csv_file.xml.xpath("//table[1]/row[2]/cell[3]/quotation_char")
+    assert csv_file.xml.xpath("//table[1]/row[1]")[0].attrib.get("role") == "header"
+    assert csv_file.xml.xpath("//table[1]/row[2]")[0].attrib.get("role") == "header"
+    assert_filename_synced(csv_file, "file_multiline_header_rows_2")
 
 
 def test_duplicate_header_as_data_row(csv_file):
@@ -225,3 +239,33 @@ def test_encoding_alias(csv_file):
     assert csv_file.encoding == "utf-8"
     assert csv_file.xml.getroot().attrib["encoding"] == "utf-8"
     assert_filename_synced(csv_file, "file_encoding_utf-8")
+
+
+@pytest.mark.parametrize(
+    "blank_line, expected_new_rows, expected_prefix",
+    [
+        (False, 1, "file_footnote_1"),
+        (True, 2, "file_footnote_1_blank_line"),
+    ],
+)
+def test_add_footnote(csv_file, blank_line, expected_new_rows, expected_prefix):
+    before = csv_file.row_count
+
+    p.addFootnote(csv_file, blank_line=blank_line, cell_content="FOOTNOTE")
+
+    assert csv_file.row_count == before + expected_new_rows
+
+    # The last row is always the footnote content row
+    last_row_index = csv_file.row_count
+    last_row_values = values(csv_file, f"//table[1]/row[{last_row_index}]/cell/value")
+
+    # Single-cell footnote
+    assert last_row_values == ["FOOTNOTE"]
+
+    if blank_line:
+        # The second-to-last row is a truly blank line — no cells at all
+        separator_index = csv_file.row_count - 1
+        separator_values = values(csv_file, f"//table[1]/row[{separator_index}]/cell/value")
+        assert separator_values == []
+
+    assert_filename_synced(csv_file, expected_prefix)

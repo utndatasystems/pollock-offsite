@@ -5,7 +5,7 @@
 | Results file | `results/llm_hybrid_parser_gpt_5_4_duckdb/small_sample/llm_hybrid_parser_gpt_5_4_duckdb_results.csv` |
 | Total files evaluated | 17 |
 | Application errors | 0 |
-| Wrong content | 1 |
+| Wrong content | 3 |
 
 
 ## Application Errors — 0 files
@@ -14,11 +14,71 @@
 
 *(none)*
 
-## Wrong Content — 1 files
+## Wrong Content — 3 files
 
 | N | Type |
 |--:|------|
+| 2 | Extra unescaped quote |
 | 1 | Non-standard field delimiter (0x20) |
+
+
+### Extra unescaped quote — 2 files
+
+*Variants: rows 3 (1 unique); columns 0, 5 (2 unique)*
+
+
+#### `row_extra_quote3_col0.csv`
+
+- **Pollution:** Extra unescaped quote in row 3, column 0
+- **Dialect:** `delimiter=','`, `quotechar='"'`, `escapechar='"'`, `row_delimiter='\r\n'`, `encoding='ascii'`, `header_lines=1`, `preamble_lines=0`, `n_columns=9`
+- **Sniffed:** `delimiter=','`, `quotechar='"'`, `escapechar='"'`, `row_delimiter=None`, `header_lines=1`, `preamble_lines=0`
+- **Refined:** `delimiter=','`, `quotechar='"'`, `escapechar='"'`, `row_delimiter=None`, `header_lines=1`, `preamble_lines=0`
+
+*Rows loaded: 83*
+
+**Diff:** 1 expected-but-missing, 1 unexpected-extra
+
+- ```
+  Expected: """30/01/2018",00:30,1,RI-8070,$80.08,Men's Ventilated Trail Shoes,"Great grip and super extra breathability m
+  Got:      30/01/2018,00:30,1,RI-8070,$80.08,Men's Ventilated Trail Shoes,"Great grip and super extra breathability make 
+  ```
+
+  ```
+  Exp. ctd: ake these amazing ventilated hikers ideal for warm, dry conditions.",https://www.example.com/product/RI_8070.h
+  Got ctd.: these amazing ventilated hikers ideal for warm, dry conditions.",https://www.example.com/product/RI_8070.html,
+  ```
+
+  ```
+  Exp. ctd: tml,
+  Got ctd.: 
+  ```
+
+
+#### `row_extra_quote3_col5.csv`
+
+- **Pollution:** Extra unescaped quote in row 3, column 5
+- **Dialect:** `delimiter=','`, `quotechar='"'`, `escapechar='"'`, `row_delimiter='\r\n'`, `encoding='ascii'`, `header_lines=1`, `preamble_lines=0`, `n_columns=9`
+- **Sniffed:** `delimiter=','`, `quotechar='"'`, `escapechar='"'`, `row_delimiter=None`, `header_lines=1`, `preamble_lines=0`
+- **Refined:** `delimiter=','`, `quotechar='"'`, `escapechar='"'`, `row_delimiter=None`, `header_lines=1`, `preamble_lines=0`
+
+*Rows loaded: 83*
+
+**Diff:** 1 expected-but-missing, 1 unexpected-extra
+
+- ```
+  Expected: 30/01/2018,00:30,1,RI-8070,$80.08,"""Men's Ventilated Trail Shoes","Great grip and super extra breathability m
+  Got:      30/01/2018,00:30,1,RI-8070,$80.08,Men's Ventilated Trail Shoes,"Great grip and super extra breathability make 
+  ```
+
+  ```
+  Exp. ctd: ake these amazing ventilated hikers ideal for warm, dry conditions.",https://www.example.com/product/RI_8070.h
+  Got ctd.: these amazing ventilated hikers ideal for warm, dry conditions.",https://www.example.com/product/RI_8070.html,
+  ```
+
+  ```
+  Exp. ctd: tml,
+  Got ctd.: 
+  ```
 
 
 ### Non-standard field delimiter (0x20) — 1 file
@@ -26,6 +86,8 @@
 
 #### `file_field_delimiter_0x20.csv`
 
+- **Pollution:** Non-standard field delimiter (0x20)
+- **Dialect:** `delimiter=' '`, `quotechar='"'`, `escapechar='"'`, `row_delimiter='\r\n'`, `encoding='ascii'`, `header_lines=1`, `preamble_lines=0`, `n_columns=9`
 - **Sniffed:** `delimiter=','`, `quotechar='"'`, `escapechar='"'`, `row_delimiter=None`, `header_lines=1`, `preamble_lines=0`
 - **Refined:** `delimiter=' '`, `quotechar='"'`, `escapechar='"'`, `row_delimiter=None`, `header_lines=1`, `preamble_lines=0`
 

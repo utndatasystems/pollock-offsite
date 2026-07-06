@@ -1,6 +1,5 @@
 import argparse
 import os
-import pollock
 import pollock.polluters_stdlib_v1 as pl
 import pollock.polluters_stdlib_v2 as pl2
 import random
@@ -207,14 +206,22 @@ if args.polluters == "pollock2.0":
 
     # Multi-table / layout structure
     execute_polluter(
-        f, pl2.addTableSideways, n_rows=min(f.row_count, 5), n_cols=min(f.col_count, 5)
+    f, pl2.addTableSideways, n_rows=min(f.row_count, 5), n_cols=min(f.col_count, 5)
     )
-    execute_polluter(
-        f, pl2.multilineHeader, header_col=4, header_rows=3, content="ExampleLineHeader"
-    )
+    execute_polluter(f, pl2.multilineHeader, header_rows=3) # checked
+    #print(pl2.multilineHeader.manually_verified)
+
     execute_polluter(f, pl2.duplicateHeaderAsDataRow)
     execute_polluter(f, pl2.metadataAsHeader)
     execute_polluter(f, pl2.superheader)
+
+    # Footnote
+    # Simple
+    execute_polluter(f, pl2.addFootnote, n_rows=1, blank_line=False)
+    # Multi-line
+    execute_polluter(f, pl2.addFootnote, n_rows=3, blank_line=False)
+    # Multi-line with blank line to separate
+    execute_polluter(f, pl2.addFootnote, n_rows=3, blank_line=True)
 
     # Row / column irregularities
     execute_polluter(f, pl2.moveHeaderRow)

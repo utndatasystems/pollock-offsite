@@ -15,8 +15,9 @@ from dialect import (
     sniff_with_clevercsv,
     sniff_with_duckdb,
 )
-from llm import configure_llm_cache, configure_llm_dry_run, get_llm_cache_stats
+from llm import configure_llm_cache, configure_llm_dry_run, configure_llm_verbose, get_llm_cache_stats
 from loader import (
+    _scan_rows_by_width,
     finalize_dataframe,
     find_width_rejects,
     infer_repairs_with_llm,
@@ -68,6 +69,8 @@ def parse_csv_with_validation(
     sidecar_path: str = None,
     llm_context_lines: int = 10,
     reset_sidecar: bool = True,
+    special_prompt: bool = False,
+    verbose: bool = False,
 ) -> Tuple[pd.DataFrame, List[Dict[str, Any]]]:
     """
     Load a polluted CSV using an optional non-LLM sniffer (CleverCSV or DuckDB) +
@@ -88,6 +91,7 @@ def parse_csv_with_validation(
         use_clevercsv=use_clevercsv,
         use_duckdb_sniff=use_duckdb_sniff,
         llm_context_lines=llm_context_lines,
+        special_prompt=special_prompt,
     )
 
     # Non-LLM dialect sniffer: CleverCSV or DuckDB (mutually exclusive, both optional).
@@ -107,11 +111,17 @@ def parse_csv_with_validation(
     if llm_dialect:
         try:
             llm_mapping = infer_dialect_with_llm(
-                csv_input, sniff_mapping, llm_context_lines, trace, sniffer_label
+                csv_input,
+                sniff_mapping,
+                llm_context_lines,
+                trace,
+                sniffer_label,
             )
         except Exception as exc:
             trace.write("llm_dialect_error", error=str(exc))
 
+    if verbose:
+        print(f"llm mapping: {llm_mapping}")
     scoring_lines = _read_sample_lines(csv_input, SCORING_LINE_LIMIT)
     dialect = dialect_from_mappings(sniff_mapping, llm_mapping, scoring_lines, trace, sniffer_name)
 
@@ -145,14 +155,39 @@ def parse_csv_with_validation(
     )
 
     df, duckdb_rejects, _ = load_with_duckdb(csv_input, dialect, expected_columns, trace, "initial")
-    width_rejects = find_width_rejects(csv_input, dialect, expected_columns)
+    # Single width scan (reused below): good_rows doubles as an independent row count.
+    good_rows, width_rejects = _scan_rows_by_width(csv_input, dialect, expected_columns)
+
+    # Strict-mode silent drop: a skipped-but-strict-invalid header can make DuckDB return
+    # 0 rows with 0 rejects and no error, because `skip` still tokenizes the header. If the
+    # same-dialect line scan finds well-formed rows, reload with the header physically
+    # stripped so the malformed header can't poison the data region.
+    if len(df) == 0 and good_rows:
+        trace.write("strict_mode_zero_rows_fallback", scanned_good_rows=len(good_rows))
+        df, duckdb_rejects, _ = load_with_duckdb(
+            csv_input,
+            dialect,
+            expected_columns,
+            trace,
+            "initial_stripped",
+            strip_skipped=True,
+        )
+
     if width_rejects:
         trace.write("local_width_validation_result", stage="initial", reject_errors=width_rejects)
     rejects = merge_rejects(duckdb_rejects, width_rejects)
     malformed = rejects_to_malformed(rejects)
 
     if llm_repair and rejects:
-        repairs = infer_repairs_with_llm(header, dialect, df, rejects, llm_context_lines, trace)
+        repairs = infer_repairs_with_llm(
+            header,
+            dialect,
+            csv_input,
+            rejects,
+            llm_context_lines,
+            trace,
+            special_prompt=special_prompt,
+        )
         for item in malformed:
             if item["line_num"] in repairs:
                 item["repaired"] = False

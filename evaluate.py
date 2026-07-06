@@ -69,21 +69,19 @@ def evaluate_single_file(filename:str, dataset:str, sut:str, verbose=False, n_jo
     if verbose:
         print(f"'{filename}'")
     if not os.path.exists(loaded_path):
-        __builtin__.print(f"[{filename}] wrong")
         dict_measures[sut + "_correct"] = 0
         dict_measures[sut + "_wrong"] = 1
         return dict_measures
     try:
         correct = metrics.alex_compare(clean_path, loaded_path, n_jobs, origin_csv=origin_csv)
-        dict_measures[sut + "_correct"] = correct
-        dict_measures[sut + "_wrong"] = not correct
+        dict_measures[sut + "_correct"] = int(correct)
+        dict_measures[sut + "_wrong"] = int(not correct)
     except Exception as e:
         print("Exception:", traceback.format_exc())
         if not verbose:
             print("On file:", filename)
-        __builtin__.print(f"[{filename}] wrong")
-        dict_measures[sut + "_correct"] = False
-        dict_measures[sut + "_wrong"] = True
+        dict_measures[sut + "_correct"] = 0
+        dict_measures[sut + "_wrong"] = 1
 
     return dict_measures
 
@@ -102,7 +100,10 @@ def evaluate_single_run(files: List[str], dataset: str, result_file:str, sut:str
     # parallel
     else:
         args = [{"filename": f, "dataset": dataset, "sut": sut, "verbose": verbose, "origin_csv": origin_csv} for f in files]
-        file_measures = pqdm(args, evaluate_single_file, n_jobs=effective_jobs, argument_type="kwargs")
+        # fork() in a multi-threaded parent triggers a DeprecationWarning on Py3.12; silence it at fork time
+        with warnings.catch_warnings():
+            warnings.filterwarnings("ignore", message=r"This process .* is multi-threaded")
+            file_measures = pqdm(args, evaluate_single_file, n_jobs=effective_jobs, argument_type="kwargs")
     results_df = pd.DataFrame(file_measures)
     results_df.to_csv(result_file, index=False)
     if verbose: print(results_df)
@@ -137,7 +138,8 @@ def main():
 
     verbose = bool(args.verbose)
     systems = [s for s in next(os.walk(f"{RESULT_DIR}"))[1]
-               if s != "archives" and os.path.isdir(f"{RESULT_DIR}/{s}/{dataset}/loading")]
+               if s != "archives" and not s.startswith("_")
+               and os.path.isdir(f"{RESULT_DIR}/{s}/{dataset}/loading")]
 
     sut_dirs = {s for s in os.listdir("sut") if os.path.isdir(f"sut/{s}") and not s.startswith("_")}
     no_results = sorted(sut_dirs - set(systems))

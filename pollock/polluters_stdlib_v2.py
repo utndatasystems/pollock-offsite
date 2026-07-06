@@ -24,6 +24,9 @@ from pollock.polluters_utils import (
     _last_data_row,
 )
 
+def manually_verified(func):
+    func.manually_verified = True
+    return func
 
 def addTableSideways(
     file: CSVFile, n_rows, n_cols, random_content=False, empty_boundary=True
@@ -99,35 +102,62 @@ def addTableSideways(
     )
 
 
-def multilineHeader(  # checked manually
+@manually_verified
+def multilineHeader(
     file: CSVFile,
-    header_col=5,
-    header_rows=3,
-    content="ExampleLineHeader",
+    header_rows: int = 3,
     **kwargs,
 ):
+    """Split the original header row across multiple header rows.
+
+    Quoted source header cells keep their quotation markers in the output.
     """
-    Adds multiline header rows ABOVE the original table.
+    if header_rows < 1:
+        raise ValueError("header_rows must be at least 1")
 
-    Each inserted row contains only a single cell:
-        Line1
-        Line2
-        Line3
+    root = file.xml.getroot()
+    table = root.xpath("//table[1]")[0]
+    header_rows_nodes = root.xpath("//table[1]/row[1]")
+    if not header_rows_nodes:
+        raise ValueError("Cannot create multiline header: first row is empty or missing")
 
-    No extra delimiters are inserted.
-    """
-    if "new_content" in kwargs and kwargs["new_content"] is not None:
-        content = kwargs["new_content"]
+    header_cells = header_rows_nodes[0].xpath("./cell")
+    if not header_cells:
+        raise ValueError("Cannot create multiline header: first row has no cells")
 
-    for i in reversed(range(header_rows)):
-        pb.addRows(
-            file,
-            cell_content=f"{content}{i + 1}",
-            n_rows=1,
-            position=0,
-            col_count=1,  # IMPORTANT: only one cell
-            role="header",
-        )
+    col_count = len(header_cells)
+    base, remainder = divmod(col_count, header_rows)
+    start = 0
+    split_rows = []
+
+    for i in range(header_rows):
+        chunk_size = base + (1 if i < remainder else 0)
+        chunk = header_cells[start : start + chunk_size]
+        start += chunk_size
+        split_rows.append(chunk)
+
+    pb.deleteRows(file, rows_to_delete=[0])
+
+    for chunk in reversed(split_rows):
+        row = etree.Element("row", role="header")
+        for j, cell in enumerate(chunk):
+            text = "".join(v.text or "" for v in cell if v.tag == "value")
+            quoted = bool(cell.xpath("./quotation_char"))
+            row.append(
+                pb.create_cell(
+                    field_delimiter=file.field_delimiter,
+                    quotation_char=file.quotation_char,
+                    escape_char=file.escape_char,
+                    text=text,
+                    role="header",
+                    should_quote=quoted,
+                )
+            )
+            if j < len(chunk) - 1:
+                row.append(E.field_delimiter(file.field_delimiter))
+
+        row.append(E.record_delimiter(file.record_delimiter))
+        table.insert(0, row)
 
     _set_polluted_filename(
         file,
@@ -805,49 +835,39 @@ def moveHeaderRow(file: CSVFile, row: int | None = None):
     _set_polluted_filename(file, f"file_move_header_row{row}.csv")
 
 
+@manually_verified
 def addFootnote(
-    file: CSVFile, n_rows=1, delimiters=False, emptyrow=False, cell_content="FOOTNOTE"
+    file: CSVFile, n_rows=1, blank_line=False, cell_content="FOOTNOTE"
 ):
     """
     :param file:
-    :param n_rows: number of rows for the preamble
-    :param delimiters: if True, creates a row with as many delimited cells as the other rows
-    :param emptyrow:  if True, leaves an empty row between the preamble and the data
-    :param cell_content: the content of the preamble cell(s). Either list or single value
+    :param n_rows: number of rows for the footnote
+    :param blank_line: if True, inserts a truly blank line (just a newline) between the data and the footnote
+    :param cell_content: the content of the footnote cell(s). Either list or single value
     """
-    if emptyrow:
-        pb.addRows(
-            file, n_rows=1, position=-1, col_count=file.col_count, role="footnote"
-        )
-
-    if delimiters:
-        cell_content = (
-            [cell_content] + [""] * (file.col_count - 1)
-            if type(cell_content) == str
-            else cell_content
-        )
+    if blank_line:
+        # col_count=0 produces a row with no cells — just the record delimiter,
+        # i.e. a truly empty line rather than a row of empty cells.
         pb.addRows(
             file,
-            n_rows=n_rows,
-            cell_content=cell_content,
-            position=-1,
-            col_count=file.col_count,
+            n_rows=1,
+            position=_safe_row_count(file),
+            col_count=0,
             role="footnote",
         )
 
-    else:
-        pb.addRows(
-            file,
-            n_rows=n_rows,
-            cell_content=cell_content,
-            position=-1,
-            col_count=1,
-            role="footnote",
-        )
+    pb.addRows(
+        file,
+        n_rows=n_rows,
+        cell_content=cell_content,
+        position=_safe_row_count(file),
+        col_count=1,
+        role="footnote",
+    )
 
     _set_polluted_filename(
         file,
-        f"file_footnote_{n_rows}_{'not_' if not delimiters else ''}delimited{'_empty_row' if emptyrow else ''}.csv",
+        f"file_footnote_{n_rows}{'_blank_line' if blank_line else ''}.csv",
     )
 
 
