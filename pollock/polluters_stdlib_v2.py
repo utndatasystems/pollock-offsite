@@ -871,9 +871,10 @@ def addFootnote(
     )
 
 
+@manually_verified
 def tableToWhitespaceFormattedTable(
     file: CSVFile, pad_cells=True, quote_strings=True
-):  # checked manually
+):
     """
     Converts a CSV table to a whitespace-formatted table by replacing the field delimiters with spaces.
 
