@@ -7,13 +7,13 @@ import urllib.request
 from collections import Counter, OrderedDict
 from dataclasses import dataclass
 from typing import Any, Dict, Iterable, List, Optional, Tuple
+from llm_utils import _LLM_RESPONSE_CACHE, _LLM_CALL_STATS, _LLM_CACHE_PATH, _LLM_CACHE_ENABLED, _LLM_CACHE_LOADED, _LLM_DRY_RUN, _save_cache_to_disk, _ensure_cache_loaded
 
 import pandas as pd
 
 
 DEFAULT_OPENAI_ENDPOINT = "http://dep-eng-data-s-heimgarten.hosts.utn.de:4000/v1/chat/completions"
-DEFAULT_OPENAI_MODEL = "gpt-5.4"
-#DEFAULT_OPENAI_MODEL = "gpt-5.4-mini"
+DEFAULT_OPENAI_MODEL = "gpt-5.4" #"gpt-5.4-mini"
 TRACE_VERSION = 1
 
 _LLM_RESPONSE_CACHE: Dict[str, str] = {}
@@ -29,51 +29,7 @@ _LLM_CALL_STATS: Dict[str, int] = {
 _LLM_DRY_RUN: bool = False
 
 
-def configure_llm_cache(path: Optional[str] = None, enabled: bool = True) -> None:
-    global _LLM_CACHE_PATH, _LLM_CACHE_ENABLED, _LLM_CACHE_LOADED
-    _LLM_CACHE_PATH = path
-    _LLM_CACHE_ENABLED = enabled
-    _LLM_CACHE_LOADED = False
-
-
-def configure_llm_dry_run(enabled: bool) -> None:
-    global _LLM_DRY_RUN
-    _LLM_DRY_RUN = enabled
-
-
-def get_llm_cache_stats() -> Dict[str, int]:
-    return dict(_LLM_CALL_STATS)
-
-
-def _ensure_cache_loaded() -> None:
-    global _LLM_CACHE_LOADED
-    if _LLM_CACHE_LOADED or not _LLM_CACHE_PATH:
-        return
-    _LLM_CACHE_LOADED = True
-    if not os.path.exists(_LLM_CACHE_PATH):
-        return
-    try:
-        with open(_LLM_CACHE_PATH, "r", encoding="utf-8") as f:
-            data = json.load(f)
-        if isinstance(data, dict):
-            _LLM_RESPONSE_CACHE.update(data)
-    except Exception:
-        pass
-
-
-def _save_cache_to_disk() -> None:
-    if not _LLM_CACHE_PATH:
-        return
-    try:
-        cache_dir = os.path.dirname(_LLM_CACHE_PATH)
-        if cache_dir:
-            os.makedirs(cache_dir, exist_ok=True)
-        with open(_LLM_CACHE_PATH, "w", encoding="utf-8") as f:
-            json.dump(_LLM_RESPONSE_CACHE, f, ensure_ascii=False, indent=2)
-    except Exception:
-        pass
-
-
+#TODO: move to some utils file
 @dataclass
 class CSVDialect:
     delimiter: str = ","
@@ -117,22 +73,6 @@ class TraceWriter:
             f.write(json.dumps(event, ensure_ascii=False, default=str))
             f.write("\n")
 
-
-def _openai_endpoint() -> str:
-    return os.environ.get("OPENAI_ENDPOINT") or DEFAULT_OPENAI_ENDPOINT
-
-
-def _openai_model() -> str:
-    return os.environ.get("OPENAI_MODEL") or DEFAULT_OPENAI_MODEL
-
-
-def _openai_api_key() -> Optional[str]:
-    return os.environ.get("OPENAI_API_KEY")
-
-
-def _prompt_hash(prompt: str) -> str:
-    key = _openai_model() + "\x00" + prompt
-    return hashlib.sha256(key.encode("utf-8")).hexdigest()
 
 
 def call_llm(prompt: str, trace: TraceWriter, event_type: str, estimated_output_chars: int = 0) -> str:
