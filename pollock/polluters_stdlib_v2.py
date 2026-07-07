@@ -22,11 +22,10 @@ from pollock.polluters_utils import (
     _safe_row_count,
     _safe_col_count,
     _last_data_row,
+    manually_verified,
+    todo
 )
 
-def manually_verified(func):
-    func.manually_verified = True
-    return func
 
 def addTableSideways(
     file: CSVFile, n_rows, n_cols, random_content=False, empty_boundary=True
@@ -942,3 +941,53 @@ def tableToWhitespaceFormattedTable(
         f"{'quoted' if quote_strings else 'unquoted'}_"
         f"{'padded' if pad_cells else 'unpadded'}.csv",
     )
+
+
+@manually_verified
+def differentNullValues(file: CSVFile,
+    row: int | None = None,
+    col: int | None = None,
+    null_values = ["NULL", "N/A", "", "None", "undefined"]):
+    """
+    This polluter will create a CSV file with different null values in the same column.
+    It replaces consecutive cells in one column with different null markers such as
+    "NULL", "N/A", "", "None", and "undefined".
+
+    Args:
+        file: CSVFile to modify.
+        row: Row index to start inserting null values. If None, a random row is chosen
+        col: Column index to insert null values. If None, a random column is chosen.
+        null_values: List of null values to use.
+        n_values: Number of null values to insert. 
+    """
+        
+    if null_values is None:
+        null_values = ["NULL", "N/A", "", "None", "undefined"]
+    
+
+    row_count = _safe_row_count(file)
+    col_count = _safe_col_count(file)
+    if row_count <= 0 or col_count <= 0:
+        raise ValueError("Cannot apply differentNullValues to an empty file.")
+
+    if row is None:
+        row = random.randint(1, _safe_row_count(file)-len(null_values)) # Ensure enough rows are available for the null values
+    if col is None:
+        col = random.randint(0, _safe_col_count(file))
+
+
+    for offset, null_value in enumerate(null_values):
+        target_row = row + offset
+
+        pb.changeCell(
+            file,
+            row=target_row + 1,  # XPath indexing
+            col=col + 1,
+            new_content=null_value,
+        )
+
+    _set_polluted_filename(file, f"file_different_null_values_row_{row}_col_{col}.csv")
+
+
+
+
