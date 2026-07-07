@@ -1,6 +1,5 @@
 import argparse
 import os
-import pollock
 import pollock.polluters_stdlib_v1 as pl
 import pollock.polluters_stdlib_v2 as pl2
 import random
@@ -205,6 +204,9 @@ execute_polluter(f, pl.changeEscapeCharacter, target_escape="")
 
 if args.polluters == "pollock2.0":
 
+    # Null values
+    execute_polluter(f, pl2.differentNullValues, null_values=["NULL", "N/A", "NaN", "", "None", "undefined"])
+
     # Multi-table / layout structure
     execute_polluter(
     f, pl2.addTableSideways, n_rows=min(f.row_count, 5), n_cols=min(f.col_count, 5)
@@ -215,6 +217,14 @@ if args.polluters == "pollock2.0":
     execute_polluter(f, pl2.duplicateHeaderAsDataRow)
     execute_polluter(f, pl2.metadataAsHeader)
     execute_polluter(f, pl2.superheader)
+
+    # Footnote
+    # Simple
+    execute_polluter(f, pl2.addFootnote, n_rows=1, blank_line=False)
+    # Multi-line
+    execute_polluter(f, pl2.addFootnote, n_rows=3, blank_line=False)
+    # Multi-line with blank line to separate
+    execute_polluter(f, pl2.addFootnote, n_rows=3, blank_line=True)
 
     # Row / column irregularities
     execute_polluter(f, pl2.moveHeaderRow)
@@ -259,6 +269,9 @@ if args.polluters == "pollock2.0":
     execute_polluter(f, pl2.unescaped, row=2 if f.row_count >= 2 else 1, col=1)
     execute_polluter(f, pl2.doubleEscaping, row1=2, row2=3, col=1)
     execute_polluter(f, pl2.unquotedLists)
+    execute_polluter(f, pl2.tableToWhitespaceFormattedTable, pad_cells=False)
+    execute_polluter(f, pl2.tableToWhitespaceFormattedTable, pad_cells=True, quote_strings=True)
+    execute_polluter(f, pl2.tableToWhitespaceFormattedTable, pad_cells=True, quote_strings=False)
 
     # Spreadsheet / Excel-style edge cases
     execute_polluter(f, pl2.excelExportAutoformat)

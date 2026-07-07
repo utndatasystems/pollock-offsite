@@ -1,0 +1,70 @@
+"iata","airport","city","state","country","lat","long"
+"00M","Thigpen ","Bay Springs","MS","USA",31.95376472,-89.23450472
+"00R","Livingston Municipal","Livingston","TX","USA",30.68586111,-95.01792778
+"00V","Meadow Lake","Colorado Springs","CO","USA",38.94574889,-104.5698933
+"01G","Perry-Warsaw","Perry","NY","USA",42.74134667,-78.05208056
+"01J","Hilliard Airpark","Hilliard","FL","USA",30.6880125,-81.90594389
+"01M","Tishomingo County","Belmont","MS","USA",34.49166667,-88.20111111
+"02A","Gragg-Wade ","Clanton","AL","USA",32.85048667,-86.61145333
+"02C","Capitol","Brookfield","WI","USA",43.08751,-88.17786917
+"02G","Columbiana County","East Liverpool","OH","USA",40.67331278,-80.64140639
+"03D","Memphis Memorial","Memphis","MO","USA",40.44725889,-92.22696056
+"04M","Calhoun County","Pittsboro","MS","USA",33.93011222,-89.34285194
+"04Y","Hawley Municipal","Hawley","MN","USA",46.88384889,-96.35089861
+"05C","Griffith-Merrillville ","Griffith","IN","USA",41.51961917,-87.40109333
+"05F","Gatesville - City/County","Gatesville","TX","USA",31.42127556,-97.79696778
+"05U","Eureka","Eureka","NV","USA",39.60416667,-116.0050597
+"06A","Moton  Municipal","Tuskegee","AL","USA",32.46047167,-85.68003611
+"06C","Schaumburg","Chicago/Schaumburg","IL","USA",41.98934083,-88.10124278
+"06D","Rolla Municipal","Rolla","ND","USA",48.88434111,-99.62087694
+"06M","Eupora Municipal","Eupora","MS","USA",33.53456583,-89.31256917
+"06N","Randall ","Middletown","NY","USA",41.43156583,-74.39191722
+"06U","Jackpot/Hayden ","Jackpot","NV","USA",41.97602222,-114.6580911
+"07C","Dekalb County","Auburn","IN","USA",41.30716667,-85.06433333
+"07F","Gladewater Municipal","Gladewater","TX","USA",32.52883861,-94.97174556
+"07G","Fitch H Beach","Charlotte","MI","USA",42.57450861,-84.81143139
+"07K","Central City Municipal","Central City","NE","USA",41.11668056,-98.05033639
+"08A","Wetumpka Municipal","Wetumpka","AL","USA",32.52943944,-86.32822139
+"08D","Stanley Municipal","Stanley","ND","USA",48.30079861,-102.4063514
+"08K","Harvard State","Harvard","NE","USA",40.65138528,-98.07978667
+"08M","Carthage-Leake County","Carthage","MS","USA",32.76124611,-89.53007139
+"09A","Butler-Choctaw County","Butler","AL","USA",32.11931306,-88.1274625
+"09J","Jekyll Island","Jekyll Island","GA","USA",31.07447222,-81.42777778
+"09K","Sargent Municipal","Sargent","NE","USA",41.63695083,-99.34038139
+"09M","Charleston Municipal","Charleston","MS","USA",33.99150222,-90.078145
+"09W","South Capitol Street","Washington","DC","USA",38.86872333,-77.00747583
+"0A3","Smithville Municipal","Smithville","TN","USA",35.98531194,-85.80931806
+"0A8","Bibb County","Centreville","AL","USA",32.93679056,-87.08888306
+"0A9","Elizabethton Municipal","Elizabethton","TN","USA",36.37094306,-82.17374111
+"0AK","Pilot Station","Pilot Station","AK","USA",61.93396417,-162.8929358
+"0B1","Col. Dyke ","Bethel","ME","USA",44.42506444,-70.80784778
+"0B4","Hartington Municipal","Hartington","NE","USA",42.60355556,-97.25263889
+"0B5","Turners Falls","Montague","MA","USA",42.59136361,-72.52275472
+"0B7","Warren-Sugar Bush","Warren","VT","USA",44.11672722,-72.82705806
+"0B8","Elizabeth ","Fishers Island","NY","USA",41.25130806,-72.03161139
+"0C0","Dacy","Chicago/Harvard","IL","USA",42.40418556,-88.63343222
+"0C4","Pender Municipal","Pender","NE","USA",42.11388722,-96.72892556
+"0D1","South Haven Municipal","South Haven","MI","USA",42.35083333,-86.25613889
+"0D8","Gettysburg Municipal","Gettysburg","SD","USA",44.98730556,-99.9535
+"0E0","Moriarty","Moriarty","NM","USA",34.98560639,-106.0094661
+"0E8","Crownpoint","Crownpoint","NM","USA",35.71765889,-108.2015961
+"0F2","Bowie Municipal","Bowie","TX","USA",33.60166667,-97.77556
+"0F4","Loup City Municipal","Loup City","NE","USA",41.29028694,-98.99064278
+"0F7","Fountainhead Lodge Airpark","Eufaula","OK","USA",35.38898833,-95.60165111
+"0F8","William R Pogue Municipal","Sand Springs","OK","USA",36.17528,-96.15181028
+"0F9","Tishomingo Airpark","Tishomingo","OK","USA",34.19592833,-96.67555694
+"0G0","North Buffalo Suburban","Lockport","NY","USA",43.10318389,-78.70334583
+"0G3","Tecumseh Municipal","Tecumseh","NE","USA",40.39944417,-96.17139694
+"0G6","Williams County","Bryan","OH","USA",41.46736111,-84.50655556
+"0G7","Finger Lakes Regional","Seneca Falls","NY","USA",42.88062278,-76.78162028
+"0H1","Trego Wakeeney ","Wakeeney","KS","USA",39.0044525,-99.89289917
+"0I8","Cynthiana-Harrison County","Cynthiana","KY","USA",38.36674167,-84.28410056
+"0J0","Abbeville Municipal","Abbeville","AL","USA",31.60016778,-85.23882222
+"0J4","Florala Municipal","Florala","AL","USA",31.04247361,-86.31156111
+"0J6","Headland Municipal","Headland","AL","USA",31.364895,-85.30965556
+"0K7","Humboldt Municipal","Humboldt","IA","USA",42.7360825,-94.24524167
+"0L5","Goldfield","Goldfield","NV","USA",37.71798833,-117.2384119
+"0L7","Jean","Jean","NV","USA",35.76827222,-115.3296378
+"0L9","Echo Bay","Overton","NV","USA",36.31108972,-114.4638672
+"0M0","Dumas Municipal","Dumas","AR","USA",33.8845475,-91.53429111
+"0M1","Scott ","Parsons","TN","USA",35.63778,-88.127995

@@ -1,14 +1,28 @@
 from __future__ import annotations
 
+import builtins
+import csv as csv_module
+import hashlib
 import json
+import os
 import re
 from collections import Counter
 from dataclasses import dataclass
 from datetime import datetime, timezone
+from io import StringIO
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Sequence, Tuple
+from urllib import error as urllib_error
+from urllib import request as urllib_request
 
 import pandas as pd
+
+
+OPENAI_API_KEY_ENV = "OPENAI_API_KEY"
+OPENAI_MODEL_ENV = "OPENAI_MODEL"
+OPENAI_ENDPOINT_ENV = "OPENAI_ENDPOINT"
+OPENAI_DEFAULT_MODEL = "gpt-5.4"
+OPENAI_DEFAULT_ENDPOINT = "http://dep-eng-data-s-heimgarten.hosts.utn.de:4000/v1/chat/completions"
 
 
 _CACHE_ENABLED = True
@@ -54,36 +68,25 @@ class TraceWriter:
         self._fh.flush()
 
 
-
 def configure_llm_cache(path: Optional[str] = None, enabled: bool = True) -> None:
-    """Compatibility shim for the benchmark wrapper."""
-
     global _CACHE_ENABLED, _CACHE_PATH
     _CACHE_ENABLED = enabled
     _CACHE_PATH = path
 
 
-
 def configure_llm_dry_run(enabled: bool) -> None:
-    """Compatibility shim for the benchmark wrapper."""
-
     global _DRY_RUN
     _DRY_RUN = enabled
 
 
-
 def get_llm_cache_stats() -> Dict[str, int]:
-    """Return cache counters in the shape the benchmark wrapper expects."""
-
     return dict(_CACHE_STATS)
-
 
 
 def _coerce_cell(value: Any) -> str:
     if value is None:
         return ""
     return str(value)
-
 
 
 def _is_numeric_like(value: str) -> bool:
@@ -103,7 +106,6 @@ def _is_numeric_like(value: str) -> bool:
     return False
 
 
-
 def _looks_like_header_row(row: Sequence[str]) -> bool:
     cells = [c.strip() for c in row if c is not None and c.strip()]
     if not cells:
@@ -117,15 +119,11 @@ def _looks_like_header_row(row: Sequence[str]) -> bool:
     return alpha >= digit
 
 
-
 def _candidate_delimiters() -> List[str]:
-    return [", ", ";", "\t", "|", ","]
-
+    return [", ", ";", "	", "|", ","]
 
 
 def _parse_csv_text(text: str, delimiter: str, quotechar: str = '"') -> List[List[str]]:
-    """Parse CSV text with a small quote-aware splitter that supports multi-char delimiters."""
-
     rows: List[List[str]] = []
     field: List[str] = []
     row: List[str] = []
@@ -188,7 +186,6 @@ def _parse_csv_text(text: str, delimiter: str, quotechar: str = '"') -> List[Lis
     return rows
 
 
-
 def _score_delimiter(text: str, delimiter: str) -> Tuple[int, int, int]:
     sample = text[:50000]
     rows = _parse_csv_text(sample, delimiter)
@@ -196,10 +193,9 @@ def _score_delimiter(text: str, delimiter: str) -> Tuple[int, int, int]:
     if not widths:
         return (-1, 0, 0)
     counts = Counter(widths)
-    mode_width, mode_count = max(counts.items(), key=lambda item: (item[1], item[0]))
+    mode_width, _ = max(counts.items(), key=lambda item: (item[1], item[0]))
     consistency = sum(1 for width in widths if width == mode_width)
     return (mode_width, consistency, -len(delimiter))
-
 
 
 def _guess_dialect(text: str) -> Tuple[str, str]:
@@ -211,14 +207,12 @@ def _guess_dialect(text: str) -> Tuple[str, str]:
     return (best[1] if best else ",", '"')
 
 
-
 def _detect_expected_width(rows: Sequence[Sequence[str]]) -> int:
     widths = [len(row) for row in rows if any(cell.strip() for cell in row)]
     if not widths:
         return 0
     counts = Counter(widths)
     return max(counts.items(), key=lambda item: (item[1], item[0]))[0]
-
 
 
 def _detect_header_rows(rows: Sequence[Sequence[str]], expected_width: int) -> int:
@@ -241,7 +235,6 @@ def _detect_header_rows(rows: Sequence[Sequence[str]], expected_width: int) -> i
     return 1 if rows else 0
 
 
-
 def _flatten_header_rows(rows: Sequence[Sequence[str]], header_rows: int, expected_width: int) -> List[str]:
     if not rows:
         return []
@@ -257,9 +250,8 @@ def _flatten_header_rows(rows: Sequence[Sequence[str]], header_rows: int, expect
     if expected_width and len(header) < expected_width:
         header.extend([""] * (expected_width - len(header)))
     elif expected_width and len(header) > expected_width:
-        header = header[: expected_width - 1] + [" ".join(header[expected_width - 1 :]).strip()]
+        header = header[: expected_width - 1] + [" ".join(header[expected_width - 1:]).strip()]
     return header
-
 
 
 def _normalize_row(row: Sequence[str], expected_width: int, delimiter: str) -> List[str]:
@@ -271,51 +263,6 @@ def _normalize_row(row: Sequence[str], expected_width: int, delimiter: str) -> L
     elif len(cells) > expected_width:
         cells = cells[: expected_width - 1] + [delimiter.join(cells[expected_width - 1:])]
     return cells[:expected_width]
-
-
-
-def _build_repair_program(analysis: CSVAnalysis) -> str:
-    return f"""
-DELIMITER = {analysis.delimiter!r}
-QUOTECHAR = {analysis.quotechar!r}
-EXPECTED_WIDTH = {analysis.expected_width}
-HEADER_ROWS = {analysis.header_rows}
-HEADER = {analysis.repaired_header!r}
-
-
-def repair_rows(rows):
-    repaired = [HEADER]
-    for row in rows[HEADER_ROWS:]:
-        if not row or not any(cell.strip() for cell in row):
-            continue
-        if len(row) < EXPECTED_WIDTH:
-            row = row + [\"\"] * (EXPECTED_WIDTH - len(row))
-        elif len(row) > EXPECTED_WIDTH:
-            row = row[: EXPECTED_WIDTH - 1] + [DELIMITER.join(row[EXPECTED_WIDTH - 1:])]
-        repaired.append(row[:EXPECTED_WIDTH])
-    return repaired
-""".strip()
-
-
-
-def _execute_repair_program(program: str, rows: List[List[str]]) -> List[List[str]]:
-    namespace: Dict[str, Any] = {}
-    exec(program, namespace, namespace)
-    return namespace["repair_rows"](rows)
-
-
-
-def _rows_to_dataframe(rows: List[List[str]]) -> pd.DataFrame:
-    if not rows:
-        return pd.DataFrame()
-    header = rows[0]
-    data = rows[1:]
-    if not header:
-        return pd.DataFrame(data)
-    width = len(header)
-    normalized = [_normalize_row(row, width, ",") for row in data]
-    return pd.DataFrame(normalized, columns=header)
-
 
 
 def _analyze_csv(text: str) -> CSVAnalysis:
@@ -346,7 +293,6 @@ def _analyze_csv(text: str) -> CSVAnalysis:
     )
 
 
-
 def _malformed_rows(rows: Sequence[Sequence[str]], expected_width: int, header_rows: int) -> List[Dict[str, Any]]:
     malformed: List[Dict[str, Any]] = []
     for line_num, row in enumerate(rows, start=1):
@@ -368,6 +314,241 @@ def _malformed_rows(rows: Sequence[Sequence[str]], expected_width: int, header_r
     return malformed
 
 
+def _build_repair_prompt(raw_csv: str, analysis: CSVAnalysis) -> str:
+    return (
+        "You are a Python code generator for CSV repair.\n"
+        "Return ONLY valid Python code. No markdown, no explanation, no backticks.\n"
+        "The code will be executed with exec() and must define exactly this function:\n"
+        "    def repair_csv(raw_csv: str) -> str:\n"
+        "The function receives the raw CSV text and must return repaired CSV text.\n"
+        "Use only Python code to fix the CSV corruption. Do not emit JSON. Do not emit prose.\n"
+        "Preserve original data, quoting, commas inside quoted values, and header capitalization.\n"
+        "If the header spans multiple rows, combine it into a single header row.\n"
+        "If fields were split or merged incorrectly, repair them before returning the CSV.\n"
+        "The repaired output must be valid CSV text that pandas can read.\n\n"
+        f"Detected delimiter hint: {analysis.delimiter!r}\n"
+        f"Detected quote character hint: {analysis.quotechar!r}\n"
+        f"Detected header rows: {analysis.header_rows}\n"
+        f"Detected expected width: {analysis.expected_width}\n\n"
+        "Raw CSV:\n"
+        f"{raw_csv}\n"
+    )
+
+
+def _extract_python_code(llm_output: str) -> str:
+    text = llm_output.strip()
+    if text.startswith("```"):
+        lines = text.splitlines()
+        if lines and lines[0].startswith("```"):
+            lines = lines[1:]
+        if lines and lines[-1].startswith("```"):
+            lines = lines[:-1]
+        text = "\n".join(lines).strip()
+
+    if "def repair_csv" in text:
+        start = text.index("def repair_csv")
+        return text[start:].strip()
+
+    return text
+
+
+def _prompt_hash(prompt: str) -> str:
+    model = os.environ.get(OPENAI_MODEL_ENV, OPENAI_DEFAULT_MODEL)
+    key = model + "\x00" + prompt
+    return hashlib.sha256(key.encode("utf-8")).hexdigest()
+
+
+def _ensure_cache_loaded() -> Dict[str, str]:
+    cache: Dict[str, str] = {}
+    if not _CACHE_ENABLED or not _CACHE_PATH:
+        return cache
+    path = Path(_CACHE_PATH)
+    if not path.exists():
+        return cache
+    try:
+        with path.open("r", encoding="utf-8") as handle:
+            loaded = json.load(handle)
+        if isinstance(loaded, dict):
+            for key, value in loaded.items():
+                if isinstance(key, str) and isinstance(value, str):
+                    cache[key] = value
+    except Exception:
+        return cache
+    return cache
+
+
+def _save_cache(cache: Dict[str, str]) -> None:
+    if not _CACHE_ENABLED or not _CACHE_PATH:
+        return
+    path = Path(_CACHE_PATH)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with path.open("w", encoding="utf-8") as handle:
+        json.dump(cache, handle, ensure_ascii=False, indent=2)
+
+
+def _build_chat_payload(prompt: str) -> Dict[str, Any]:
+    return {
+        "model": os.environ.get(OPENAI_MODEL_ENV, OPENAI_DEFAULT_MODEL),
+        "messages": [
+            {
+                "role": "system",
+                "content": (
+                    "You write Python repair code for corrupted CSV files. "
+                    "Return only Python code."
+                ),
+            },
+            {"role": "user", "content": prompt},
+        ],
+        "temperature": 0,
+        "max_tokens": 4096,
+    }
+
+
+
+def _query_llm(prompt: str) -> str:
+    _CACHE_STATS["total"] += 1
+    _CACHE_STATS["input_chars_total"] += len(prompt)
+    prompt_sha = _prompt_hash(prompt)
+    cache = _ensure_cache_loaded()
+
+    if _CACHE_ENABLED and prompt_sha in cache:
+        response = cache[prompt_sha]
+        _CACHE_STATS["cached"] += 1
+        _CACHE_STATS["input_chars_cached"] += len(prompt)
+        _CACHE_STATS["output_chars_cached"] += len(response)
+        return response
+
+    if _DRY_RUN:
+        response = (
+            "def repair_csv(raw_csv: str) -> str:\n"
+            "    return raw_csv\n"
+        )
+        _CACHE_STATS["output_chars_fresh"] += len(response)
+        if _CACHE_ENABLED:
+            cache[prompt_sha] = response
+            _save_cache(cache)
+        return response
+
+        _CACHE_STATS["output_chars_fresh"] += len(response)
+        if _CACHE_ENABLED:
+            cache[prompt_sha] = response
+            _save_cache(cache)
+        return response
+
+    api_key = os.environ.get(OPENAI_API_KEY_ENV)
+    if not api_key:
+        raise EnvironmentError(
+            f"Missing {OPENAI_API_KEY_ENV}. Set it to a valid OpenAI API key to use the LLM repair path."
+        )
+
+    payload = json.dumps(_build_chat_payload(prompt)).encode("utf-8")
+    request = urllib_request.Request(
+        os.environ.get(OPENAI_ENDPOINT_ENV, OPENAI_DEFAULT_ENDPOINT),
+        data=payload,
+        headers={
+            "Content-Type": "application/json",
+            "Authorization": f"Bearer {api_key}",
+        },
+        method="POST",
+    )
+
+    try:
+        with urllib_request.urlopen(request, timeout=300) as response_obj:
+            body = json.loads(response_obj.read().decode("utf-8"))
+    except urllib_error.HTTPError as exc:
+        detail = exc.read().decode("utf-8", errors="replace") if hasattr(exc, "read") else str(exc)
+        raise RuntimeError(f"LLM request failed: {detail}") from exc
+
+    choices = body.get("choices") if isinstance(body, dict) else None
+    if not choices:
+        raise RuntimeError("Unexpected LLM response: missing choices")
+    message = choices[0].get("message", {}) if isinstance(choices[0], dict) else {}
+    response = message.get("content")
+    if not isinstance(response, str):
+        raise RuntimeError("Unexpected LLM response: missing assistant content")
+
+    _CACHE_STATS["output_chars_fresh"] += len(response)
+    if _CACHE_ENABLED:
+        cache[prompt_sha] = response
+        _save_cache(cache)
+    return response
+
+
+def _execute_generated_code(program: str, raw_csv: str) -> str:
+    code = _extract_python_code(program)
+    namespace: Dict[str, Any] = {
+        "__name__": "__llm_generated__",
+        "__builtins__": {
+            name: getattr(builtins, name)
+            for name in [
+                "abs",
+                "all",
+                "any",
+                "bool",
+                "dict",
+                "enumerate",
+                "Exception",
+                "float",
+                "int",
+                "isinstance",
+                "len",
+                "list",
+                "max",
+                "min",
+                "range",
+                "reversed",
+                "set",
+                "sorted",
+                "str",
+                "sum",
+                "tuple",
+                "zip",
+                "__import__",
+            ]
+        },
+    }
+    exec(compile(code, "<llm-generated>", "exec"), namespace, namespace)
+
+    repair_fn = namespace.get("repair_csv")
+    if not callable(repair_fn):
+        for candidate in ("repair", "main", "fix_csv"):
+            maybe = namespace.get(candidate)
+            if callable(maybe):
+                repair_fn = maybe
+                break
+    if not callable(repair_fn):
+        raise ValueError("LLM code did not define a callable repair_csv(raw_csv: str) function")
+
+    result = repair_fn(raw_csv)
+    if isinstance(result, pd.DataFrame):
+        return result.to_csv(index=False)
+    if isinstance(result, bytes):
+        return result.decode("utf-8", errors="replace")
+    if isinstance(result, list):
+        return "\n".join(str(item) for item in result)
+    if result is None:
+        raise ValueError("repair_csv returned None")
+    return str(result)
+
+
+def _read_csv_text(text: str) -> pd.DataFrame:
+    try:
+        return pd.read_csv(StringIO(text), dtype=str, keep_default_na=False, na_filter=False)
+    except pd.errors.ParserError:
+        for sep in [",", ";", "	", "|"]:
+            try:
+                return pd.read_csv(
+                    StringIO(text),
+                    sep=sep,
+                    engine="python",
+                    dtype=str,
+                    keep_default_na=False,
+                    na_filter=False,
+                )
+            except Exception:
+                continue
+        return pd.read_csv(StringIO(text), sep=None, engine="python", dtype=str, keep_default_na=False, na_filter=False)
+
 
 def parse_csv_with_validation(
     csv_input: str,
@@ -379,7 +560,7 @@ def parse_csv_with_validation(
     llm_context_lines: int = 10,
     reset_sidecar: bool = True,
 ) -> Tuple[pd.DataFrame, List[Dict[str, Any]]]:
-    """Heuristically repair a polluted CSV by generating and executing a tiny Python repair program."""
+    """Use an LLM to generate Python code that repairs a raw CSV file, then execute it."""
 
     trace = TraceWriter(sidecar_path, reset=reset_sidecar)
     trace.write(
@@ -397,9 +578,11 @@ def parse_csv_with_validation(
         trace.write("cheat_result", clean_csv=clean_csv, rows=len(df), columns=list(df.columns))
         return df, []
 
-    text = Path(csv_input).read_text(encoding="utf-8-sig", errors="replace")
-    analysis = _analyze_csv(text)
-    parsed_rows = _parse_csv_text(text, analysis.delimiter, analysis.quotechar)
+    raw_text = Path(csv_input).read_text(encoding="utf-8-sig", errors="replace")
+    analysis = _analyze_csv(raw_text)
+    raw_rows = _parse_csv_text(raw_text, analysis.delimiter, analysis.quotechar)
+    malformed = _malformed_rows(raw_rows, analysis.expected_width, analysis.header_rows)
+
     trace.write(
         "analysis",
         delimiter=analysis.delimiter,
@@ -409,23 +592,26 @@ def parse_csv_with_validation(
         repaired_header=analysis.repaired_header,
     )
 
-    malformed = _malformed_rows(parsed_rows, analysis.expected_width, analysis.header_rows)
-
     if llm_repair:
-        program = _build_repair_program(analysis)
-        trace.write("generated_repair_program", program=program)
-        repaired_rows = _execute_repair_program(program, parsed_rows)
-        trace.write("repair_applied", repaired_rows=len(repaired_rows), code_executed=True)
+        prompt = _build_repair_prompt(raw_text, analysis)
+        generated_code = _query_llm(prompt)
+        trace.write("generated_repair_program", program=generated_code)
+        repaired_text = _execute_generated_code(generated_code, raw_text)
+        trace.write("repair_applied", code_executed=True, repaired_chars=len(repaired_text))
     else:
         repaired_rows = [
             _normalize_row(row, analysis.expected_width, analysis.delimiter)
-            for row in parsed_rows
+            for row in raw_rows
             if any(cell.strip() for cell in row)
         ]
         if repaired_rows and analysis.header_rows > 1:
             repaired_rows[0] = analysis.repaired_header
+        repaired_text = "
+".join(
+            analysis.delimiter.join(row) for row in repaired_rows
+        )
         trace.write("repair_skipped", repaired_rows=len(repaired_rows), code_executed=False)
 
-    df = _rows_to_dataframe(repaired_rows)
+    df = _read_csv_text(repaired_text)
     trace.write("final_dataframe", rows=len(df), columns=list(df.columns))
     return df, malformed
