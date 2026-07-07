@@ -204,6 +204,9 @@ execute_polluter(f, pl.changeEscapeCharacter, target_escape="")
 
 if args.polluters == "pollock2.0":
 
+    # Null values
+    execute_polluter(f, pl2.differentNullValues, null_values=["NULL", "N/A", "NaN", "", "None", "undefined"])
+
     # Multi-table / layout structure
     execute_polluter(
     f, pl2.addTableSideways, n_rows=min(f.row_count, 5), n_cols=min(f.col_count, 5)
