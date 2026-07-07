@@ -144,6 +144,7 @@ dmypy.json
 data/csv_storm/*
 data/additional_csvs/insurance_complaints.csv
 data/additional_csvs/table.csv
+data/polluted_files/*
 results/duckdbparse/polluted_files/duckdbparse_errors.txt
 results/pandas/polluted_files/pandas_errors.txt
 results/aggregate_results_polluted_files.csv
