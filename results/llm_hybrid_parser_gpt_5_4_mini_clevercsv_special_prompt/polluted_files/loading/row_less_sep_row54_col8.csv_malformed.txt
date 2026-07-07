@@ -1,0 +1,2 @@
+Malformed rows: 1
+{"line_num": 55, "reason": "MISSING COLUMNS: Expected Number of Columns: 9 Found: 8", "raw": "19/05/2018,20:15,33,AN-5746,$83.75,\"Flannel Tunic, Plaid\",\"Our most rugged flannel shirt is also one of the softest - double brushed for an exceptional feel. Made from heavyweight organic cotton in a flattering longer length.\",\"https://www.example.com/product/AN_5746.html\"", "repaired": true}

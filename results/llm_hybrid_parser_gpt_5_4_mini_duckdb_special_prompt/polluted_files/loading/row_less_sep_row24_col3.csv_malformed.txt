@@ -1,0 +1,2 @@
+Malformed rows: 1
+{"line_num": 25, "reason": "MISSING COLUMNS: Expected Number of Columns: 9 Found: 8", "raw": "16/03/2018,05:45,1RI-9156,$53.62,Girls' Waterproof 3-in-1 Jacket,\"This 3-in-1 girls' jacket offers three great options for one great price, so she'll stay warm, dry and comfortable whatever the weather.\",\"https://www.example.com/product/RI_9156.html\",", "repaired": true}

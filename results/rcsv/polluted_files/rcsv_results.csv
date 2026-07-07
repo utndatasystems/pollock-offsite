@@ -1866,7 +1866,7 @@ row_less_sep_row70_col4.csv,0,1
 row_more_sep_row20_col0.csv,0,1
 row_less_sep_row76_col7.csv,0,1
 row_less_sep_row6_col4.csv,0,1
-row_extra_quote83_col8.csv,0,1
+row_extra_quote83_col8.csv,1,0
 row_extra_quote57_col3.csv,0,1
 row_less_sep_row14_col2.csv,0,1
 row_extra_quote6_col4.csv,0,1

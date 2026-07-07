@@ -1,0 +1,191 @@
+from __future__ import print_function
+import json
+import os
+import argparse
+import traceback
+import re
+import warnings
+
+from pqdm.processes import pqdm
+import pandas as pd
+
+from typing import List
+
+import pollock.metrics as metrics
+from sut.utils import print
+
+from dotenv import load_dotenv
+load_dotenv()
+
+
+SUT_ORDER = ["clevercs", "csvcommons", "rhypoparsr", 
+            "opencsv", "pandas", "duckdbparse","duckdbauto", "pycsv", "rcsv", "univocity", 
+            "mariadb", "mysql", "postgres", "sqlite", "libreoffice", 
+            "spreaddesktop", "spreadweb", "dataviz"]
+
+SUB_MEASURES = {"table" : "file_double.*|file_header.*|file_no.*|file_one.*|file_multi.*|file_preamble.*",
+        "inconsistent": "%row_less.*|row_more",
+        "structural":"file_field.*|row_field.*|file_quote.*|file_record_delimiter.*|row_extra_quote.*|file_escape.*"}
+
+
+def evaluate_single_file(filename:str, dataset:str, sut:str, verbose=False, n_jobs=1):
+    sut_dir = f"results/{sut}/{dataset}/loading/"
+    clean_path = f"data/{dataset}/clean/{filename}"
+    loaded_path = f"{sut_dir}{filename}_converted.csv"
+
+    dict_measures = {"file": filename}
+    if verbose:
+        print(f"'{filename}'")
+    try:
+        succ = metrics.successful_csv(loaded_path)
+        dict_measures[sut + "_success"] = succ
+        dict_measures[sut + "_header_precision"], \
+        dict_measures[sut + "_header_recall"], \
+        dict_measures[sut + "_header_f1"], \
+        dict_measures[sut + "_record_precision"], \
+        dict_measures[sut + "_record_recall"], \
+        dict_measures[sut + "_record_f1"], \
+        dict_measures[sut + "_cell_precision"], \
+        dict_measures[sut + "_cell_recall"], \
+        dict_measures[sut + "_cell_f1"] = metrics.header_record_cell_measures_csv(clean_path,loaded_path, n_jobs) \
+            if succ else [0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+    except Exception as e:
+        print("Exception:", traceback.format_exc())
+        if not verbose:
+            print("On file:", filename)
+        for measure in ("success",
+                        "header_precision",
+                        "header_recall",
+                        "header_f1",
+                        "record_precision",
+                        "record_recall",
+                        "record_f1",
+                        "cell_precision",
+                        "cell_recall",
+                        "cell_f1"):
+            dict_measures[sut + "_" + measure] = 0
+
+    return dict_measures
+
+
+def evaluate_single_run(files: List[str], dataset: str, result_file:str, sut:str, verbose=False, n_jobs=1):
+    n_jobs = max(1, min(int(n_jobs), os.cpu_count() or 1))
+
+    # sequential
+    if n_jobs == 1:
+        file_measures = []
+        n = len(files)
+        for i, f in enumerate(files):
+            if i % max(1, n // 10) == 0:
+                print(f"  {i}/{n} files...")
+            file_measures.append(evaluate_single_file(filename=f, dataset=dataset, sut=sut, verbose=verbose))
+        print(f"  {n}/{n} files done.")
+    # parallel
+    else:
+        tiny_files = [f for f in files if os.path.getsize(f"data/{dataset}/csv/{f}")/ 1024 < 500]
+        args = [{"filename" : f, "dataset":dataset, "sut": sut, "verbose": verbose} for f in tiny_files]
+        with warnings.catch_warnings():
+            warnings.filterwarnings(
+            "ignore",
+            category=DeprecationWarning,
+            message=r"This process .* is multi-threaded, use of fork\(\) may lead to deadlocks in the child\.")
+
+            tiny_file_measures = pqdm(args, evaluate_single_file, n_jobs=n_jobs, argument_type="kwargs")
+
+        large_filenames = [f for f in files if os.path.getsize(f"data/{dataset}/csv/{f}")/ 1024 >= 500]
+        large_file_measures = []
+        if large_filenames:
+            print(f"Evaluating {len(large_filenames)} large file(s)...")
+        for i, f in enumerate(large_filenames, 1):
+            print(f"  [{i}/{len(large_filenames)}] {f}")
+            large_file_measures.append(evaluate_single_file(f, dataset, sut, verbose=verbose, n_jobs=n_jobs))
+
+        file_measures = tiny_file_measures+large_file_measures
+    results_df = pd.DataFrame(file_measures)
+    results_df.to_csv(result_file, index=False)
+    if verbose: print(results_df)
+
+
+def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--sut", default=None, help="The single system to benchmark, if not running the evaluation for all of them")
+    parser.add_argument("--dataset", default="polluted_files", help="The dataset containing the input CSV files")
+    parser.add_argument("--result", default="./results", help="The root path where the results of the loading are")
+    parser.add_argument("--verbose", default=False, help="Whether to print filenames as they are processed")
+    parser.add_argument("--njobs", default=100, help="The number of jobs to parallelize the computation")
+
+    args = parser.parse_args()
+    UPDATE_SYSTEM = args.sut
+    dataset = args.dataset
+    RESULT_DIR = args.result
+    N_JOBS = int(args.njobs)
+
+    verbose = bool(args.verbose)
+    systems = [s for s in next(os.walk(f"{RESULT_DIR}"))[1]
+               if s != "archives" and os.path.isdir(f"{RESULT_DIR}/{s}/{dataset}/loading")]
+
+    sut_dirs = {s for s in os.listdir("sut") if os.path.isdir(f"sut/{s}") and not s.startswith("_")}
+    no_results = sorted(sut_dirs - set(systems))
+    if no_results:
+        print(f"Warning: {len(no_results)} SUT(s) in sut/ have no results for dataset '{dataset}': {no_results}")
+
+    files= [f for f in os.listdir(f"data/{dataset}/csv") if f.endswith("csv")]
+    aggregate = []
+    system_dfs = []
+    eval_systems = systems if UPDATE_SYSTEM is None else [s for s in systems if s == UPDATE_SYSTEM]
+
+    
+
+    for s in systems:
+        result_file = f"{RESULT_DIR}/{s}/{dataset}/{s}_results.csv"
+        if UPDATE_SYSTEM is None or s == UPDATE_SYSTEM:
+            print(f"\n[{eval_systems.index(s) + 1}/{len(eval_systems)}] Evaluating {s}...")
+            evaluate_single_run(files=files, dataset=dataset, result_file=result_file, sut=s, n_jobs=N_JOBS, verbose=verbose)
+        if not os.path.exists(result_file):
+            continue
+        df = pd.read_csv(result_file)
+        d_aggregate = {"".join(key.split("_")[1:]): val for key, val in df.mean(axis=0, numeric_only=True).items()}
+        d_aggregate.update({"sut": s})
+        aggregate += [d_aggregate]
+        system_dfs.append(df.set_index("file"))
+    base = pd.DataFrame({"file": files}).set_index("file")
+    with warnings.catch_warnings():
+        warnings.filterwarnings("ignore", category=pd.errors.PerformanceWarning)
+        global_df = pd.concat([base] + system_dfs, axis=1).reset_index().copy()
+    aggregate_df = pd.DataFrame(aggregate).set_index("sut")
+    aggregate_df["pollock_simple"] = aggregate_df.sum(axis=1, numeric_only=True)
+
+    global_df.set_index("file", inplace=True)
+    if dataset == "polluted_files":
+        for subset in SUB_MEASURES:
+            subset_files = [f for f in global_df.index if re.search(SUB_MEASURES[subset], f)]
+            for measure in ["success", "header_f1", "record_f1", "cell_f1"]:
+                aggregate_df[subset + "_" + measure] = [
+                    global_df.loc[subset_files, f"{sut}_{measure}"].mean()
+                    if f"{sut}_{measure}" in global_df.columns else float("nan")
+                    for sut in aggregate_df.index
+                ]
+
+        with open("pollock_weights.json", "r") as f:
+            weights = json.load(f)
+        global_df["weight"] = [weights.get(x, -1) for x in global_df.index]
+        global_df["normalized_weight"] = global_df["weight"] / sum(global_df["weight"])
+        
+        for sut in aggregate_df.index:
+            partial_mean = global_df[[c for c in global_df.columns if sut in c]].sum(axis=1) * global_df["normalized_weight"]
+            weighted_score = sum(partial_mean)
+            aggregate_df.loc[sut, "pollock_weighted"] = weighted_score
+        cols = [c for c in aggregate_df.columns if "_" in c]
+        cols = ["pollock_simple", "pollock_weighted"] + [c for c in cols if c not in ("pollock_simple", "pollock_weighted")]
+        print("\n", aggregate_df[cols].sort_values("pollock_simple", ascending=False))
+
+    else:
+        cols = ["success", "headerf1", "cellf1", "recordf1", "pollock_simple"]
+        print("\n", aggregate_df[cols].sort_values("pollock_simple", ascending=False))
+
+    global_df.to_csv(RESULT_DIR + f"/global_results_{dataset}.csv")
+    aggregate_df.to_csv(RESULT_DIR + f"/aggregate_results_{dataset}.csv")
+
+if __name__ == "__main__":
+    main()

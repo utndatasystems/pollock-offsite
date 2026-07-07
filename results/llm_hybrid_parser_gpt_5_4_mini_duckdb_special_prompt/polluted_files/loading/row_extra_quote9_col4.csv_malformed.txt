@@ -1,0 +1,2 @@
+Malformed rows: 1
+{"line_num": 10, "reason": "UNQUOTED VALUE: Value with unterminated quote found.", "raw": "17/02/2018,02:00,0,YY-5315,\"$45.39,\"Men's Silk Underwear, Crewneck\",\"For strong, lightweight comfort without bulk, our men's silk crewneck makes for an ideal first layer against the cold from slope to lodge to shoveling snow.\",\"https://www.example.com/product/YY_5315.html\",", "repaired": true}
