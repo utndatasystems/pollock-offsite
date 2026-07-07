@@ -42,7 +42,7 @@ def add_scores(results_df: pd.DataFrame, sut: str, weights: dict):
 
     total_files = len(results_df)
     correct_count = results_df[correct_col].astype(int).sum()
-    score_10 = 0.0 if total_files == 0 else 10.0 * correct_count / total_files
+    accuracy = 0.0 if total_files == 0 else correct_count / total_files
 
     if weights:
         total_weight = sum(float(weights.get(filename, 1.0)) for filename in results_df["file"])
@@ -50,12 +50,12 @@ def add_scores(results_df: pd.DataFrame, sut: str, weights: dict):
             float(weights.get(filename, 1.0)) * int(correct)
             for filename, correct in zip(results_df["file"], results_df[correct_col])
         )
-        weighted_score_10 = 0.0 if total_weight == 0 else 10.0 * weighted_correct / total_weight
+        weighted_accuracy = 0.0 if total_weight == 0 else weighted_correct / total_weight
     else:
-        weighted_score_10 = score_10
+        weighted_accuracy = accuracy
 
-    results_df.attrs["score_10"] = score_10
-    results_df.attrs["weighted_score_10"] = weighted_score_10
+    results_df.attrs["accuracy"] = accuracy
+    results_df.attrs["weighted_accuracy"] = weighted_accuracy
     return results_df
 
 def evaluate_single_file(filename:str, dataset:str, sut:str, verbose=False, n_jobs=1, origin_csv=None):
@@ -121,9 +121,14 @@ def main():
                              "the clean value or this origin value")
     parser.add_argument("--use-origin-csv", action="store_true", default=False,
                         help="Auto-detect and use data/{dataset}/source.csv as origin fallback (default: off)")
+    parser.add_argument("--cached-only", action="store_true", default=False,
+                        help="Only read existing *_results.csv files and aggregate; do not recompute "
+                             "any scores. Lets you show the full previously-computed results even if "
+                             "data/<dataset>/csv is incomplete (ignores --sut).")
 
     args = parser.parse_args()
     UPDATE_SYSTEM = args.sut
+    CACHED_ONLY = args.cached_only
     dataset = args.dataset
     RESULT_DIR = args.result
     N_JOBS = int(args.njobs)
@@ -153,9 +158,12 @@ def main():
 
     
 
+    if CACHED_ONLY:
+        print("Cached-only mode: reading existing *_results.csv without recomputing.")
+
     for s in systems:
         result_file = f"{RESULT_DIR}/{s}/{dataset}/{s}_results.csv"
-        if UPDATE_SYSTEM is None or s == UPDATE_SYSTEM:
+        if not CACHED_ONLY and (UPDATE_SYSTEM is None or s == UPDATE_SYSTEM):
             print(f"\n[{eval_systems.index(s) + 1}/{len(eval_systems)}] Evaluating {s}...")
             evaluate_single_run(files=files, dataset=dataset, result_file=result_file, sut=s, n_jobs=N_JOBS, verbose=verbose, origin_csv=origin_csv)
         if not os.path.exists(result_file):
@@ -167,8 +175,8 @@ def main():
             continue
         df = add_scores(df, s, weights)
         d_aggregate = {key[len(s)+1:]: val for key, val in df.sum(axis=0, numeric_only=True).items() if key.startswith(f"{s}_")}
-        d_aggregate["score_10"] = df.attrs["score_10"]
-        d_aggregate["weighted_score_10"] = df.attrs["weighted_score_10"]
+        d_aggregate["accuracy"] = df.attrs["accuracy"]
+        d_aggregate["weighted_accuracy"] = df.attrs["weighted_accuracy"]
         d_aggregate.update({"sut": s})
         aggregate += [d_aggregate]
         global_df = global_df.merge(df, how="outer", left_on="file", right_on="file")  # , suffixes=(None,"_"+s))
@@ -191,8 +199,8 @@ def main():
         present += extra
     print(
         "\n",
-        aggregate_df.loc[present][["score", "score_10", "weighted_score_10", "correct", "wrong"]]
-        .sort_values("score_10", ascending=False)
+        aggregate_df.loc[present][["score", "accuracy", "weighted_accuracy", "correct", "wrong"]]
+        .sort_values("accuracy", ascending=False)
     )
 
     global_df.to_csv(RESULT_DIR + f"/global_results_{dataset}.csv")
