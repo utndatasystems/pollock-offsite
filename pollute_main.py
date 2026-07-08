@@ -10,6 +10,7 @@ from sut.utils import print
 from tqdm import tqdm
 from faker import Faker
 
+
 from pollock.polluters_utils import _set_polluted_filename
 
 parser = argparse.ArgumentParser()
@@ -292,11 +293,12 @@ if args.polluters == "pollock2.0":
 
     # Type ambiguity / mixed values
     execute_polluter(f, pl2.typeAmbiguity)
-    execute_polluter(f, pl2.mixedTypes)
+    #execute_polluter(f, pl2.mixedTypes) unsure if this makes sense
     execute_polluter(f, pl2.mixedTimeformats)
 
     # Embedded semi-structured payloads
     execute_polluter(f, pl2.embeddedJSON)
+    execute_polluter(f, pl2.repackageCellsToJSON, start_col=2, end_col=5, row=3)
     execute_polluter(f, pl2.embeddedCSV)
 
 

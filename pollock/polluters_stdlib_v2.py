@@ -776,9 +776,9 @@ def collations(file: CSVFile, row: int | None = None):
 
     _set_polluted_filename(file, "file_collation_edge_cases.csv")
 
-
+# unclear if this makes sense
 def mixedTypes(file: CSVFile, row: int | None = None):
-    """Adds values with incompatible types in the same logical column."""
+    """Adds values with incompatible types (str, Bool, int) in the same logical column."""
     if row is None:
         row = random.randint(1, _safe_row_count(file))
 
