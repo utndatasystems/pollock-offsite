@@ -157,58 +157,48 @@ def expandColumnHeader(file: CSVFile, extra_rows=1):
 
 
 def addPreamble(
-    file: CSVFile, n_rows=1, delimiters=False, emptyrow=False, cell_content="PREAMBLE"
+    file: CSVFile,
+    n_rows=1,
+    delimiters=False,
+    emptyrow=False,
+    cell_content="PREAMBLE",
 ):
-    """Insert rows before the table as a preamble.
-    :param file:
-    :param n_rows: number of rows for the preamble
-    :param delimiters: if True, creates a row with as many delimited cells as the other rows
-    :param emptyrow:  if True, leaves an empty row between the preamble and the data
-    :param cell_content: the content of the preamble cell(s). Either list or single value
-    """
-    if emptyrow:
-        if not delimiters:
-            pb.addRows(
-                file, n_rows=1, position=0, col_count=file.col_count, role="preamble"
-            )
-        if delimiters:
-            pb.addRows(
-                file,
-                n_rows=1,
-                position=0,
-                cell_content=[""] * file.col_count,
-                col_count=file.col_count,
-                role="preamble",
-            )
+    """Insert raw-text preamble rows before the table."""
 
-    if delimiters:
-        cell_content = (
-            [cell_content] + [""] * (file.col_count - 1)
-            if type(cell_content) == str
-            else cell_content
-        )
+    if isinstance(cell_content, str):
+        preamble_rows = cell_content.splitlines()
+    elif isinstance(cell_content, list):
+        preamble_rows = cell_content
+    else:
+        preamble_rows = [cell_content]
+
+    if len(preamble_rows) < n_rows:
+        preamble_rows.extend([""] * (n_rows - len(preamble_rows)))
+
+    if emptyrow:
         pb.addRows(
             file,
-            n_rows=n_rows,
-            cell_content=cell_content,
+            n_rows=1,
             position=0,
-            col_count=file.col_count,
+            cell_content="",
+            col_count=1,
             role="preamble",
         )
 
-    else:
+    for row_content in reversed(preamble_rows):
         pb.addRows(
             file,
-            n_rows=n_rows,
-            cell_content=cell_content,
+            n_rows=1,
             position=0,
+            cell_content=row_content,
             col_count=1,
             role="preamble",
         )
 
     _set_polluted_filename(
         file,
-        f"file_preamble_{n_rows}_{'not_' if not delimiters else ''}delimited{'_empty_row' if emptyrow else ''}.csv",
+        f"file_preamble_{len(preamble_rows)}_raw"
+        f"{'_empty_row' if emptyrow else ''}.csv",
     )
 
 
