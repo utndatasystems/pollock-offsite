@@ -68,6 +68,15 @@ Faker.seed(args.rng_seed)
 
 
 def execute_polluter(file: CSVFile, polluter, new_filename=None, *args, **kwargs):
+    """
+    Executes a polluter on a CSVFile object and saves the polluted file, clean file, and parameters.
+    Args:
+        file: CSVFile object to pollute
+        polluter: The polluter function to execute
+        new_filename: Optional new filename for the polluted file
+        *args: Additional positional arguments for the polluter
+        **kwargs: Additional keyword arguments for the polluter
+    """
     t = deepcopy(file)
     print(
         "Executing",
@@ -239,10 +248,7 @@ if args.polluters == "pollock2.0":
         f, pl2.extremelyLongFields, row=2 if f.row_count >= 2 else 1, col=1, length=10000
     )  # For the final evaluation, we have to make sure th insert something extremely long of the same data type as the original cell
     execute_polluter(f, pl2.addGroupSectionHeader, group_name="Region: North")
-    execute_polluter(f, pl2.addTrailingCommentToFile, comment="This is a comment.")
-    execute_polluter(
-        f, pl2.addTrailingCommentToFile, comment="Your advertisements here."
-    )
+    execute_polluter(f, pl2.addTrailingCommentToFile, comment="This article is no longer being sold.")
     execute_polluter(f, pl2.commentRow)
     execute_polluter(f, pl2.commentRow, row=0)
     execute_polluter(f, pl2.commentRow, comment_marker="//")
@@ -293,5 +299,8 @@ if args.polluters == "pollock2.0":
     execute_polluter(f, pl2.embeddedJSON)
     execute_polluter(f, pl2.embeddedCSV)
 
+
+
+# TODO: Combinations of pollutions:
 
 print("Pollution process complete.")

@@ -231,23 +231,7 @@ def addGroupSectionHeader(file: CSVFile, group_name="Region: North", position=1)
     _set_polluted_filename(file, f"file_group_section_header_{position}.csv")
 
 
-def addCommentToFile(
-    file: CSVFile,
-    comment="This is a comment.",
-    row: int | None = None,
-    comment_marker: str = "#",
-    space=" ",
-):
-    """Backward-compatible alias for addTrailingCommentToFile."""
-    return addTrailingCommentToFile(
-        file,
-        comment=comment,
-        row=row,
-        comment_marker=comment_marker,
-        space=space,
-    )
-
-
+@manually_verified
 def addTrailingCommentToFile(
     file: CSVFile,
     comment="This is a comment.",
@@ -255,7 +239,7 @@ def addTrailingCommentToFile(
     comment_marker: str = "#",
     space=" ",
 ):  # checked manually
-    """Adds a comment-like trailing field to a row without a delimiter before it."""
+    """Adds a comment-like trailing field to a row."""
     if row is None:
         row = random.randint(1, _safe_row_count(file))
 
@@ -276,7 +260,7 @@ def addTrailingCommentToFile(
     if delimiters:
         del row_xml[delimiters[-1]]
 
-    _set_polluted_filename(file, "file_trailing_comment.csv")
+    _set_polluted_filename(file, f"file_trailing_comment_{row}.csv")
 
 
 def commentRow(
