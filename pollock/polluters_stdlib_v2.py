@@ -305,31 +305,6 @@ def commentRow(
     _set_polluted_filename(file, f"file_commented_row_{row}.csv")
 
 
-def metadataAsHeader(  # checked manually
-    file: CSVFile,
-    content="This is a superheader with metadata info.\nInstrument 3AdF\nExperiment Number 3",
-):
-    """
-    Adds several metadata-like rows above the real header.
-    Each line in `content` becomes its own CSV row.
-    """
-
-    lines = content.splitlines()
-
-    # insert in reverse so final order is preserved
-    for line in reversed(lines):
-        pb.addRows(
-            file,
-            cell_content=line,
-            n_rows=1,
-            position=0,
-            col_count=1,
-            role="superheader",
-        )
-
-    _set_polluted_filename(file, "file_metadata_as_header.csv")
-
-
 def mixedDelimiters(  # checked manually
     file: CSVFile,
     row=1,

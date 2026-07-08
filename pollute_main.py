@@ -215,7 +215,6 @@ if args.polluters == "pollock2.0":
     #print(pl2.multilineHeader.manually_verified)
 
     execute_polluter(f, pl2.duplicateHeaderAsDataRow)
-    execute_polluter(f, pl2.metadataAsHeader)
     execute_polluter(f, pl2.superheader)
 
     # Footnote
