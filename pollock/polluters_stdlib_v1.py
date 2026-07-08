@@ -155,7 +155,7 @@ def expandColumnHeader(file: CSVFile, extra_rows=1):
 
     _set_polluted_filename(file, f"file_multirow_header_{str(extra_rows)}.csv")
 
-
+@manually_verified
 def addPreamble(
     file: CSVFile,
     n_rows=1,
@@ -591,9 +591,16 @@ def changeColumnHeader(
         file, f"column_header_{col}_{strtype}{'_multiple' if extra_rows > 0 else ''}{'_nonunique' if type(col) == list else ''}.csv"
     )
 
-
+@manually_verified
 def addTable(file: CSVFile, n_rows, n_cols, empty_boundary=True):
-    """Append a second table with the requested shape."""
+    """Append a second table with the requested shape.
+    Args:
+        file: CSVFile object to modify
+        n_rows: number of rows in the new table
+        n_cols: number of columns in the new table
+        empty_boundary: if True, adds an empty row between the two tables
+
+    """
 
     random.seed(constants.RAND_SEED)
     root = file.xml.getroot()

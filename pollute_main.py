@@ -142,8 +142,8 @@ execute_polluter(
     f,
     pl.addTable,
     new_filename="file_multitable_less.csv",
-    n_rows=f.row_count - 1,
-    n_cols=f.col_count - 1,
+    n_rows=f.row_count - 10,
+    n_cols=f.col_count - 2,
     empty_boundary=False,
 )
 execute_polluter(
@@ -159,7 +159,7 @@ execute_polluter(
     pl.addTable,
     new_filename="file_multitable_more.csv",
     n_rows=f.row_count - 1,
-    n_cols=f.col_count + 1,
+    n_cols=f.col_count + 10,
     empty_boundary=False,
 )
 
