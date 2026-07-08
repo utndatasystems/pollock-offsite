@@ -40,7 +40,7 @@ def dummyPolluter(file: CSVFile):
 
 # --- Pollock1.0 Pollutions ---
 
-
+@manually_verified
 def changeDimension(file: CSVFile, target_dimension=-1):
     """Resize the file to a target text length."""
     content = []

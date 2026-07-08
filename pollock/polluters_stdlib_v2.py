@@ -1,6 +1,7 @@
 import random
 import unicodedata
 import string
+import json
 import time
 from lxml import etree
 from .CSVFile import CSVFile
@@ -456,29 +457,16 @@ def exelExportFormulas(file: CSVFile):  # checked manually
     )
     _set_polluted_filename(file, "file_excel_formulas.csv")
 
+@todo
+def typeAmbiguity(file: CSVFile):  
+    """
+    Adds rows containing ambiguous nulls, booleans, decimals, dates, and currencies. Examples include:["$20", "20 EUR", "unknown", "zero"],
+    """
+    print("USE WITH CAUTION: this may break csv. Maybe create new csv altogether to test this?")
 
-def typeAmbiguity(file: CSVFile):  # checked manually
-    """Adds rows containing ambiguous nulls, booleans, decimals, dates, and currencies."""
-    print(
-        "USE WITH CAUTION: this may break csv. Maybe create new csv altogether to test this?"
-    )
-    rows = [
-        ["NULL", "N/A", "NaN", ""],
-        ["true", "false", "1", "0"],
-        ["1.5", "1,5", "2026-05-27", "27.05.2026"],
-        ["$20", "20 EUR", "unknown", "zero"],
-    ]
-    for values in rows:
-        padded = values[: file.col_count] + [""] * max(file.col_count - len(values), 0)
-        pb.addRows(
-            file,
-            cell_content=padded,
-            n_rows=1,
-            position=_safe_row_count(file),
-            col_count=file.col_count,
-            role="data",
-        )
-    _set_polluted_filename(file, "file_type_ambiguity.csv")
+    #TODO in column price in source.csv, use 25.55 Dollars instead of $25.55 
+
+    _set_polluted_filename(file, "file_type_ambiguity_row.csv")
 
 
 def superheader(file: CSVFile):
@@ -512,8 +500,82 @@ def embeddedJSON(file: CSVFile, row: int | None = None, col: int | None = None):
     if col is None:
         col = random.randint(0, _safe_col_count(file))
     pb.changeCell(file, row=row + 1, col=col + 1, new_content=randomJsonStr())
-    _set_polluted_filename(file, "file_embedded_json_cell.csv")
+    _set_polluted_filename(file, f"file_embedded_json_cell_{row}_{col}.csv")
 
+
+@manually_verified
+def repackageCellsToJSON(
+    file: CSVFile,
+    row: int | None = None,
+    start_col: int | None = None,
+    end_col: int | None = None,
+    header_row: int = 0,
+):
+    """
+    Repackages cells from start_col to end_col in one data row into a single
+    JSON object using the header row as keys.
+
+    Indexing:
+    - row, start_col, end_col, header_row are 0-based API parameters.
+    - pb.changeCell uses 1-based row/col.
+    - pb.deleteCells with a list expects 0-based column indexes.
+    """
+
+    if row is None:
+        row = random.randint(1, _safe_row_count(file) - 1)
+
+    row_values = _row_values(file, row=row + 1)
+    header_values = _row_values(file, row=header_row + 1)
+
+    if not row_values:
+        raise ValueError(f"Row {row} has no values to repackage")
+
+    if not header_values:
+        raise ValueError(f"Header row {header_row} has no values")
+
+    max_col = min(len(row_values), len(header_values)) - 1
+
+    if start_col is None:
+        start_col = random.randint(0, max_col)
+
+    if end_col is None:
+        end_col = random.randint(start_col, max_col)
+
+    if start_col < 0 or end_col < start_col or end_col > max_col:
+        raise ValueError(
+            f"Invalid column range: start_col={start_col}, "
+            f"end_col={end_col}, max_col={max_col}"
+        )
+
+    json_object = {
+        str(header_values[i]): row_values[i]
+        for i in range(start_col, end_col + 1)
+    }
+
+    json_str = json.dumps(json_object, ensure_ascii=False)
+
+    # Put the JSON into the first cell of the selected range.
+    pb.changeCell(
+        file,
+        row=row + 1,
+        col=start_col + 1,
+        new_content=json_str,
+    )
+
+    # Delete the remaining cells in the selected range.
+    # Example: start_col=2, end_col=5 means:
+    # keep col 2 as JSON, delete cols 3, 4, 5.
+    if end_col > start_col:
+        pb.deleteCells(
+            file,
+            row=row + 1,
+            col=list(range(start_col + 1, end_col + 1)),
+        )
+
+    _set_polluted_filename(
+        file,
+        f"file_repackaged_json_cell_row_{row}_cols_{start_col}_{end_col}.csv"
+    )
 
 def embeddedCSV(file: CSVFile):
     """Embeds CSV-like file content inside a single cell."""
