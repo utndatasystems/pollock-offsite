@@ -281,14 +281,6 @@ if args.polluters == "pollock2.0":
     execute_polluter(f, pl2.mixedTypes)
     execute_polluter(f, pl2.mixedTimeformats)
 
-    # Encoding / Unicode edge cases
-    execute_polluter(f, pl2.encoding, target_encoding="utf-8")
-    execute_polluter(f, pl2.encoding, target_encoding="windows-1252")
-    execute_polluter(f, pl2.bomMarker)
-    execute_polluter(f, pl2.weirdUnicode)
-    execute_polluter(f, pl2.invisibleCharacters)
-    execute_polluter(f, pl2.collations)
-
     # Embedded semi-structured payloads
     execute_polluter(f, pl2.embeddedJSON)
     execute_polluter(f, pl2.embeddedCSV)
