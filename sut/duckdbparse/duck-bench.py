@@ -7,8 +7,18 @@ import sys
 sys.path.insert(0, join(dirname(__file__), '..'))
 from utils import print, save_time_df, load_parameters
 import pandas as pd
+import argparse
 
-sut='duckdbparse'
+parser = argparse.ArgumentParser()
+parser.add_argument(
+    "--strict",
+    action="store_true",
+    help="Enable DuckDB strict_mode (default off). When set, results are written to the "
+         "'duckdbparse_strict' folder instead of 'duckdbparse'.",
+)
+args = parser.parse_args()
+
+sut = 'duckdbparse_strict' if args.strict else 'duckdbparse'
 DATASET = os.environ.get('DATASET', 'polluted_files')
 IN_DIR = f'data/{DATASET}/csv/'
 PARAM_DIR = f'data/{DATASET}/parameters'
@@ -36,7 +46,7 @@ def generate_parameters(sut):
         columns[name] = 'VARCHAR'
     kw["columns"] = columns
     kw["auto_detect"] = False
-    kw["strict_mode"] = False
+    kw["strict_mode"] = args.strict
     kw["ignore_errors"] = True
     kw["null_padding"] = True
     return kw

@@ -7,8 +7,18 @@ import sys
 sys.path.insert(0, join(dirname(__file__), '..'))
 from utils import print, save_time_df, load_parameters
 import pandas as pd
+import argparse
 
-sut='duckdbauto'
+parser = argparse.ArgumentParser()
+parser.add_argument(
+    "--strict",
+    action="store_true",
+    help="Enable DuckDB strict_mode (default off). When set, results are written to the "
+         "'duckdbauto_strict' folder instead of 'duckdbauto'.",
+)
+args = parser.parse_args()
+
+sut = 'duckdbauto_strict' if args.strict else 'duckdbauto'
 DATASET = os.environ.get('DATASET', 'polluted_files')
 IN_DIR = f'data/{DATASET}/csv/'
 PARAM_DIR = f'data/{DATASET}/parameters'
@@ -35,7 +45,7 @@ for idx,file in enumerate(benchmark_files):
     print(f"({idx}/{len(benchmark_files)}) {f}")
 
     kw = {}
-    kw["strict_mode"] = False
+    kw["strict_mode"] = args.strict
     kw["ignore_errors"] = True
     kw["null_padding"] = True
     kw["auto_type_candidates"] = ['NULL', 'BOOLEAN', 'BIGINT', 'DOUBLE', 'VARCHAR'] # exclude timestamp type as they get written to the solution file in a different format, leading to an error where semantically everything was correct (Pollock shows an error because "00:00" is a different string from "00:00:00")
