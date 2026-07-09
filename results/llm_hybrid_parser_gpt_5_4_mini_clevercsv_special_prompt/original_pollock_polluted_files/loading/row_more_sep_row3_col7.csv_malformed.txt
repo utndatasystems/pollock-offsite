@@ -1,0 +1,2 @@
+Malformed rows: 1
+{"line_num": 4, "reason": "TOO MANY COLUMNS: Expected Number of Columns: 9 Found: 10", "raw": "30/01/2018,00:30,1,RI-8070,$80.08,Men's Ventilated Trail Shoes,\"Great grip and super extra breathability make these amazing ventilated hikers ideal for warm, dry conditions.\",,\"https://www.example.com/product/RI_8070.html\",", "repaired": true}

@@ -153,7 +153,6 @@ execute_polluter(
 )  # 1 regular, on multiple rows
 
 if args.polluters == "pollock1.0":
-    # Original pollock 1.0 preamble + multitable sizing (matches commit 3d506f7).
     execute_polluter(
         f,
         pl.addPreamble,

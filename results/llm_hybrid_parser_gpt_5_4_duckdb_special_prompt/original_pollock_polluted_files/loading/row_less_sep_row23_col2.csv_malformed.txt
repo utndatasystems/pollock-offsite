@@ -1,0 +1,2 @@
+Malformed rows: 1
+{"line_num": 24, "reason": "MISSING COLUMNS: Expected Number of Columns: 9 Found: 8", "raw": "15/03/2018,05:301,YY-4017,$69.52,Leather Sofa,\"Our American-made leather sofa exhibits quality craftsmanship in every detail and delivers lasting comfort through and through.\",\"https://www.example.com/product/YY_4017.html\",", "repaired": true}
