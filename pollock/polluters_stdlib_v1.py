@@ -40,7 +40,7 @@ def dummyPolluter(file: CSVFile):
 
 # --- Pollock1.0 Pollutions ---
 
-
+@manually_verified
 def changeDimension(file: CSVFile, target_dimension=-1):
     """Resize the file to a target text length."""
     content = []
@@ -155,60 +155,50 @@ def expandColumnHeader(file: CSVFile, extra_rows=1):
 
     _set_polluted_filename(file, f"file_multirow_header_{str(extra_rows)}.csv")
 
-
+@manually_verified
 def addPreamble(
-    file: CSVFile, n_rows=1, delimiters=False, emptyrow=False, cell_content="PREAMBLE"
+    file: CSVFile,
+    n_rows=1,
+    delimiters=False,
+    emptyrow=False,
+    cell_content="PREAMBLE",
 ):
-    """Insert rows before the table as a preamble.
-    :param file:
-    :param n_rows: number of rows for the preamble
-    :param delimiters: if True, creates a row with as many delimited cells as the other rows
-    :param emptyrow:  if True, leaves an empty row between the preamble and the data
-    :param cell_content: the content of the preamble cell(s). Either list or single value
-    """
-    if emptyrow:
-        if not delimiters:
-            pb.addRows(
-                file, n_rows=1, position=0, col_count=file.col_count, role="preamble"
-            )
-        if delimiters:
-            pb.addRows(
-                file,
-                n_rows=1,
-                position=0,
-                cell_content=[""] * file.col_count,
-                col_count=file.col_count,
-                role="preamble",
-            )
+    """Insert raw-text preamble rows before the table."""
 
-    if delimiters:
-        cell_content = (
-            [cell_content] + [""] * (file.col_count - 1)
-            if type(cell_content) == str
-            else cell_content
-        )
+    if isinstance(cell_content, str):
+        preamble_rows = cell_content.splitlines()
+    elif isinstance(cell_content, list):
+        preamble_rows = cell_content
+    else:
+        preamble_rows = [cell_content]
+
+    if len(preamble_rows) < n_rows:
+        preamble_rows.extend([""] * (n_rows - len(preamble_rows)))
+
+    if emptyrow:
         pb.addRows(
             file,
-            n_rows=n_rows,
-            cell_content=cell_content,
+            n_rows=1,
             position=0,
-            col_count=file.col_count,
+            cell_content="",
+            col_count=1,
             role="preamble",
         )
 
-    else:
+    for row_content in reversed(preamble_rows):
         pb.addRows(
             file,
-            n_rows=n_rows,
-            cell_content=cell_content,
+            n_rows=1,
             position=0,
+            cell_content=row_content,
             col_count=1,
             role="preamble",
         )
 
     _set_polluted_filename(
         file,
-        f"file_preamble_{n_rows}_{'not_' if not delimiters else ''}delimited{'_empty_row' if emptyrow else ''}.csv",
+        f"file_preamble_{len(preamble_rows)}_raw"
+        f"{'_empty_row' if emptyrow else ''}.csv",
     )
 
 
@@ -601,9 +591,16 @@ def changeColumnHeader(
         file, f"column_header_{col}_{strtype}{'_multiple' if extra_rows > 0 else ''}{'_nonunique' if type(col) == list else ''}.csv"
     )
 
-
+@manually_verified
 def addTable(file: CSVFile, n_rows, n_cols, empty_boundary=True):
-    """Append a second table with the requested shape."""
+    """Append a second table with the requested shape.
+    Args:
+        file: CSVFile object to modify
+        n_rows: number of rows in the new table
+        n_cols: number of columns in the new table
+        empty_boundary: if True, adds an empty row between the two tables
+
+    """
 
     random.seed(constants.RAND_SEED)
     root = file.xml.getroot()
