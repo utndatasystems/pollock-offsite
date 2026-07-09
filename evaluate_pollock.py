@@ -145,7 +145,7 @@ def main():
         if not os.path.exists(result_file):
             continue
         df = pd.read_csv(result_file)
-        d_aggregate = {"".join(key.split("_")[1:]): val for key, val in df.mean(axis=0, numeric_only=True).items()}
+        d_aggregate = {"".join(key[len(s) + 1:].split("_")): val for key, val in df.mean(axis=0, numeric_only=True).items()}
         d_aggregate.update({"sut": s})
         aggregate += [d_aggregate]
         system_dfs.append(df.set_index("file"))
