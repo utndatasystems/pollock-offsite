@@ -236,16 +236,7 @@ execute_polluter(
     f, pl.changeNumberRows, new_filename="file_one_data_row.csv", target_number_rows=2
 )
 
-<<<<<<< HEAD
 # per cell pollutions
-=======
-# Add or remove one separator for each row/column : 1428 files
-# Add extra quote mark for each row/column : 756 files
-# Change delimiter for each row : 88 files
-
-# These per-cell pollutions are only generated when --per-cell-pollutions is set,
-# since they produce a very large number of files.
->>>>>>> 92bce238b62d10001a84cd03a2170ff6636df341
 if args.per_cell_pollutions:
 
     # Manually decrease row_count for pollutions 
