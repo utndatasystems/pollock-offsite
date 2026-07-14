@@ -16,8 +16,8 @@ file_no_header.csv,0.0934386253356933
 file_no_payload.csv,0.0242643356323242
 file_no_trailing_newline.csv,0.0971338748931884
 file_one_data_row.csv,0.0634591579437255
-file_preamble.csv,0.17878127098083496
-file_quotation_char_0x27.csv,0.1503007411956787
+file_preamble.csv,0.1787812709808349
+file_quotation_char_0x27.csv,0.24184513092041016
 file_record_delimiter_0xA.csv,0.0977470874786377
 file_record_delimiter_0xD.csv,0.1177170276641845
 row_extra_quote0_col0.csv,0.1261119842529297

@@ -1440,7 +1440,7 @@ row_less_sep_row26_col8.csv,1,0
 row_less_sep_row29_col3.csv,0,1
 row_extra_quote11_col1.csv,0,1
 row_more_sep_row18_col7.csv,0,1
-file_quotation_char_0x27.csv,0,1
+file_quotation_char_0x27.csv,1,0
 file_double_trailing_newline.csv,1,0
 row_less_sep_row4_col5.csv,0,1
 row_extra_quote40_col8.csv,0,1
