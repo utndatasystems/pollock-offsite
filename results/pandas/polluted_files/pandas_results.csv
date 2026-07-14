@@ -358,7 +358,6 @@ row_extra_quote31_col2.csv,0,1
 row_less_sep_row10_col3.csv,0,1
 row_extra_quote27_col4.csv,0,1
 row_extra_quote54_col4.csv,0,1
-file_header_multirow_2.csv,0,1
 row_field_delimiter_82_0x20.csv,0,1
 row_less_sep_row83_col1.csv,0,1
 row_extra_quote50_col0.csv,0,1
@@ -416,7 +415,6 @@ row_field_delimiter_61_0x20.csv,0,1
 row_more_sep_row3_col5.csv,0,1
 row_more_sep_row63_col8.csv,0,1
 row_less_sep_row50_col5.csv,0,1
-file_preamble.csv,1,0
 row_extra_quote67_col0.csv,0,1
 row_more_sep_row5_col1.csv,0,1
 row_less_sep_row39_col5.csv,0,1
@@ -472,7 +470,6 @@ row_less_sep_row77_col7.csv,0,1
 row_less_sep_row61_col3.csv,0,1
 row_more_sep_row55_col2.csv,0,1
 row_more_sep_row37_col2.csv,0,1
-file_record_delimiter_0xA.csv,1,0
 row_more_sep_row21_col0.csv,0,1
 row_less_sep_row79_col1.csv,0,1
 row_more_sep_row67_col4.csv,0,1
@@ -649,7 +646,6 @@ row_more_sep_row7_col6.csv,0,1
 row_extra_quote58_col8.csv,0,1
 row_extra_quote80_col2.csv,0,1
 row_extra_quote63_col5.csv,0,1
-file_field_delimiter_0x2C_0x20.csv,0,1
 row_extra_quote81_col7.csv,0,1
 row_more_sep_row75_col4.csv,0,1
 row_less_sep_row23_col7.csv,0,1
@@ -888,7 +884,6 @@ row_extra_quote26_col4.csv,0,1
 row_less_sep_row73_col5.csv,0,1
 row_less_sep_row14_col1.csv,0,1
 row_less_sep_row38_col2.csv,0,1
-file_field_delimiter_0x9.csv,0,1
 row_field_delimiter_24_0x20.csv,0,1
 row_extra_quote71_col2.csv,0,1
 row_more_sep_row62_col8.csv,0,1
@@ -928,7 +923,6 @@ row_extra_quote66_col8.csv,0,1
 row_less_sep_row77_col6.csv,0,1
 row_extra_quote63_col0.csv,0,1
 row_field_delimiter_33_0x20.csv,0,1
-file_no_payload.csv,0,1
 row_more_sep_row54_col8.csv,0,1
 row_extra_quote13_col0.csv,0,1
 row_extra_quote68_col6.csv,0,1
@@ -962,8 +956,6 @@ row_extra_quote79_col6.csv,0,1
 row_less_sep_row44_col8.csv,1,0
 row_less_sep_row56_col3.csv,0,1
 row_extra_quote60_col1.csv,0,1
-file_header_only.csv,1,0
-file_escape_char_0x5C.csv,0,1
 row_less_sep_row27_col2.csv,0,1
 row_less_sep_row47_col8.csv,1,0
 row_extra_quote60_col2.csv,0,1
@@ -1014,7 +1006,6 @@ row_extra_quote5_col0.csv,0,1
 row_extra_quote40_col2.csv,0,1
 row_more_sep_row54_col6.csv,0,1
 row_extra_quote6_col2.csv,0,1
-file_multitable_more.csv,1,0
 row_less_sep_row18_col6.csv,0,1
 row_more_sep_row12_col5.csv,0,1
 row_extra_quote2_col6.csv,0,1
@@ -1077,7 +1068,6 @@ row_more_sep_row23_col0.csv,0,1
 row_field_delimiter_8_0x20.csv,0,1
 row_extra_quote75_col6.csv,0,1
 row_more_sep_row50_col2.csv,0,1
-file_field_delimiter_0x3B.csv,0,1
 row_extra_quote62_col5.csv,0,1
 row_less_sep_row52_col7.csv,0,1
 row_extra_quote80_col3.csv,0,1
@@ -1092,7 +1082,6 @@ row_more_sep_row3_col3.csv,0,1
 row_more_sep_row73_col0.csv,0,1
 row_less_sep_row30_col6.csv,0,1
 row_extra_quote46_col2.csv,0,1
-source.csv,1,0
 row_extra_quote40_col0.csv,0,1
 row_more_sep_row32_col6.csv,0,1
 row_less_sep_row70_col5.csv,0,1
@@ -1426,7 +1415,6 @@ row_extra_quote72_col2.csv,0,1
 row_more_sep_row15_col8.csv,0,1
 row_less_sep_row5_col6.csv,0,1
 row_less_sep_row9_col8.csv,1,0
-file_header_multirow_3.csv,0,1
 row_less_sep_row73_col4.csv,0,1
 row_less_sep_row49_col4.csv,0,1
 row_more_sep_row83_col6.csv,0,1
@@ -1440,8 +1428,6 @@ row_less_sep_row26_col8.csv,1,0
 row_less_sep_row29_col3.csv,0,1
 row_extra_quote11_col1.csv,0,1
 row_more_sep_row18_col7.csv,0,1
-file_quotation_char_0x27.csv,0,1
-file_double_trailing_newline.csv,1,0
 row_less_sep_row4_col5.csv,0,1
 row_extra_quote40_col8.csv,0,1
 row_extra_quote38_col6.csv,0,1
@@ -1524,7 +1510,6 @@ row_more_sep_row32_col8.csv,0,1
 row_extra_quote34_col8.csv,0,1
 row_extra_quote71_col0.csv,0,1
 row_extra_quote15_col2.csv,0,1
-file_escape_char_0x00.csv,0,1
 row_less_sep_row61_col1.csv,0,1
 row_extra_quote81_col5.csv,0,1
 row_less_sep_row32_col8.csv,1,0
@@ -1720,7 +1705,6 @@ row_extra_quote40_col4.csv,0,1
 row_less_sep_row83_col3.csv,0,1
 row_extra_quote69_col4.csv,0,1
 row_extra_quote48_col1.csv,0,1
-file_quotation_char_none.csv,0,1
 row_more_sep_row5_col2.csv,0,1
 row_more_sep_row55_col5.csv,0,1
 row_less_sep_row1_col7.csv,0,1
@@ -1749,7 +1733,6 @@ row_less_sep_row34_col5.csv,0,1
 row_extra_quote65_col8.csv,0,1
 row_more_sep_row53_col4.csv,0,1
 row_less_sep_row72_col5.csv,0,1
-file_record_delimiter_0xD.csv,1,0
 row_less_sep_row9_col2.csv,0,1
 row_extra_quote52_col6.csv,0,1
 row_less_sep_row9_col7.csv,0,1
@@ -1879,7 +1862,6 @@ row_more_sep_row6_col3.csv,0,1
 row_less_sep_row63_col4.csv,0,1
 row_extra_quote23_col8.csv,0,1
 row_more_sep_row0_col4.csv,0,1
-file_no_trailing_newline.csv,1,0
 row_extra_quote24_col6.csv,0,1
 row_extra_quote64_col6.csv,0,1
 row_field_delimiter_77_0x20.csv,0,1
@@ -1959,9 +1941,7 @@ row_extra_quote2_col4.csv,0,1
 row_less_sep_row57_col8.csv,1,0
 row_field_delimiter_11_0x20.csv,0,1
 row_less_sep_row38_col8.csv,1,0
-file_multitable_same.csv,0,1
 row_extra_quote50_col2.csv,0,1
-file_one_data_row.csv,1,0
 row_less_sep_row55_col3.csv,0,1
 row_more_sep_row22_col2.csv,0,1
 row_more_sep_row66_col3.csv,0,1
@@ -1997,7 +1977,6 @@ row_extra_quote65_col0.csv,0,1
 row_less_sep_row47_col5.csv,0,1
 row_field_delimiter_25_0x20.csv,0,1
 row_less_sep_row27_col7.csv,0,1
-file_multitable_less.csv,0,1
 row_more_sep_row11_col7.csv,0,1
 row_more_sep_row64_col8.csv,0,1
 row_more_sep_row11_col3.csv,0,1
@@ -2125,7 +2104,6 @@ row_less_sep_row69_col7.csv,0,1
 row_less_sep_row25_col5.csv,0,1
 row_less_sep_row7_col7.csv,0,1
 row_extra_quote52_col5.csv,0,1
-file_no_header.csv,0,1
 row_more_sep_row80_col2.csv,0,1
 row_less_sep_row72_col6.csv,0,1
 row_extra_quote17_col6.csv,0,1
@@ -2256,7 +2234,6 @@ row_more_sep_row46_col6.csv,0,1
 row_extra_quote57_col8.csv,0,1
 row_more_sep_row44_col5.csv,0,1
 row_extra_quote5_col3.csv,0,1
-file_field_delimiter_0x20.csv,0,1
 row_more_sep_row39_col6.csv,0,1
 row_extra_quote7_col3.csv,0,1
 row_less_sep_row23_col5.csv,0,1
