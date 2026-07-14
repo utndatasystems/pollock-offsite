@@ -10,7 +10,6 @@ from sut.utils import print
 from tqdm import tqdm
 from faker import Faker
 
-
 from pollock.polluters_utils import _set_polluted_filename
 
 parser = argparse.ArgumentParser()
@@ -239,10 +238,15 @@ execute_polluter(
 # Add or remove one separator for each row/column : 1428 files
 # Add extra quote mark for each row/column : 756 files
 # Change delimiter for each row : 88 files
+
 # These per-cell pollutions are only generated when --per-cell-pollutions is set,
 # since they produce a very large number of files.
 if args.per_cell_pollutions:
-    for i in tqdm(range(f.row_count)):
+
+    # Manually decrease row_count for pollutions 
+    f.row_count = min(f.row_count, 2)
+
+    for i in tqdm(range(1, f.row_count)):
         for j in range(f.col_count):
             execute_polluter(f, pl.addRowFieldDelimiter, new_filename=f"row_more_sep_row{i}_col{j}.csv", row=i, col=j)  # row 1, empty
             if j > 0:
@@ -289,7 +293,14 @@ if args.polluters == "pollock2.0":
     #print(pl2.multilineHeader.manually_verified)
 
     execute_polluter(f, pl2.duplicateHeaderAsDataRow)
-    execute_polluter(f, pl2.superheader)
+    execute_polluter(f, pl2.superheader, 
+        groups={
+            "Transaction Info": [0, 1],
+            "Product Info": [2, 3, 4, 5, 6, 7],
+            "Notes": [8],
+        },
+        sparse=True,
+    )
 
     # Footnote
     # Simple
@@ -304,7 +315,6 @@ if args.polluters == "pollock2.0":
     execute_polluter(
         f, pl2.extremelyLongFields, row=2 if f.row_count >= 2 else 1, col=1, length=10000
     )  # For the final evaluation, we have to make sure th insert something extremely long of the same data type as the original cell
-    execute_polluter(f, pl2.addGroupSectionHeader, group_name="Region: North")
     execute_polluter(f, pl2.addTrailingCommentToFile, comment="This article is no longer being sold.")
     execute_polluter(f, pl2.commentRow)
     execute_polluter(f, pl2.commentRow, row=0)
@@ -313,7 +323,9 @@ if args.polluters == "pollock2.0":
     for i in range(10):
         execute_polluter(f, pl2.variableColumnCount)
 
+
     # Delimiter / quoting / escaping edge cases
+    # Mixed delimiters, unescaped delimiters, double escaping, unquoted lists, whitespace-formatted tables
     execute_polluter(
         f,
         pl2.mixedDelimiters,
@@ -357,7 +369,8 @@ if args.polluters == "pollock2.0":
     execute_polluter(f, pl2.repackageCellsToJSON, start_col=2, end_col=5, row=3)
     execute_polluter(f, pl2.embeddedCSV)
 
-
+    # changeRowQuotationMark() - originally missing in Pollock benchmark 
+    execute_polluter(f, pl.changeRowQuotationMark, row=2 if f.row_count >= 2 else 1, target_quotation="'")
 
 # TODO: Combinations of pollutions:
 
