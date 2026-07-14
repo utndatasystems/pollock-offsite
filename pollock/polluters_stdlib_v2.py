@@ -212,26 +212,6 @@ def extremelyLongFields(
     )
 
 
-def addGroupSectionHeader(file: CSVFile, group_name="Region: North", position=1):
-    """Adds a bare section/group label row with content only in the first column."""
-    print(
-        "USE WITH CAUTION: only add this to files where such grouping structure would make sense, e.g. a sales file with regional groups."
-    )
-    # has to be added to right files only. This is only meaningful if the file has some kind of grouping structure.
-    if position < 0:
-        position = _last_data_row(file) - 1
-    row = [group_name] + [""] * max(file.col_count - 1, 0)
-    pb.addRows(
-        file,
-        cell_content=row,
-        n_rows=1,
-        position=position,
-        col_count=file.col_count,
-        role="section_header",
-    )
-    _set_polluted_filename(file, f"file_group_section_header_{position}.csv")
-
-
 @manually_verified
 def addTrailingCommentToFile(
     file: CSVFile,
@@ -469,23 +449,99 @@ def typeAmbiguity(file: CSVFile):
     _set_polluted_filename(file, "file_type_ambiguity_row.csv")
 
 
-def superheader(file: CSVFile):
-    """Adds a grouping row above the normal header."""
-    print(
-        "USE WITH CAUTION: only add this to files where such grouping structure would make sense, e.g. a sales file with regional groups."
-    )
-    groups = []
-    for i in range(file.col_count):
-        groups.append("Region" if i < max(1, file.col_count // 2) else "Metrics")
+
+def superheader(
+    file: CSVFile,
+    groups: dict[str, list[int]],
+    sparse: bool = True,
+    position: int = 0,
+):
+    """
+    Adds a superheader row above the normal header.
+
+    Parameters:
+    - groups:
+        Dictionary mapping superheader labels to 0-based column ids.
+
+        Example:
+            {
+                "Transaction Info": [0, 1],
+                "Product Info": [2, 3, 4, 5, 6, 7],
+                "Notes": [8],
+            }
+
+    - sparse:
+        If True, only the first column of each group gets the label.
+        Other columns in the group are empty, imitating merged spreadsheet cells.
+
+        Example:
+            Transaction Info,,Product Info,,,,,,Notes
+
+        If False, the label is repeated across all grouped columns.
+
+        Example:
+            Transaction Info,Transaction Info,Product Info,Product Info,...
+
+    - position:
+        Row insertion position. In your setup, position=1 likely means
+        insert before the first row.
+    """
+
+    if not isinstance(groups, dict):
+        raise ValueError("groups must be a dictionary: dict[str, list[int]]")
+
+    col_count = file.col_count
+    superheader_row = [""] * col_count
+    used_columns = set()
+
+    for label, columns in groups.items():
+        if not isinstance(label, str):
+            raise ValueError("All superheader labels must be strings")
+
+        if not isinstance(columns, list):
+            raise ValueError(
+                f"Columns for superheader group '{label}' must be a list of integers"
+            )
+
+        if not columns:
+            raise ValueError(f"Superheader group '{label}' has no columns")
+
+        for col in columns:
+            if not isinstance(col, int):
+                raise ValueError(
+                    f"Column id '{col}' in group '{label}' is not an integer"
+                )
+
+            if col < 0 or col >= col_count:
+                raise ValueError(
+                    f"Column {col} in group '{label}' is out of range for file with {col_count} columns"
+                )
+
+            if col in used_columns:
+                raise ValueError(
+                    f"Column {col} is assigned to more than one superheader group"
+                )
+
+            used_columns.add(col)
+
+        sorted_columns = sorted(columns)
+
+        if sparse:
+            superheader_row[sorted_columns[0]] = label
+        else:
+            for col in sorted_columns:
+                superheader_row[col] = label
+
     pb.addRows(
         file,
-        cell_content=groups,
+        cell_content=superheader_row,
         n_rows=1,
-        position=0,
-        col_count=file.col_count,
-        role="superheader",
-    )
+        position=position,
+        col_count=col_count,
+        role="superheader",)
+
     _set_polluted_filename(file, "file_superheader.csv")
+
 
 
 def embeddedFiles(file: CSVFile, row: int | None = None, col: int | None = None):
@@ -843,7 +899,7 @@ def unquotedLists(
     pb.changeCell(file, row=row, col=col, new_content=payload)
     _set_polluted_filename(file, f"file_unquoted_lists_row_{row}_col_{col}.csv")
 
-
+@manually_verified
 def moveHeaderRow(file: CSVFile, row: int | None = None):
     """
     This polluter will move the header row down to 'row' index (0 based).
@@ -1008,7 +1064,3 @@ def differentNullValues(file: CSVFile,
         )
 
     _set_polluted_filename(file, f"file_different_null_values_row_{row}_col_{col}.csv")
-
-
-
-

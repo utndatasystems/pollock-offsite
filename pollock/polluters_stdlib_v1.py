@@ -149,7 +149,7 @@ def changeNumberRows(file: CSVFile, target_number_rows: int, remove_header=False
 
 
 def expandColumnHeader(file: CSVFile, extra_rows=1):
-    """Repeat the header across extra header rows."""
+    """Repeat the header across extra header rows. Turns the header into a multi-row header."""
     header = [x for x in file.xml.xpath(f"//row[{1}]//value//node()[not(node())]")]
     pb.addRows(file, cell_content=header, n_rows=extra_rows, position=0, role="header")
 
@@ -510,6 +510,7 @@ def changeRowRecordDelimiter(file: CSVFile, row=1, target_delimiter="\r\n"):
     _set_polluted_filename(file, f"row_record_delimiter_{row}{del_string}.csv")
 
 
+# obsolete due to function in mixedDelimiter function in v2 
 def changeRowFieldDelimiter(file: CSVFile, row=1, target_delimiter=";"):
     """Change the field delimiter used by one row."""
     if type(row) == int and row < 0:
