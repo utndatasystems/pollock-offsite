@@ -528,10 +528,40 @@ def changeRowQuotationMark(file: CSVFile, row=1, target_quotation="'"):
     if type(row) == int and row < 0:
         row = "last()-" + str(row + 1)
 
+    old_char = file.quotation_char
     root = file.xml.getroot()
-    query = root.xpath(f"//row[{row}]//quotation_char")
-    for r in query:
+    row_cells = f"//row[{row}]//cell"
+
+    # unescape instances of the old quotation char if they are not part of the grammar anymore
+    if old_char and old_char not in (file.escape_char, target_quotation):
+        for cell in root.xpath(row_cells):
+            for esc in [c for c in cell if c.tag == "escape_char"]:
+                nxt = esc.getnext()
+                if nxt is None or nxt.tag != "value" or not (nxt.text or "").startswith(old_char):
+                    continue
+                prev = esc.getprevious()
+                if prev is not None and prev.tag == "value":
+                    prev.text = (prev.text or "") + (nxt.text or "")
+                    cell.remove(nxt)
+                cell.remove(esc)
+
+    # swap quotation char instances
+    for r in root.xpath(f"//row[{row}]//quotation_char"):
         r.text = target_quotation
+
+    # escape literal instances of the new quotation char that appear in cell text
+    if target_quotation and file.escape_char and target_quotation not in (old_char, file.escape_char):
+        for cell in root.xpath(row_cells):
+            for value in list(cell):
+                if value.tag != "value" or not value.text or target_quotation not in value.text:
+                    continue
+                parts = value.text.split(target_quotation)
+                value.text = parts[0]
+                insert_at = cell.index(value) + 1
+                for part in parts[1:]:
+                    cell.insert(insert_at, E.escape_char(file.escape_char))
+                    cell.insert(insert_at + 1, E.value(target_quotation + part))
+                    insert_at += 2
 
     vals = [ord(x) for x in target_quotation]
     quote_string = "".join([f"_0x{v:X}" for v in vals])
