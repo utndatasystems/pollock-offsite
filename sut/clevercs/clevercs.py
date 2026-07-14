@@ -8,6 +8,9 @@ from utils import print, save_time_df, load_parameters
 import clevercsv
 import time
 
+from dotenv import load_dotenv
+load_dotenv()
+
 sut = 'clevercs'
 DATASET = os.environ.get('DATASET', 'polluted_files')
 IN_DIR = f'data/{DATASET}/csv/'
