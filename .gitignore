@@ -141,7 +141,7 @@ dmypy.json
 
 # Custom data 
 */mycustomtest/
-data/csv_storm/*
+data/*
 data/additional_csvs/insurance_complaints.csv
 data/additional_csvs/table.csv
 data/polluted_files/*
