@@ -111,7 +111,6 @@ f = CSVFile(args.source, quote_all=True)
 # =============================================================================
 # ORIGINAL POLLOCK 1.0 POLLUTIONS
 # The block below reproduces exactly the pollutions of the original pollute_main
-# (commit 3d506f7): the same polluters, arguments and output filenames.
 # These run for BOTH pollock1.0 and pollock2.0 (pollock2.0 = 1.0 + extra).
 # =============================================================================
 
@@ -152,6 +151,8 @@ execute_polluter(
     f, pl.expandColumnHeader, extra_rows=2, new_filename="file_header_multirow_3.csv"
 )  # 1 regular, on multiple rows
 
+# two program branches as the params differ between original
+# pollock and CSVStorm
 if args.polluters == "pollock1.0":
     execute_polluter(
         f,
@@ -236,11 +237,7 @@ execute_polluter(
     f, pl.changeNumberRows, new_filename="file_one_data_row.csv", target_number_rows=2
 )
 
-# Add or remove one separator for each row/column : 1428 files
-# Add extra quote mark for each row/column : 756 files
-# Change delimiter for each row : 88 files
-# These per-cell pollutions are only generated when --per-cell-pollutions is set,
-# since they produce a very large number of files.
+# per cell pollutions
 if args.per_cell_pollutions:
     for i in tqdm(range(f.row_count)):
         for j in range(f.col_count):

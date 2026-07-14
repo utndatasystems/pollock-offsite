@@ -322,47 +322,47 @@ def changeEscapeCharacter(file: CSVFile, target_escape="\\"):
     else:
         _set_polluted_filename(file, f"file_escape_char_0x00.csv")
 
-
+@manually_verified
 def changeQuotationChar(file: CSVFile, target_char="\u0022"):
-    """
-    Replaces the CSV quotation character everywhere in the file with a different text qualifier or deletes the quotation chard.
-    (e.g. '"', "'", '`', '').
- 
-    Common values:
-        "\\u0022" -> double quote (")
-        "\\u0027" -> single quote (')
-        "\\u0060" -> backtick (`)
-        ""        -> no quotation character
 
-    Example:
-
-        Before (quotation character = "):
-            "Alice","Berlin","10"
-            "Bob","Munich","20"
-
-        After (quotation character = '):
-            'Alice','Berlin','10'
-            'Bob','Munich','20'
-
-        After (no quotation character):
-            Alice,Berlin,10
-            Bob,Munich,20
-    """
-
+    old_char = file.quotation_char
     file.quotation_char = target_char
     root = file.xml.getroot()
 
-    query = root.xpath("//quotation_char")
-    for idx, qc in enumerate(query):
-        if not idx % 2:
-            qc.text = target_char
-        else:
-            qc.text = target_char[::-1] if target_char else ""
+    # Remove the escapes that guarded literal *old* quote chars (only if they're not still escape char)
+    if old_char and old_char not in (file.escape_char, target_char):
+        for cell in root.xpath("//cell"):
+            for esc in [c for c in cell if c.tag == "escape_char"]:
+                nxt = esc.getnext()
+                if nxt is None or nxt.tag != "value" or not (nxt.text or "").startswith(old_char):
+                    # skips everything but escape chars followed by old quote chars
+                    continue
+                prev = esc.getprevious()
+                if prev is not None and prev.tag == "value":
+                    prev.text = (prev.text or "") + (nxt.text or "")
+                    cell.remove(nxt)
+                cell.remove(esc)
+        
+    # Point every structural quote at the new character.
+    for qc in root.xpath("//quotation_char"):
+        qc.text = target_char
 
-    # Remove escape character definitions since they may no longer be valid
-    index = [i for i, x in enumerate(root) if x.tag == "escape_char"]
-    for i in reversed(index):
-        del root[i]
+    # Escape literal *new* quote chars now sitting in the content
+    # (Skip when the new quote char equals the old quote char (no-op)
+    # or the escape char as any literal copies are already escaped and re-escaping would
+    # double them up
+    if target_char and file.escape_char and target_char not in (old_char, file.escape_char):
+        for cell in root.xpath("//cell"):
+            for value in list(cell):
+                if value.tag != "value" or not value.text or target_char not in value.text:
+                    continue
+                parts = value.text.split(target_char)
+                value.text = parts[0]
+                insert_at = cell.index(value) + 1
+                for part in parts[1:]:
+                    cell.insert(insert_at, E.escape_char(file.escape_char))
+                    cell.insert(insert_at + 1, E.value(target_char + part))
+                    insert_at += 2
 
     if target_char:
         vals = [ord(x) for x in target_char]
@@ -370,10 +370,7 @@ def changeQuotationChar(file: CSVFile, target_char="\u0022"):
     else:
         quote_string = "_none"
 
-    _set_polluted_filename(
-        file,
-        f"file_quotation_char{quote_string}.csv",
-    )
+    _set_polluted_filename(file, f"file_quotation_char{quote_string}.csv")
 
 def addSynthethicRowID(file: CSVFile):
     """
