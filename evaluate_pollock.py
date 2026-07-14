@@ -138,7 +138,7 @@ def main():
     
 
     for s in systems:
-        result_file = f"{RESULT_DIR}/{s}/{dataset}/{s}_results.csv"
+        result_file = f"{RESULT_DIR}/{s}/{dataset}/{s}_results_pollock.csv"
         if UPDATE_SYSTEM is None or s == UPDATE_SYSTEM:
             print(f"\n[{eval_systems.index(s) + 1}/{len(eval_systems)}] Evaluating {s}...")
             evaluate_single_run(files=files, dataset=dataset, result_file=result_file, sut=s, n_jobs=N_JOBS, verbose=verbose)
@@ -184,8 +184,8 @@ def main():
         cols = ["success", "headerf1", "cellf1", "recordf1", "pollock_simple"]
         print("\n", aggregate_df[cols].sort_values("pollock_simple", ascending=False))
 
-    global_df.to_csv(RESULT_DIR + f"/global_results_{dataset}.csv")
-    aggregate_df.to_csv(RESULT_DIR + f"/aggregate_results_{dataset}.csv")
+    global_df.to_csv(RESULT_DIR + f"/global_results_{dataset}_pollock.csv")
+    aggregate_df.to_csv(RESULT_DIR + f"/aggregate_results_{dataset}_pollock.csv")
 
 if __name__ == "__main__":
     main()

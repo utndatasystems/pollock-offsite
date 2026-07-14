@@ -139,6 +139,7 @@ def main():
             if os.path.exists(candidate):
                 origin_csv = candidate
                 break
+    suffix = "_incl_origin" if origin_csv is not None else ""
     weights = load_weights(dataset)
 
     verbose = bool(args.verbose)
@@ -162,7 +163,7 @@ def main():
         print("Cached-only mode: reading existing *_results.csv without recomputing.")
 
     for s in systems:
-        result_file = f"{RESULT_DIR}/{s}/{dataset}/{s}_results.csv"
+        result_file = f"{RESULT_DIR}/{s}/{dataset}/{s}_results{suffix}.csv"
         if not CACHED_ONLY and (UPDATE_SYSTEM is None or s == UPDATE_SYSTEM):
             print(f"\n[{eval_systems.index(s) + 1}/{len(eval_systems)}] Evaluating {s}...")
             evaluate_single_run(files=files, dataset=dataset, result_file=result_file, sut=s, n_jobs=N_JOBS, verbose=verbose, origin_csv=origin_csv)
@@ -203,8 +204,8 @@ def main():
         .sort_values("accuracy", ascending=False)
     )
 
-    global_df.to_csv(RESULT_DIR + f"/global_results_{dataset}.csv")
-    aggregate_df.to_csv(RESULT_DIR + f"/aggregate_results_{dataset}.csv")
+    global_df.to_csv(RESULT_DIR + f"/global_results_{dataset}{suffix}.csv")
+    aggregate_df.to_csv(RESULT_DIR + f"/aggregate_results_{dataset}{suffix}.csv")
 
 if __name__ == "__main__":
     main()
