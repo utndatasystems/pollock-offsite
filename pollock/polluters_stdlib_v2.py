@@ -876,26 +876,32 @@ def mixedTimeformats(file: CSVFile, max_num_to_change=100):
     _set_polluted_filename(file, f"file_mixed_time_formats.csv")
 
 
-def unquotedLists(
+@manually_verified
+def unquotedList(
     file: CSVFile,
     row: int | None = None,
     col: int | None = None,
-    delimiter: str = ",",
+    list_delimiter: str = ",",
     min_list_len=2,
     max_list_len=10,
 ):
     """
     This polluter will replace a cell content with an unqoted list.
-    """
-    if row is None:
-        row = random.randint(1, _safe_row_count(file))
-    if col is None:
-        col = random.randint(0, _safe_col_count(file))
+    e.g. [123,456,789]
 
-    payload = delimiter.join(
-        str(randomInt(min=-100, max=1000))
+    Chooses a random row+col if params are empty
+    """
+
+    # 1-based xpath indexing
+    if row is None:
+        row = random.randint(2, _safe_row_count(file)) # skip header
+    if col is None:
+        col = random.randint(1, _safe_col_count(file))
+
+    payload = "[" + list_delimiter.join(
+        str(random.randint(a=-100, b=1000))
         for _ in range(random.randint(min_list_len, max_list_len))
-    )
+    ) + "]"
     pb.changeCell(file, row=row, col=col, new_content=payload)
     _set_polluted_filename(file, f"file_unquoted_lists_row_{row}_col_{col}.csv")
 

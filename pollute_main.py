@@ -316,9 +316,10 @@ if args.polluters == "pollock2.0":
     execute_polluter(f, pl2.commentRow, row=0)
     execute_polluter(f, pl2.commentRow, comment_marker="//")
     execute_polluter(f, pl2.commentRow, comment_marker="<!--")
+    # TODO verify how often these should run + with which params.
     for i in range(10):
         execute_polluter(f, pl2.variableColumnCount)
-
+        execute_polluter(f, pl2.unquotedList) # automatically chooses safe row/column
 
     # Delimiter / quoting / escaping edge cases
     # Mixed delimiters, unescaped delimiters, double escaping, unquoted lists, whitespace-formatted tables
@@ -344,9 +345,9 @@ if args.polluters == "pollock2.0":
         delimiters=[";"],
         mode="whole_row",
     )
+
     execute_polluter(f, pl2.unescaped, row=2 if f.row_count >= 2 else 1, col=1)
     execute_polluter(f, pl2.doubleEscaping, row1=2, row2=3, col=1)
-    execute_polluter(f, pl2.unquotedLists)
     execute_polluter(f, pl2.tableToWhitespaceFormattedTable, pad_cells=False)
     execute_polluter(f, pl2.tableToWhitespaceFormattedTable, pad_cells=True, quote_strings=True)
     execute_polluter(f, pl2.tableToWhitespaceFormattedTable, pad_cells=True, quote_strings=False)
