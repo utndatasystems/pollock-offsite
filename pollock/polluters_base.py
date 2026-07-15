@@ -189,6 +189,7 @@ def addColumns(
 
 
 def changeCell(file: CSVFile, row: int, col: int, new_content, table=0):
+    """Changes the content of a cell in a CSV file. Row and column are 0-indexed."""
     root = file.xml.getroot()
     if type(row) == int and row < 0:
         row = "last()-" + str(row + 1)

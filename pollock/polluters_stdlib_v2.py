@@ -7,6 +7,7 @@ from lxml import etree
 from .CSVFile import CSVFile
 from lxml.builder import E
 from .randdata import (
+    randomString,
     randomDateStr,
     randomType,
     randomInt,
@@ -194,23 +195,25 @@ def duplicateHeaderAsDataRow(file: CSVFile, n_duplicates: int = 1):  # checked m
     suffix = "" if n_duplicates == 1 else f"_{n_duplicates}x"
     _set_polluted_filename(file, f"file_duplicate_header_as_data{suffix}.csv")
 
-
-@manually_verified
+@todo
 def extremelyLongFields(
-    file: CSVFile, row=1, col=1, length=50 * 1024 * 1024
-):  
-    """Replaces a cell with an extremely long field of the same data type as the current value (if semantically possible, else a random string)"""
-    if isinstance(row, int) and isinstance(col, int) and row > 0 and col > 0:
-        current = pb.getCell(file, row, col) or ""
-    else:
-        current = ""
-    cell_type = parse_cell(current)
+    file: CSVFile, row=1, col=1, length=50 * 1024 * 1024):
+    """Replaces a cell with an extremely long random alphanumeric field."""
+    if type(row) == int and row < 0:
+        row = "last()-" + str(row + 1)
 
+    #Instead of creating a new random string, take the original content and repeat it until it reaches the desired length
+    original_content = pb.getCell(file, row, col)
+
+    #TODO: Strip original content such that we don't run into escaping problems.
+    new_content = (original_content * (length // len(original_content) + 1))[:length]
+    
     pb.changeCell(
         file,
         row=row,
         col=col,
-        new_content=randomLongOfType(cell_type, length),
+        new_content=new_content,
+        
     )
     _set_polluted_filename(
         file, f"file_extremely_long_field_row_{row}_col_{col}_len_{length}.csv"
@@ -352,21 +355,16 @@ def mixedDelimiters(  # checked manually
         )
 
 
-def unescaped(
-    file: CSVFile,
-    row=1,
-    col=1,
-    content='This is a "quote" and a comma, and a newline\nin the same cell.',
-):  # checked manually
+@todo
+def unescaped(file: CSVFile, row=1, col=1, content='This is a "quote" and a comma, and a newline\nin the same cell.',):
     """Places quote, delimiter, and newline characters in a cell without adding escaping metadata."""
-    print(
-        "USE WITH CAUTION: only insert in field with same data type for fair pollution"
-    )
+    print("USE WITH CAUTION: only insert in field with same data type for fair pollution")
     pb.changeCell(file, row=row, col=col, new_content=content)
     _set_polluted_filename(file, f"file_unescaped_row_{row}_col_{col}.csv")
 
 
-def doubleEscaping(file: CSVFile, row1=2, row2=3, col=1):  # checked manually
+@todo
+def doubleEscaping(file: CSVFile, row1=2, row2=3, col=1):  
     """Mixes doubled-quote escaping and backslash escaping in the same column. Example content: ""hi"" and \"hi\"."""
     print(
         "USE WITH CAUTION: only insert in field with same data type for fair pollution"
@@ -382,6 +380,7 @@ def doubleEscaping(file: CSVFile, row1=2, row2=3, col=1):  # checked manually
             col_count=file.col_count,
             role="data",
         )
+    #TODO: take origal content and add double escaping and backslash escaping instead of overwriting it
     pb.changeCell(file, row=row1, col=col, new_content='""hi""')
     pb.changeCell(file, row=row2, col=col, new_content='\\"hi\\"')
     _set_polluted_filename(file, f"file_double_escaping_col_{col}.csv")

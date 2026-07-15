@@ -268,8 +268,9 @@ execute_polluter(f, pl.changeFieldDelimiter, target_delimiter=" ")
 execute_polluter(f, pl.changeQuotationChar, target_char="'")
 
 # Change escape character : 2 files
-execute_polluter(f, pl.changeEscapeCharacter, target_escape="\u005C")  # backslash
-execute_polluter(f, pl.changeEscapeCharacter, target_escape="")
+execute_polluter(f, pl.changeEscapeCharacter, target_escape="\u005C")   # backslash
+execute_polluter(f, pl.changeEscapeCharacter, target_escape="")         # no escape character
+#execute_polluter(f, pl.changeEscapeCharacter, target_escape="WATCHOUT")     # Test Case for check if pollution works
 
 
 # --- NEW POLLUTIONS FOR POLLOCK 2.0 ---
@@ -309,8 +310,8 @@ if args.polluters == "pollock2.0":
     # Row / column irregularities
     execute_polluter(f, pl2.moveHeaderRow)
     execute_polluter(
-        f, pl2.extremelyLongFields, row=2 if f.row_count >= 2 else 1, col=1, length=10000
-    )  
+        f, pl2.extremelyLongFields, row=3 if f.row_count >= 3 else 3, col=6, length=10000
+    )  # For the final evaluation, we have to make sure th insert something extremely long of the same data type as the original cell
     execute_polluter(f, pl2.addTrailingCommentToFile, comment="This article is no longer being sold.")
     execute_polluter(f, pl2.commentRow)
     execute_polluter(f, pl2.commentRow, row=1)  # comment the header row (1-based)

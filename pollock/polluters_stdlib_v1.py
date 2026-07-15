@@ -274,9 +274,9 @@ def changeFieldDelimiter(file: CSVFile, target_delimiter=";"):
 
     _set_polluted_filename(file, f"file_field_delimiter{del_string}.csv")
 
-
+@manually_verified
 def changeEscapeCharacter(file: CSVFile, target_escape="\\"):
-    """Change the escape character used for quoted content.
+    """Changes the escape character used for quoted content.
     Replaces the CSV escape character used to escape quotation marks and other
     special characters (everywhere in the file).
     """
@@ -321,6 +321,7 @@ def changeEscapeCharacter(file: CSVFile, target_escape="\\"):
         _set_polluted_filename(file, f"file_escape_char{e_string}.csv")
     else:
         _set_polluted_filename(file, f"file_escape_char_0x00.csv")
+
 
 @manually_verified
 def changeQuotationChar(file: CSVFile, target_char="\u0022"):
