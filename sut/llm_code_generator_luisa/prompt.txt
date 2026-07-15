@@ -1,0 +1,14 @@
+Write a pure-Python CSV parser from scratch.
+
+Requirements:
+- Do not use csv, pandas, numpy, pyarrow, or external parsing libraries.
+- Support RFC 4180-style CSV.
+- Support commas inside quoted fields.
+- Support newlines inside quoted fields.
+- Support escaped double quotes using "".
+- Support CRLF and LF line endings.
+- Raise clear exceptions on malformed CSV.
+- Return list[dict[str, str]] using the first row as headers.
+- Include unit tests for edge cases.
+
+Output only Python code. Call the function `parse_csv_test(text: str, delimiter: str = ",")` to parse the CSV text and return the result.
