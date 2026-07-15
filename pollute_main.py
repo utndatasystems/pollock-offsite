@@ -310,7 +310,7 @@ if args.polluters == "pollock2.0":
     execute_polluter(f, pl2.moveHeaderRow)
     execute_polluter(
         f, pl2.extremelyLongFields, row=2 if f.row_count >= 2 else 1, col=1, length=10000
-    )  # For the final evaluation, we have to make sure th insert something extremely long of the same data type as the original cell
+    )  
     execute_polluter(f, pl2.addTrailingCommentToFile, comment="This article is no longer being sold.")
     execute_polluter(f, pl2.commentRow)
     execute_polluter(f, pl2.commentRow, row=0)

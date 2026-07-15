@@ -9,6 +9,8 @@ from typing import Optional
 
 from faker import Faker
 
+from .data_types import CellType
+
 faker = Faker(["en_US", "de_DE"])
 
 
@@ -159,6 +161,34 @@ def randomString(
     target_length = random.randint(min_length, max_length)
     alphabet = string.ascii_letters + string.digits
     return "".join(random.choices(alphabet, k=target_length))
+
+
+def randomLongOfType(cell_type: str, length: int) -> str:
+    """Generate lengthy value that parse_cell() still classifies as the original cell_type for cell types that can be mapped to high length semantically
+    """
+    length = max(length, 1)
+    if cell_type == CellType.INTEGER:
+        return random.choice("123456789") + "".join(
+            random.choices(string.digits, k=length - 1)
+        )
+    if cell_type == CellType.FLOAT:
+        if length < 3:
+            return "1.0"
+        left = length - 2  # digits left of '.', plus a single digit to its right
+        return (
+            random.choice("123456789")
+            + "".join(random.choices(string.digits, k=left - 1))
+            + "."
+            + random.choice(string.digits)
+        )
+    if cell_type == CellType.CURRENCY:
+        return (
+            randomCurrency()
+            + random.choice("123456789")
+            + "".join(random.choices(string.digits, k=max(length - 2, 0)))
+        )
+    # BOOLEAN / DATE / TIME / EMPTY / STRING -> long alphanumeric string
+    return randomString(min_length=length, max_length=length)
 
 
 def randomBoolStr() -> str:

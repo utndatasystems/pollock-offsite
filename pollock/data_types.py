@@ -1,9 +1,18 @@
+import sys
 import warnings
 from dateutil.parser._parser import UnknownTimezoneWarning
 from pollock import timeparser #This module is not working on windows
 from price_parser import Price
 
 warnings.simplefilter(action='ignore', category=UnknownTimezoneWarning)
+
+# CPython caps int(str) at 4300 digits by default (raises ValueError above it).
+# parse_cell swallows that ValueError, so extremely long integer fields (e.g. the
+# 10k-digit extremelyLongFields pollution) would silently fall through to float()
+# and normalize to 'inf'. Raise the cap so long integers stay classified/compared
+# as integers instead of collapsing to 'inf'.
+if hasattr(sys, "set_int_max_str_digits"):
+    sys.set_int_max_str_digits(1_000_000)
 
 import dateutil.parser
 

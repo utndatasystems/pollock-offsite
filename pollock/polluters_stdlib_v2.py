@@ -7,12 +7,13 @@ from lxml import etree
 from .CSVFile import CSVFile
 from lxml.builder import E
 from .randdata import (
-    randomString,
     randomDateStr,
     randomType,
     randomInt,
     randomJsonStr,
+    randomLongOfType,
 )
+from .data_types import parse_cell
 from dateutil.parser import parse
 
 from . import constants
@@ -194,18 +195,22 @@ def duplicateHeaderAsDataRow(file: CSVFile, n_duplicates: int = 1):  # checked m
     _set_polluted_filename(file, f"file_duplicate_header_as_data{suffix}.csv")
 
 
+@manually_verified
 def extremelyLongFields(
     file: CSVFile, row=1, col=1, length=50 * 1024 * 1024
-):  # checked manually
-    """Replaces a cell with an extremely long random alphanumeric field."""
-    if type(row) == int and row < 0:
-        row = "last()-" + str(row + 1)
+):  
+    """Replaces a cell with an extremely long field of the same data type as the current value (if semantically possible, else a random string)"""
+    if isinstance(row, int) and isinstance(col, int) and row > 0 and col > 0:
+        current = pb.getCell(file, row - 1, col - 1) or ""
+    else:
+        current = ""
+    cell_type = parse_cell(current)
 
     pb.changeCell(
         file,
         row=row,
         col=col,
-        new_content=randomString(min_length=length, max_length=length),
+        new_content=randomLongOfType(cell_type, length),
     )
     _set_polluted_filename(
         file, f"file_extremely_long_field_row_{row}_col_{col}_len_{length}.csv"

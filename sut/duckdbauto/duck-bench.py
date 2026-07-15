@@ -48,7 +48,8 @@ for idx,file in enumerate(benchmark_files):
     kw["strict_mode"] = args.strict
     kw["ignore_errors"] = True
     kw["null_padding"] = True
-    kw["auto_type_candidates"] = ['NULL', 'BOOLEAN', 'BIGINT', 'DOUBLE', 'VARCHAR'] # exclude timestamp type as they get written to the solution file in a different format, leading to an error where semantically everything was correct (Pollock shows an error because "00:00" is a different string from "00:00:00")
+    kw["auto_type_candidates"] = ['NULL', 'BOOLEAN', 'BIGINT', 'DECIMAL', 'VARCHAR'] # exclude timestamp type as they get written to the solution file in a different format, leading to an error where semantically everything was correct (Pollock shows an error because "00:00" is a different string from "00:00:00")
+    # Decimal over double because of rounding for long sequences after the comma
 
     for time_rep in range(N_REPETITIONS):
         con = duckdb.connect()
