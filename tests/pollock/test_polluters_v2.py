@@ -144,7 +144,7 @@ def test_weird_unicode(csv_file, monkeypatch):
     monkeypatch.setattr(p.random, "choice", lambda seq: seq[0])
 
     before = values(csv_file, "//table[1]/row[2]/cell[1]/value")[0]
-    p.weirdUnicode(csv_file, row=1, col=0)
+    p.weirdUnicode(csv_file, row=2, col=1)
     after = values(csv_file, "//table[1]/row[2]/cell[1]/value")[0]
     assert after != before
     assert after == "FranÃ§ois"
@@ -155,7 +155,7 @@ def test_invisible_characters(csv_file, monkeypatch):
     monkeypatch.setattr(p.random, "choice", lambda seq: seq[0])
 
     before = values(csv_file, "//table[1]/row[2]/cell[2]/value")[0]
-    p.invisibleCharacters(csv_file, row=1, col=1)
+    p.invisibleCharacters(csv_file, row=2, col=2)
     after = values(csv_file, "//table[1]/row[2]/cell[2]/value")[0]
     assert after != before
     assert after.startswith("\u200b")

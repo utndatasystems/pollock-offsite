@@ -381,10 +381,10 @@ def getCell(file: CSVFile, row: int, col: int, table=0):
     """
     Returns the textual value of a cell.
 
-    row and col are 0-based.
+    row and col are 1-based (XPath indexing), matching changeCell.
     """
     root = file.xml.getroot()
-    query = root.xpath(f"//table[{table + 1}]/row[{row + 1}]/cell[{col + 1}]")
+    query = root.xpath(f"//table[{table + 1}]/row[{row}]/cell[{col}]")
 
     if not query:
         return None

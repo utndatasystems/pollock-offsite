@@ -201,7 +201,7 @@ def extremelyLongFields(
 ):  
     """Replaces a cell with an extremely long field of the same data type as the current value (if semantically possible, else a random string)"""
     if isinstance(row, int) and isinstance(col, int) and row > 0 and col > 0:
-        current = pb.getCell(file, row - 1, col - 1) or ""
+        current = pb.getCell(file, row, col) or ""
     else:
         current = ""
     cell_type = parse_cell(current)
@@ -258,17 +258,17 @@ def commentRow(
 
     Args:
         file: CSVFile to modify.
-        row: Zero-based row index to comment out. If None, a random row is chosen.
+        row: One-based row index to comment out. If None, a random non-header row is chosen.
         comment_marker: Marker used to indicate a comment.
         space: Optional separator between the marker and the original value.
     """
     if row is None:
-        row = random.randint(1, _safe_row_count(file))
+        row = random.randint(2, _safe_row_count(file))  # skip header (row 1)
 
-    old_value = pb.getCell(file, row, col=0)
+    old_value = pb.getCell(file, row, col=1)
     pb.changeCell(
         file,
-        row=row + 1,  # XPath indexing
+        row=row,
         col=1,
         new_content=f"{comment_marker}{space}{old_value}",
     )
@@ -704,9 +704,9 @@ def weirdUnicode(
     - non-ASCII characters
     """
     if row is None:
-        row = random.randint(1, _safe_row_count(file))
+        row = random.randint(2, _safe_row_count(file))  # skip header (row 1)
     if col is None:
-        col = random.randint(0, _safe_col_count(file))
+        col = random.randint(1, _safe_col_count(file))
 
     old_value = pb.getCell(file, row, col)
     mode = random.choice(
@@ -738,8 +738,8 @@ def weirdUnicode(
 
     pb.changeCell(
         file,
-        row=row + 1,  # XPath indexing
-        col=col + 1,
+        row=row,
+        col=col,
         new_content=new_value,
     )
 
@@ -753,9 +753,9 @@ def invisibleCharacters(
 ):
     """Injects invisible Unicode characters into an existing cell."""
     if row is None:
-        row = random.randint(1, _safe_row_count(file))
+        row = random.randint(2, _safe_row_count(file))  # skip header (row 1)
     if col is None:
-        col = random.randint(0, _safe_col_count(file))
+        col = random.randint(1, _safe_col_count(file))
 
     invisible_chars = [
         "\u200b",  # zero-width space
@@ -792,8 +792,8 @@ def invisibleCharacters(
 
     pb.changeCell(
         file,
-        row=row + 1,
-        col=col + 1,
+        row=row,
+        col=col,
         new_content=new_value,
     )
     _set_polluted_filename(

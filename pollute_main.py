@@ -313,7 +313,7 @@ if args.polluters == "pollock2.0":
     )  
     execute_polluter(f, pl2.addTrailingCommentToFile, comment="This article is no longer being sold.")
     execute_polluter(f, pl2.commentRow)
-    execute_polluter(f, pl2.commentRow, row=0)
+    execute_polluter(f, pl2.commentRow, row=1)  # comment the header row (1-based)
     execute_polluter(f, pl2.commentRow, comment_marker="//")
     execute_polluter(f, pl2.commentRow, comment_marker="<!--")
     # TODO verify how often these should run + with which params.
