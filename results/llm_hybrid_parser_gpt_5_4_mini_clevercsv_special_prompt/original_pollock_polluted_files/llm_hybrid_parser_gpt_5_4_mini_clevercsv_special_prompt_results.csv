@@ -1552,7 +1552,7 @@ row_field_delimiter_65_0x20.csv,1,0
 row_less_sep_row24_col7.csv,1,0
 row_extra_quote14_col3.csv,0,1
 row_less_sep_row67_col6.csv,1,0
-row_less_sep_row39_col6.csv,0,1
+row_less_sep_row39_col6.csv,1,0
 row_less_sep_row17_col8.csv,1,0
 row_extra_quote71_col4.csv,0,1
 row_more_sep_row60_col7.csv,1,0
@@ -1839,8 +1839,8 @@ row_extra_quote59_col2.csv,0,1
 row_field_delimiter_81_0x20.csv,0,1
 row_less_sep_row71_col8.csv,1,0
 row_more_sep_row23_col7.csv,1,0
-row_less_sep_row63_col5.csv,0,1
-row_less_sep_row52_col5.csv,0,1
+row_less_sep_row63_col5.csv,1,0
+row_less_sep_row52_col5.csv,1,0
 row_more_sep_row19_col6.csv,0,1
 row_extra_quote36_col2.csv,0,1
 row_extra_quote33_col4.csv,1,0
