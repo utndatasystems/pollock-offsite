@@ -436,9 +436,6 @@ def addSynthethicRowID(file: CSVFile):
 
 def changeRowNumberFields(file: CSVFile, row=1, target_n_cells=1):
     """Change how many fields a single row contains."""
-    if type(row) == int and row < 0:
-        row = "last()-" + str(row + 1)
-
     if target_n_cells == -1 or target_n_cells == file.col_count:
         strtype = "homogeneous"
     if target_n_cells == 0:
@@ -470,9 +467,6 @@ def changeRowNumberFields(file: CSVFile, row=1, target_n_cells=1):
 
 def addRowFieldDelimiter(file: CSVFile, row, col, n_separators=1):
     """Insert an extra field delimiter into one row."""
-    if type(row) == int and row < 0:
-        row = "last()-" + str(row + 1)
-
     root = file.xml.getroot()
     row_xml = root.xpath(f"//row[{row + 1}]")[0]
     delimiter = E.field_delimiter(file.field_delimiter)
@@ -489,8 +483,6 @@ def addRowFieldDelimiter(file: CSVFile, row, col, n_separators=1):
 
 def deleteRowFieldDelimiter(file: CSVFile, row, col):
     """Remove a field delimiter from one row."""
-    if type(row) == int and row < 0:
-        row = "last()-" + str(row + 1)
     root = file.xml.getroot()
 
     row_xml = root.xpath(f"//row[{row + 1}]")[0]
@@ -526,7 +518,7 @@ def addRowQuoteMark(file: CSVFile, row, col):
 def changeRowRecordDelimiter(file: CSVFile, row=1, target_delimiter="\r\n"):
     """Change the record delimiter used by one row."""
     if type(row) == int and row < 0:
-        row = "last()-" + str(row + 1)
+        row = "last()-" + str(-row - 1)  # -1 -> last(), -2 -> last()-1
 
     root = file.xml.getroot()
     root.xpath(f"//row[{row}]/record_delimiter")[0].text = target_delimiter
@@ -539,9 +531,6 @@ def changeRowRecordDelimiter(file: CSVFile, row=1, target_delimiter="\r\n"):
 # obsolete due to function in mixedDelimiter function in v2 
 def changeRowFieldDelimiter(file: CSVFile, row=1, target_delimiter=";"):
     """Change the field delimiter used by one row."""
-    if type(row) == int and row < 0:
-        row = "last()-" + str(row + 1)
-
     root = file.xml.getroot()
     query = root.xpath(f"//row[{row + 1}]/field_delimiter")
     for r in query:
@@ -554,9 +543,6 @@ def changeRowFieldDelimiter(file: CSVFile, row=1, target_delimiter=";"):
 
 def changeRowQuotationMark(file: CSVFile, row=1, target_quotation="'"):
     """Change the quotation mark used by one row. Row indexing is 1-based. Follows xquery."""
-    if type(row) == int and row < 0:
-        row = "last()-" + str(row + 1)
-
     old_char = file.quotation_char
     root = file.xml.getroot()
     row_cells = f"//row[{row}]//cell"
@@ -604,9 +590,6 @@ def changeColumnHeader(
     If col is none, apply to all of them-
     If >0, extra rows expands the header on X many rows"""
     colint = col
-    if type(col) == int and col < 0:
-        col = "last()-" + str(col + 1)
-
     if type(col) == list:
         [pb.changeCell(file, row=1, col=c, new_content=target_header) for c in col]
     elif col is not None:
