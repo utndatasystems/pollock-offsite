@@ -371,9 +371,10 @@ if args.polluters == "pollock2.0":
     execute_polluter(f, pl.changeRowQuotationMark, row=2 if f.row_count >= 2 else 1, target_quotation="'")
 
     # Structural Stress Tests
-    execute_polluter(f, pl.changeNumberColumns, target_number_cols = 1000, pad_with_random_ints=True) # extreme width (maybe make larger, currently not even 1MB)
+    execute_polluter(f, pl.changeNumberColumns, target_number_cols = 1000, pad_with_random_ints=True) # extreme width (TODO make larger after code-iteration is over, currently not even 1MB)
     execute_polluter(f, pl.changeNumberColumns, target_number_cols = 1000, pad_with_random_ints=False) # repeats last column
-    execute_polluter(f, pl.changeNumberRows, )
+    execute_polluter(f, pl.changeNumberRows, target_number_rows=1000, repeat_file = True) # Long CSV # TODO make number larger after code-iteration is over
+
     
 
 

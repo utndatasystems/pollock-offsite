@@ -51,8 +51,9 @@ def changeDimension(file: CSVFile, target_dimension=-1):
     cur_size = len(textcontent)
 
     last_row_cells = [x for x in file.xml.xpath("//row[last()]//cell")]
+    # join per cell, a cell with embedded quotes is stored as multiple <value> elements
     last_row_content = [
-        "".join(v.text or "") for c in last_row_cells for v in c if v.tag == "value"
+        "".join(v.text or "" for v in c if v.tag == "value") for c in last_row_cells
     ]
 
     size_last_row = len("".join(content[-1]))
@@ -60,7 +61,7 @@ def changeDimension(file: CSVFile, target_dimension=-1):
 
     if target_dimension > cur_size:
         pb.addRows(
-            file, cell_content=last_row_content, n_rows=n_rows, position=-1, role="data"
+            file, cell_content=last_row_content, n_rows=n_rows, position=file.row_count, role="data"
         )
     elif 0 <= target_dimension < cur_size:
         n_rows_to_keep = textcontent.count("\r\n", target_dimension)
@@ -125,13 +126,25 @@ def changeNumberColumns(file: CSVFile, target_number_cols: int, pad_with_random_
 
     _set_polluted_filename(file, f"file_num_columns_{'pad_randints_' if pad_with_random_ints else ''}{str(target_number_cols)}.csv")
 
+@manually_verified
+def changeNumberRows(file: CSVFile, target_number_rows: int, remove_header=False, repeat_file=False):
+    """Add or remove rows until the file has the requested height.
 
-def changeNumberRows(file: CSVFile, target_number_rows: int, remove_header=False):
-    """Add or remove rows until the file has the requested height."""
-    last_row_cells = [x for x in file.xml.xpath("//row[last()]//cell")]
-    last_row_content = [
-        "".join(v.text or "") for c in last_row_cells for v in c if v.tag == "value"
-    ]
+    When growing, repeats the last row, or cycles through all data rows if repeat_file is set.
+    """
+    # join per cell, a cell with embedded quotes is stored as multiple <value> elements
+    def row_content(row):
+        return [
+            "".join(v.text or "" for v in c if v.tag == "value")
+            for c in row
+            if c.tag == "cell"
+        ]
+
+    if repeat_file:
+        # all data rows (skip the header at row 1)
+        fill_rows = [row_content(r) for r in file.xml.xpath("//table[1]/row")[1:]]
+    else:
+        fill_rows = [row_content(file.xml.xpath("//row[last()]")[0])]
 
     if remove_header:
         pb.deleteRows(file, [0])
@@ -143,14 +156,21 @@ def changeNumberRows(file: CSVFile, target_number_rows: int, remove_header=False
     if target_number_rows > file.row_count:
         n_rows = target_number_rows - file.row_count
         t = time.time()
-        pb.addRows(
-            file, cell_content=last_row_content, n_rows=n_rows, position=-1, role="data"
-        )
+        for j in range(n_rows):
+            pb.addRows(
+                file,
+                cell_content=fill_rows[j % len(fill_rows)],
+                n_rows=1,
+                position=file.row_count + j,
+                role="data",
+            )
         print("took", time.time() - t, "seconds")
 
     _set_polluted_filename(
         file,
-        f"file_num_rows_{str(target_number_rows)}{'_no_header' if remove_header else ''}.csv",
+        f"file_num_rows_{str(target_number_rows)}"
+        f"{'_no_header' if remove_header else ''}"
+        f"{'_repeat_file' if repeat_file else ''}.csv",
     )
 
 
