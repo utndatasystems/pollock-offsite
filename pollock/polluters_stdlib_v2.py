@@ -356,9 +356,10 @@ def mixedDelimiters(  # checked manually
 
 
 @todo
-def unescaped(file: CSVFile, row=1, col=1, content='This is a "quote" and a comma, and a newline\nin the same cell.',):
+def unescapedMultiLineString(file: CSVFile, row=1, col=1, content='This is a String with a newline\n, which will be quite hard I imagine.',): # of course, default param has to be changed as not to give the llm a cue.
     """Places quote, delimiter, and newline characters in a cell without adding escaping metadata."""
-    print("USE WITH CAUTION: only insert in field with same data type for fair pollution")
+    print("USE WITH CAUTION: to be fair only insert in field with String datatype")
+
     pb.changeCell(file, row=row, col=col, new_content=content)
     _set_polluted_filename(file, f"file_unescaped_row_{row}_col_{col}.csv")
 
