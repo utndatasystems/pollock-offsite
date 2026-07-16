@@ -347,7 +347,7 @@ if args.polluters == "pollock2.0":
         mode="whole_row",
     )
 
-    execute_polluter(f, pl2.unescaped, row=2 if f.row_count >= 2 else 1, col=1)
+    execute_polluter(f, pl2.unescapedMultiLineString, row=2 if f.row_count >= 2 else 1, col=1)
     execute_polluter(f, pl2.doubleEscaping, row1=2, row2=3, col=1)
     execute_polluter(f, pl2.tableToWhitespaceFormattedTable, pad_cells=False)
     execute_polluter(f, pl2.tableToWhitespaceFormattedTable, pad_cells=True, quote_strings=True)
