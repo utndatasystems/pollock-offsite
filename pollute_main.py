@@ -239,7 +239,8 @@ execute_polluter(
 # per cell pollutions
 if args.per_cell_pollutions:
 
-    # Manually decrease row_count for pollutions 
+    # Manually decrease row_count for pollutions
+    old_row_count = f.row_count
     f.row_count = min(f.row_count, 2)
 
     for i in tqdm(range(1, f.row_count)):
@@ -253,6 +254,9 @@ if args.per_cell_pollutions:
         del_string = ''.join([f'_0x{v:X}' for v in vals])
         target_filename = f"row_field_delimiter_{i}{del_string}.csv"
         execute_polluter(f, pl.changeRowFieldDelimiter, new_filename=target_filename, row=i, target_delimiter=" ")
+
+    # Restore: later polluters rely on the real row_count
+    f.row_count = old_row_count # TODO: remove after manually decrease rowcount above is removed again
 
 # Change record Delimiter : 2 files
 execute_polluter(f, pl.changeRecordDelimiter, target_delimiter="\n")

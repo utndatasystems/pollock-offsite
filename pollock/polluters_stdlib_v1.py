@@ -504,13 +504,15 @@ def deleteRowFieldDelimiter(file: CSVFile, row, col):
 
     _set_polluted_filename(file, f"row_n_separator_{file.col_count - 1}.csv")
 
-
+@manually_verified
 def addRowQuoteMark(file: CSVFile, row, col):
     """Add an opening quote to one cell in a row."""
     if type(row) == int and row < 0:
-        row = "last()-" + str(row + 1)
+        row_query = "last()-" + str(-row - 1)  # row is 0-based: -1 -> last()
+    else:
+        row_query = row + 1  # xpath is 1-based
     root = file.xml.getroot()
-    row_xml = root.xpath(f"//row[{row + 1}]")[0]
+    row_xml = root.xpath(f"//row[{row_query}]")[0]
     index = [i for i, x in enumerate(row_xml) if x.tag == "cell"][col]
     for c in row_xml[index]:
         if c.tag == "value":
@@ -518,7 +520,7 @@ def addRowQuoteMark(file: CSVFile, row, col):
             c.text = file.quotation_char + old
             break
 
-    _set_polluted_filename(file, f"row_n_separator_{file.col_count - 1}.csv")
+    _set_polluted_filename(file, f"row_extra_quote{row}_col{col}.csv")
 
 
 def changeRowRecordDelimiter(file: CSVFile, row=1, target_delimiter="\r\n"):
