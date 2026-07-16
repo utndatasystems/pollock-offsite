@@ -868,7 +868,9 @@ def mixedTimeformats(file: CSVFile, max_num_to_change=100):
         except Exception:
             return False
 
-    matching_cells = list(pb.findMatchingCells(file, matching=is_datetime))
+    # sorted() for deterministic order: set iteration depends on the per-process
+    # hash seed, which would defeat the seeded shuffle
+    matching_cells = sorted(pb.findMatchingCells(file, matching=is_datetime))
     random.shuffle(matching_cells)
 
     for entry in matching_cells[:max_num_to_change]:
