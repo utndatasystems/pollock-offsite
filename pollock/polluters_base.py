@@ -165,9 +165,17 @@ def addColumns(
             row_pos = 0
 
         for i in range(n_cols):
-            content = (
-                cell_content[idx - 1] if type(cell_content) == list else cell_content
-            )
+            if type(cell_content) == list:
+                # a list entry may itself be a list: one value per added column
+                # (indexed reversed, like col_names, since cells are inserted right-to-left)
+                row_content = cell_content[idx - 1]
+                content = (
+                    row_content[len(row_content) - 1 - i]
+                    if type(row_content) == list
+                    else row_content
+                )
+            else:
+                content = cell_content
             content = content if idx >= 1 else reversed_col_names[i]
             rl = role[idx] if type(role) == list else role
 

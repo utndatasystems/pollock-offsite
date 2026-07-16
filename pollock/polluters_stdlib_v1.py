@@ -85,9 +85,12 @@ def changeEncoding(file: CSVFile, target_encoding: constants.Encoding):
     file.xml.getroot().attrib["encoding"] = target
     _set_polluted_filename(file, f"file_encoding_{target}.csv")
 
-
-def changeNumberColumns(file: CSVFile, target_number_cols: int):
-    """Add or remove columns until the file has the requested width."""
+@manually_verified
+def changeNumberColumns(file: CSVFile, target_number_cols: int, pad_with_random_ints:bool):
+    """
+        Add or remove columns until the file has the requested width.
+        Repeats the last column if the new number of columns is larger unless pad_with_random_ints is set 
+    """
     if target_number_cols < file.col_count:
         cols_delete = list(range(target_number_cols, file.col_count))
         pb.deleteColumns(file, col=cols_delete)
@@ -98,18 +101,21 @@ def changeNumberColumns(file: CSVFile, target_number_cols: int):
         roles = ["header"] + ["data"] * (file.row_count - 1)
         content = []
 
-        for i in range(file.row_count):
-            content += [
-                "".join(
-                    [
-                        val.text
-                        for val in file.xml.xpath(f"//row[{i + 2}]/cell[last()]/value")
-                    ]
-                )
-            ]  # xpath is 1-indexed plus row 1 is header
+        for i in range(file.row_count-1):
+            if pad_with_random_ints:
+                content += [[str(random.randint(0, 1_000_000)) for _ in rn]]
+            else:
+                content += [
+                    "".join(
+                        [
+                            val.text or ""
+                            for val in file.xml.xpath(f"//row[{i + 2}]/cell[last()]/value")
+                        ]
+                    )
+                ]  # xpath is 1-indexed plus row 1 is header
         pb.addColumns(
             file,
-            -1,
+            file.col_count,  # append after the last existing column
             col_names=["col" + str(i + 1) for i in rn],
             n_cols=len(rn),
             cell_content=content,
@@ -117,7 +123,7 @@ def changeNumberColumns(file: CSVFile, target_number_cols: int):
         )
         print("took", time.time() - t, "seconds")
 
-    _set_polluted_filename(file, f"file_num_columns_{str(target_number_cols)}.csv")
+    _set_polluted_filename(file, f"file_num_columns_{'pad_randints_' if pad_with_random_ints else ''}{str(target_number_cols)}.csv")
 
 
 def changeNumberRows(file: CSVFile, target_number_rows: int, remove_header=False):
