@@ -1,0 +1,27 @@
+Repair the following CSV file.
+
+Return exactly these two sections:
+
+--BEGIN FIXED CSV--
+<repaired CSV>
+--END FIXED CSV--
+--BEGIN ERROR REPORT--
+<JSON error report>
+--END ERROR REPORT--
+
+The error report must use this format:
+
+{
+  "fixed_errors": [
+    {
+      "type": "<error type>",
+      "description": "<brief description>",
+      "rows": [<affected physical line numbers>]
+    }
+  ],
+  "summary": "<brief summary>"
+}
+
+CSV content:
+
+{{CSV_TEXT}}

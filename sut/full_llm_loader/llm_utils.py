@@ -1,40 +1,22 @@
+from __future__ import annotations
+
 import json
 import os
 import re
+
 import requests
 
-
-OPENAI_API_KEY_ENV = "OPENAI_API_KEY"
-OPENAI_MODEL_ENV = "OPENAI_MODEL"
-OPENAI_API_BASE_ENV = "OPENAI_API_BASE"
-OPENAI_DEFAULT_MODEL = "gpt-4o-mini"
-
-
-def _build_prompt(csv_text: str) -> str:
-    return (
-        "You are a CSV repair assistant.\n"
-        "A corrupted CSV file is provided below. Your task is to produce a fully valid CSV file and a structured error report.\n\n"
-        "Requirements:\n"
-        "1) Return exactly two sections and nothing else.\n"
-        "2) The first section is the fixed CSV text, including the original header row.\n"
-        "3) The second section is a JSON error report describing the error types you fixed.\n"
-        "4) Do not add markdown fences, analysis, or explanation outside the two sections.\n\n"
-        "Format:\n"
-        "--BEGIN FIXED CSV--\n"
-        "<fixed CSV text>\n"
-        "--END FIXED CSV--\n"
-        "--BEGIN ERROR REPORT--\n"
-        "<JSON object>\n"
-        "--END ERROR REPORT--\n\n"
-        "JSON schema for the error report:\n"
-        "{\n"
-        "  \"fixed_errors\": [\n"
-        "    {\"type\": \"<error-type>\", \"description\": \"<what was fixed>\", \"rows\": [<example row numbers>] }\n"
-        "  ],\n"
-        "  \"summary\": \"<brief summary of the repair>\"\n"
-        "}\n\n"
-        "Corrupted CSV content:\n"
-        f"{csv_text}\n"
+try:
+    from .llm_config import (
+        get_openai_api_base,
+        get_openai_api_key,
+        get_openai_model,
+    )
+except ImportError:
+    from llm_config import (
+        get_openai_api_base,
+        get_openai_api_key,
+        get_openai_model,
     )
 
 
@@ -46,35 +28,32 @@ def _get_openai_model() -> str:
     return os.environ.get(OPENAI_MODEL_ENV, OPENAI_DEFAULT_MODEL)
 
 
-def _query_llm(prompt: str) -> str:
-    api_key = os.environ.get(OPENAI_API_KEY_ENV)
-    if not api_key:
-        raise EnvironmentError(
-            f"Missing {OPENAI_API_KEY_ENV}. Set it to a valid OpenAI API key to use the LLM repair path."
-        )
+def _query_llm(messages: list[dict[str, str]]) -> str:
+    api_key = get_openai_api_key()
+    api_base = get_openai_api_base()
+    model = get_openai_model()
 
-    api_base = _get_openai_api_base().rstrip("/")
-    model = _get_openai_model()
     url = f"{api_base}/chat/completions"
+
     headers = {
         "Authorization": f"Bearer {api_key}",
         "Content-Type": "application/json",
     }
+
     payload = {
         "model": model,
-        "messages": [
-            {
-                "role": "system",
-                "content": (
-                    "You are a meticulous CSV repair assistant. Fix broken CSV formatting, row length mismatch, quoting, delimiter issues, ``\n`` characters embedded inside cells, header corruption, and any common errors while preserving the original column semantics."
-                ),
-            },
-            {"role": "user", "content": prompt},
-        ],
+        "messages": messages,
         "temperature": 0.0,
         "max_tokens": 3000,
     }
-    response = requests.post(url, headers=headers, json=payload, timeout=300)
+
+    response = requests.post(
+        url,
+        headers=headers,
+        json=payload,
+        timeout=300,
+    )
+
     try:
         response.raise_for_status()
     except requests.HTTPError as exc:
@@ -82,15 +61,32 @@ def _query_llm(prompt: str) -> str:
             error = response.json().get("error", {})
             detail = error.get("message") or response.text
             error_type = error.get("type")
+
             if error_type:
                 detail = f"{error_type}: {detail}"
         except ValueError:
             detail = response.text
-        raise requests.HTTPError(f"{exc}\nOpenAI API error: {detail}", response=response) from exc
+
+        raise requests.HTTPError(
+            f"{exc}\nOpenAI API error: {detail}",
+            response=response,
+        ) from exc
+
     body = response.json()
+
     if "choices" not in body or not body["choices"]:
-        raise RuntimeError("Unexpected LLM response: missing choices")
-    return body["choices"][0]["message"]["content"]
+        raise RuntimeError(
+            "Unexpected LLM response: missing choices"
+        )
+
+    content = body["choices"][0]["message"].get("content")
+
+    if not isinstance(content, str) or not content.strip():
+        raise RuntimeError(
+            "Unexpected LLM response: missing message content"
+        )
+
+    return content
 
 
 def _extract_sections(llm_output: str) -> tuple[str, dict]:
