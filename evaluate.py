@@ -121,9 +121,10 @@ def main():
                              "the clean value or this origin value")
     parser.add_argument("--use-origin-csv", action="store_true", default=False,
                         help="Auto-detect and use data/{dataset}/source.csv as origin fallback (default: off)")
-    parser.add_argument("--row-order-invariant", action="store_true", default=False,
-                        help="Accept the loaded rows in any order (cells within each row keep their "
-                             "order); results are written with a '_roworder' suffix")
+    parser.add_argument("--no-row-order-invariant", dest="row_order_invariant",
+                        action="store_false", default=True,
+                        help="Disable row-order invariance and require the loaded rows in the exact "
+                             "clean order (invariant is on by default)")
     parser.add_argument("--cached-only", action="store_true", default=False,
                         help="Only read existing *_results.csv files and aggregate; do not recompute "
                              "any scores. Lets you show the full previously-computed results even if "
@@ -143,7 +144,7 @@ def main():
                 origin_csv = candidate
                 break
     row_order_invariant = bool(args.row_order_invariant)
-    suffix = ("_incl_origin" if origin_csv is not None else "") + ("_roworder" if row_order_invariant else "")
+    suffix = ("_incl_origin" if origin_csv is not None else "") + ("" if row_order_invariant else "_no_row_order_invariance")
     weights = load_weights(dataset)
 
     verbose = bool(args.verbose)
