@@ -1,13 +1,25 @@
 Repair the following CSV file.
 
-Return exactly these two sections:
+Return exactly two sections and nothing else.
+Do not use Markdown fences. Do not include prose before, between, or after the sections.
+The section markers must appear exactly as shown, each on its own line.
 
 --BEGIN FIXED CSV--
-<repaired CSV>
+<repaired CSV text only, including exactly one header row>
 --END FIXED CSV--
 --BEGIN ERROR REPORT--
-<JSON error report>
+<JSON error report object only>
 --END ERROR REPORT--
+
+Rules for the fixed CSV section:
+
+- Use a comma as the output delimiter.
+- Use double quotes according to standard CSV escaping rules.
+- Encode an embedded double quote as two double quotes.
+- Preserve embedded line breaks inside quoted fields.
+- Use LF line endings.
+- Do not wrap the CSV in Markdown fences.
+- Do not include comments, explanations, or section labels inside the CSV.
 
 The error report must use this format:
 
@@ -21,6 +33,8 @@ The error report must use this format:
   ],
   "summary": "<brief summary>"
 }
+
+If no errors were fixed, return an empty fixed_errors list.
 
 CSV content:
 

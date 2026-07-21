@@ -1,46 +1,30 @@
 Reconstruct the following CSV-like artifact.
 
 Return exactly two sections and nothing else.
+Do not use Markdown fences. Do not include prose before, between, or after the sections.
+The section markers must appear exactly as shown, each on its own line.
 
---BEGIN RECONSTRUCTION--
-<JSON object conforming exactly to the reconstruction schema>
---END RECONSTRUCTION--
---BEGIN REPORT--
-<JSON object conforming exactly to the report schema>
---END REPORT--
+--BEGIN FIXED CSV--
+<complete valid CSV text only, including exactly one flattened output header row>
+--END FIXED CSV--
+--BEGIN ERROR REPORT--
+<JSON report object only>
+--END ERROR REPORT--
 
-RECONSTRUCTION SCHEMA
-
-{
-  "tables": [
-    {
-      "table_id": "table_1",
-      "source_line_range": {
-        "start": 1,
-        "end": 10
-      },
-      "csv": "<complete valid CSV text, including exactly one output header row>",
-      "columns": ["column name 1", "column name 2"],
-      "row_count": 0
-    }
-  ]
-}
-
-Rules for the reconstructed CSV strings:
+Rules for the fixed CSV section:
 
 - Use a comma as the output delimiter.
 - Use double quotes according to standard CSV escaping rules.
 - Encode an embedded double quote as two double quotes.
 - Preserve embedded line breaks inside quoted fields.
 - Use LF line endings.
-- Include exactly one flattened header row per table.
-- Do not wrap the CSV in markdown fences.
-- The "csv" value must be a valid JSON string.
-- Return tables in their original source order.
-- If no table can be reconstructed, return:
-  {"tables": []}
+- Include exactly one flattened header row.
+- Do not wrap the CSV in Markdown fences.
+- Do not include comments, explanations, or section labels inside the CSV.
+- If the file contains multiple independent tables, reconstruct the primary table only and document excluded tables in the report.
+- If no table can be reconstructed, return only a header row with positional column names that best match the evidence, and document the uncertainty in the report.
 
-REPORT SCHEMA
+Use this JSON schema for the error report:
 
 {
   "input_assessment": {
@@ -54,7 +38,6 @@ REPORT SCHEMA
       "start_line": 1,
       "end_line": 1,
       "role": "preamble|metadata|header|data|section_header|footer|blank|unresolved",
-      "table_id": "table_1 or null",
       "reason": "<brief evidence-based explanation>"
     }
   ],
@@ -85,12 +68,11 @@ REPORT SCHEMA
     }
   ],
   "validation": {
-    "rectangular_tables": true,
+    "rectangular_table": true,
     "valid_csv_syntax": true,
     "source_data_rows_accounted_for": true,
     "no_invented_values": true,
     "no_silent_payload_changes": true,
-    "independent_tables_separated": true,
     "warnings": []
   },
   "summary": "<concise description of the reconstruction>"
@@ -104,7 +86,7 @@ Additional output constraints:
 - Set payload_changed to true only when a source value itself was changed, not when quoting, escaping, delimiter placement, header flattening, or table separation changed.
 - Any payload_changed=true repair must also produce a validation warning.
 - If the reconstruction is uncertain, still return the best defensible result, but record the uncertainty.
-- Do not include analysis, prose, markdown, or comments outside the two required sections.
+- Do not include analysis, prose, Markdown, or comments outside the two required sections.
 
 CSV-LIKE ARTIFACT:
 

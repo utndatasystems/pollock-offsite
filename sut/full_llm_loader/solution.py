@@ -1,16 +1,15 @@
 from __future__ import annotations
 
-import json
 from io import StringIO
 from pathlib import Path
-from typing import Literal, cast
+from typing import Literal
 
 import pandas as pd
 
 try:
-    from .llm_utils import _extract_sections, _query_llm
+    from .llm_utils import _extract_sections, _query_llm, _clean_fixed_csv
 except ImportError:
-    from llm_utils import _extract_sections, _query_llm
+    from llm_utils import _extract_sections, _query_llm, _clean_fixed_csv
 
 try:
     from .build_prompt_utils import (
@@ -25,17 +24,21 @@ except ImportError:
 
 OutputFormat = Literal["fixed_csv", "reconstruction_json"]
 
-
+#TODO: implement a fucntion to time the llm query. Also, is there a way to save the cost of the llm query?
+#TODO: print statement to see if it is being executing with OpenAI or OLLAMA
 def parse_csv(
     csv_path: str | Path,
     nrows: int | None = None,
     prompt_version: PromptVersion = "guided",
     encoding: str = "utf-8",) -> pd.DataFrame:
     """
-    Parse and reconstruct a CSV file using a full-LLM parser.
+    Parses and reconstructs a CSV file using a full-LLM parser.
 
-    The source CSV is inserted into the selected prompt template. The LLM
-    reconstructs the file, and the repaired CSV is loaded into pandas.
+    1) Source CSV is read and inserted into a prompt template.
+    2) The prompt is sent to the LLM, which returns a fixed CSV and
+       an error report in JSON format.
+    3) The fixed CSV is parsed into a pandas DataFrame, and the error report
+       is attached to the DataFrame's attributes.
 
     Args:
         csv_path:
@@ -68,14 +71,28 @@ def parse_csv(
     if nrows is not None and nrows < 0:
         raise ValueError("nrows must be non-negative or None")
 
+    # Builds the prompt messages for the LLM, including the source CSV content.
     messages = build_messages(
         csv_path=path,
         version=prompt_version,
         encoding=encoding,
     )
 
-    llm_output = _query_llm(messages)
+    # Queries the LLM with the prompt and retrieves the output.
+    llm_output = _query_llm(
+        messages,
+        cache_context={
+            "nrows": nrows,
+        },
+    )
+    print("\n--- RAW LLM OUTPUT START ---")
+    print(llm_output)
+    print("--- RAW LLM OUTPUT END ---\n")
 
+    # Strip of Markdown for some models
+    llm_output = _clean_fixed_csv(llm_output)
+
+    # Extracts the fixed CSV and JSON error report from the LLM output.
     fixed_csv, error_report = _extract_sections(llm_output)
 
     if not fixed_csv.strip():
@@ -220,7 +237,7 @@ def _infer_separator(csv_text: str) -> str:
     )
 
 
-def _test_solution() -> None:
+def _real_test_solution() -> None:
     csv_path = Path(
         "/home/neubauer/src/pollock-offsite/results/source.csv"
     )
@@ -234,6 +251,7 @@ def _test_solution() -> None:
             nrows=5,
         )
 
+        print("\nReconstructed DataFrame:")
         print(dataframe)
 
         print("\nPrompt version:")
@@ -244,4 +262,4 @@ def _test_solution() -> None:
 
 
 if __name__ == "__main__":
-    _test_solution()
+    _real_test_solution()
