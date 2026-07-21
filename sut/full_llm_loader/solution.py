@@ -30,7 +30,9 @@ def parse_csv(
     csv_path: str | Path,
     nrows: int | None = None,
     prompt_version: PromptVersion = "guided",
-    encoding: str = "utf-8",) -> pd.DataFrame:
+    encoding: str = "utf-8",
+    verbose: bool = False,
+) -> pd.DataFrame:
     """
     Parses and reconstructs a CSV file using a full-LLM parser.
 
@@ -50,6 +52,8 @@ def parse_csv(
             Prompt version to use: "naive" or "guided".
         encoding:
             Encoding used to read the source CSV.
+        verbose:
+            Print the raw LLM response when True.
 
     Returns:
         A DataFrame reconstructed from the LLM-generated CSV.
@@ -85,9 +89,10 @@ def parse_csv(
             "nrows": nrows,
         },
     )
-    print("\n--- RAW LLM OUTPUT START ---")
-    print(llm_output)
-    print("--- RAW LLM OUTPUT END ---\n")
+    if verbose:
+        print("\n--- RAW LLM OUTPUT START ---")
+        print(llm_output)
+        print("--- RAW LLM OUTPUT END ---\n")
 
     # Strip of Markdown for some models
     llm_output = _clean_fixed_csv(llm_output)

@@ -43,6 +43,11 @@ parser.add_argument(
     default=None,
     help='Optional row limit for the reconstructed DataFrame.',
 )
+parser.add_argument(
+    '--verbose',
+    action='store_true',
+    help='Print the raw LLM response to the console.',
+)
 args = parser.parse_args()
 
 if args.nrows is not None and args.nrows < 0:
@@ -114,6 +119,7 @@ for idx, file in enumerate(benchmark_files):
                 nrows=args.nrows,
                 prompt_version=args.version,
                 encoding=args.encoding,
+                verbose=args.verbose,
             )
             end = time.time()
             df.to_csv(out_filepath, index=False)
