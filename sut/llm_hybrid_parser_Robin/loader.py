@@ -19,36 +19,6 @@ Do not CSV-escape inside field values.
 JSON escaping is allowed only because the response is JSON.
 """.strip()
 
-# SPECIAL_REPAIR_PROMPT = """
-# Repair faulty CSV records. Return JSON only, no Markdown, no commentary.
-# For each input line, return unescaped field values, not CSV text.
-# Do not CSV-escape inside field values.
-# JSON escaping is allowed only because the response is JSON.
-
-# Make sure the output has the expected number of columns as fields. 
-# Use the automatically-detected dialect and the good examples as a hint.
-# In ambiguous scenarios that require a decision try to use semantic information from the column names and the successfully parsed rows. (e.g. too few delimiters -> where to split; or too many delimiters -> where to ignore the delimiter) 
-
-# Repair structural damage and not data.
-# Quotes that form valid CSV quoting are syntax. Stray, extra, or unbalanced quotes are data: keep them in the nearest value while repairing the field boundaries around them.
-# A trailing delimiter indicates a final empty field.
-
-# Priority order: exactly expected_column_count fields; each value fits its column; preserve original cell text.
-# """.strip()
-
-
-# SPECIAL_REPAIR_PROMPT = """
-# Repair faulty CSV records. Return JSON only.
-# Return unescaped field values, not CSV text.
-# For each faulty line, output exactly one repair with exactly the expected number of fields.
-# Preserve field content exactly: literal quotes, apostrophes, backslashes, spaces, typos, and casing are data.
-# Do not CSV-escape inside field values. JSON escaping is allowed only because the response is JSON.
-# The file may use a multi-character delimiter such as ", "; use the dialect below as context.
-# Use the column names to guide how you split or merge tokens: each repaired value must be semantically
-# consistent with its column (e.g. a value in 'DATE' should look like a date, 'Price' like a price).
-# """.strip()
-
-
 SPECIAL_REPAIR_PROMPT = """
 Repair faulty CSV records. Return JSON only, no Markdown, no commentary.
 For each input line, return the respective field values, not CSV text.
@@ -63,30 +33,6 @@ Also keep faulty non-escaped quote characters e.g. those that are just opened an
 Priority order: exactly hit the expected column count; each value fits its column semantically (e.g. from header or example rows); preserve original cell text.
 """.strip()
 
-# SPECIAL_REPAIR_PROMPT = """
-# Repair faulty CSV records. Return JSON only, no Markdown, no commentary.
-# For each input line, return the respective field values, not CSV text.
-# Do not CSV-escape inside field values; JSON escaping is allowed only because the response is JSON.
-
-# Use the good examples as a guide for alignment, order of the data cells by looking at patterns and semantics.
-# Don't do cleaning of cell data, so keep accidental double whitespaces, typos etc.
-# Dialect delimiters at the start or end of a row as well as double delimiters in the middle of a row denote empty fields. These should be preserved and included as an empty string in your output list. Only drop them if they shift the columns in a way that would be inconsistent with the example rows or that would break the expected number of columns.
-# Keep in mind that literal quote characters in field text are escaped with the escape character that can also be a quote. Unterminated quotes that produce the error UNQUOTED VALUE should be put into the JSON field text as \" even if they seem erroneous. e.g. <previous field><delimiter>"<this is field text><delimiter> -> keep the unclosed quote as field text. Same with quotes at the end of fields.
-
-# Priority order: exactly hit the expected column count; each value fits its column semantically (e.g. from header or example rows); preserve original cell text.
-# """.strip()
-
-
-
-#Do not keep corrupt delimiters as field text in order to not shift later values into the wrong columns.
-
-#Quote characters take precedence: Keep all quotes as literal cell data except those that successfully enclose a field. If the quote was never opened or never closed, KEEP IT.
-
-
-# Only dialect quote characters that correctly enclose the full content of a cell or appear directly in front of another dialect quote character can be ignored in the literal field output.
-# Stray or unclosed or unescaped or escaped quotes (with the dialect escape character in front) are cell data. Keep them but don't forget to use JSON-escaping.
-#
-# Trailing delimiters indicate NULL final fields that should be included. Their column alignment relative to example rows should be taken into account just like for the other fields.
 
 def _repair_instruction_text(special_prompt: bool) -> str:
     if not special_prompt:
@@ -449,6 +395,38 @@ def _dedupe_rejects_for_prompt(rejects: List[Dict[str, Any]]) -> List[Dict[str, 
     return list(grouped.values())
 
 
+def _record_line_span(raw: str, dialect: CSVDialect, errors: List[Dict[str, Any]]) -> int:
+    # How many physical lines of the file the record occupies. A line break
+    # inside a quoted field belongs to that field and is not a line of its own.
+    # We cannot tell that from the text once quoting is broken, so we rely on
+    # DuckDB reporting an unterminated quote: from there the quote state is
+    # meaningless and every break really is a separate line of the file.
+    unterminated = any(
+        str(error.get("type") or "").upper() == "UNQUOTED VALUE" for error in errors
+    )
+    quote = dialect.quotechar
+    escape = dialect.escapechar
+    breaks = 0
+    in_quotes = False
+    i = 0
+    while i < len(raw):
+        ch = raw[i]
+        if ch in "\r\n":
+            if ch == "\r" and raw[i + 1:i + 2] == "\n":
+                i += 1
+            if unterminated or not in_quotes:
+                breaks += 1
+        elif quote and ch == quote:
+            if in_quotes and escape == quote and raw[i + 1:i + 2] == quote:
+                i += 1  # doubled quote is literal text, not a delimiter
+            else:
+                in_quotes = not in_quotes
+        elif escape and escape != quote and ch == escape:
+            i += 1  # skip the escaped character
+        i += 1
+    return breaks + 1
+
+
 def infer_repairs_with_llm(
     header: List[str],
     dialect: CSVDialect,
@@ -457,7 +435,7 @@ def infer_repairs_with_llm(
     context_lines: int,
     trace: Any,
     special_prompt: bool = False,
-) -> Dict[int, List[str]]:
+) -> Dict[int, Dict[str, Any]]:
     faulty_lines = _dedupe_rejects_for_prompt(rejects)
     if not faulty_lines:
         return {}
@@ -497,7 +475,18 @@ def infer_repairs_with_llm(
     else:
         repairs_raw = []
 
-    repairs: Dict[int, List[str]] = {}
+    # One faulty record can cover several physical lines (an unterminated quote
+    # swallows the following line), and the LLM then returns one repair per
+    # recovered row. Remember how many lines the original record covered so the
+    # whole span can be replaced.
+    spans = {
+        int(item["line"]): _record_line_span(
+            str(item.get("raw") or ""), dialect, item.get("errors") or []
+        )
+        for item in faulty_lines
+    }
+
+    repairs: Dict[int, Dict[str, Any]] = {}
     rejected_repairs = []
     for item in repairs_raw:
         if not isinstance(item, dict):
@@ -519,11 +508,16 @@ def infer_repairs_with_llm(
                 "fields": fields,
             })
             continue
-        repairs[line] = [_coerce_cell(value) for value in fields]
+        entry = repairs.setdefault(line, {"records": [], "span": spans.get(line, 1)})
+        entry["records"].append([_coerce_cell(value) for value in fields])
 
     trace.write(
         "llm_faulty_line_repairs_parsed",
-        repairs=[{"line": line, "fields": fields} for line, fields in repairs.items()],
+        repairs=[
+            {"line": line, "fields": fields}
+            for line, entry in repairs.items()
+            for fields in entry["records"]
+        ],
         rejected=rejected_repairs,
     )
     return repairs
@@ -585,7 +579,7 @@ def _detect_file_newline(lines: List[str], dialect: CSVDialect) -> str:
 
 def write_repaired_copy(
     csv_input: str,
-    repairs: Dict[int, List[str]],
+    repairs: Dict[int, Dict[str, Any]],
     dialect: CSVDialect,
     trace: Any,
 ) -> Optional[str]:
@@ -597,14 +591,20 @@ def write_repaired_copy(
     default_newline = _detect_file_newline(lines, dialect)
 
     applied = []
-    for line_num, fields in repairs.items():
+    # Bottom-up: a record can expand into a different number of lines, which
+    # would shift the indexes of the repairs still to come.
+    for line_num in sorted(repairs, reverse=True):
+        entry = repairs[line_num]
         idx = line_num - 1
         if idx < 0 or idx >= len(lines):
             continue
         _, newline = _split_line_ending(lines[idx], default_newline)
-        repaired_line = serialize_record(fields, dialect)
-        lines[idx] = repaired_line + newline
-        applied.append({"line": line_num, "serialized": repaired_line, "fields": fields})
+        span = max(1, int(entry.get("span", 1)))
+        repaired_lines = [serialize_record(fields, dialect) for fields in entry["records"]]
+        lines[idx:idx + span] = [line + newline for line in repaired_lines]
+        for repaired_line, fields in zip(repaired_lines, entry["records"]):
+            applied.append({"line": line_num, "serialized": repaired_line, "fields": fields})
+    applied.sort(key=lambda item: item["line"])
 
     if not applied:
         return None
