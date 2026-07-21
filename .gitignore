@@ -152,3 +152,4 @@ results/global_results_polluted_files.csv
 results/aggregate_results_polluted_files.csv
 results/global_results_polluted_files.csv
 CLAUDE.md
+results/full_llm_loader/llm_cache/*
