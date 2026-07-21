@@ -202,7 +202,7 @@ def infer_dialect_with_llm(
         '"escapechar": the escape character used inside quotes (e.g. "\\"" or "\\\\" or "" for none/null)',
         '"header_lines": integer - how many rows form the header (0=no header, 1=normal, 2+=multi-row where column names are joined with space)',
         '"preamble_lines": integer - lines to skip before header (usually 0)',
-        '"column_names": array of strings - the column names, ideally consistent with a string split based on the delimiter (if multi-row header, join values of the different rows with space;)',
+        '"column_names": array of strings - the column names, ideally consistent with a string split based on the delimiter',
         '"n_columns": integer - number of columns',
         "",
     ]
