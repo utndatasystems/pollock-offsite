@@ -5,6 +5,7 @@ import chardet
 import numpy as np
 import time
 
+from collections import Counter
 from joblib import Parallel, delayed
 from multiset import Multiset
 from datetime import datetime
@@ -131,11 +132,30 @@ def _read_csv_rows(path):
         return list(csv.reader(f, delimiter=",", quotechar='"', doublequote=True))
 
 
-def alex_compare(source_csv, loaded_csv, n_jobs=1, origin_csv=None):
+def _rows_match(expected_rows, loaded_rows, row_order_invariant):
+    # Whole-file comparison of the loaded output against a single expected version.
+    # row_order_invariant compares the rows as a multiset so any ordering of rows
+    # is accepted, while cells within a row keep their order.
+    if len(expected_rows) != len(loaded_rows):
+        return False
+    if row_order_invariant:
+        return (Counter(tuple(map(normalize_cell, r)) for r in expected_rows) ==
+                Counter(tuple(map(normalize_cell, r)) for r in loaded_rows))
+    for r1, r2 in zip(expected_rows, loaded_rows):
+        if len(r1) != len(r2):
+            return False
+        if any(normalize_cell(c1) != normalize_cell(c2) for c1, c2 in zip(r1, r2)):
+            return False
+    return True
+
+
+def compare_files(source_csv, loaded_csv, n_jobs=1, origin_csv=None, row_order_invariant=False):
     # Both files are parsed as normal comma-delimited CSV after conversion:
     # source_csv is the expected clean file, loaded_csv is the SUT output.
-    # origin_csv (optional) is the pre-pollution source; a cell is accepted if
-    # it matches either the clean value or the origin value at the same position.
+    # The output is accepted if it matches the clean file as a whole, or (when
+    # origin_csv is given) the pre-pollution origin file as a whole -- never a mix
+    # of the two, so once one version fits the output must match all of it.
+    # row_order_invariant (optional) accepts the rows in any order.
     source_rows = _read_csv_rows(source_csv)
 
     try:
@@ -143,28 +163,14 @@ def alex_compare(source_csv, loaded_csv, n_jobs=1, origin_csv=None):
     except Exception:
         return False
 
-    origin_rows = None
+    if _rows_match(source_rows, loaded_rows, row_order_invariant):
+        return True
+
     if origin_csv is not None:
         try:
             origin_rows = _read_csv_rows(origin_csv)
         except Exception:
-            pass
-
-    if len(source_rows) != len(loaded_rows):
-        return False
-
-    for i, (r1, r2) in enumerate(zip(source_rows, loaded_rows)):
-        if len(r1) != len(r2):
             return False
-        for j, (c1, c2) in enumerate(zip(r1, r2)):
-            nc2 = normalize_cell(c2)
-            if normalize_cell(c1) == nc2:
-                continue
-            if (origin_rows is not None
-                    and i < len(origin_rows)
-                    and j < len(origin_rows[i])
-                    and normalize_cell(origin_rows[i][j]) == nc2):
-                continue
-            return False
+        return _rows_match(origin_rows, loaded_rows, row_order_invariant)
 
-    return True
+    return False

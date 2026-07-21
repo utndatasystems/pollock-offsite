@@ -58,7 +58,7 @@ def add_scores(results_df: pd.DataFrame, sut: str, weights: dict):
     results_df.attrs["weighted_accuracy"] = weighted_accuracy
     return results_df
 
-def evaluate_single_file(filename:str, dataset:str, sut:str, verbose=False, n_jobs=1, origin_csv=None):
+def evaluate_single_file(filename:str, dataset:str, sut:str, verbose=False, n_jobs=1, origin_csv=None, row_order_invariant=False):
     sut_dir = f"results/{sut}/{dataset}/loading/"
     # Each converted result is compared against the canonical clean CSV with
     # the same filename. The original polluted input lives in data/.../csv/.
@@ -73,7 +73,7 @@ def evaluate_single_file(filename:str, dataset:str, sut:str, verbose=False, n_jo
         dict_measures[sut + "_wrong"] = 1
         return dict_measures
     try:
-        correct = metrics.alex_compare(clean_path, loaded_path, n_jobs, origin_csv=origin_csv)
+        correct = metrics.compare_files(clean_path, loaded_path, n_jobs, origin_csv=origin_csv, row_order_invariant=row_order_invariant)
         dict_measures[sut + "_correct"] = int(correct)
         dict_measures[sut + "_wrong"] = int(not correct)
     except Exception as e:
@@ -86,7 +86,7 @@ def evaluate_single_file(filename:str, dataset:str, sut:str, verbose=False, n_jo
     return dict_measures
 
 
-def evaluate_single_run(files: List[str], dataset: str, result_file:str, sut:str, verbose=False, n_jobs=1, origin_csv=None):
+def evaluate_single_run(files: List[str], dataset: str, result_file:str, sut:str, verbose=False, n_jobs=1, origin_csv=None, row_order_invariant=False):
     effective_jobs = max(1, min(int(n_jobs), os.cpu_count() or 1))
 
     if effective_jobs == 1:
@@ -95,11 +95,11 @@ def evaluate_single_run(files: List[str], dataset: str, result_file:str, sut:str
         for i, f in enumerate(files):
             if i % max(1, n // 10) == 0:
                 print(f"  {i}/{n} files...")
-            file_measures.append(evaluate_single_file(filename=f, dataset=dataset, sut=sut, verbose=verbose, origin_csv=origin_csv))
+            file_measures.append(evaluate_single_file(filename=f, dataset=dataset, sut=sut, verbose=verbose, origin_csv=origin_csv, row_order_invariant=row_order_invariant))
         print(f"  {n}/{n} files done.")
     # parallel
     else:
-        args = [{"filename": f, "dataset": dataset, "sut": sut, "verbose": verbose, "origin_csv": origin_csv} for f in files]
+        args = [{"filename": f, "dataset": dataset, "sut": sut, "verbose": verbose, "origin_csv": origin_csv, "row_order_invariant": row_order_invariant} for f in files]
         # fork() in a multi-threaded parent triggers a DeprecationWarning on Py3.12; silence it at fork time
         with warnings.catch_warnings():
             warnings.filterwarnings("ignore", message=r"This process .* is multi-threaded")
@@ -121,6 +121,9 @@ def main():
                              "the clean value or this origin value")
     parser.add_argument("--use-origin-csv", action="store_true", default=False,
                         help="Auto-detect and use data/{dataset}/source.csv as origin fallback (default: off)")
+    parser.add_argument("--row-order-invariant", action="store_true", default=False,
+                        help="Accept the loaded rows in any order (cells within each row keep their "
+                             "order); results are written with a '_roworder' suffix")
     parser.add_argument("--cached-only", action="store_true", default=False,
                         help="Only read existing *_results.csv files and aggregate; do not recompute "
                              "any scores. Lets you show the full previously-computed results even if "
@@ -139,7 +142,8 @@ def main():
             if os.path.exists(candidate):
                 origin_csv = candidate
                 break
-    suffix = "_incl_origin" if origin_csv is not None else ""
+    row_order_invariant = bool(args.row_order_invariant)
+    suffix = ("_incl_origin" if origin_csv is not None else "") + ("_roworder" if row_order_invariant else "")
     weights = load_weights(dataset)
 
     verbose = bool(args.verbose)
@@ -166,7 +170,7 @@ def main():
         result_file = f"{RESULT_DIR}/{s}/{dataset}/{s}_results{suffix}.csv"
         if not CACHED_ONLY and (UPDATE_SYSTEM is None or s == UPDATE_SYSTEM):
             print(f"\n[{eval_systems.index(s) + 1}/{len(eval_systems)}] Evaluating {s}...")
-            evaluate_single_run(files=files, dataset=dataset, result_file=result_file, sut=s, n_jobs=N_JOBS, verbose=verbose, origin_csv=origin_csv)
+            evaluate_single_run(files=files, dataset=dataset, result_file=result_file, sut=s, n_jobs=N_JOBS, verbose=verbose, origin_csv=origin_csv, row_order_invariant=row_order_invariant)
         if not os.path.exists(result_file):
             continue
         df = pd.read_csv(result_file)

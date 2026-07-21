@@ -15,7 +15,7 @@ from pathlib import Path
 import pandas as pd
 
 sys.path.insert(0, str(Path(__file__).parent.parent))
-from pollock.metrics import alex_compare
+from pollock.metrics import compare_files
 
 
 def _counter_subtract(a: Counter, b: Counter) -> Counter:
@@ -373,7 +373,7 @@ def load_cached_results(results_csv, sut):
 
 def compare_loaded_to_clean(task):
     fname, clean_path, loaded_path, origin_csv = task
-    return fname, alex_compare(clean_path, loaded_path, origin_csv=origin_csv)
+    return fname, compare_files(clean_path, loaded_path, origin_csv=origin_csv)
 
 
 def build_results_cache(all_files, loading_dir, clean_dir, sut, results_csv, origin_csv=None):
