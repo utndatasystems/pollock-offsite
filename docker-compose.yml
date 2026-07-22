@@ -1,37 +1,4 @@
 services:
-  mariadb-server:
-    image: mariadb:10.9.3
-    container_name: mariadb-server
-    environment:
-      - MYSQL_USER=benchmark
-      - MYSQL_PASSWORD=benchmark
-      - MYSQL_ROOT_PASSWORD=benchmark
-      - MYSQL_DATABASE=benchmark
-      - MYSQL_TCP_PORT=3307
-      - MYSQL_UNIX_PORT=3307
-    ports:
-      - "3307:3307"
-    volumes:
-      - mariadb-tmp:/tmp
-    networks:
-      mariadb-nw:
-  mariadb-client:
-    environment:
-      - DATASET=${DATASET}
-      - N_REPETITIONS=${N_REPETITIONS}
-    build:
-      context: .
-      dockerfile: ./sut/mariadb/Dockerfile
-    volumes:
-      - ./results/mariadb:/results/mariadb
-      - ./data:/data
-      - ./sut/mariadb/:/app/
-      - ./sut/utils.py:/app/utils.py
-      - mariadb-tmp:/tmp
-    depends_on:
-      - mariadb-server
-    networks:
-      mariadb-nw:
   mysql-server:
     image: mysql:8.0.31
     container_name: mysql-server
@@ -182,17 +149,6 @@ services:
       - ./results/rcsv:/results/rcsv
       - ./data:/data
       - ./sut/rcsv/:/app/
-  rhypoparsr-client:
-    build:
-      context: .
-      dockerfile: ./sut/rhypoparsr/Dockerfile
-    environment:
-      - DATASET=${DATASET}
-      - N_REPETITIONS=${N_REPETITIONS}
-    volumes:
-      - ./results/rhypoparsr:/results/rhypoparsr
-      - ./data:/data
-      - ./sut/rhypoparsr/:/app/
   clevercs-client:
     environment:
       - DATASET=${DATASET}
@@ -205,18 +161,6 @@ services:
       - ./data:/app/data
       - ./sut/clevercs/:/app/
       - ./sut/utils.py:/app/utils.py
-  libreoffice-client:
-    build:
-      context: .
-      dockerfile: ./sut/libreoffice/Dockerfile
-    environment:
-      - DATASET=${DATASET}
-      - N_REPETITIONS=${N_REPETITIONS}
-    volumes:
-      - ./results/libreoffice:/results/libreoffice
-      - ./data:/data
-      - ./sut/utils.py:/app/utils.py
-      - ./sut/libreoffice/:/app/
   univocity-client:
     build:
       context: .
@@ -288,12 +232,10 @@ services:
       - ./sut/utils.py:/app/utils.py
 
 volumes:
-  mariadb-tmp:
   mysql-tmp:
   postgres-tmp:
 
 networks:
-  mariadb-nw:
   mysql-nw:
   postgres-nw:
   sqlite-nw:

@@ -19,10 +19,9 @@ from dotenv import load_dotenv
 load_dotenv()
 
 
-SUT_ORDER = ["clevercs", "csvcommons", "rhypoparsr", 
-            "opencsv", "pandas", "duckdbparse","duckdbauto", "pycsv", "rcsv", "univocity", 
-            "mariadb", "mysql", "postgres", "sqlite", "libreoffice", 
-            "spreaddesktop", "spreadweb", "dataviz"]
+SUT_ORDER = ["clevercs", "csvcommons",
+            "opencsv", "pandas", "duckdbparse","duckdbauto", "pycsv", "rcsv", "univocity",
+            "mysql", "postgres", "sqlite"]
 
 
 def load_weights(dataset: str):
