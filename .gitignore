@@ -123,6 +123,7 @@ target/
 /results/*/polluted_files/*_results.csv
 
 # LLM loader caches and generated run artifacts
+/results/*
 /results/*.csv
 /results/*/llm_cache.json
 /results/*/llm_cache/
