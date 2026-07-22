@@ -152,7 +152,22 @@ def parse_csv_with_validation(
         skipped_rows=dialect.preamble_rows + dialect.header_rows,
     )
 
-    df, duckdb_rejects, _ = load_with_duckdb(csv_input, dialect, expected_columns, trace, "initial")
+    try:
+        df, duckdb_rejects, _ = load_with_duckdb(
+            csv_input, dialect, expected_columns, trace, "initial"
+        )
+    except Exception as exc:
+        if "CSV Parser state machine reached an invalid state" not in str(exc):
+            raise
+        trace.write("duckdb_non_strict_fallback", error=str(exc))
+        df, duckdb_rejects, _ = load_with_duckdb(
+            csv_input,
+            dialect,
+            expected_columns,
+            trace,
+            "initial_non_strict",
+            strict_mode=False,
+        )
     # Single width scan (reused below): good_rows doubles as an independent row count.
     good_rows, width_rejects = _scan_rows_by_width(csv_input, dialect, expected_columns)
 

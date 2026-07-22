@@ -91,6 +91,7 @@ def load_with_duckdb(
     stage: str,
     store_rejects: bool = True,
     strip_skipped: bool = False,
+    strict_mode: bool = True,
 ) -> Tuple[pd.DataFrame, List[Dict[str, Any]], List[Dict[str, Any]]]:
     import duckdb
 
@@ -119,7 +120,7 @@ def load_with_duckdb(
         "rejects_scan": scan_table,
         "rejects_table": rejects_table,
         "rejects_limit": 0,
-        "strict_mode": True,
+        "strict_mode": strict_mode,
         "null_padding": False,
         "parallel": False,
     }
@@ -136,7 +137,7 @@ def load_with_duckdb(
         f"rejects_scan = {_sql_string(scan_table)}",
         f"rejects_table = {_sql_string(rejects_table)}",
         "rejects_limit = 0",
-        "strict_mode = true",
+        f"strict_mode = {_sql_bool(strict_mode)}",
         "null_padding = false",
         "parallel = false",
     ]
