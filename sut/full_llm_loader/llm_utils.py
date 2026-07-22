@@ -10,7 +10,14 @@ from pathlib import Path
 import requests
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
-DEFAULT_LLM_CACHE_DIR = REPO_ROOT / "results" / "full_llm_loader" / "llm_cache"
+
+
+def _default_llm_cache_dir() -> Path:
+    dataset = os.environ.get("DATASET", "polluted_files")
+    return REPO_ROOT / "results" / "full_llm_loader" / dataset / "llm_cache"
+
+
+DEFAULT_LLM_CACHE_DIR = _default_llm_cache_dir()
 LLM_CACHE_VERSION = 1
 _LAST_LLM_COST_RECORD: dict | None = None
 
@@ -62,6 +69,7 @@ def get_last_llm_cost_record() -> dict | None:
 def _query_llm(
     messages: list[dict[str, str]],
     cache_context: dict | None = None,
+    verbose: bool = False,
 ) -> str:
     """Function that supports both OpenAI and Ollama"""
     global _LAST_LLM_COST_RECORD
@@ -107,7 +115,8 @@ def _query_llm(
     bypass_cache = _env_truthy('FULL_LLM_LOADER_BYPASS_CACHE')
     cached_record = None if bypass_cache else _read_llm_cache(cache_path)
     if cached_record is not None:
-        print(f"Using cached LLM response: {cache_path}")
+        if verbose:
+            print(f"Using cached LLM response: {cache_path}")
         _LAST_LLM_COST_RECORD = _build_cost_record(
             backend=backend,
             model=model,
@@ -118,9 +127,11 @@ def _query_llm(
         )
         return cached_record["content"]
     if bypass_cache:
-        print(f"Bypassing local LLM response cache: {cache_path}")
+        if verbose:
+            print(f"Bypassing local LLM response cache: {cache_path}")
 
-    print(f"Querying {backend} LLM with model: {model} at API base: {api_base}")
+    if verbose:
+        print(f"Querying {backend} LLM with model: {model} at API base: {api_base}")
 
     response = requests.post(
         url,

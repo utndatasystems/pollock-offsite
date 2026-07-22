@@ -83,7 +83,7 @@ def parse_csv(
     )
 
     # Queries the LLM with the prompt and retrieves the output.
-    llm_output = _query_llm(messages)
+    llm_output = _query_llm(messages, verbose=verbose)
     if verbose:
         print("\n--- RAW LLM OUTPUT START ---")
         print(llm_output)
