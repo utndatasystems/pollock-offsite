@@ -28,7 +28,7 @@ SUB_MEASURES = {"table" : "file_double.*|file_header.*|file_no.*|file_one.*|file
         "structural":"file_field.*|row_field.*|file_quote.*|file_record_delimiter.*|row_extra_quote.*|file_escape.*"}
 
 
-def evaluate_single_file(filename:str, dataset:str, sut:str, verbose=False, n_jobs=1):
+def evaluate_single_file(filename:str, dataset:str, sut:str, verbose=False, n_jobs=1, nrows=None):
     sut_dir = f"results/{sut}/{dataset}/loading/"
     clean_path = f"data/{dataset}/clean/{filename}"
     loaded_path = f"{sut_dir}{filename}_converted.csv"
@@ -47,7 +47,7 @@ def evaluate_single_file(filename:str, dataset:str, sut:str, verbose=False, n_jo
         dict_measures[sut + "_record_f1"], \
         dict_measures[sut + "_cell_precision"], \
         dict_measures[sut + "_cell_recall"], \
-        dict_measures[sut + "_cell_f1"] = metrics.header_record_cell_measures_csv(clean_path,loaded_path, n_jobs) \
+        dict_measures[sut + "_cell_f1"] = metrics.header_record_cell_measures_csv(clean_path,loaded_path, n_jobs, nrows=nrows) \
             if succ else [0, 0, 0, 0, 0, 0, 0, 0, 0]
 
     except Exception as e:
@@ -69,7 +69,7 @@ def evaluate_single_file(filename:str, dataset:str, sut:str, verbose=False, n_jo
     return dict_measures
 
 
-def evaluate_single_run(files: List[str], dataset: str, result_file:str, sut:str, verbose=False, n_jobs=1):
+def evaluate_single_run(files: List[str], dataset: str, result_file:str, sut:str, verbose=False, n_jobs=1, nrows=None):
     n_jobs = max(1, min(int(n_jobs), os.cpu_count() or 1))
 
     # sequential
@@ -79,12 +79,12 @@ def evaluate_single_run(files: List[str], dataset: str, result_file:str, sut:str
         for i, f in enumerate(files):
             if i % max(1, n // 10) == 0:
                 print(f"  {i}/{n} files...")
-            file_measures.append(evaluate_single_file(filename=f, dataset=dataset, sut=sut, verbose=verbose))
+            file_measures.append(evaluate_single_file(filename=f, dataset=dataset, sut=sut, verbose=verbose, nrows=nrows))
         print(f"  {n}/{n} files done.")
     # parallel
     else:
         tiny_files = [f for f in files if os.path.getsize(f"data/{dataset}/csv/{f}")/ 1024 < 500]
-        args = [{"filename" : f, "dataset":dataset, "sut": sut, "verbose": verbose} for f in tiny_files]
+        args = [{"filename" : f, "dataset":dataset, "sut": sut, "verbose": verbose, "nrows": nrows} for f in tiny_files]
         with warnings.catch_warnings():
             warnings.filterwarnings(
             "ignore",
@@ -99,7 +99,7 @@ def evaluate_single_run(files: List[str], dataset: str, result_file:str, sut:str
             print(f"Evaluating {len(large_filenames)} large file(s)...")
         for i, f in enumerate(large_filenames, 1):
             print(f"  [{i}/{len(large_filenames)}] {f}")
-            large_file_measures.append(evaluate_single_file(f, dataset, sut, verbose=verbose, n_jobs=n_jobs))
+            large_file_measures.append(evaluate_single_file(f, dataset, sut, verbose=verbose, n_jobs=n_jobs, nrows=nrows))
 
         file_measures = tiny_file_measures+large_file_measures
     results_df = pd.DataFrame(file_measures)
@@ -114,12 +114,17 @@ def main():
     parser.add_argument("--result", default="./results", help="The root path where the results of the loading are")
     parser.add_argument("--verbose", default=False, help="Whether to print filenames as they are processed")
     parser.add_argument("--njobs", default=100, help="The number of jobs to parallelize the computation")
+    parser.add_argument("--nrows", type=int, default=None, help="Compare only the first N data rows after the header when evaluating correctness")
 
     args = parser.parse_args()
     UPDATE_SYSTEM = args.sut
     dataset = args.dataset
     RESULT_DIR = args.result
     N_JOBS = int(args.njobs)
+    NROWS = args.nrows
+
+    if NROWS is not None and NROWS < 0:
+        parser.error("--nrows must be non-negative or omitted")
 
     verbose = bool(args.verbose)
     systems = [s for s in next(os.walk(f"{RESULT_DIR}"))[1]
@@ -141,7 +146,7 @@ def main():
         result_file = f"{RESULT_DIR}/{s}/{dataset}/{s}_results_pollock.csv"
         if UPDATE_SYSTEM is None or s == UPDATE_SYSTEM:
             print(f"\n[{eval_systems.index(s) + 1}/{len(eval_systems)}] Evaluating {s}...")
-            evaluate_single_run(files=files, dataset=dataset, result_file=result_file, sut=s, n_jobs=N_JOBS, verbose=verbose)
+            evaluate_single_run(files=files, dataset=dataset, result_file=result_file, sut=s, n_jobs=N_JOBS, verbose=verbose, nrows=NROWS)
         if not os.path.exists(result_file):
             continue
         df = pd.read_csv(result_file)
