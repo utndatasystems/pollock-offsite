@@ -1,5 +1,6 @@
 import argparse
 import os
+import re
 import sys
 import time
 from os.path import abspath, dirname, join
@@ -9,10 +10,12 @@ REPO_ROOT = abspath(join(dirname(__file__), '..', '..'))
 sys.path.insert(0, join(REPO_ROOT, 'sut'))
 
 import pandas as pd
+from tqdm import tqdm
 
 from utils import print
 from solution import parse_csv
 from llm_utils import get_last_llm_cost_record
+from llm_config import get_openai_model
 
 
 parser = argparse.ArgumentParser()
@@ -61,12 +64,16 @@ DATASET = os.environ.get('DATASET', 'polluted_files')
 IN_DIR = join(REPO_ROOT, 'data', DATASET, 'csv')
 OUT_DIR = join(REPO_ROOT, 'results', sut, DATASET, 'loading')
 TIME_DIR = join(REPO_ROOT, 'results', sut, DATASET)
+CACHE_DIR = join(TIME_DIR, 'llm_cache')
+os.environ['FULL_LLM_LOADER_CACHE_DIR'] = CACHE_DIR
 
 os.makedirs(IN_DIR, exist_ok=True)
 os.makedirs(OUT_DIR, exist_ok=True)
 os.makedirs(TIME_DIR, exist_ok=True)
+os.makedirs(CACHE_DIR, exist_ok=True)
 
-N_REPETITIONS = int(os.environ.get('N_REPETITIONS', 3))
+N_REPETITIONS = int(os.environ.get('N_REPETITIONS', 1))
+MODEL = get_openai_model()
 
 benchmark_files = os.listdir(IN_DIR)
 if args.file:
@@ -75,33 +82,93 @@ if args.file:
         parser.error(f"--file {target!r} not found in {IN_DIR}")
     benchmark_files = [target]
 
+POLLUTION_PATTERNS = [
+    (r"file_no_payload",                "Empty file (0 bytes)"),
+    (r"file_no_trailing_newline",        "Missing trailing newline"),
+    (r"file_double_trailing_newline",    "Double trailing newline"),
+    (r"file_no_header",                  "No header row"),
+    (r"file_header_multirow_(\d+)",      "Multi-row header ({0} rows)"),
+    (r"file_header_only",                "Header row only, no data"),
+    (r"file_one_data_row",               "Single data row"),
+    (r"file_preamble",                   "Preamble rows before header"),
+    (r"file_multitable_less",            "Two tables, first has fewer columns"),
+    (r"file_multitable_more",            "Two tables, first has more columns"),
+    (r"file_multitable_same",            "Two tables with the same number of columns"),
+    (r"file_field_delimiter_(0x\w+)",    "Non-standard field delimiter ({0})"),
+    (r"file_quotation_char_(0x\w+)",     "Non-standard quotation character ({0})"),
+    (r"file_escape_char_(0x\w+)",        "Non-standard escape character ({0})"),
+    (r"file_record_delimiter_(0x\w+)",   "Non-standard record delimiter ({0})"),
+    (r"row_extra_quote(\d+)_col(\d+)",   "Extra unescaped quote in row {0}, column {1}"),
+    (r"row_field_delimiter_(\d+)_",      "Row {0} uses space as field delimiter (opposed to the correct delimiter defined by the grammar)"),
+    (r"row_less_sep_row(\d+)_col(\d+)",  "Missing delimiter in row {0} at column {1}"),
+    (r"row_more_sep_row(\d+)_col(\d+)",  "Extra delimiter in row {0} at column {1}"),
+]
+
+
+def pollution_type(filename):
+    stem = filename.removesuffix('.csv')
+    for pattern, description in POLLUTION_PATTERNS:
+        match = re.match(pattern, stem)
+        if match:
+            return description.format(*match.groups())
+    return 'Unknown'
+
+
+_GROUP_PATTERNS = [
+    (r"row_field_delimiter_\d+_.+", "Row uses space as field delimiter"),
+    (r"row_extra_quote\d+_col\d+",  "Extra unescaped quote"),
+    (r"row_less_sep_row\d+_col\d+", "Missing delimiter"),
+    (r"row_more_sep_row\d+_col\d+", "Extra delimiter"),
+]
+
+
+def pollution_group(filename):
+    """Like pollution_type but collapses row/col-index variants into a single label."""
+    stem = filename.removesuffix('.csv')
+    for pattern, description in _GROUP_PATTERNS:
+        if re.fullmatch(pattern, stem):
+            return description
+    return pollution_type(filename)
+
+
 def save_run_df(time_dir, sut_name, run_dict):
     if not run_dict:
         print("No run changes to update")
         return
 
-    rows = {}
+    rows = []
     for filename, records in run_dict.items():
-        row = {}
+        row = {
+            'filename': filename,
+            'pollution': pollution_group(filename),
+            'model': MODEL,
+        }
         for idx, record in enumerate(records):
-            row[f"time_{idx}"] = record.get("time")
-            row[f"uncached_input_tokens_{idx}"] = record.get("uncached_input_tokens")
-            row[f"cached_input_tokens_{idx}"] = record.get("cached_input_tokens")
-            row[f"completion_tokens_{idx}"] = record.get("completion_tokens")
-        rows[filename] = row
+            row[f"time_{idx}"] = record.get('time')
+            row[f"uncached_input_tokens_{idx}"] = record.get('uncached_input_tokens')
+            row[f"cached_input_tokens_{idx}"] = record.get('cached_input_tokens')
+            row[f"completion_tokens_{idx}"] = record.get('completion_tokens')
+        rows.append(row)
 
-    update_run_df = pd.DataFrame.from_dict(rows, orient="index")
+    update_run_df = pd.DataFrame(rows)
     run_path = join(time_dir, f"{sut_name}_time.csv")
     try:
-        existing_run_df = pd.read_csv(run_path, index_col="filename")
-        run_df = pd.concat([existing_run_df, update_run_df]).groupby(level=0).last()
+        existing_run_df = pd.read_csv(run_path)
+        if 'filename' not in existing_run_df.columns:
+            existing_run_df = existing_run_df.rename(columns={existing_run_df.columns[0]: 'filename'})
+        if 'pollution' not in existing_run_df.columns:
+            existing_run_df['pollution'] = existing_run_df['filename'].map(pollution_group)
+        if 'model' not in existing_run_df.columns:
+            existing_run_df['model'] = MODEL
+        run_df = pd.concat([existing_run_df, update_run_df], ignore_index=True)
+        run_df = run_df.drop_duplicates(subset=['filename', 'pollution', 'model'], keep='last')
     except FileNotFoundError:
         run_df = update_run_df
-    run_df.to_csv(run_path, index_label="filename")
+    run_df.to_csv(run_path, index=False)
 
 
 run_dict = {}
-for idx, file in enumerate(benchmark_files):
+for idx, file in enumerate(tqdm(benchmark_files, total=len(benchmark_files), desc="Benchmark files", unit="file")):
     f = os.path.basename(file)
     in_filepath = join(IN_DIR, f)
     out_filename = f'{f}_converted.csv'
