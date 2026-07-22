@@ -15,6 +15,7 @@ REPAIR_PROMPT = """
 Repair faulty CSV records. Return JSON only, no Markdown, no commentary.
 For each input line, return the respective field values, not CSV text.
 Do not CSV-escape inside field values; JSON escaping is allowed only because the response is JSON.
+Set non_data_row=true for non-data rows; they will be dropped. Otherwise return fields.
 
 Use the good examples as a guide for alignment, order of the data cells by looking at patterns and semantics.
 Don't do cleaning of cell data, so keep accidental double whitespaces, typos etc.
@@ -443,7 +444,7 @@ def infer_repairs_with_llm(
         REPAIR_PROMPT,
         "",
         "Response shape:",
-        '{"repairs": [{"line": <line number>, "fields": [<string>, ...]}]}',
+        '{"repairs": [{"line": <line number>, "non_data_row": <true|false>, "fields": [<string>, ...]}]}',
         "",
         "Input:",
         json.dumps(prompt_payload, ensure_ascii=False),
@@ -488,6 +489,20 @@ def infer_repairs_with_llm(
         except Exception:
             rejected_repairs.append({"item": item, "reason": "missing integer line"})
             continue
+        non_data_row = item.get("non_data_row", False)
+        if not isinstance(non_data_row, bool):
+            rejected_repairs.append({
+                "line": line,
+                "reason": "non_data_row is not a boolean",
+            })
+            continue
+        if non_data_row:
+            repairs[line] = {
+                "records": [],
+                "span": spans.get(line, 1),
+                "non_data_row": True,
+            }
+            continue
         fields = item.get("fields")
         if not isinstance(fields, list):
             rejected_repairs.append({"item": item, "reason": "fields is not a list"})
@@ -499,15 +514,20 @@ def infer_repairs_with_llm(
                 "fields": fields,
             })
             continue
-        entry = repairs.setdefault(line, {"records": [], "span": spans.get(line, 1)})
+        entry = repairs.setdefault(
+            line,
+            {"records": [], "span": spans.get(line, 1), "non_data_row": False},
+        )
         entry["records"].append([_coerce_cell(value) for value in fields])
 
     trace.write(
         "llm_faulty_line_repairs_parsed",
         repairs=[
-            {"line": line, "fields": fields}
+            ({"line": line, "non_data_row": True}
+             if entry.get("non_data_row") else
+             {"line": line, "non_data_row": False, "fields": fields})
             for line, entry in repairs.items()
-            for fields in entry["records"]
+            for fields in (entry["records"] or [None])
         ],
         rejected=rejected_repairs,
     )
@@ -589,28 +609,37 @@ def write_repaired_copy(
     covered_until = 0
     for line_num in sorted(repairs):
         entry = repairs[line_num]
+        non_data_row = bool(entry.get("non_data_row"))
         if blocks and line_num <= covered_until:
-            blocks[-1][2].extend(entry["records"])
+            if non_data_row:
+                blocks[-1][2] = []
+                blocks[-1][3] = True
+            elif not blocks[-1][3]:
+                blocks[-1][2].extend(entry["records"])
             continue
         span = max(1, int(entry.get("span", 1)))
-        blocks.append([line_num, span, list(entry["records"])])
+        blocks.append([line_num, span, list(entry["records"]), non_data_row])
         covered_until = line_num + span - 1
 
     applied = []
+    dropped = []
     # Bottom-up: a block can expand into a different number of lines, which
     # would shift the indexes of the blocks still to come.
-    for line_num, span, records in reversed(blocks):
+    for line_num, span, records, non_data_row in reversed(blocks):
         idx = line_num - 1
         if idx < 0 or idx >= len(lines):
             continue
         _, newline = _split_line_ending(lines[idx], default_newline)
         repaired_lines = [serialize_record(fields, dialect) for fields in records]
         lines[idx:idx + span] = [line + newline for line in repaired_lines]
+        if non_data_row:
+            dropped.append({"line": line_num, "span": span})
         for repaired_line, fields in zip(repaired_lines, records):
             applied.append({"line": line_num, "serialized": repaired_line, "fields": fields})
     applied.sort(key=lambda item: item["line"])
 
-    if not applied:
+    dropped.sort(key=lambda item: item["line"])
+    if not applied and not dropped:
         return None
 
     tmp = tempfile.NamedTemporaryFile(
@@ -625,7 +654,7 @@ def write_repaired_copy(
         tmp.writelines(lines)
     finally:
         tmp.close()
-    trace.write("repaired_copy_written", path=tmp.name, applied=applied)
+    trace.write("repaired_copy_written", path=tmp.name, applied=applied, dropped=dropped)
     return tmp.name
 
 
