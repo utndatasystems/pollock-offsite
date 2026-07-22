@@ -1,5 +1,6 @@
 import json
 import os
+import tempfile
 import time
 from typing import Any, Dict, List, Optional, Tuple
 
@@ -12,6 +13,7 @@ from dialect import (
     dialect_from_mappings,
     infer_dialect_with_llm,
     infer_expected_columns,
+    parse_record,
     sniff_with_clevercsv,
     sniff_with_duckdb,
 )
@@ -123,11 +125,63 @@ def parse_csv_with_validation(
     scoring_lines = _read_sample_lines(csv_input, SCORING_LINE_LIMIT)
     dialect = dialect_from_mappings(sniff_mapping, llm_mapping, scoring_lines, trace, sniffer_name)
 
+    llm_columns = llm_mapping.get("column_names") if llm_mapping else None
+    normalized_header_file = None
+    if (
+        dialect.header_rows == 1
+        and isinstance(llm_columns, list)
+        and llm_columns
+        and all(isinstance(c, str) for c in llm_columns)
+    ):
+        expected_header = [str(c).strip() for c in llm_columns]
+        header_line_idx = next(
+            (
+                idx
+                for idx, line in enumerate(scoring_lines)
+                if [str(c).strip() for c in parse_record(line, dialect)] == expected_header
+            ),
+            None,
+        )
+        if header_line_idx is not None:
+            preceding_rows = [
+                parse_record(line, dialect)
+                for line in scoring_lines[:header_line_idx]
+                if line.strip()
+            ]
+            header_was_moved = any(len(row) == len(expected_header) for row in preceding_rows)
+            if header_was_moved:
+                with open(csv_input, "r", encoding="utf-8-sig", errors="replace", newline="") as f:
+                    all_lines = f.readlines()
+                normalized_header_file = tempfile.NamedTemporaryFile(
+                    "w+", encoding="utf-8", newline="", prefix="pollock_header_", suffix=".csv"
+                )
+                header_line = all_lines.pop(header_line_idx)
+                normalized_header_file.writelines([header_line, *all_lines])
+                normalized_header_file.flush()
+                csv_input = normalized_header_file.name
+                scoring_lines = _read_sample_lines(csv_input, SCORING_LINE_LIMIT)
+                dialect.preamble_rows = 0
+                trace.write(
+                    "header_position_corrected",
+                    mode="moved_header",
+                    detected_line=header_line_idx + 1,
+                    preamble_rows=0,
+                )
+            elif header_line_idx != dialect.preamble_rows:
+                old_preamble_rows = dialect.preamble_rows
+                dialect.preamble_rows = header_line_idx
+                trace.write(
+                    "header_position_corrected",
+                    mode="preamble",
+                    detected_line=header_line_idx + 1,
+                    old_preamble_rows=old_preamble_rows,
+                    preamble_rows=header_line_idx,
+                )
+
     raw_header_lines = _header_lines(csv_input, dialect)
     header = combine_header_rows(raw_header_lines, dialect)
     has_header = dialect.header_rows > 0
 
-    llm_columns = llm_mapping.get("column_names") if llm_mapping else None
     if (
         dialect.header_rows > 0
         and isinstance(llm_columns, list)
@@ -258,4 +312,6 @@ def parse_csv_with_validation(
         columns=list(result.columns),
         malformed_count=len(malformed),
     )
+    if normalized_header_file is not None:
+        normalized_header_file.close()
     return result, malformed
