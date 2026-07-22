@@ -26,10 +26,12 @@ from pollock.polluters_utils import (
     _safe_col_count,
     _last_data_row,
     manually_verified,
-    todo
+    todo,
+    pollution
 )
 
-
+@pollution(
+    category="File Segmentation and Table-Boundary", name="Side-by-Side Tables")
 def addTableSideways( # this is wrong
     file: CSVFile, n_rows, n_cols, random_content=False, empty_boundary=True
 ):

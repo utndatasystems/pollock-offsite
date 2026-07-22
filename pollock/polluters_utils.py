@@ -1,3 +1,7 @@
+from collections.abc import Callable
+from functools import wraps
+from typing import Any, TypeVar
+
 from . import polluters_base as pb
 from .CSVFile import CSVFile
 
@@ -35,3 +39,21 @@ def _safe_col_count(file: CSVFile, table=0):
 
 def _last_data_row(file: CSVFile):
     return max(2, _safe_row_count(file))
+
+
+# Helpers for categorizing pollutions 
+
+F = TypeVar("F", bound=Callable[..., Any])
+
+def pollution(
+    category: str,
+    *,
+    name: str | None = None,
+    version: str | None = None,
+) -> Callable[[F], F]:
+    def decorator(func: F) -> F:
+        func.pollution_category = category
+        func.pollution_name = name
+        return func
+
+    return decorator
