@@ -372,11 +372,11 @@ def load_cached_results(results_csv, sut):
 
 
 def compare_loaded_to_clean(task):
-    fname, clean_path, loaded_path, origin_csv = task
-    return fname, compare_files(clean_path, loaded_path, origin_csv=origin_csv)
+    fname, clean_path, loaded_path, origin_csv, nrows = task
+    return fname, compare_files(clean_path, loaded_path, origin_csv=origin_csv, nrows=nrows)
 
 
-def build_results_cache(all_files, loading_dir, clean_dir, sut, results_csv, origin_csv=None):
+def build_results_cache(all_files, loading_dir, clean_dir, sut, results_csv, origin_csv=None, nrows=None):
     app_error_files = []
     compare_tasks = []
     for fname in all_files:
@@ -386,7 +386,7 @@ def build_results_cache(all_files, loading_dir, clean_dir, sut, results_csv, ori
             continue
         clean_path = os.path.join(clean_dir, fname)
         if os.path.exists(clean_path):
-            compare_tasks.append((fname, clean_path, loaded_path, origin_csv))
+            compare_tasks.append((fname, clean_path, loaded_path, origin_csv, nrows))
 
     compare_results = {}
     max_workers = min(os.cpu_count() or 1, 8)
@@ -430,10 +430,10 @@ def _cache_is_stale(results_csv, loading_dir, all_files):
     return False
 
 
-def classify_files(all_files, results_csv, loading_dir, clean_dir, sut, origin_csv=None):
+def classify_files(all_files, results_csv, loading_dir, clean_dir, sut, origin_csv=None, nrows=None):
     df = load_cached_results(results_csv, sut)
     if df is None or set(df["file"]) != set(all_files) or _cache_is_stale(results_csv, loading_dir, all_files):
-        df = build_results_cache(all_files, loading_dir, clean_dir, sut, results_csv, origin_csv=origin_csv)
+        df = build_results_cache(all_files, loading_dir, clean_dir, sut, results_csv, origin_csv=origin_csv, nrows=nrows)
 
     app_error_files = []
     wrong_content_files = []
@@ -689,12 +689,18 @@ def main():
              "or this origin value (default: {polluted-dir}/source.csv if it exists)"
     )
     parser.add_argument(
+        "--nrows", type=int, default=None,
+        help="Compare only the first N data rows after the header when evaluating correctness"
+    )
+    parser.add_argument(
         "--markdown", action="store_true",
         help="Write output as Markdown instead of plain text"
     )
     args = parser.parse_args()
     if args.max_details_per_type < 0:
         parser.error("--max-details-per-type must be greater than or equal to 0")
+    if args.nrows is not None and args.nrows < 0:
+        parser.error("--nrows must be non-negative or omitted")
 
     sut = args.sut
     results_csv = os.path.join(args.results_dir, sut, args.dataset, f"{sut}_results.csv")
@@ -727,6 +733,7 @@ def main():
         clean_dir=clean_dir,
         sut=sut,
         origin_csv=origin_csv,
+        nrows=args.nrows,
     )
 
     app_error_groups = group_by_pollution(app_error_files)
