@@ -580,19 +580,32 @@ def write_repaired_copy(
         lines = f.readlines()
     default_newline = _detect_file_newline(lines, dialect)
 
-    applied = []
-    # Bottom-up: a record can expand into a different number of lines, which
-    # would shift the indexes of the repairs still to come.
-    for line_num in sorted(repairs, reverse=True):
+    # A faulty record can cover several lines, and the LLM may return its
+    # recovered rows either all under the record's own line number or under the
+    # individual lines it covered. Group repairs into one block per covered span
+    # so those rows replace the span together instead of overwriting each other.
+    blocks: List[List[Any]] = []
+    covered_until = 0
+    for line_num in sorted(repairs):
         entry = repairs[line_num]
+        if blocks and line_num <= covered_until:
+            blocks[-1][2].extend(entry["records"])
+            continue
+        span = max(1, int(entry.get("span", 1)))
+        blocks.append([line_num, span, list(entry["records"])])
+        covered_until = line_num + span - 1
+
+    applied = []
+    # Bottom-up: a block can expand into a different number of lines, which
+    # would shift the indexes of the blocks still to come.
+    for line_num, span, records in reversed(blocks):
         idx = line_num - 1
         if idx < 0 or idx >= len(lines):
             continue
         _, newline = _split_line_ending(lines[idx], default_newline)
-        span = max(1, int(entry.get("span", 1)))
-        repaired_lines = [serialize_record(fields, dialect) for fields in entry["records"]]
+        repaired_lines = [serialize_record(fields, dialect) for fields in records]
         lines[idx:idx + span] = [line + newline for line in repaired_lines]
-        for repaired_line, fields in zip(repaired_lines, entry["records"]):
+        for repaired_line, fields in zip(repaired_lines, records):
             applied.append({"line": line_num, "serialized": repaired_line, "fields": fields})
     applied.sort(key=lambda item: item["line"])
 
