@@ -506,9 +506,12 @@ def diff_rows(clean_rows, loaded_rows, max_examples=3):
     return diag
 
 
-def write_file_section(f, filename, scores, diag, polluted_lines, params, poll_type, malformed_report=None, sidecar_dialect=None, clean_rows=None, md=False):
+def write_file_section(f, filename, scores, diag, polluted_lines, params, poll_type, malformed_report=None, sidecar_dialect=None, clean_rows=None, md=False, file_links=None):
     if md:
         f.write(f"\n#### `{filename}`\n\n")
+        if file_links:
+            links = [f"[{label}](<{path}>)" for label, path in file_links]
+            f.write("**Files:** " + " · ".join(links) + "\n\n")
         if params:
             f.write(f"- **Pollution:** {poll_type}\n")
             f.write(f"- **Dialect:** {format_params_md(params)}\n")
@@ -700,11 +703,17 @@ def main():
         "--markdown", action="store_true",
         help="Write output as Markdown instead of plain text"
     )
+    parser.add_argument(
+        "--file-links", action="store_true",
+        help="Add clickable polluted, clean, and converted file links below each Markdown file heading"
+    )
     args = parser.parse_args()
     if args.max_details_per_type < 0:
         parser.error("--max-details-per-type must be greater than or equal to 0")
     if args.nrows is not None and args.nrows < 0:
         parser.error("--nrows must be non-negative or omitted")
+    if args.file_links and not args.markdown:
+        parser.error("--file-links requires --markdown")
 
     sut = args.sut
     results_csv = os.path.join(args.results_dir, sut, args.dataset, f"{sut}_results.csv")
@@ -754,6 +763,10 @@ def main():
     md = args.markdown
     ext = ".md" if md else ".txt"
     output_path = args.output or os.path.join(args.results_dir, sut, args.dataset, f"{sut}_errors{ext}")
+    output_dir = os.path.dirname(os.path.abspath(output_path))
+
+    def report_relative_path(path):
+        return os.path.relpath(os.path.abspath(path), output_dir).replace(os.sep, "/")
 
     def write_category_counts(out, grouped):
         if not grouped:
@@ -814,6 +827,12 @@ def main():
             malformed_reports.get(fname),
             sidecar_dialect=sidecar_dialect,
             md=md,
+            file_links=(
+                [("Polluted", report_relative_path(os.path.join(csv_dir, fname))),
+                 ("Clean", report_relative_path(os.path.join(clean_dir, fname))),
+                 ("Converted", report_relative_path(os.path.join(loading_dir, fname + "_converted.csv")))]
+                if args.file_links else None
+            ),
         )
 
     def write_wrong_content_file(out, fname):
@@ -836,6 +855,12 @@ def main():
             sidecar_dialect=sidecar_dialect,
             clean_rows=clean_rows,
             md=md,
+            file_links=(
+                [("Polluted", report_relative_path(os.path.join(csv_dir, fname))),
+                 ("Clean", report_relative_path(clean_path)),
+                 ("Converted", report_relative_path(loaded_path))]
+                if args.file_links else None
+            ),
         )
 
     def write_grouped_file_sections(out, grouped, write_file):
