@@ -67,6 +67,13 @@ parser.add_argument(
     help="Dry-run: build all prompts and count tokens without calling the LLM",
 )
 parser.add_argument(
+    "--max-llm-tokens",
+    type=int,
+    default=100_000,
+    help="Skip uncached LLM calls whose estimated input plus output exceeds this many "
+         "tokens (default: 100000; 0 disables the guard)",
+)
+parser.add_argument(
     "--file",
     default=None,
     help="Process only this single file from the dataset's csv/ dir (basename or path). "
@@ -102,6 +109,7 @@ if args.model:
 
 from utils import print, save_time_df
 from solution import parse_csv_with_validation, configure_llm_cache, configure_llm_dry_run, configure_llm_verbose, get_llm_cache_stats
+from llm import configure_llm_token_limit
 from llm import _openai_model
 
 if args.model:
@@ -134,6 +142,7 @@ _cache_path = None if args.no_llm_cache else join(REPO_ROOT, 'results', '_llm_ca
 configure_llm_cache(path=_cache_path, enabled=not args.no_llm_cache)
 configure_llm_dry_run(args.count_tokens)
 configure_llm_verbose(args.verbose)
+configure_llm_token_limit(args.max_llm_tokens)
 
 default_repetitions = 1 if (CHEAT or LLM_REPAIR) else 3
 N_REPETITIONS = int(os.environ.get("N_REPETITIONS", default_repetitions))

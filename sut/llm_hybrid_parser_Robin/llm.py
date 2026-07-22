@@ -1,5 +1,6 @@
 import hashlib
 import json
+import math
 import os
 import urllib.request
 from typing import Any, Dict, Optional
@@ -8,6 +9,7 @@ from typing import Any, Dict, Optional
 DEFAULT_OPENAI_ENDPOINT = "http://dep-eng-data-s-heimgarten.hosts.utn.de:4000/v1/chat/completions"
 DEFAULT_OPENAI_MODEL = "gpt-5.4"
 #DEFAULT_OPENAI_MODEL = "gpt-5.4-mini"
+DEFAULT_MAX_LLM_TOKENS = 100_000
 
 _LLM_RESPONSE_CACHE: Dict[str, str] = {}
 _LLM_DRY_RUN_ESTIMATED_OUTPUT: Dict[str, int] = {}  # prompt_sha -> estimated chars for dry-run dedup
@@ -21,6 +23,7 @@ _LLM_CALL_STATS: Dict[str, int] = {
 }
 _LLM_DRY_RUN: bool = False
 _LLM_VERBOSE: bool = False
+_LLM_MAX_ESTIMATED_TOKENS: int = DEFAULT_MAX_LLM_TOKENS
 
 
 def configure_llm_cache(path: Optional[str] = None, enabled: bool = True) -> None:
@@ -40,6 +43,18 @@ def configure_llm_verbose(enabled: bool) -> None:
     global _LLM_VERBOSE
 
     _LLM_VERBOSE = enabled
+
+
+def configure_llm_token_limit(max_tokens: int) -> None:
+    """Set the approximate per-call token cap; zero disables the guard."""
+    global _LLM_MAX_ESTIMATED_TOKENS
+
+    _LLM_MAX_ESTIMATED_TOKENS = max(0, int(max_tokens))
+
+
+def _estimate_tokens(input_chars: int, output_chars: int = 0) -> int:
+    """Match the benchmark's existing rough estimate of four chars per token."""
+    return math.ceil((max(0, input_chars) + max(0, output_chars)) / 4)
 
 
 def _print_verbose(event_type: str, prompt: str, response: str, cached: bool) -> None:
@@ -137,6 +152,26 @@ def call_llm(prompt: str, trace: Any, event_type: str, estimated_output_chars: i
         _LLM_RESPONSE_CACHE[prompt_sha] = "{}"  # deduplicate within this run, never saved to disk
         _LLM_DRY_RUN_ESTIMATED_OUTPUT[prompt_sha] = estimated_output_chars
         trace.write(event_type, prompt_sha256=prompt_sha, prompt=prompt, dry_run=True)
+        return "{}"
+
+    estimated_tokens = _estimate_tokens(len(prompt), estimated_output_chars)
+    if (
+        _LLM_MAX_ESTIMATED_TOKENS > 0
+        and estimated_tokens > _LLM_MAX_ESTIMATED_TOKENS
+    ):
+        print(
+            f"[LLM skipped] {event_type}: estimated {estimated_tokens:,} tokens "
+            f"exceeds the {_LLM_MAX_ESTIMATED_TOKENS:,}-token limit"
+        )
+        trace.write(
+            event_type,
+            prompt_sha256=prompt_sha,
+            skipped=True,
+            skip_reason="estimated_token_limit",
+            estimated_tokens=estimated_tokens,
+            max_estimated_tokens=_LLM_MAX_ESTIMATED_TOKENS,
+            model=_openai_model(),
+        )
         return "{}"
 
     api_key = _openai_api_key()
