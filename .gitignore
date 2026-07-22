@@ -1,19 +1,22 @@
-# Byte-compiled / optimized / DLL files
+# OS and editor files
+.DS_Store
+*~
+.idea/
+.ropeproject
+.spyderproject
+.spyproject
+
+# Local assistant notes
+CLAUDE.md
+
+# Python bytecode and compiled artifacts
 __pycache__/
 *.py[cod]
 *$py.class
 *.class
-
-# Pollock
-*.docx
-
-# Database files
-*.db
-
-# C extensions
 *.so
 
-# Distribution / packaging
+# Python packaging and build outputs
 .Python
 build/
 develop-eggs/
@@ -35,8 +38,6 @@ share/python-wheels/
 MANIFEST
 
 # PyInstaller
-#  Usually these files are written by a python script from a template
-#  before PyInstaller builds the exe, so as to inject date/other infos into it.
 *.manifest
 *.spec
 
@@ -44,115 +45,90 @@ MANIFEST
 pip-log.txt
 pip-delete-this-directory.txt
 
-# Unit test / coverage reports
+# Test, coverage, and type-checker caches
 htmlcov/
 .tox/
 .nox/
 .coverage
 .coverage.*
 .cache
+.cache/
 nosetests.xml
 coverage.xml
 *.cover
 *.py,cover
 .hypothesis/
 .pytest_cache/
+.mypy_cache/
+.dmypy.json
+dmypy.json
+.pyre/
 
-# Translations
-*.mo
-*.pot
-
-# Django stuff:
-*.log
-local_settings.py
-db.sqlite3
-db.sqlite3-journal
-
-# Flask stuff:
-instance/
-.webassets-cache
-
-# Scrapy stuff:
-.scrapy
-
-# Sphinx documentation
-docs/_build/
-
-# PyBuilder
-target/
-
-# Jupyter Notebook
-.ipynb_checkpoints
-
-# IPython
-profile_default/
-ipython_config.py
-
-# pyenv
-.python-version
-
-# pipenv
-#   According to pypa/pipenv#598, it is recommended to include Pipfile.lock in version control.
-#   However, in case of collaboration, if having platform-specific dependencies or dependencies
-#   having no cross-platform support, pipenv may install dependencies that don't work, or not
-#   install all needed dependencies.
-#Pipfile.lock
-
-# PEP 582; used by e.g. github.com/David-OConnor/pyflow
-__pypackages__/
-
-# Celery stuff
-celerybeat-schedule
-celerybeat.pid
-
-# SageMath parsed files
-*.sage.py
-
-# Environments
-.venv
+# Virtual environments and local Python installs
+.venv/
 env/
 venv/
 ENV/
 env.bak/
 venv.bak/
+__pypackages__/
+.python-version
 
-# Spyder project settings
-.spyderproject
-.spyproject
+# Notebook and shell history
+.ipynb_checkpoints/
+profile_default/
+ipython_config.py
 
-# Rope project settings
-.ropeproject
+# Documentation builds
+docs/_build/
+/site/
 
-# mkdocs documentation
-/site
+# Translation artifacts
+*.mo
+*.pot
 
-# mypy
-.mypy_cache/
-.dmypy.json
-dmypy.json
+# Framework and runtime files
+*.log
+*.db
+db.sqlite3
+db.sqlite3-journal
+local_settings.py
+instance/
+.webassets-cache/
+.scrapy/
+celerybeat-schedule
+celerybeat.pid
+*.sage.py
+target/
 
-# Pyre type checker
-.pyre/
+# Pollock document exports
+*.docx
 
-#PyCharm
-.idea/
-
-*.DS_Store
-
-# Custom data 
+# Project data generated or downloaded locally
 */mycustomtest/
-data/*
-data/additional_csvs/insurance_complaints.csv
-data/additional_csvs/table.csv
-data/polluted_files/*
-results/duckdbparse/polluted_files/duckdbparse_errors.txt
-results/pandas/polluted_files/pandas_errors.txt
-results/aggregate_results_polluted_files.csv
-results/global_results_polluted_files.csv
-results/aggregate_results_polluted_files.csv
-results/global_results_polluted_files.csv
-CLAUDE.md
-results/full_llm_loader/llm_cache/*
-results/full_llm_loader_naive/csv_storm/*
-results/full_llm_loader_guided/csv_storm/llm_cache/*
-results/full_llm_loader_guided/csv_storm/*
+/data/*
+
+# Keep this list explicit when a local generated data file appears outside /data/*.
+/data/additional_csvs/insurance_complaints.csv
+/data/additional_csvs/table.csv
+/data/polluted_files/
+
+# Generated aggregate results for local polluted-file runs
+/results/aggregate_results_polluted_files.csv
+/results/global_results_polluted_files.csv
+
+# Generated per-system polluted-file outputs
+/results/*/polluted_files/*_errors.md
+/results/*/polluted_files/*_errors.txt
+/results/*/polluted_files/*_results.csv
+
+# LLM loader caches and generated run artifacts
+/results/*.csv
+/results/*/llm_cache.json
+/results/*/llm_cache/
+/results/*/*/llm_cache/
+/results/*/*/*.jsonl
+/results/*/*/loading/
+/results/full_llm_loader/
+/results/full_llm_loader_naive/csv_storm/
+/results/full_llm_loader_guided/csv_storm/
