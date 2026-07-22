@@ -153,3 +153,6 @@ results/aggregate_results_polluted_files.csv
 results/global_results_polluted_files.csv
 CLAUDE.md
 results/full_llm_loader/llm_cache/*
+results/full_llm_loader_naive/csv_storm/*
+results/full_llm_loader_guided/csv_storm/llm_cache/*
+results/full_llm_loader_guided/csv_storm/*
