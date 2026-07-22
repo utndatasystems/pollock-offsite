@@ -200,10 +200,10 @@ def infer_dialect_with_llm(
         '"delimiter": the exact literal separator string that appears between adjacent fields in the file. Can be multi-char (e.g. "," or "\\t" or ", " (comma+space) or " " or ";")',
         '"quotechar": the quoting character (e.g. "\\"" or "\'")',
         '"escapechar": the escape character used inside quotes (e.g. "\\"" or "\\\\" or "" for none/null)',
-        '"header_lines": integer - how many rows form the header (0=no header, 1=normal, 2+=multi-row where column names are joined with space)',
+        '"header_lines": integer - how many rows form the header (0=no header, 1=normal, 2+=multi-row - will be skipped upon read and replaced with column_names)',
         '"preamble_lines": integer - lines to skip before header (usually 0)',
-        '"column_names": array of strings - the column names, ideally consistent with a string split based on the delimiter',
-        '"n_columns": integer - number of columns',
+        '"column_names": array of strings - the column names, ideally consistent with a string split based on the delimiter or if that is not possible because of structure, consistent with semantics of column data. If there are multiple header-hierarchies, take the lowest and most finegrained one',
+        '"n_columns": integer - number of columns, consistent with length of column_names',
         "",
     ]
     # if sniff_dialect:
