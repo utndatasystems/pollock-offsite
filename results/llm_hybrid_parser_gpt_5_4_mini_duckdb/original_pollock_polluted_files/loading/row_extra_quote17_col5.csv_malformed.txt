@@ -1,2 +1,2 @@
 Malformed rows: 1
-{"line_num": 18, "reason": "UNQUOTED VALUE: Value with unterminated quote found.", "raw": "25/02/2018,04:00,3,AN-8641,$65.18,\"Kids' Good Mocs,\"Just like Mom and Dad our shearling slippers wrap completely around little feet for soft, cozy comfort.\",\"https://www.example.com/product/AN_8641.html\",", "repaired": true}
+{"line_num": 18, "reason": "MISSING COLUMNS: Expected Number of Columns: 9 Found: 7; UNQUOTED VALUE: Value with unterminated quote found.", "raw": "25/02/2018,04:00,3,AN-8641,$65.18,\"Kids' Good Mocs,\"Just like Mom and Dad our shearling slippers wrap completely around little feet for soft, cozy comfort.\",\"https://www.example.com/product/AN_8641.html\",", "repaired": true}
