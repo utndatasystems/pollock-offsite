@@ -19,7 +19,9 @@ from dotenv import load_dotenv
 load_dotenv()
 
 
-SUT_ORDER = ["full_llm_loader_naive"]
+SUT_ORDER = ["full_llm_loader_naive", "full_llm_loader_guided", "clevercs", "csvcommons",
+            "opencsv", "pandas", "duckdbparse","duckdbauto", "pycsv", 
+            "mysql", "postgres", "sqlite"]
 
 
 def load_weights(dataset: str):
@@ -55,7 +57,7 @@ def add_scores(results_df: pd.DataFrame, sut: str, weights: dict):
     results_df.attrs["weighted_accuracy"] = weighted_accuracy
     return results_df
 
-def evaluate_single_file(filename:str, dataset:str, sut:str, verbose=False, n_jobs=1, origin_csv=None):
+def evaluate_single_file(filename:str, dataset:str, sut:str, verbose=False, n_jobs=1, origin_csv=None, row_order_invariant=False, nrows=None):
     sut_dir = f"results/{sut}/{dataset}/loading/"
     # Each converted result is compared against the canonical clean CSV with
     # the same filename. The original polluted input lives in data/.../csv/.
@@ -70,7 +72,7 @@ def evaluate_single_file(filename:str, dataset:str, sut:str, verbose=False, n_jo
         dict_measures[sut + "_wrong"] = 1
         return dict_measures
     try:
-        correct = metrics.alex_compare(clean_path, loaded_path, n_jobs, origin_csv=origin_csv)
+        correct = metrics.compare_files(clean_path, loaded_path, n_jobs, origin_csv=origin_csv, row_order_invariant=row_order_invariant, nrows=nrows)
         dict_measures[sut + "_correct"] = int(correct)
         dict_measures[sut + "_wrong"] = int(not correct)
     except Exception as e:
@@ -83,7 +85,7 @@ def evaluate_single_file(filename:str, dataset:str, sut:str, verbose=False, n_jo
     return dict_measures
 
 
-def evaluate_single_run(files: List[str], dataset: str, result_file:str, sut:str, verbose=False, n_jobs=1, origin_csv=None):
+def evaluate_single_run(files: List[str], dataset: str, result_file:str, sut:str, verbose=False, n_jobs=1, origin_csv=None, row_order_invariant=False, nrows=None):
     effective_jobs = max(1, min(int(n_jobs), os.cpu_count() or 1))
 
     if effective_jobs == 1:
@@ -92,11 +94,11 @@ def evaluate_single_run(files: List[str], dataset: str, result_file:str, sut:str
         for i, f in enumerate(files):
             if i % max(1, n // 10) == 0:
                 print(f"  {i}/{n} files...")
-            file_measures.append(evaluate_single_file(filename=f, dataset=dataset, sut=sut, verbose=verbose, origin_csv=origin_csv))
+            file_measures.append(evaluate_single_file(filename=f, dataset=dataset, sut=sut, verbose=verbose, origin_csv=origin_csv, row_order_invariant=row_order_invariant, nrows=nrows))
         print(f"  {n}/{n} files done.")
     # parallel
     else:
-        args = [{"filename": f, "dataset": dataset, "sut": sut, "verbose": verbose, "origin_csv": origin_csv} for f in files]
+        args = [{"filename": f, "dataset": dataset, "sut": sut, "verbose": verbose, "origin_csv": origin_csv, "row_order_invariant": row_order_invariant, "nrows": nrows} for f in files]
         # fork() in a multi-threaded parent triggers a DeprecationWarning on Py3.12; silence it at fork time
         with warnings.catch_warnings():
             warnings.filterwarnings("ignore", message=r"This process .* is multi-threaded")
@@ -109,15 +111,21 @@ def evaluate_single_run(files: List[str], dataset: str, result_file:str, sut:str
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--sut", default=None, help="The single system to benchmark, if not running the evaluation for all of them")
-    parser.add_argument("--dataset", default="polluted_files", help="The dataset containing the input CSV files")
+    parser.add_argument("--dataset", default="csv_storm", help="The dataset containing the input CSV files")
     parser.add_argument("--result", default="./results", help="The root path where the results of the loading are")
     parser.add_argument("--verbose", action="store_true", help="Whether to print filenames as they are processed")
     parser.add_argument("--njobs", default=100, help="The number of jobs to parallelize the computation")
     parser.add_argument("--origin-csv", default=None,
                         help="Pre-pollution source CSV; a cell is accepted if it matches either "
                              "the clean value or this origin value")
+    parser.add_argument("--nrows", type=int, default=None,
+                        help="Compare only the first N data rows after the header when evaluating correctness")
     parser.add_argument("--use-origin-csv", action="store_true", default=False,
                         help="Auto-detect and use data/{dataset}/source.csv as origin fallback (default: off)")
+    parser.add_argument("--no-row-order-invariant", dest="row_order_invariant",
+                        action="store_false", default=True,
+                        help="Disable row-order invariance and require the loaded rows in the exact "
+                             "clean order (invariant is on by default)")
     parser.add_argument("--cached-only", action="store_true", default=False,
                         help="Only read existing *_results.csv files and aggregate; do not recompute "
                              "any scores. Lets you show the full previously-computed results even if "
@@ -129,6 +137,10 @@ def main():
     dataset = args.dataset
     RESULT_DIR = args.result
     N_JOBS = int(args.njobs)
+    NROWS = args.nrows
+
+    if NROWS is not None and NROWS < 0:
+        parser.error("--nrows must be non-negative or omitted")
 
     origin_csv = args.origin_csv
     if origin_csv is None and args.use_origin_csv:
@@ -136,7 +148,8 @@ def main():
             if os.path.exists(candidate):
                 origin_csv = candidate
                 break
-    suffix = "_incl_origin" if origin_csv is not None else ""
+    row_order_invariant = bool(args.row_order_invariant)
+    suffix = ("_incl_origin" if origin_csv is not None else "") + ("" if row_order_invariant else "_no_row_order_invariance")
     weights = load_weights(dataset)
 
     verbose = bool(args.verbose)
@@ -163,7 +176,7 @@ def main():
         result_file = f"{RESULT_DIR}/{s}/{dataset}/{s}_results{suffix}.csv"
         if not CACHED_ONLY and (UPDATE_SYSTEM is None or s == UPDATE_SYSTEM):
             print(f"\n[{eval_systems.index(s) + 1}/{len(eval_systems)}] Evaluating {s}...")
-            evaluate_single_run(files=files, dataset=dataset, result_file=result_file, sut=s, n_jobs=N_JOBS, verbose=verbose, origin_csv=origin_csv)
+            evaluate_single_run(files=files, dataset=dataset, result_file=result_file, sut=s, n_jobs=N_JOBS, verbose=verbose, origin_csv=origin_csv, row_order_invariant=row_order_invariant, nrows=NROWS)
         if not os.path.exists(result_file):
             continue
         df = pd.read_csv(result_file)
