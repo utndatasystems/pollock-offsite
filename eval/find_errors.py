@@ -309,6 +309,7 @@ def load_malformed_report(path):
 def _write_diff_pair_md(f, exp_val, got_val, line_width=110):
     """Write one bullet point containing the Expected/Got diff, split into 2-line code blocks."""
     def chunks(s, w):
+        s = s.replace("\r\n", "\\r\\n").replace("\n", "\\n").replace("\r", "\\r")
         return [s[i:i+w] for i in range(0, max(len(s), 1), w)]
 
     exp_chunks = chunks(exp_val, line_width)
