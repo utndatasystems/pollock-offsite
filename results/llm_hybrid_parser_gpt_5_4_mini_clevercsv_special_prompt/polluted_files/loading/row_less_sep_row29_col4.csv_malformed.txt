@@ -1,2 +1,0 @@
-Malformed rows: 1
-{"line_num": 30, "reason": "MISSING COLUMNS: Expected Number of Columns: 9 Found: 8", "raw": "21/03/2018,07:00,1,BH-5486$0.91,Women's Wet Suit,\"Ideal for kayaking, paddle boarding and surfing, this wetsuit covers your core in 3 mm neoprene for maximum warmth, while 2 mm thickness on your arms and legs ensures your range of motion is at its best.\",\"https://www.example.com/product/BH_5486.html\",", "repaired": true}

@@ -67,11 +67,6 @@ parser.add_argument(
     help="Dry-run: build all prompts and count tokens without calling the LLM",
 )
 parser.add_argument(
-    "--special-prompt",
-    action="store_true",
-    help="Use the alternate LLM repair prompt",
-)
-parser.add_argument(
     "--file",
     default=None,
     help="Process only this single file from the dataset's csv/ dir (basename or path). "
@@ -118,8 +113,6 @@ if USE_CLEVERCSV:
     sut += '_clevercsv' if LLM_DIALECT else '_clevercsv_only'
 elif USE_DUCKDB_SNIFF:
     sut += '_duckdb' if LLM_DIALECT else '_duckdb_only'
-if args.special_prompt:
-    sut += '_special_prompt'
 DATASET = os.environ.get('DATASET', 'polluted_files')
 IN_DIR = join(REPO_ROOT, 'data', DATASET, 'csv')
 CLEAN_DIR = join(REPO_ROOT, 'data', DATASET, 'clean')
@@ -213,7 +206,6 @@ for idx, file in enumerate(benchmark_files):
                 sidecar_path=llm_sidecar,
                 llm_context_lines=LLM_CONTEXT_LINES,
                 reset_sidecar=(time_rep == 0),
-                special_prompt=args.special_prompt,
                 verbose=args.verbose,
             )
             end = time.time()

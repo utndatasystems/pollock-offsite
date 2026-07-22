@@ -11,15 +11,7 @@ from dialect import CSVDialect, parse_record
 from llm import _extract_json_object, call_llm
 
 
-DEFAULT_REPAIR_PROMPT = """
-Repair faulty CSV records. Return JSON only, no Markdown, no commentary.
-For each input line, output the repaired content as a list of field values, not as CSV text.
-Return unescaped field values.
-Do not CSV-escape inside field values.
-JSON escaping is allowed only because the response is JSON.
-""".strip()
-
-SPECIAL_REPAIR_PROMPT = """
+REPAIR_PROMPT = """
 Repair faulty CSV records. Return JSON only, no Markdown, no commentary.
 For each input line, return the respective field values, not CSV text.
 Do not CSV-escape inside field values; JSON escaping is allowed only because the response is JSON.
@@ -32,13 +24,6 @@ Also keep faulty non-escaped quote characters e.g. those that are just opened an
 
 Priority order: exactly hit the expected column count; each value fits its column semantically (e.g. from header or example rows); preserve original cell text.
 """.strip()
-
-
-def _repair_instruction_text(special_prompt: bool) -> str:
-    if not special_prompt:
-        return DEFAULT_REPAIR_PROMPT
-
-    return SPECIAL_REPAIR_PROMPT
 
 
 def _unique_duckdb_columns(count: int) -> Dict[str, str]:
@@ -440,7 +425,6 @@ def infer_repairs_with_llm(
     rejects: List[Dict[str, Any]],
     context_lines: int,
     trace: Any,
-    special_prompt: bool = False,
 ) -> Dict[int, Dict[str, Any]]:
     faulty_lines = _dedupe_rejects_for_prompt(rejects)
     if not faulty_lines:
@@ -455,7 +439,7 @@ def infer_repairs_with_llm(
         "faulty_lines": faulty_lines,
     }
     prompt = "\n".join([
-        _repair_instruction_text(special_prompt),
+        REPAIR_PROMPT,
         "",
         "Response shape:",
         '{"repairs": [{"line": <line number>, "fields": [<string>, ...]}]}',

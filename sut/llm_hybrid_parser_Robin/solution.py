@@ -69,7 +69,6 @@ def parse_csv_with_validation(
     sidecar_path: str = None,
     llm_context_lines: int = 10,
     reset_sidecar: bool = True,
-    special_prompt: bool = False,
     verbose: bool = False,
 ) -> Tuple[pd.DataFrame, List[Dict[str, Any]]]:
     """
@@ -91,7 +90,6 @@ def parse_csv_with_validation(
         use_clevercsv=use_clevercsv,
         use_duckdb_sniff=use_duckdb_sniff,
         llm_context_lines=llm_context_lines,
-        special_prompt=special_prompt,
     )
 
     # Non-LLM dialect sniffer: CleverCSV or DuckDB (mutually exclusive, both optional).
@@ -186,7 +184,6 @@ def parse_csv_with_validation(
             rejects,
             llm_context_lines,
             trace,
-            special_prompt=special_prompt,
         )
         for item in malformed:
             if item["line_num"] in repairs:
