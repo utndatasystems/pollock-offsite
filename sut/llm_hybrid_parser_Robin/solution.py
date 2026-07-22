@@ -128,7 +128,12 @@ def parse_csv_with_validation(
     has_header = dialect.header_rows > 0
 
     llm_columns = llm_mapping.get("column_names") if llm_mapping else None
-    if isinstance(llm_columns, list) and llm_columns and all(isinstance(c, str) for c in llm_columns):
+    if (
+        dialect.header_rows > 0
+        and isinstance(llm_columns, list)
+        and llm_columns
+        and all(isinstance(c, str) for c in llm_columns)
+    ):
         header = [str(c) for c in llm_columns]
         has_header = True
         trace.write("llm_column_names_applied", columns=header)

@@ -224,7 +224,10 @@ for idx, file in enumerate(benchmark_files):
                     print(f"\t  line {row['line_num']}: {row['reason']} — {row['raw']!r}")
                 if CHEAT:
                     print("\t  cheat mode: loaded ground truth")
-            df.to_csv(out_filepath, index=False)
+            if df.empty and len(df.columns) == 0:
+                open(out_filepath, "w").close()
+            else:
+                df.to_csv(out_filepath, index=False)
             write_malformed_report(malformed_path, malformed=malformed)
         except Exception as e:
             end = time.time()
