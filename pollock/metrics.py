@@ -34,9 +34,12 @@ def successful_csv(filepath):
         return 1
 
 
-def header_record_cell_measures_csv(source_csv, loaded_csv, n_jobs=1):
+def header_record_cell_measures_csv(source_csv, loaded_csv, n_jobs=1, nrows=None):
     # Both files are parsed as normal comma-delimited CSV after conversion:
     # source_csv is the expected clean file, loaded_csv is the SUT output.
+    if nrows is not None and nrows < 0:
+        raise ValueError("nrows must be non-negative or None")
+
     with open(source_csv, "r", encoding="utf-8-sig") as f:
         reader = csv.reader(f, delimiter=",", quotechar='"', doublequote=True)
         source_rows = [row for row in reader]
@@ -52,6 +55,10 @@ def header_record_cell_measures_csv(source_csv, loaded_csv, n_jobs=1):
         with open(loaded_csv, "r", encoding=encoding) as f:
             reader = csv.reader(f, delimiter=",", quotechar='"', doublequote=True)
             loaded_rows = [row for row in reader]
+
+    if nrows is not None:
+        source_rows = source_rows[: nrows + 1]
+        loaded_rows = loaded_rows[: nrows + 1]
 
     if not len(source_rows):
         return 1., 1., 1., 1., 1., 1., 1., 1., 1.
@@ -149,19 +156,26 @@ def _rows_match(expected_rows, loaded_rows, row_order_invariant):
     return True
 
 
-def compare_files(source_csv, loaded_csv, n_jobs=1, origin_csv=None, row_order_invariant=False):
+def compare_files(source_csv, loaded_csv, n_jobs=1, origin_csv=None, row_order_invariant=False, nrows=None):
     # Both files are parsed as normal comma-delimited CSV after conversion:
     # source_csv is the expected clean file, loaded_csv is the SUT output.
     # The output is accepted if it matches the clean file as a whole, or (when
     # origin_csv is given) the pre-pollution origin file as a whole -- never a mix
     # of the two, so once one version fits the output must match all of it.
     # row_order_invariant (optional) accepts the rows in any order.
+    if nrows is not None and nrows < 0:
+        raise ValueError("nrows must be non-negative or None")
+
     source_rows = _read_csv_rows(source_csv)
 
     try:
         loaded_rows = _read_csv_rows(loaded_csv)
     except Exception:
         return False
+
+    if nrows is not None:
+        source_rows = source_rows[: nrows + 1]
+        loaded_rows = loaded_rows[: nrows + 1]
 
     if _rows_match(source_rows, loaded_rows, row_order_invariant):
         return True
@@ -171,6 +185,8 @@ def compare_files(source_csv, loaded_csv, n_jobs=1, origin_csv=None, row_order_i
             origin_rows = _read_csv_rows(origin_csv)
         except Exception:
             return False
+        if nrows is not None:
+            origin_rows = origin_rows[: nrows + 1]
         return _rows_match(origin_rows, loaded_rows, row_order_invariant)
 
     return False
