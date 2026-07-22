@@ -1,5 +1,5 @@
 sut,correct,wrong,accuracy,weighted_accuracy,score
-llm_hybrid_parser_gpt_5_4_duckdb_special_prompt,2081,209,0.9087336244541485,0.9087336244541485,2081
+llm_hybrid_parser_gpt_5_4_duckdb_special_prompt,2126,164,0.9283842794759826,0.9283842794759826,2126
 duckdbauto,2,2288,0.0008733624454148472,0.0008733624454148472,2
 llm_hybrid_parser_gpt_5_4_mini_duckdb_special_prompt,1626,664,0.7100436681222707,0.7100436681222707,1626
 llm_hybrid_parser_gpt_5_4_clevercsv_special_prompt,2024,266,0.8838427947598253,0.8838427947598253,2024

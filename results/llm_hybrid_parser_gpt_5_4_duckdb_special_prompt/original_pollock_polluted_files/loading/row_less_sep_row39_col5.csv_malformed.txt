@@ -1,1 +1,2 @@
-Malformed rows: 0
+Malformed rows: 1
+{"line_num": 40, "reason": "MISSING COLUMNS: Expected Number of Columns: 9 Found: 8", "raw": "13/04/2018,11:00,4,YY-9611,$3.79\"Women's Hunting Shoes, 10\"\"\",\"The original boot, made since 1912. Now with even more protection from cold, wet weather, with the addition of a waterproof liner and warm insulation.\",\"https://www.example.com/product/YY_9611.html\",", "repaired": true}
