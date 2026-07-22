@@ -299,10 +299,16 @@ def _scan_rows_by_width(
             if raw == "":
                 continue
             fields = parse_record(raw, dialect)
-            if len(fields) == expected_columns:
+            # Count again honouring every quote, not just one starting a field: a
+            # deleted delimiter otherwise hides behind a delimiter exposed inside the
+            # value that follows it, leaving the width correct. A row only counts as
+            # good when both readings agree on the width.
+            strict = parse_record(raw, dialect, quotes_anywhere=True)
+            if len(fields) == expected_columns and len(strict) == expected_columns:
                 good_rows.append((line_num, fields))
                 continue
-            error_type = "TOO MANY COLUMNS" if len(fields) > expected_columns else "MISSING COLUMNS"
+            found = len(fields) if len(fields) != expected_columns else len(strict)
+            error_type = "TOO MANY COLUMNS" if found > expected_columns else "MISSING COLUMNS"
             rejects.append({
                 "line": line_num,
                 "line_byte_position": None,
@@ -311,7 +317,7 @@ def _scan_rows_by_width(
                 "column_name": None,
                 "error_type": error_type,
                 "csv_line": raw,
-                "error_message": f"Expected Number of Columns: {expected_columns} Found: {len(fields)}",
+                "error_message": f"Expected Number of Columns: {expected_columns} Found: {found}",
                 "source": "local_width_validation",
             })
     return good_rows, rejects
