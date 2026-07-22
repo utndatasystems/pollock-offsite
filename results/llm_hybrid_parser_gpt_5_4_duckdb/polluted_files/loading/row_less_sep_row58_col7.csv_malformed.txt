@@ -1,0 +1,2 @@
+Malformed rows: 1
+{"line_num": 59, "reason": "MISSING COLUMNS: Expected Number of Columns: 9 Found: 8", "raw": "23/05/2018,21:15,2,GN-1741,$48.05,\"Beach Chair, Print\",\"With four reclining positions and backpack straps for easy carrying, this is the most comfortable and convenient folding beach chair we've ever offered.\"\"https://www.example.com/product/GN_1741.html\",", "repaired": true}

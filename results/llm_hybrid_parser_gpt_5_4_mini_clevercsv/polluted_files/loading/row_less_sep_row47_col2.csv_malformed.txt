@@ -1,0 +1,2 @@
+Malformed rows: 1
+{"line_num": 48, "reason": "MISSING COLUMNS: Expected Number of Columns: 9 Found: 8", "raw": "23/04/2018,13:3026,BH-2268,$43.61,Men's Shorts,\"We used performance-packed swim fabric to create board shorts that keep up during the most rigorous adventures, with enough style for heading into town afterward.\",\"https://www.example.com/product/BH_2268.html\",", "repaired": true}

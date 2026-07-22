@@ -1,0 +1,2 @@
+Malformed rows: 1
+{"line_num": 20, "reason": "MISSING COLUMNS: Expected Number of Columns: 9 Found: 7; MISSING COLUMNS: Expected Number of Columns: 9 Found: 8; UNQUOTED VALUE: Value with unterminated quote found.", "raw": "27/02/2018,04:30,\"0,ZN-2049,$83.32,\"Women's Hikers, Low Ventilated\",\"Youll be light on your feet with these ultralightweight, breathable hikers. But dont let the comfortable, airy construction fool you: they deliver all the protection and stability you expect from a trail shoe.\",\"https://www.example.com/product/ZN_2049.html\",", "repaired": true}

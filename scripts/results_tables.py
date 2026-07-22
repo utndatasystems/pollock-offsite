@@ -2,10 +2,9 @@ import argparse
 import os
 import pandas as pd
 
-SUT_ORDER = ["clevercs", "csvcommons", "rhypoparsr",
+SUT_ORDER = ["clevercs", "csvcommons",
              "opencsv", "pandas", "duckdbparse", "duckdbauto", "pycsv", "rcsv", "univocity",
-             "mariadb", "mysql", "postgres", "sqlite", "libreoffice",
-             "spreaddesktop", "spreadweb", "dataviz"]
+             "mysql", "postgres", "sqlite"]
 
 
 def print_aggregate(dataset):

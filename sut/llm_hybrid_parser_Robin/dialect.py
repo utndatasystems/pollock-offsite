@@ -232,7 +232,13 @@ def infer_dialect_with_llm(
     return {}
 
 
-def parse_record(line: str, dialect: CSVDialect) -> List[str]:
+def parse_record(line: str, dialect: CSVDialect, quotes_anywhere: bool = False) -> List[str]:
+    # quotes_anywhere lets a quote open quoting wherever it appears instead of only
+    # at the start of a field. Used by the width check: DuckDB treats a quote inside
+    # an unquoted value as literal text, which lets a deleted delimiter hide -- the
+    # value after it is no longer quote-wrapped, so a delimiter sitting inside it
+    # gets exposed, one separator is lost, one exposed, and the width still matches.
+    # It stays off for dialect scoring, where it would sink space-delimited files.
     delimiter = dialect.delimiter
     quote = dialect.quotechar
     escape = dialect.escapechar
@@ -264,7 +270,7 @@ def parse_record(line: str, dialect: CSVDialect) -> List[str]:
             current = []
             i += len(delimiter)
             continue
-        if quote and line.startswith(quote, i) and not current:
+        if quote and line.startswith(quote, i) and (quotes_anywhere or not current):
             in_quotes = True
             i += len(quote)
             continue

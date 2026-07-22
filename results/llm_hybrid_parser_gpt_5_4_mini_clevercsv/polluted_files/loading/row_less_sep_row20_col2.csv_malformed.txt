@@ -1,0 +1,2 @@
+Malformed rows: 1
+{"line_num": 21, "reason": "MISSING COLUMNS: Expected Number of Columns: 9 Found: 8", "raw": "28/02/2018,04:453,GN-5043,$69.07,\"Women's Comfort Cycling Jersey, Short-Sleeve\",\"This women's quarter-zip cycling shirt is our most popular cycling jersey, thanks in part to sun protection that's built right in. With a more relaxed look and fit than most cycling apparel.\",\"https://www.example.com/product/GN_5043.html\",", "repaired": true}

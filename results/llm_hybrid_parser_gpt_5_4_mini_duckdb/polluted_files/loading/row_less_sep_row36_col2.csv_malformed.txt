@@ -1,0 +1,2 @@
+Malformed rows: 1
+{"line_num": 37, "reason": "MISSING COLUMNS: Expected Number of Columns: 9 Found: 8", "raw": "29/03/2018,09:003,AN-9272,$57.75,Women's Essential Running Vest,\"This lightweight fitness vest allows excellent freedom of movement while resisting wind and light rain, making it perfect for running, hiking, cycling or walks around town.\",\"https://www.example.com/product/AN_9272.html\",", "repaired": true}

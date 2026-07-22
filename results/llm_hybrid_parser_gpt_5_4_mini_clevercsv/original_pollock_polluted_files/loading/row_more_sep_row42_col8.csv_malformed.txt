@@ -1,0 +1,2 @@
+Malformed rows: 1
+{"line_num": 43, "reason": "TOO MANY COLUMNS: Expected Number of Columns: 9 Found: 10", "raw": "17/04/2018,12:00,16,CC-5271,$38.81,\"Kids' Shirt, Short Sleeve, Graphic\",\"With its great coverage and UPF 50+ sun protection, this quick-drying kids' rashguard blocks the sun, but not the summer fun.\",\"https://www.example.com/product/CC_5271.html\",,"}

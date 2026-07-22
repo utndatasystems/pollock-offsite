@@ -79,7 +79,7 @@ bash benchmark.sh
 ```
 This will take a looong time, especially on the first pass as the docker images are sometimes > 300MB
 
-To speed it up, comment out the SuTs that run for a long time like rhypoparsr or libreoffice.
+To speed it up, comment out the SuTs that run for a long time.
 
 </details>
 
@@ -131,23 +131,14 @@ Have fun and happy hacking ;)
 | ----------- | -------------: | ---------------: | --------------------------- | ------- |
 | custom      |    10.0 (soon) |      10.0 (soon) | No                        | Python or Docker  |
 | duckdbparse |       9.961516 |         9.599662 | Yes                         | Python  |
-| mariadb     |       9.953843 |         9.610157 | Yes                         | Docker  |
 | mysql       |       9.953843 |         9.610157 | Yes                         | Docker  |
 | univocity   |       9.939419 |         7.936767 | No          | Docker  |
 | sqlite      |       9.936568 |         9.589233 | Yes                         | Docker  |
-| spreaddesktop|	    9.929668 |         9.597198 | N/A         | N/A |
-| libreoffice |       9.925582 |         7.833335 | Yes                         | Docker  |
 | pandas      |       9.884786 |         7.909017 | Yes                         | Python  |
 | pycsv       |       9.724189 |         9.436467 | No          | Python  |
-|spreadweb    |	      9.721757 |         9.431587 | N/A         | N/A |  
 | duckdbauto  |       9.646808 |         8.996221 | No                          | Python  |
 | clevercs    |       9.193083 |         9.453858 | No          | Python  |
-| dataviz     |       5.003541 |         5.152075 | N/A     | N/A |
-| hypoparsr   |       3.877452 |         4.400585 | No | Docker |
 | postgres    |       0.141977 |         7.872715 | Yes                         | Docker  |
-
-
-The rows with N/A are SuTs where the license agreement prohibits public benchmarking which is why the benchmark authors only them using a pseudonym and without Docker reproducibility.
 
 
 # Detailed explanation of the Pollock Benchmark Structure 

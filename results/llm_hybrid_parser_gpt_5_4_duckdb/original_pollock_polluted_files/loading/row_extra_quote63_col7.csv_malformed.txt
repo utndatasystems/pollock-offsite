@@ -1,0 +1,2 @@
+Malformed rows: 1
+{"line_num": 64, "reason": "MISSING COLUMNS: Expected Number of Columns: 9 Found: 8; UNQUOTED VALUE: Value with unterminated quote found.", "raw": "28/05/2018,22:30,1,WH-2859,$72.91,\"Tee, Traditional Fit, Long-Sleeve\",\"Made of soft cotton that resists wrinkles, stains, shrinking, fading and pilling, our resilient tee keeps its shape wash after wash.\",\"\"https://www.example.com/product/WH_2859.html\",", "repaired": true}

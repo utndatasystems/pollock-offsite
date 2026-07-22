@@ -18,10 +18,9 @@ from dotenv import load_dotenv
 load_dotenv()
 
 
-SUT_ORDER = ["clevercs", "csvcommons", "rhypoparsr", 
-            "opencsv", "pandas", "duckdbparse","duckdbauto", "pycsv", "rcsv", "univocity", 
-            "mariadb", "mysql", "postgres", "sqlite", "libreoffice", 
-            "spreaddesktop", "spreadweb", "dataviz"]
+SUT_ORDER = ["clevercs", "csvcommons",
+            "opencsv", "pandas", "duckdbparse","duckdbauto", "pycsv", "rcsv", "univocity",
+            "mysql", "postgres", "sqlite"]
 
 SUB_MEASURES = {"table" : "file_double.*|file_header.*|file_no.*|file_one.*|file_multi.*|file_preamble.*",
         "inconsistent": "%row_less.*|row_more",
