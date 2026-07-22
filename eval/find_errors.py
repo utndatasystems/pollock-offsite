@@ -217,6 +217,8 @@ def load_sidecar_dialect(sidecar_path):
 
 
 def format_params(params):
+    if not isinstance(params, dict):
+        return "not available"
     keys = ["delimiter", "quotechar", "escapechar", "row_delimiter",
             "encoding", "header_lines", "preamble_lines", "n_columns"]
     parts = []
@@ -228,6 +230,8 @@ def format_params(params):
 
 
 def format_params_md(params):
+    if not isinstance(params, dict):
+        return "*not available*"
     keys = ["delimiter", "quotechar", "escapechar", "row_delimiter",
             "encoding", "header_lines", "preamble_lines", "n_columns"]
     parts = []
