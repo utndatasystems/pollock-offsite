@@ -39,8 +39,8 @@ def parse_csv(
     1) Source CSV is read and inserted into a prompt template.
     2) The prompt is sent to the LLM, which returns a fixed CSV and
        an error report in JSON format.
-    3) The fixed CSV is parsed into a pandas DataFrame, and the error report
-       is attached to the DataFrame's attributes.
+    3) The fixed CSV is validated by parsing it with pandas, and the error
+       report is attached to the resulting DataFrame's attributes.
 
     Args:
         csv_path:
@@ -56,7 +56,9 @@ def parse_csv(
             Print the raw LLM response when True.
 
     Returns:
-        A DataFrame reconstructed from the LLM-generated CSV.
+        A DataFrame parsed from the LLM-generated CSV for validation and
+        inspection. Benchmark output should use df.attrs["llm_fixed_csv"]
+        directly to avoid an additional pandas serialization step.
 
         Additional metadata is available through:
 
@@ -95,29 +97,8 @@ def parse_csv(
     # Extracts the fixed CSV and JSON error report from the LLM output.
     fixed_csv, error_report = _extract_sections(llm_output)
 
-    if not fixed_csv.strip():
-        raise ValueError("The LLM returned an empty fixed-CSV section")
-
-    try:
-        dataframe = pd.read_csv(
-            StringIO(fixed_csv),
-            nrows=nrows,
-        )
-    except pd.errors.ParserError:
-        separator = _infer_separator(fixed_csv)
-
-        try:
-            dataframe = pd.read_csv(
-                StringIO(fixed_csv),
-                sep=separator,
-                engine="python",
-                nrows=nrows,
-            )
-        except (pd.errors.ParserError, ValueError) as exc:
-            raise ValueError(
-                "The LLM returned a fixed-CSV section, but pandas "
-                "could not parse it."
-            ) from exc
+    fixed_csv = _validate_fixed_csv(fixed_csv)
+    dataframe = _read_reconstructed_csv(fixed_csv, nrows=nrows)
 
     dataframe.attrs["llm_error_report"] = error_report
     dataframe.attrs["llm_messages"] = messages
@@ -199,6 +180,9 @@ def _read_reconstructed_csv(
             return pd.read_csv(
                 StringIO(fixed_csv),
                 nrows=nrows,
+                dtype=str,
+                keep_default_na=False,
+                na_filter=False,
                 **options,
             )
         except (pd.errors.ParserError, UnicodeError, ValueError) as exc:

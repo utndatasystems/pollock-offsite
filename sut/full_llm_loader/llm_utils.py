@@ -99,7 +99,7 @@ def _query_llm(
         "temperature": 0.0,
         "stream": False,
     }
-    payload[_completion_token_limit_param(model)] = 3000
+    payload[_completion_token_limit_param(model)] = 16000
 
     if backend == "ollama":
         payload["reasoning_effort"] = os.environ.get(
@@ -170,12 +170,21 @@ def _query_llm(
             f"Unexpected LLM response: missing choices\nResponse: {body}"
         )
 
-    message = choices[0].get("message", {})
+    choice = choices[0]
+    finish_reason = choice.get("finish_reason")
+    if finish_reason == "length":
+        limit_param = _completion_token_limit_param(model)
+        limit_value = payload.get(limit_param)
+        raise RuntimeError(
+            "LLM response was truncated because it reached the configured "
+            f"output token limit ({limit_param}={limit_value}). Increase the "
+            "limit or reduce the requested output before parsing this result."
+        )
+
+    message = choice.get("message", {})
     content = message.get("content")
 
     if not isinstance(content, str) or not content.strip():
-        choice = choices[0]
-        finish_reason = choice.get("finish_reason")
         message_reasoning = message.get("reasoning") or message.get("thinking")
         if backend == "ollama" and message_reasoning:
             raise RuntimeError(

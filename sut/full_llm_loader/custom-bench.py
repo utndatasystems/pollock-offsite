@@ -189,7 +189,12 @@ for idx, file in enumerate(tqdm(benchmark_files, total=len(benchmark_files), des
                 verbose=args.verbose,
             )
             end = time.time()
-            df.to_csv(out_filepath, index=False)
+            fixed_csv = df.attrs["llm_fixed_csv"]
+            with open(out_filepath, 'w', encoding='utf-8', newline='') as text_file:
+                text_file.write(fixed_csv)
+                newline = chr(10)
+                if fixed_csv and not fixed_csv.endswith(newline):
+                    text_file.write(newline)
         except Exception as e:
             end = time.time()
             print('\t', e)
