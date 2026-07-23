@@ -11,7 +11,6 @@ from .randdata import (
     randomDateStr,
     randomType,
     randomInt,
-    randomJsonStr,
     randomLongOfType,
 )
 from .data_types import parse_cell
@@ -551,95 +550,81 @@ def superheader(
 
 
 
-def embeddedFiles(file: CSVFile, row: int | None = None, col: int | None = None):
-    """Backward-compatible alias for embeddedJSON."""
-    return embeddedJSON(file, row=row, col=col)
-
-
-def embeddedJSON(file: CSVFile, row: int | None = None, col: int | None = None):
-    """Embeds JSON-like file content inside a single cell."""
-    if row is None:
-        row = random.randint(1, _safe_row_count(file))
-    if col is None:
-        col = random.randint(0, _safe_col_count(file))
-    pb.changeCell(file, row=row + 1, col=col + 1, new_content=randomJsonStr())
-    _set_polluted_filename(file, f"file_embedded_json_cell_{row}_{col}.csv")
-
-
 @manually_verified
-def repackageCellsToJSON(
+def embeddedJSON(
     file: CSVFile,
     row: int | None = None,
     start_col: int | None = None,
-    end_col: int | None = None,
-    header_row: int = 0,
+    l_col: int | None = None,
 ):
-    """
-    Repackages cells from start_col to end_col in one data row into a single
-    JSON object using the header row as keys.
+    """Collapse a row extract in place into one embedded JSON cell.
 
-    Indexing:
-    - row, start_col, end_col, header_row are 0-based API parameters.
-    - pb.changeCell uses 1-based row/col.
-    - pb.deleteCells with a list expects 0-based column indexes.
+    All positions are 0-based. row selects the row to mutate, start_col
+    selects the first source column, and l_col selects how many consecutive
+    source columns are moved into the JSON payload. The JSON cell is inserted
+    at start_col after the original source cells are removed.
     """
+    row_count = _safe_row_count(file)
+    col_count = _safe_col_count(file)
+
+    if row_count == 0 or col_count == 0:
+        raise ValueError("Cannot embed JSON in an empty file")
 
     if row is None:
-        row = random.randint(1, _safe_row_count(file) - 1)
+        row = random.randint(1, row_count - 1) if row_count > 1 else 0
+
+    if row < 0 or row >= row_count:
+        raise ValueError(f"Row {row} is out of range for file with {row_count} rows")
 
     row_values = _row_values(file, row=row + 1)
-    header_values = _row_values(file, row=header_row + 1)
+    header_values = _row_values(file, row=1)
+    source_width = min(len(row_values), len(header_values))
 
-    if not row_values:
-        raise ValueError(f"Row {row} has no values to repackage")
+    if source_width == 0:
+        raise ValueError(f"Row {row} has no values to embed")
 
-    if not header_values:
-        raise ValueError(f"Header row {header_row} has no values")
+    if l_col is None:
+        l_col = random.randint(1, min(3, source_width))
+    elif l_col < 1:
+        raise ValueError(f"l_col must be at least 1, got {l_col}")
 
-    max_col = min(len(row_values), len(header_values)) - 1
+    if l_col > source_width:
+        raise ValueError(
+            f"l_col={l_col} is too large for row {row} with {source_width} source cells"
+        )
 
     if start_col is None:
-        start_col = random.randint(0, max_col)
+        start_col = random.randint(0, source_width - l_col)
 
-    if end_col is None:
-        end_col = random.randint(start_col, max_col)
-
-    if start_col < 0 or end_col < start_col or end_col > max_col:
+    end_col = start_col + l_col - 1
+    if start_col < 0 or end_col >= source_width:
         raise ValueError(
-            f"Invalid column range: start_col={start_col}, "
-            f"end_col={end_col}, max_col={max_col}"
+            f"Invalid source extract: start_col={start_col}, l_col={l_col}, "
+            f"valid source range is 0..{source_width - 1}"
         )
 
-    json_object = {
-        str(header_values[i]): row_values[i]
-        for i in range(start_col, end_col + 1)
-    }
+    payload = {}
+    for idx in range(start_col, end_col + 1):
+        key = header_values[idx] or f"column_{idx + 1}"
+        if key in payload:
+            key = f"{key}_{idx + 1}"
+        payload[key] = row_values[idx]
 
-    json_str = json.dumps(json_object, ensure_ascii=False)
-
-    # Put the JSON into the first cell of the selected range.
-    pb.changeCell(
+    pb.deleteCells(file, row=row + 1, col=list(range(start_col, end_col + 1)))
+    pb.addCells(
         file,
         row=row + 1,
-        col=start_col + 1,
-        new_content=json_str,
+        position=start_col,
+        content=json.dumps(payload, ensure_ascii=False),
+        role="data",
     )
-
-    # Delete the remaining cells in the selected range.
-    # Example: start_col=2, end_col=5 means:
-    # keep col 2 as JSON, delete cols 3, 4, 5.
-    if end_col > start_col:
-        pb.deleteCells(
-            file,
-            row=row + 1,
-            col=list(range(start_col + 1, end_col + 1)),
-        )
-
     _set_polluted_filename(
         file,
-        f"file_repackaged_json_cell_row_{row}_cols_{start_col}_{end_col}.csv"
+        f"file_embedded_json_cell_{row}_{start_col}_len_{l_col}.csv",
     )
 
+
+@todo
 def embeddedCSV(file: CSVFile):
     """Embeds CSV-like file content inside a single cell."""
     payload = "id,name\n1,alpha\n2,beta"
