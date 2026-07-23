@@ -3,6 +3,7 @@ import os
 import pollock.polluters_stdlib_v1 as pl
 import pollock.polluters_stdlib_v2 as pl2
 import random
+import shutil
 
 from copy import deepcopy
 from pollock.CSVFile import CSVFile
@@ -63,12 +64,24 @@ parser.add_argument(
     help="RNG seed",
 )
 
+parser.add_argument(
+    "--overwrite",
+    action="store_true",
+    help="Remove the output directory before creating polluted files",
+)
+
 
 args = parser.parse_args()
 
 OUT_CSV_PATH = os.path.join(args.output, "csv/")
 OUT_CLEAN_PATH = os.path.join(args.output, "clean/")
 OUT_PARAMETERS_PATH = os.path.join(args.output, "parameters/")
+
+if args.overwrite and os.path.exists(args.output):
+    if not os.path.isdir(args.output) or os.path.islink(args.output):
+        raise ValueError(f"Refusing to overwrite non-directory output path: {args.output}")
+    print(f"Removing existing output directory: {args.output}")
+    shutil.rmtree(args.output)
 
 os.makedirs(OUT_CSV_PATH, exist_ok=True)
 os.makedirs(OUT_CLEAN_PATH, exist_ok=True)
@@ -367,8 +380,7 @@ if args.polluters == "pollock2.0":
     execute_polluter(f, pl2.mixedTimeformats)
 
     # Embedded semi-structured payloads
-    execute_polluter(f, pl2.embeddedJSON)
-    execute_polluter(f, pl2.repackageCellsToJSON, start_col=2, end_col=5, row=3)
+    execute_polluter(f, pl2.embeddedJSON, row=2, start_col=1, l_col=4)
     execute_polluter(f, pl2.embeddedCSV)
 
     # changeRowQuotationMark() - originally missing in Pollock benchmark 
