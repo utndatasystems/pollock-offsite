@@ -22,7 +22,8 @@ Rules for the fixed CSV section:
 - Do not wrap the CSV in Markdown fences.
 - Do not include comments, explanations, or section labels inside the CSV.
 - If the file contains multiple independent tables, reconstruct the primary table only and document excluded tables in the report.
-- If no table can be reconstructed, return only a header row with positional column names that best match the evidence, and document the uncertainty in the report.
+- If no table can be reconstructed from non-empty evidence, return only a header row with positional column names that best match the evidence, and document the uncertainty in the report.
+- If the input is empty, whitespace-only, or contains no table evidence, leave the fixed CSV section empty. Do not invent headers, rows, columns, examples, placeholder data, or sample content.
 
 Use this JSON schema for the error report:
 
