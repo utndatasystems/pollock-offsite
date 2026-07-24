@@ -13,7 +13,7 @@ from .randdata import (
     randomInt,
     randomLongOfType,
 )
-from .data_types import parse_cell
+from .data_types import CellType, parse_cell
 from dateutil.parser import parse
 
 from . import constants
@@ -870,6 +870,85 @@ def mixedTimeformats(file: CSVFile, max_num_to_change=100):
     _set_polluted_filename(file, f"file_mixed_time_formats.csv")
 
 
+def _unquoted_list_items(
+    file: CSVFile,
+    col: int,
+    list_delimiter: str,
+) -> list[str]:
+    """Return distinct, list-safe values observed in a one-based data column."""
+    items = []
+    unsafe_chars = (
+        list_delimiter,
+        file.field_delimiter,
+        "\r",
+        "\n",
+        "[",
+        "]",
+        file.quotation_char,
+    )
+
+    for row in range(2, _safe_row_count(file) + 1):
+        values = _row_values(file, row=row)
+        if col > len(values):
+            continue
+
+        value = values[col - 1].strip()
+        if (
+            value
+            and len(value) <= 80
+            and not any(char and char in value for char in unsafe_chars)
+            and value not in items
+        ):
+            items.append(value)
+
+    return items
+
+
+def _unquoted_list_column(file: CSVFile, list_delimiter: str) -> int:
+    """Choose a text column whose values make plausible list members."""
+    headers = _row_values(file, row=1)
+    list_like_hints = (
+        "tag",
+        "category",
+        "type",
+        "label",
+        "name",
+        "color",
+        "size",
+        "option",
+        "code",
+        "id",
+    )
+    free_text_hints = ("comment", "note", "description")
+    candidates = []
+
+    for col in range(1, _safe_col_count(file) + 1):
+        items = _unquoted_list_items(file, col, list_delimiter)
+        if not items:
+            continue
+
+        string_ratio = sum(
+            parse_cell(item) == CellType.STRING for item in items
+        ) / len(items)
+        if string_ratio < 0.8:
+            continue
+
+        header = headers[col - 1].casefold() if col <= len(headers) else ""
+        if any(hint in header for hint in list_like_hints):
+            score = 2
+        elif any(hint in header for hint in free_text_hints):
+            score = 1
+        else:
+            score = 0
+        candidates.append((score, col))
+
+    if not candidates:
+        raise ValueError("Cannot create an unquoted list: no suitable text column found")
+
+    best_score = max(score for score, _ in candidates)
+    return random.choice([col for score, col in candidates if score == best_score])
+
+
 @manually_verified
 def unquotedList(
     file: CSVFile,
@@ -879,23 +958,30 @@ def unquotedList(
     min_list_len=2,
     max_list_len=10,
 ):
-    """
-    This polluter will replace a cell content with an unqoted list.
-    e.g. [123,456,789]
+    """Replace a cell with an unquoted list built from values in its column.
 
-    Chooses a random row+col if params are empty
+    When ``col`` is omitted, a text-oriented column is selected using its header
+    and observed values. 
+    Reusing values from that column keeps the generated list
+    plausible for the source data, for example ``[Boots,Jacket,Shoes]``.
     """
-
-    # 1-based xpath indexing
     if row is None:
-        row = random.randint(2, _safe_row_count(file)) # skip header
+        row = random.randint(2, _safe_row_count(file))  # skip header
     if col is None:
-        col = random.randint(1, _safe_col_count(file))
+        col = _unquoted_list_column(file, list_delimiter)
 
-    payload = "[" + list_delimiter.join(
-        str(random.randint(a=-100, b=1000))
-        for _ in range(random.randint(min_list_len, max_list_len))
-    ) + "]"
+    items = _unquoted_list_items(file, col, list_delimiter)
+    if not items:
+        raise ValueError(f"Cannot create an unquoted list: column {col} has no suitable values")
+
+    list_len = random.randint(min_list_len, max_list_len)
+    if list_len <= len(items):
+        selected_items = random.sample(items, k=list_len)
+    else:
+        selected_items = items + random.choices(items, k=list_len - len(items))
+        random.shuffle(selected_items)
+
+    payload = "[" + list_delimiter.join(selected_items) + "]"
     pb.changeCell(file, row=row, col=col, new_content=payload)
     _set_polluted_filename(file, f"file_unquoted_lists_row_{row}_col_{col}.csv")
 

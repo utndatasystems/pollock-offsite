@@ -15,6 +15,7 @@ import json
 import pytest
 from lxml import etree
 
+from pollock.polluters_utils import _row_values
 from tests._helpers import FakeCSVFile, assert_filename_synced, load_polluters_module, row, values
 
 p = load_polluters_module()
@@ -187,13 +188,13 @@ def test_superheader(csv_file):
     assert_filename_synced(csv_file, "file_superheader")
 
 
-def test_embedded_files(csv_file):
-    p.embeddedFiles(csv_file, row=1, col=0)
+def test_embedded_json_extract_collapses_in_place_by_default(csv_file):
+    p.embeddedJSON(csv_file, row=1, start_col=1, l_col=2)
 
-    payload = values(csv_file, "//table[1]/row[2]/cell[1]/value")[0]
-    assert payload
-    assert json.loads(payload) is not None
-    assert_filename_synced(csv_file, "file_embedded_json_cell")
+    row_values = _row_values(csv_file, row=2)
+    assert row_values[0] == "Alice"
+    assert json.loads(row_values[1]) == {"city": "Berlin", "amount": "10"}
+    assert_filename_synced(csv_file, "file_embedded_json_cell_1_1_len_2")
 
 
 def test_bom_marker(csv_file):
@@ -218,6 +219,41 @@ def test_mixed_types(csv_file):
 
     assert csv_file.row_count == before + 5
     assert_filename_synced(csv_file, "file_mixed_types")
+
+
+def test_unquoted_list_uses_values_from_explicit_column(csv_file, monkeypatch):
+    monkeypatch.setattr(p.random, "sample", lambda items, k: items[:k])
+
+    p.unquotedList(csv_file, row=2, col=2, min_list_len=2, max_list_len=2)
+
+    assert values(csv_file, "//table[1]/row[2]/cell[2]/value") == [
+        "[Berlin,Munich]"
+    ]
+    assert_filename_synced(csv_file, "file_unquoted_lists_row_2_col_2")
+
+    p.unquotedList(csv_file, row=2, col=3, min_list_len=2, max_list_len=2)
+
+    assert values(csv_file, "//table[1]/row[2]/cell[3]/value") == ["[10,20]"]
+    assert_filename_synced(csv_file, "file_unquoted_lists_row_2_col_3")
+
+
+def test_unquoted_list_prefers_list_like_text_column(monkeypatch):
+    root = etree.Element("csv", filename="base.csv", encoding="utf-8")
+    table = etree.SubElement(root, "table")
+    table.append(row(["date", "quantity", "category", "description"], role="header"))
+    table.append(row(["2024-05-27", "10", "shoes", "Waterproof trail shoes"], role="data"))
+    table.append(row(["2024-05-28", "20", "jackets", "Lightweight running jacket"], role="data"))
+    file = FakeCSVFile(xml=etree.ElementTree(root))
+    monkeypatch.setattr(p.random, "choice", lambda items: items[0])
+    monkeypatch.setattr(p.random, "sample", lambda items, k: items[:k])
+
+    p.unquotedList(file, row=2, min_list_len=2, max_list_len=2)
+
+    assert values(file, "//table[1]/row[2]/cell[3]/value") == [
+        "[shoes,jackets]"
+    ]
+    assert values(file, "//table[1]/row[2]/cell[2]/value") == ["10"]
+    assert_filename_synced(file, "file_unquoted_lists_row_2_col_3")
 
 
 def test_add_table_sideways(csv_file):

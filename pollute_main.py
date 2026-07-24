@@ -4,14 +4,14 @@ import pollock.polluters_stdlib_v1 as pl
 import pollock.polluters_stdlib_v2 as pl2
 import random
 import shutil
-
 from copy import deepcopy
+
 from pollock.CSVFile import CSVFile
 from sut.utils import print
 from tqdm import tqdm
 from faker import Faker
 
-from pollock.polluters_utils import _set_polluted_filename
+from pollock.polluters_utils import _set_polluted_filename, execute_polluter
 
 parser = argparse.ArgumentParser()
 
@@ -77,21 +77,6 @@ OUT_CSV_PATH = os.path.join(args.output, "csv/")
 OUT_CLEAN_PATH = os.path.join(args.output, "clean/")
 OUT_PARAMETERS_PATH = os.path.join(args.output, "parameters/")
 
-if args.overwrite and os.path.exists(args.output):
-    if not os.path.isdir(args.output) or os.path.islink(args.output):
-        raise ValueError(f"Refusing to overwrite non-directory output path: {args.output}")
-    print(f"Removing existing output directory: {args.output}")
-    shutil.rmtree(args.output)
-
-os.makedirs(OUT_CSV_PATH, exist_ok=True)
-os.makedirs(OUT_CLEAN_PATH, exist_ok=True)
-os.makedirs(OUT_PARAMETERS_PATH, exist_ok=True)
-
-print(f"Seeding RNG: {args.rng_seed}")
-random.seed(args.rng_seed)
-Faker.seed(args.rng_seed)
-
-
 def execute_polluter(file: CSVFile, polluter, new_filename=None, *args, **kwargs):
     """
     Executes a polluter on a CSVFile object and saves the polluted file, clean file, and parameters.
@@ -116,6 +101,20 @@ def execute_polluter(file: CSVFile, polluter, new_filename=None, *args, **kwargs
     t.write_csv(OUT_CSV_PATH)
     t.write_clean_csv(OUT_CLEAN_PATH)
     t.write_parameters(OUT_PARAMETERS_PATH)
+
+if args.overwrite and os.path.exists(args.output):
+    if not os.path.isdir(args.output) or os.path.islink(args.output):
+        raise ValueError(f"Refusing to overwrite non-directory output path: {args.output}")
+    print(f"Removing existing output directory: {args.output}")
+    shutil.rmtree(args.output)
+
+os.makedirs(OUT_CSV_PATH, exist_ok=True)
+os.makedirs(OUT_CLEAN_PATH, exist_ok=True)
+os.makedirs(OUT_PARAMETERS_PATH, exist_ok=True)
+
+print(f"Seeding RNG: {args.rng_seed}")
+random.seed(args.rng_seed)
+Faker.seed(args.rng_seed)
 
 
 f = CSVFile(args.source, quote_all=True)
@@ -326,10 +325,8 @@ if args.polluters == "pollock2.0":
 
     # Row / column irregularities
     execute_polluter(f, pl2.moveHeaderRow)
-    execute_polluter(
-        f, pl2.extremelyLongFields, row=3 if f.row_count >= 3 else 3, col=6, length=10000
-    )  # For the final evaluation, we have to make sure th insert something extremely long of the same data type as the original cell
-    execute_polluter(f, pl2.addTrailingCommentToFile, comment="This article is no longer being sold.")
+    execute_polluter(f, pl2.extremelyLongFields, row=3 if f.row_count >= 3 else 3, col=6, length=10000)  # For the final evaluation, we have to make sure th insert something extremely long of the same data type as the original cell
+    #execute_polluter(f, pl2.addTrailingCommentToFile, comment="This article is no longer being sold.")
     execute_polluter(f, pl2.commentRow)
     execute_polluter(f, pl2.commentRow, row=1)  # comment the header row (1-based)
     execute_polluter(f, pl2.commentRow, comment_marker="//")
@@ -337,7 +334,8 @@ if args.polluters == "pollock2.0":
     # TODO verify how often these should run + with which params.
     for i in range(10):
         execute_polluter(f, pl2.variableColumnCount)
-        execute_polluter(f, pl2.unquotedList) # automatically chooses safe row/column
+
+    execute_polluter(f, pl2.unquotedList, max_list_len=5) # automatically chooses safe row/column
 
     # Delimiter / quoting / escaping edge cases
     # Mixed delimiters, unescaped delimiters, double escaping, unquoted lists, whitespace-formatted tables
@@ -391,7 +389,6 @@ if args.polluters == "pollock2.0":
     execute_polluter(f, pl.changeNumberColumns, target_number_cols = 1000, pad_with_random_ints=False) # repeats last column
     execute_polluter(f, pl.changeNumberRows, target_number_rows=1000, repeat_file = True) # Long CSV # TODO make number larger after code-iteration is over
 
-    
 
 
 
