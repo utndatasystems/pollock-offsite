@@ -42,7 +42,7 @@ for idx,file in enumerate(benchmark_files):
     out_filepath = join(OUT_DIR, out_filename)
     if os.path.exists(out_filepath):
         continue
-    print(f"({idx}/{len(benchmark_files)}) {f}")
+    print(f"({idx + 1}/{len(benchmark_files)}) {f}")
 
     kw = {}
     kw["strict_mode"] = args.strict

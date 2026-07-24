@@ -62,7 +62,7 @@ for idx,file in enumerate(benchmark_files):
     kw = generate_parameters(options_json)
     if os.path.exists(out_filepath):
         continue
-    print(f"({idx}/{len(benchmark_files)}) {f}")
+    print(f"({idx + 1}/{len(benchmark_files)}) {f}")
 
     for time_rep in range(N_REPETITIONS):
         con = duckdb.connect()

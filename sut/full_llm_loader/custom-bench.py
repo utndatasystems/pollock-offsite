@@ -175,7 +175,7 @@ for idx, file in enumerate(tqdm(benchmark_files, total=len(benchmark_files), des
     out_filepath = join(OUT_DIR, out_filename)
     if not args.overwrite and not args.file and os.path.exists(out_filepath):
         continue
-    print(f"({idx}/{len(benchmark_files)}) {f}")
+    print(f"({idx + 1}/{len(benchmark_files)}) {f}")
 
     for time_rep in range(N_REPETITIONS):
         start = time.time()

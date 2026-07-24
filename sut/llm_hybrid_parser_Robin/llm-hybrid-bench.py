@@ -196,7 +196,7 @@ for idx, file in enumerate(benchmark_files):
     malformed_path = malformed_report_path(f)
     if not args.overwrite and not args.file and os.path.exists(out_filepath) and os.path.exists(malformed_path):
         continue
-    print(f"({idx}/{len(benchmark_files)}) {f}")
+    print(f"({idx + 1}/{len(benchmark_files)}) {f}")
 
     for time_rep in range(N_REPETITIONS):
         malformed = []
