@@ -975,22 +975,29 @@ def tableToWhitespaceFormattedTable(
     root = file.xml.getroot()
     rows = list(root.iter("row"))
     quote_char = file.quotation_char or '"'
-    doubled_quote = quote_char * 2
 
     pb.changeColumnDelimiters(file, col="*", new_delimiter=" ")
 
     if quote_strings:
-        # Quote string cells first so delimiter padding can be computed from the
-        # quoted width, not the raw cell value.
+        # Embedded quotes are already represented by the cell's value and
+        # escape nodes. Only add the surrounding quotation marks here.
         for row in rows:
             for cell in row.xpath("./cell[@type='TYPE_STRING']"):
                 if len(cell) == 0 or cell[0].tag != "quotation_char":
                     cell.insert(0, E.quotation_char(quote_char))
                 if cell[-1].tag != "quotation_char":
                     cell.append(E.quotation_char(quote_char))
-                for value in cell.xpath("./value"):
-                    if value.text and quote_char in value.text:
-                        value.text = value.text.replace(quote_char, doubled_quote)
+    else:
+        # Remove cell quoting inherited from the source while preserving the
+        # logical field payload used to generate the clean ground truth.
+        for row in rows:
+            for cell in row.xpath("./cell"):
+                payload = "".join(
+                    value.text or "" for value in cell.xpath("./value")
+                )
+                for child in list(cell):
+                    cell.remove(child)
+                cell.append(E.value(payload))
 
     if pad_cells:
         column_widths: list[int] = []
