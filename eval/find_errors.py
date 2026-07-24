@@ -681,7 +681,8 @@ def main():
     )
     parser.add_argument(
         "--output", default=None,
-        help="Output file path (default: results/{sut}/{dataset}/{sut}_errors.txt)"
+        help="Output file path (default: results/{sut}/{dataset}/{sut}_errors"
+             "[_incl_origin].txt)"
     )
     parser.add_argument(
         "--max-details-per-type", type=int, default=3,
@@ -694,7 +695,7 @@ def main():
     parser.add_argument(
         "--origin-csv", default=None,
         help="Pre-pollution source CSV; a cell is accepted if it matches either the clean value "
-             "or this origin value (default: {polluted-dir}/source.csv if it exists)"
+             "or this origin value (default: {polluted-dir}/csv/source.csv if it exists)"
     )
     parser.add_argument(
         "--nrows", type=int, default=None,
@@ -717,7 +718,6 @@ def main():
         parser.error("--file-links requires --markdown")
 
     sut = args.sut
-    results_csv = os.path.join(args.results_dir, sut, args.dataset, f"{sut}_results.csv")
     loading_dir = os.path.join(args.results_dir, sut, args.dataset, "loading")
     clean_dir   = os.path.join(args.polluted_dir, "clean")
     csv_dir     = os.path.join(args.polluted_dir, "csv")
@@ -725,11 +725,23 @@ def main():
 
     origin_csv = args.origin_csv
     if origin_csv is None:
-        for candidate in [os.path.join(args.polluted_dir, "source.csv"),
-                          "data/polluted_files/source.csv"]:
+        for candidate in [
+            os.path.join(args.polluted_dir, "csv", "source.csv"),
+            os.path.join(args.polluted_dir, "source.csv"),
+            "data/polluted_files/csv/source.csv",
+            "data/polluted_files/source.csv",
+        ]:
             if os.path.exists(candidate):
                 origin_csv = candidate
                 break
+
+    result_suffix = "_incl_origin" if origin_csv is not None else ""
+    results_csv = os.path.join(
+        args.results_dir,
+        sut,
+        args.dataset,
+        f"{sut}_results{result_suffix}.csv",
+    )
 
     # Get file list from results CSV if available, otherwise scan the input dir.
     if os.path.exists(results_csv):
@@ -763,7 +775,12 @@ def main():
 
     md = args.markdown
     ext = ".md" if md else ".txt"
-    output_path = args.output or os.path.join(args.results_dir, sut, args.dataset, f"{sut}_errors{ext}")
+    output_path = args.output or os.path.join(
+        args.results_dir,
+        sut,
+        args.dataset,
+        f"{sut}_errors{result_suffix}{ext}",
+    )
     output_dir = os.path.dirname(os.path.abspath(output_path))
 
     def report_relative_path(path):

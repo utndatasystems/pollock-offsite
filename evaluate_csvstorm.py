@@ -121,7 +121,7 @@ def main():
     parser.add_argument("--nrows", type=int, default=None,
                         help="Compare only the first N data rows after the header when evaluating correctness")
     parser.add_argument("--use-origin-csv", action="store_true", default=False,
-                        help="Auto-detect and use data/{dataset}/source.csv as origin fallback (default: off)")
+                        help="Auto-detect and use data/{dataset}/csv/source.csv as origin fallback (default: off)")
     parser.add_argument("--no-row-order-invariant", dest="row_order_invariant",
                         action="store_false", default=True,
                         help="Disable row-order invariance and require the loaded rows in the exact "
@@ -144,7 +144,12 @@ def main():
 
     origin_csv = args.origin_csv
     if origin_csv is None and args.use_origin_csv:
-        for candidate in [f"data/{dataset}/source.csv", "data/polluted_files/source.csv"]:
+        for candidate in [
+            f"data/{dataset}/csv/source.csv",
+            f"data/{dataset}/source.csv",
+            "data/polluted_files/csv/source.csv",
+            "data/polluted_files/source.csv",
+        ]:
             if os.path.exists(candidate):
                 origin_csv = candidate
                 break
