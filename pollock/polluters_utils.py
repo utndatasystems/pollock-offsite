@@ -1,7 +1,6 @@
 from collections.abc import Callable
 from functools import wraps
 from typing import Any, TypeVar
-from copy import deepcopy
 
 from . import polluters_base as pb
 from .CSVFile import CSVFile
@@ -41,31 +40,6 @@ def _safe_col_count(file: CSVFile, table=0):
 def _last_data_row(file: CSVFile):
     return max(2, _safe_row_count(file))
 
-
-def execute_polluter(file: CSVFile, polluter, new_filename=None, *args, **kwargs):
-    """
-    Executes a polluter on a CSVFile object and saves the polluted file, clean file, and parameters.
-    Args:
-        file: CSVFile object to pollute
-        polluter: The polluter function to execute
-        new_filename: Optional new filename for the polluted file
-        *args: Additional positional arguments for the polluter
-        **kwargs: Additional keyword arguments for the polluter
-    """
-    t = deepcopy(file)
-    print(
-        "Executing",
-        polluter.__name__,
-        "with arguments",
-        tuple(map(lambda x: str(x)[:300], [f"{k}:{v}" for k, v in kwargs.items()])),
-    )
-    polluter(t, *args, **kwargs)
-    if new_filename is not None:
-        t.filename = new_filename
-        t.xml.getroot().attrib["filename"] = new_filename
-    t.write_csv(OUT_CSV_PATH)
-    t.write_clean_csv(OUT_CLEAN_PATH)
-    t.write_parameters(OUT_PARAMETERS_PATH)
 
 
 # Helpers for categorizing pollutions 
