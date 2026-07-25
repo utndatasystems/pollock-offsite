@@ -10,11 +10,13 @@ Or override the module under test:
 
 from __future__ import annotations
 
+import csv
 import json
 
 import pytest
 from lxml import etree
 
+from pollock.CSVFile import CSVFile
 from pollock.polluters_utils import _row_values
 from tests._helpers import FakeCSVFile, assert_filename_synced, load_polluters_module, row, values
 
@@ -105,18 +107,54 @@ def test_double_escaping(csv_file):
     assert_filename_synced(csv_file, "file_double_escaping")
 
 
-def test_variable_column_count(csv_file):
+def test_more_columns(csv_file):
     before_rows = csv_file.row_count
     before_cols = csv_file.col_count
 
-    p.variableColumnCount(csv_file)
+    p.moreColumns(csv_file, row=1)
 
     assert csv_file.row_count == before_rows
-    assert_filename_synced(csv_file, "file_variable_column_count")
-    assert any(
-        len(csv_file.xml.xpath(f"//table[1]/row[{i + 1}]/cell")) != before_cols
-        for i in range(csv_file.row_count)
-    )
+    assert_filename_synced(csv_file, "file_more_columns")
+    assert len(csv_file.xml.xpath("//table[1]/row[2]/cell")) == before_cols + 1
+
+
+def test_less_columns_deleted_values(csv_file):
+    before_rows = csv_file.row_count
+    before_cols = csv_file.col_count
+
+    p.lessColumnsDeletedValues(csv_file, row=1)
+
+    assert csv_file.row_count == before_rows
+    assert_filename_synced(csv_file, "file_less_columns_deleted_value")
+    assert len(csv_file.xml.xpath("//table[1]/row[2]/cell")) == before_cols - 1
+    assert csv_file.xml.getroot().attrib["ground_truth_insert_empty_row"] == "1"
+    assert "ground_truth_insert_empty_col" in csv_file.xml.getroot().attrib
+
+
+def test_less_columns_deleted_values_clean_gt_is_rectangular(tmp_path, monkeypatch):
+    monkeypatch.setattr(p.random, "randrange", lambda stop: 1)
+    root = etree.Element("file", filename="base.csv", encoding="utf-8")
+    table = etree.SubElement(root, "table")
+    table.append(row(["name", "city", "amount"], role="header"))
+    table.append(row(["Alice", "Berlin", "10"], role="data"))
+    csv_file = FakeCSVFile(xml=etree.ElementTree(root))
+
+    p.lessColumnsDeletedValues(csv_file, row=1)
+    CSVFile.write_clean_csv(csv_file, str(tmp_path) + "/")
+
+    with (tmp_path / csv_file.filename).open(encoding="utf-8", newline="") as handle:
+        rows = list(csv.reader(handle))
+
+    assert rows == [["name", "city", "amount"], ["Alice", "", "10"]]
+
+
+def test_variable_column_count_compatibility_wrapper(csv_file, monkeypatch):
+    monkeypatch.setattr(p.random, "randint", lambda start, stop: 1)
+    monkeypatch.setattr(p.random, "randrange", lambda stop: 1)
+
+    p.variableColumnCount(csv_file)
+
+    assert_filename_synced(csv_file, "file_less_columns_deleted_value")
 
 
 @pytest.mark.parametrize(
