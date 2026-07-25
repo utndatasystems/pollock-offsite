@@ -4,8 +4,10 @@ import string
 import json
 import time
 import warnings
+from copy import deepcopy
 from lxml import etree
 from .CSVFile import CSVFile
+from .ground_truth import GroundTruthBundle
 from lxml.builder import E
 from .randdata import (
     randomString,
@@ -170,28 +172,28 @@ def multilineHeader(
 
 
 def duplicateHeaderAsDataRow(file: CSVFile, n_duplicates: int = 1):  # checked manually
-    """Duplicates the header row (from the XML) as data rows directly below the header.
+    """Duplicates the header row as data rows directly below the header.
 
-    Args:
-        file: CSVFile to mutate.
-        n_duplicates: Number of duplicated header rows to insert.
+    The duplicate preserves the header row's concrete CSV syntax, including
+    quotation markers, while changing row/cell roles so it is treated as data.
     """
     if n_duplicates < 1:
         raise ValueError("n_duplicates must be at least 1")
 
-    header = _row_values(file, row=1)
-    if not header:
+    root = file.xml.getroot()
+    table_nodes = root.xpath("/*/table[1]")
+    header_nodes = root.xpath("/*/table[1]/row[1]")
+    if not table_nodes or not header_nodes or not header_nodes[0].xpath("./cell"):
         raise ValueError("Cannot duplicate header: first row is empty or missing")
 
+    table = table_nodes[0]
+    header = header_nodes[0]
     for _ in range(n_duplicates):
-        pb.addRows(
-            file,
-            cell_content=header,
-            n_rows=1,
-            position=1,
-            col_count=len(header) or file.col_count,
-            role="data",
-        )
+        duplicate = deepcopy(header)
+        duplicate.attrib["role"] = "data"
+        for cell in duplicate.xpath("./cell"):
+            cell.attrib["role"] = "data"
+        table.insert(1, duplicate)
 
     suffix = "" if n_duplicates == 1 else f"_{n_duplicates}x"
     _set_polluted_filename(file, f"file_duplicate_header_as_data{suffix}.csv")
@@ -365,27 +367,98 @@ def unescapedMultiLineString(file: CSVFile, row=1, col=1, content='This is a Str
     _set_polluted_filename(file, f"file_unescaped_row_{row}_col_{col}.csv")
 
 
-@todo
-def doubleEscaping(file: CSVFile, row1=2, row2=3, col=1):  
-    """Mixes doubled-quote escaping and backslash escaping in the same column. Example content: ""hi"" and \"hi\"."""
-    print(
-        "USE WITH CAUTION: only insert in field with same data type for fair pollution"
+def _cell_text(cell) -> str:
+    return "".join(v.text or "" for v in cell if v.tag == "value")
+
+
+def _cell_type(cell) -> str:
+    return cell.attrib.get("type") or parse_cell(_cell_text(cell))
+
+
+def _has_quote_metadata(cell) -> bool:
+    return any(child.tag == "quotation_char" for child in cell)
+
+
+def _quoted_string_cell(file: CSVFile, row: int | None = None, col: int | None = None):
+    root = file.xml.getroot()
+    row_query = "row[@role='data']" if row is None else f"row[{row}]"
+    candidate_rows = root.xpath(f"/*/table[1]/{row_query}")
+
+    for row_node in candidate_rows:
+        row_pos = row_node.getparent().index(row_node) + 1
+        cells = row_node.xpath("./cell")
+        col_range = list(range(1, len(cells) + 1))
+        if col is not None and 1 <= col <= len(cells):
+            col_range.remove(col)
+            col_range.insert(0, col)
+        for col_pos in col_range:
+            cell = cells[col_pos - 1]
+            if (
+                _cell_type(cell) == CellType.STRING
+                and _cell_text(cell)
+                and _has_quote_metadata(cell)
+            ):
+                return row_pos, col_pos, cell
+
+    raise ValueError("Cannot apply doubleEscaping: no quoted string cell found")
+
+
+def _replace_with_double_escaped_content(file: CSVFile, cell, escaping: str) -> None:
+    text = _cell_text(cell)
+    role = cell.attrib.get("role")
+    for child in list(cell):
+        cell.remove(child)
+    cell.text = None
+    cell.attrib["type"] = CellType.STRING
+    if role is not None:
+        cell.attrib["role"] = role
+
+    quote = file.quotation_char or '"'
+    outer_open = etree.SubElement(cell, "quotation_char")
+    outer_open.text = quote
+
+    if escaping == "double_quote":
+        escape = quote
+    elif escaping == "backslash":
+        escape = "\\"
+    else:
+        raise ValueError("escaping must be 'double_quote' or 'backslash'")
+
+    first_escape = etree.SubElement(cell, "escape_char")
+    first_escape.text = escape
+    first_value = etree.SubElement(cell, "value")
+    first_value.text = quote + text
+    second_escape = etree.SubElement(cell, "escape_char")
+    second_escape.text = escape
+    second_value = etree.SubElement(cell, "value")
+    second_value.text = quote
+
+    outer_close = etree.SubElement(cell, "quotation_char")
+    outer_close.text = quote
+
+
+@manually_verified
+def doubleEscaping(
+    file: CSVFile,
+    row: int | None = None,
+    col: int | None = None,
+    escaping: str = "double_quote",
+    **legacy_kwargs,
+):
+    """Double-escape one existing quoted string cell using one escaping style."""
+    row = legacy_kwargs.pop("row1", row)
+    legacy_kwargs.pop("row2", None)
+    if legacy_kwargs:
+        unexpected = ", ".join(sorted(legacy_kwargs))
+        raise TypeError(f"Unexpected doubleEscaping arguments: {unexpected}")
+
+    row, col, cell = _quoted_string_cell(file, row=row, col=col)
+    _replace_with_double_escaped_content(file, cell, escaping=escaping)
+    file.ground_truth_bundle = GroundTruthBundle.single(
+        CSVFile.clean_rows(file),
+        accept_origin=True,
     )
-    row_count = _safe_row_count(file)
-    if row_count < row2:
-        last = _row_values(file, row=row_count) or [""] * file.col_count
-        pb.addRows(
-            file,
-            cell_content=last,
-            n_rows=row2 - row_count,
-            position=row_count,
-            col_count=file.col_count,
-            role="data",
-        )
-    #TODO: take origal content and add double escaping and backslash escaping instead of overwriting it
-    pb.changeCell(file, row=row1, col=col, new_content='""hi""')
-    pb.changeCell(file, row=row2, col=col, new_content='\\"hi\\"')
-    _set_polluted_filename(file, f"file_double_escaping_col_{col}.csv")
+    _set_polluted_filename(file, f"file_double_escaping_{escaping}_row_{row}_col_{col}.csv")
 
 
 def _variable_column_target(file: CSVFile, row: int | None) -> tuple[int, int]:
@@ -400,7 +473,7 @@ def moreColumns(file: CSVFile, row: int | None = None):
     """Creates one data row with one more field than the header."""
     row, col = _variable_column_target(file, row)
     pb.addCells(file, row + 1, col, n_cells=1, content=randomType(), role="data")
-     _set_polluted_filename(file, f"file_more_columns_row_{row}_col_{col}.csv")
+    _set_polluted_filename(file, f"file_more_columns_row_{row}_col_{col}.csv")
 
 
 def lessColumnsDeletedValues(file: CSVFile, row: int | None = None):
