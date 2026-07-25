@@ -68,6 +68,7 @@ class GroundTruthBundle:
     tables: tuple[GroundTruthTable, ...]
     alternatives: tuple[GroundTruthAlternative, ...]
     canonical: str
+    accept_origin: bool = False
 
     def __post_init__(self) -> None:
         table_ids = [table.id for table in self.tables]
@@ -97,6 +98,7 @@ class GroundTruthBundle:
         *,
         table_id: str = "primary",
         alternative_id: str = "canonical",
+        accept_origin: bool = False,
     ) -> "GroundTruthBundle":
         return cls(
             tables=(GroundTruthTable.from_rows(table_id, rows),),
@@ -108,6 +110,7 @@ class GroundTruthBundle:
                 ),
             ),
             canonical=alternative_id,
+            accept_origin=accept_origin,
         )
 
     def write(self, root: str | Path, filename: str) -> Path:
@@ -128,6 +131,7 @@ class GroundTruthBundle:
         manifest = {
             "schema_version": 1,
             "canonical": self.canonical,
+            "accept_origin": self.accept_origin,
             "tables": table_entries,
             "alternatives": [
                 {
@@ -157,10 +161,13 @@ def load_ground_truth_manifest(path: str | Path) -> dict:
     tables = manifest.get("tables")
     alternatives = manifest.get("alternatives")
     canonical = manifest.get("canonical")
+    accept_origin = manifest.get("accept_origin", False)
     if not isinstance(tables, dict) or not tables:
         raise ValueError("Ground-truth manifest must define tables")
     if not isinstance(alternatives, list) or not alternatives:
         raise ValueError("Ground-truth manifest must define alternatives")
+    if not isinstance(accept_origin, bool):
+        raise ValueError("Ground-truth accept_origin must be a boolean")
 
     alternative_ids = set()
     for alternative in alternatives:
@@ -228,3 +235,7 @@ def single_table_alternatives(
         table_path = manifest_path.parent / manifest["tables"][table_id]["path"]
         candidates.append((alternative["id"], table_path))
     return candidates
+
+
+def manifest_accepts_origin(path: str | Path) -> bool:
+    return bool(load_ground_truth_manifest(path).get("accept_origin", False))

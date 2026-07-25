@@ -5,13 +5,14 @@ import re
 import chardet
 import numpy as np
 import time
+from pathlib import Path
 
 from collections import Counter
 from joblib import Parallel, delayed
 from multiset import Multiset
 from datetime import datetime
 from .data_types import normalize_cell
-from .ground_truth import single_table_alternatives
+from .ground_truth import manifest_accepts_origin, single_table_alternatives
 
 
 def print(*args, **kwargs):
@@ -296,11 +297,18 @@ def compare_ground_truths(
         ):
             return True, alternative_id
 
-    if origin_csv is not None and compare_files(
+    origin_candidate = origin_csv
+    if origin_candidate is None and manifest_accepts_origin(manifest_path):
+        dataset_root = Path(manifest_path).parent.parent.parent
+        inferred_origin = dataset_root / "csv" / "source.csv"
+        if inferred_origin.is_file():
+            origin_candidate = inferred_origin
+
+    if origin_candidate is not None and compare_files(
         candidates[0][1],
         loaded_csv,
         n_jobs=n_jobs,
-        origin_csv=origin_csv,
+        origin_csv=origin_candidate,
         row_order_invariant=row_order_invariant,
         nrows=nrows,
     ):
