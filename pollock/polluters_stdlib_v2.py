@@ -3,6 +3,7 @@ import unicodedata
 import string
 import json
 import time
+import warnings
 from lxml import etree
 from .CSVFile import CSVFile
 from lxml.builder import E
@@ -169,8 +170,7 @@ def multilineHeader(
 
 
 def duplicateHeaderAsDataRow(file: CSVFile, n_duplicates: int = 1):  # checked manually
-    # OPEN QUESTION: does this pollution really make sense or is it just a special case of the multiline header?
-    """Duplicates the header row as data rows directly below the header.
+    """Duplicates the header row (from the XML) as data rows directly below the header.
 
     Args:
         file: CSVFile to mutate.
@@ -400,7 +400,7 @@ def moreColumns(file: CSVFile, row: int | None = None):
     """Creates one data row with one more field than the header."""
     row, col = _variable_column_target(file, row)
     pb.addCells(file, row + 1, col, n_cells=1, content=randomType(), role="data")
-    _set_polluted_filename(file, f"file_more_columns_row_{row}_col_{col}.csv")
+     _set_polluted_filename(file, f"file_more_columns_row_{row}_col_{col}.csv")
 
 
 def lessColumnsDeletedValues(file: CSVFile, row: int | None = None):
@@ -420,7 +420,12 @@ def lessColumnsDeletedValues(file: CSVFile, row: int | None = None):
 
 def variableColumnCount(file: CSVFile, row: int | None = None):
     """Compatibility wrapper that creates either a wider or narrower row."""
-    raise Warning("variableColumnCount is deprecated")
+    warnings.warn(
+        "variableColumnCount is deprecated; use moreColumns or "
+        "lessColumnsDeletedValues instead",
+        DeprecationWarning,
+        stacklevel=2,
+    )
 
     if random.randint(0, 1) == 1:
         lessColumnsDeletedValues(file, row=row)

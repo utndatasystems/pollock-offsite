@@ -367,7 +367,8 @@ if args.polluters == "pollock2.0":
     )
 
     execute_polluter(f, pl2.unescapedMultiLineString, row=2 if f.row_count >= 2 else 1, col=1)
-    execute_polluter(f, pl2.doubleEscaping, row1=2, row2=3, col=1)
+    execute_polluter(f, pl2.doubleEscaping, row=2 if f.row_count >= 2 else None, col=7, escaping="double_quote",)
+    execute_polluter(f,pl2.doubleEscaping, row=3 if f.row_count >= 3 else None, col=7, escaping="backslash",)
     execute_polluter(f, pl2.tableToWhitespaceFormattedTable, pad_cells=False)
     execute_polluter(f, pl2.tableToWhitespaceFormattedTable, pad_cells=True, quote_strings=True)
     execute_polluter(f, pl2.tableToWhitespaceFormattedTable, pad_cells=True, quote_strings=False)
