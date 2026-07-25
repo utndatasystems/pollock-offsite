@@ -2,6 +2,7 @@ import hashlib
 import json
 import math
 import os
+import urllib.error
 import urllib.request
 from typing import Any, Dict, Optional
 
@@ -114,6 +115,12 @@ def _openai_api_key() -> Optional[str]:
     return os.environ.get("OPENAI_API_KEY")
 
 
+def _supports_temperature(model: str) -> bool:
+    normalized = model.lower()
+    # New GPT-5.6 chat-completions models reject configurable temperature.
+    return not normalized.startswith("gpt-5.6")
+
+
 def _prompt_hash(prompt: str) -> str:
     key = _openai_model() + "\x00" + prompt
     return hashlib.sha256(key.encode("utf-8")).hexdigest()
@@ -180,11 +187,14 @@ def call_llm(prompt: str, trace: Any, event_type: str, estimated_output_chars: i
             "No OpenAI-compatible API key found. Set OPENAI_API_KEY."
         )
 
-    payload = json.dumps({
-        "model": _openai_model(),
+    model = _openai_model()
+    payload_dict = {
+        "model": model,
         "messages": [{"role": "user", "content": prompt}],
-        "temperature": 0,
-    }).encode("utf-8")
+    }
+    if _supports_temperature(model):
+        payload_dict["temperature"] = 0
+    payload = json.dumps(payload_dict).encode("utf-8")
 
     request = urllib.request.Request(
         _openai_endpoint(),
@@ -195,8 +205,12 @@ def call_llm(prompt: str, trace: Any, event_type: str, estimated_output_chars: i
         },
         method="POST",
     )
-    with urllib.request.urlopen(request, timeout=90) as response_obj:
-        data = json.loads(response_obj.read().decode("utf-8"))
+    try:
+        with urllib.request.urlopen(request, timeout=90) as response_obj:
+            data = json.loads(response_obj.read().decode("utf-8"))
+    except urllib.error.HTTPError as exc:
+        body = exc.read().decode("utf-8", errors="replace")
+        raise RuntimeError(f"HTTP Error {exc.code}: {exc.reason}\n{body}") from exc
     response = data["choices"][0]["message"]["content"]
     _LLM_CALL_STATS["output_chars_fresh"] += len(response)
 
