@@ -48,11 +48,18 @@ def test_multiline_header():
 
 
 def test_duplicate_header_as_data_row(csv_file):
+    quoted_header_cell = csv_file.xml.xpath("//table[1]/row[1]/cell[2]")[0]
+    etree.SubElement(quoted_header_cell, "quotation_char").text = '"'
+    etree.SubElement(quoted_header_cell, "quotation_char").text = '"'
+
     p.duplicateHeaderAsDataRow(csv_file)
 
     first_data_row = values(csv_file, "//table[1]/row[2]/cell/value")
     assert first_data_row == ["name", "city", "amount"]
     assert csv_file.xml.xpath("//table[1]/row[2]")[0].attrib.get("role") == "data"
+    assert csv_file.xml.xpath("//table[1]/row[2]/cell[2]")[0].attrib.get("role") == "data"
+    assert values(csv_file, "//table[1]/row[2]/cell[2]/quotation_char") == ['"', '"']
+    assert values(csv_file, "//table[1]/row[1]/cell[2]/quotation_char") == ['"', '"']
     assert_filename_synced(csv_file, "file_duplicate_header_as_data")
 
 
@@ -99,12 +106,42 @@ def test_unescaped(csv_file):
     assert_filename_synced(csv_file, "file_unescaped")
 
 
-def test_double_escaping(csv_file):
-    p.doubleEscaping(csv_file, row1=2, row2=3, col=1)
+def _quote_cell(cell, quote='"'):
+    text = cell.xpath("./value")[0].text or ""
+    for child in list(cell):
+        cell.remove(child)
+    open_quote = etree.SubElement(cell, "quotation_char")
+    open_quote.text = quote
+    value = etree.SubElement(cell, "value")
+    value.text = text
+    close_quote = etree.SubElement(cell, "quotation_char")
+    close_quote.text = quote
 
-    assert values(csv_file, "//table[1]/row[2]/cell[1]/value") == ['""hi""']
-    assert values(csv_file, "//table[1]/row[3]/cell[1]/value") == ['\\"hi\\"']
-    assert_filename_synced(csv_file, "file_double_escaping")
+
+def _cell_output(file, xpath: str) -> str:
+    cell = file.xml.xpath(xpath)[0]
+    return "".join(child.text or "" for child in cell)
+
+
+def test_double_escaping_uses_one_quoted_string_cell(csv_file):
+    _quote_cell(csv_file.xml.xpath("//table[1]/row[2]/cell[1]")[0])
+
+    p.doubleEscaping(csv_file, row=2, col=1, escaping="double_quote")
+
+    assert _cell_output(csv_file, "//table[1]/row[2]/cell[1]") == '"""Alice"""'
+    assert values(csv_file, "//table[1]/row[3]/cell[1]/value") == ["Bob"]
+    assert_filename_synced(csv_file, "file_double_escaping_double_quote_row_2_col_1")
+
+
+def test_double_escaping_falls_back_to_quoted_string_cell(csv_file):
+    _quote_cell(csv_file.xml.xpath("//table[1]/row[2]/cell[1]")[0])
+
+    p.doubleEscaping(csv_file, row=2, col=3, escaping="backslash")
+
+    assert _cell_output(csv_file, "//table[1]/row[2]/cell[1]") == '"\\"Alice\\""'
+    assert values(csv_file, "//table[1]/row[2]/cell[3]/value") == ["10"]
+    assert values(csv_file, "//table[1]/row[3]/cell[1]/value") == ["Bob"]
+    assert_filename_synced(csv_file, "file_double_escaping_backslash_row_2_col_1")
 
 
 def test_more_columns(csv_file):
