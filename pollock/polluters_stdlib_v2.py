@@ -170,13 +170,13 @@ def multilineHeader(
         row.append(E.record_delimiter(file.record_delimiter))
         table.insert(0, row)
 
-    _set_polluted_filename(
-        file,
-        f"file_multiline_header_rows_{header_rows}.csv",
-    )
+    file.ground_truth_bundle = GroundTruthBundle.single(
+            CSVFile.clean_rows(file),
+            accept_origin=True,)
+    _set_polluted_filename(file, f"file_multiline_header_rows_{header_rows}.csv",)
 
 
-def duplicateHeaderAsDataRow(file: CSVFile, n_duplicates: int = 1):  # checked manually
+def duplicateHeaderIntoRows(file: CSVFile, n_duplicates: int = 1):  # checked manually
     """Duplicates the header row as data rows directly below the header.
 
     The duplicate preserves the header row's concrete CSV syntax, including
@@ -201,6 +201,8 @@ def duplicateHeaderAsDataRow(file: CSVFile, n_duplicates: int = 1):  # checked m
         table.insert(1, duplicate)
 
     suffix = "" if n_duplicates == 1 else f"_{n_duplicates}x"
+
+    file.ground_truth_bundle = GroundTruthBundle.single(CSVFile.clean_rows(file), accept_origin=True,)
     _set_polluted_filename(file, f"file_duplicate_header_as_data{suffix}.csv")
 
 @todo
@@ -223,9 +225,11 @@ def extremelyLongFields(
         new_content=new_content,
         
     )
+    file.ground_truth_bundle = GroundTruthBundle.single(
+            CSVFile.clean_rows(file),
+            accept_origin=False,)
     _set_polluted_filename(
-        file, f"file_extremely_long_field_row_{row}_col_{col}_len_{length}.csv"
-    )
+        file, f"file_extremely_long_field_row_{row}_col_{col}_len_{length}.csv")
 
 
 @manually_verified
@@ -283,6 +287,8 @@ def commentRow(
         col=1,
         new_content=f"{comment_marker}{space}{old_value}",
     )
+
+    file.ground_truth_bundle = GroundTruthBundle.single(CSVFile.clean_rows(file),accept_origin=False,)
     _set_polluted_filename(file, f"file_commented_row_{row}.csv")
 
 
@@ -391,8 +397,7 @@ def doubleEscaping(
     _replace_with_double_escaped_content(file, cell, escaping=escaping)
     file.ground_truth_bundle = GroundTruthBundle.single(
         CSVFile.clean_rows(file),
-        accept_origin=True,
-    )
+        accept_origin=True,)
     _set_polluted_filename(file, f"file_double_escaping_{escaping}_row_{row}_col_{col}.csv")
 
 
@@ -434,7 +439,7 @@ def variableColumnCount(file: CSVFile, row: int | None = None):
         moreColumns(file, row=row)
 
 
-def excelExportAutoformat(file: CSVFile, rows=None):  # checked manually
+def excelExportAutoformat(file: CSVFile, rows=None):
     """Adds values commonly autoformatted by Excel to end of CSV: leading-zero IDs and date-like strings."""
     if rows is None:
         print(
@@ -473,6 +478,7 @@ def exelExportFormulas(file: CSVFile):  # checked manually
         role="data",
     )
     _set_polluted_filename(file, "file_excel_formulas.csv")
+
 
 @todo
 def typeAmbiguity(file: CSVFile):  
@@ -577,6 +583,9 @@ def superheader(
         col_count=col_count,
         role="superheader",)
 
+    file.ground_truth_bundle = GroundTruthBundle.single(
+            CSVFile.clean_rows(file),
+            accept_origin=True,)
     _set_polluted_filename(file, "file_superheader.csv")
 
 
@@ -649,10 +658,13 @@ def embeddedJSON(
         content=json.dumps(payload, ensure_ascii=False),
         role="data",
     )
+
+    file.ground_truth_bundle = GroundTruthBundle.single(
+        CSVFile.clean_rows(file),
+        accept_origin=False,)
     _set_polluted_filename(
         file,
-        f"file_embedded_json_cell_{row}_{start_col}_len_{l_col}.csv",
-    )
+        f"file_embedded_json_cell_{row}_{start_col}_len_{l_col}.csv",)
 
 
 @todo
@@ -660,8 +672,10 @@ def embeddedCSV(file: CSVFile):
     """Embeds CSV-like file content inside a single cell."""
     payload = "id,name\n1,alpha\n2,beta"
     pb.changeCell(
-        file, row=2 if _safe_row_count(file) >= 2 else 1, col=1, new_content=payload
-    )
+        file, row=2 if _safe_row_count(file) >= 2 else 1, col=1, new_content=payload)
+    file.ground_truth_bundle = GroundTruthBundle.single(
+        CSVFile.clean_rows(file),
+        accept_origin=False,)
     _set_polluted_filename(file, "file_embedded_csv_cell.csv")
 
 
@@ -1109,4 +1123,6 @@ def differentNullValues(file: CSVFile,
             new_content=null_value,
         )
 
+    # source.csv should not be accepted as ground truth 
+    file.ground_truth_bundle = GroundTruthBundle.single(CSVFile.clean_rows(file), accept_origin=False,)
     _set_polluted_filename(file, f"file_different_null_values_row_{row}_col_{col}.csv")

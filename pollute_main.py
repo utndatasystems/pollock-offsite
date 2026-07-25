@@ -307,7 +307,7 @@ if args.polluters == "pollock2.0":
     execute_polluter(f, pl2.multilineHeader, header_rows=3) # checked
     #print(pl2.multilineHeader.manually_verified)
 
-    execute_polluter(f, pl2.duplicateHeaderAsDataRow)
+    execute_polluter(f, pl2.duplicateHeaderIntoRows)
     execute_polluter(f, pl2.superheader, 
         groups={
             "Transaction Info": [0, 1],
@@ -329,8 +329,9 @@ if args.polluters == "pollock2.0":
     execute_polluter(f, pl2.moveHeaderRow)
     execute_polluter(f, pl2.extremelyLongFields, row=3 if f.row_count >= 3 else 3, col=6, length=10000)  # For the final evaluation, we have to make sure th insert something extremely long of the same data type as the original cell
     #execute_polluter(f, pl2.addTrailingCommentToFile, comment="This article is no longer being sold.")
-    execute_polluter(f, pl2.commentRow)
-    execute_polluter(f, pl2.commentRow, row=1)  # comment the header row (1-based)
+
+    # Comments in Rows (row location is set random, but can be set with param e.g. row = 3)
+    execute_polluter(f, pl2.commentRow, comment_marker="#") 
     execute_polluter(f, pl2.commentRow, comment_marker="//")
     execute_polluter(f, pl2.commentRow, comment_marker="<!--")
     # Variable-width rows: split into explicit wider and narrower cases so
@@ -368,7 +369,7 @@ if args.polluters == "pollock2.0":
 
     execute_polluter(f, pl2.unescapedMultiLineString, row=2 if f.row_count >= 2 else 1, col=1)
     execute_polluter(f, pl2.doubleEscaping, row=2 if f.row_count >= 2 else None, col=7, escaping="double_quote",)
-    execute_polluter(f,pl2.doubleEscaping, row=3 if f.row_count >= 3 else None, col=7, escaping="backslash",)
+    execute_polluter(f, pl2.doubleEscaping, row=3 if f.row_count >= 3 else None, col=7, escaping="backslash",)
     execute_polluter(f, pl2.tableToWhitespaceFormattedTable, pad_cells=False)
     execute_polluter(f, pl2.tableToWhitespaceFormattedTable, pad_cells=True, quote_strings=True)
     execute_polluter(f, pl2.tableToWhitespaceFormattedTable, pad_cells=True, quote_strings=False)

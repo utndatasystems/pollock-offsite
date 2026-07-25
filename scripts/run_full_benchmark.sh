@@ -106,7 +106,7 @@ fi
 export OPENAI_ENDPOINT="${OPENAI_ENDPOINT:-https://api.openai.com/v1/chat/completions}"
 export OPENAI_API_BASE="${OPENAI_API_BASE:-${OPENAI_ENDPOINT%/chat/completions}}"
 datasets=("csv_storm" "original_pollock_polluted_files")
-models=("gpt-5.4-mini" "gpt-5.4")
+models=("gpt-5.4-mini" "gpt-5.6")
 
 if [[ "$regenerate" == true ]]; then
     echo "=== Regenerating data/csv_storm with Pollock 2.0 ==="
