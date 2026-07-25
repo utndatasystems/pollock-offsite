@@ -11,7 +11,7 @@ from sut.utils import print
 from tqdm import tqdm
 from faker import Faker
 
-from pollock.polluters_utils import _set_polluted_filename, execute_polluter
+from pollock.polluters_utils import _set_polluted_filename
 
 parser = argparse.ArgumentParser()
 
@@ -299,9 +299,7 @@ if args.polluters == "pollock2.0":
     execute_polluter(f, pl2.differentNullValues, null_values=["NULL", "N/A", "NaN", "", "None", "undefined"])
 
     # Multi-table / layout structure
-    execute_polluter(
-    f, pl2.addTableSideways, n_rows=min(f.row_count, 5), n_cols=min(f.col_count, 5)
-    )
+    #execute_polluter(f, pl2.addTableSideways, n_rows=min(f.row_count, 5), n_cols=min(f.col_count, 5))
     execute_polluter(f, pl2.multilineHeader, header_rows=3) # checked
     #print(pl2.multilineHeader.manually_verified)
 

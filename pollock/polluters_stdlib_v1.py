@@ -628,70 +628,101 @@ def changeColumnHeader(
         strtype += "_nonalnum"
 
     _set_polluted_filename(
-        file, f"column_header_{col}_{strtype}{'_multiple' if extra_rows > 0 else ''}{'_nonunique' if type(col) == list else ''}.csv"
-    )
+        file, f"column_header_{col}_{strtype}{'_multiple' if extra_rows > 0 else ''}{'_nonunique' if type(col) == list else ''}.csv")
 
 @manually_verified
 def addTable(file: CSVFile, n_rows, n_cols, empty_boundary=True):
-    """Append a second table with the requested shape.
+    """Append a second, vertically stacked table with the requested shape.
+
+    The secondary table is derived from the first rows of the primary table.
+    Narrower variants drop trailing columns. Wider variants add source-derived
+    Related <column> fields so additional columns contain plausible data instead
+    of empty padding.
+
     Args:
         file: CSVFile object to modify
-        n_rows: number of rows in the new table
+        n_rows: maximum number of rows in the new table, including its header
         n_cols: number of columns in the new table
-        empty_boundary: if True, adds an empty row between the two tables
-
+        empty_boundary: if True, adds a genuinely blank row between the tables
     """
+    if n_rows < 1:
+        raise ValueError("n_rows must be at least 1")
+    if n_cols < 1:
+        raise ValueError("n_cols must be at least 1")
 
-    random.seed(constants.RAND_SEED)
     root = file.xml.getroot()
-    old_table = root.xpath("//table")[0]
-    new_table = etree.SubElement(root, "table")
 
-    content = []
-    for i in range(n_rows):
-        content += [
-            [
-                "".join(v.text or "" for v in cell if v.tag == "value")
-                for cell in old_table.xpath(f"./row[{i + 1}]/cell")
-            ]
+    # Extracting rows for second table
+    primary_rows = root.xpath("//table[1]/row")
+    if not primary_rows:
+        raise ValueError("Cannot add a table to a file without source rows")
+
+    n_rows = min(n_rows, len(primary_rows))
+    source_rows = [
+        [
+            "".join(v.text or "" for v in cell if v.tag == "value")
+            for cell in row.xpath("./cell")
         ]
+        for row in primary_rows[:n_rows]
+    ]
+    source_width = max(len(row) for row in source_rows)
+    if source_width == 0:
+        raise ValueError("Cannot add a table from rows without cells")
 
-    for i in range(n_rows):
-        row_cells = content[i]
-        pb.addRows(
-            file, cell_content=row_cells, n_rows=1, position=file.row_count + 1, table=1
-        )
-
-    if n_cols == file.col_count:
+    if n_cols == source_width:
         strtype = "same"
-    elif n_cols < file.col_count:
+    elif n_cols < source_width:
         strtype = "less"
-        cols_delete = list(range(n_cols, file.col_count))
-        pb.deleteColumns(file, col=cols_delete, table=1)
-    elif n_cols > file.col_count:
+    else:
         strtype = "more"
-        cols_add = len(range(file.col_count, n_cols))
-        col_names = ["col" + str(i + 1) for i in range(cols_add)]
-        content = []
-        for i in range(1, n_rows):
-            last_cell = file.xml.xpath(f"//table[1]/row[{i + 1}]/cell[last()]")[0]
-            content += [
-                "".join(v.text or "" for v in last_cell if v.tag == "value")
-            ]
 
-        pb.addColumns(
+    secondary_table = etree.SubElement(root, "table")
+    if empty_boundary:
+        pb.addRows(
             file,
-            position=file.col_count + 1,
-            n_cols=cols_add,
-            col_names=col_names,
-            cell_content=content,
+            cell_content="",
+            n_rows=1,
+            position=0,
+            col_count=0,
+            role="secondary_boundary",
             table=1,
         )
 
-    if empty_boundary:
-        pb.addRows(file, cell_content="", n_rows=1, position=0, table=1)
+    usable_source_cols = [
+        col
+        for col in range(source_width)
+        if any(col < len(row) and row[col].strip() for row in source_rows[1:])
+    ]
+    if not usable_source_cols:
+        usable_source_cols = list(range(source_width))
 
+    extra_cols = max(0, n_cols - source_width)
+    for row_idx, source_row in enumerate(source_rows):
+        row_values = (source_row + [""] * source_width)[: min(n_cols, source_width)]
+
+        for extra_idx in range(extra_cols):
+            source_col = usable_source_cols[extra_idx % len(usable_source_cols)]
+            source_value = source_row[source_col] if source_col < len(source_row) else ""
+            if row_idx == 0:
+                source_name = source_value or f"Column {source_col + 1}"
+                repetition = extra_idx // len(usable_source_cols) + 1
+                suffix = f" {repetition}" if repetition > 1 else ""
+                row_values.append(f"Related {source_name}{suffix}")
+            else:
+                row_values.append(source_value)
+
+        pb.addRows(
+            file,
+            cell_content=row_values,
+            n_rows=1,
+            position=len(secondary_table),
+            col_count=n_cols,
+            role="secondary_header" if row_idx == 0 else "secondary_data",
+            table=1,
+        )
+
+    suffix = "_separated" if empty_boundary else ""
     _set_polluted_filename(
         file,
-        f"file_multitable_rows_{n_rows}_{strtype}_cols{'_separated' if empty_boundary else ''}.csv",
+        f"file_multitable_rows_{n_rows}_{strtype}_cols{suffix}.csv",
     )
