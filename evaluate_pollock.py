@@ -30,14 +30,35 @@ SUB_MEASURES = {"table" : "file_double.*|file_header.*|file_no.*|file_one.*|file
 def evaluate_single_file(filename:str, dataset:str, sut:str, verbose=False, n_jobs=1, nrows=None):
     sut_dir = f"results/{sut}/{dataset}/loading/"
     clean_path = f"data/{dataset}/clean/{filename}"
+    ground_truth_manifest = f"data/{dataset}/ground_truth/{filename}/manifest.json"
     loaded_path = f"{sut_dir}{filename}_converted.csv"
 
-    dict_measures = {"file": filename}
+    dict_measures = {"file": filename, sut + "_matched_ground_truth": None}
     if verbose:
         print(f"'{filename}'")
     try:
         succ = metrics.successful_csv(loaded_path)
         dict_measures[sut + "_success"] = succ
+        if succ and os.path.exists(ground_truth_manifest):
+            measure_values, matched_ground_truth = metrics.best_ground_truth_measures(
+                ground_truth_manifest,
+                loaded_path,
+                n_jobs=n_jobs,
+                nrows=nrows,
+            )
+        elif succ:
+            measure_values = metrics.header_record_cell_measures_csv(
+                clean_path,
+                loaded_path,
+                n_jobs,
+                nrows=nrows,
+            )
+            matched_ground_truth = "legacy_clean"
+        else:
+            measure_values = [0, 0, 0, 0, 0, 0, 0, 0, 0]
+            matched_ground_truth = None
+
+        dict_measures[sut + "_matched_ground_truth"] = matched_ground_truth
         dict_measures[sut + "_header_precision"], \
         dict_measures[sut + "_header_recall"], \
         dict_measures[sut + "_header_f1"], \
@@ -46,8 +67,7 @@ def evaluate_single_file(filename:str, dataset:str, sut:str, verbose=False, n_jo
         dict_measures[sut + "_record_f1"], \
         dict_measures[sut + "_cell_precision"], \
         dict_measures[sut + "_cell_recall"], \
-        dict_measures[sut + "_cell_f1"] = metrics.header_record_cell_measures_csv(clean_path,loaded_path, n_jobs, nrows=nrows) \
-            if succ else [0, 0, 0, 0, 0, 0, 0, 0, 0]
+        dict_measures[sut + "_cell_f1"] = measure_values
 
     except Exception as e:
         print("Exception:", traceback.format_exc())

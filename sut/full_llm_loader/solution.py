@@ -98,7 +98,10 @@ def parse_csv(
     fixed_csv, error_report = _extract_sections(llm_output)
 
     fixed_csv = _validate_fixed_csv(fixed_csv)
-    dataframe = _read_reconstructed_csv(fixed_csv, nrows=nrows)
+    if fixed_csv:
+        dataframe = _read_reconstructed_csv(fixed_csv, nrows=nrows)
+    else:
+        dataframe = pd.DataFrame()
 
     dataframe.attrs["llm_error_report"] = error_report
     dataframe.attrs["llm_messages"] = messages
@@ -121,9 +124,6 @@ def _validate_fixed_csv(fixed_csv: str) -> str:
     # Preserve internal and trailing newlines, but remove accidental whitespace
     # before the first CSV character.
     fixed_csv = fixed_csv.lstrip("\ufeff \t\r\n")
-
-    if not fixed_csv:
-        raise ValueError("The LLM returned an empty reconstructed CSV")
 
     if "\x00" in fixed_csv:
         raise ValueError("The reconstructed CSV contains null bytes")

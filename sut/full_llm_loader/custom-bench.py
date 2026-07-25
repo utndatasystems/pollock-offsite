@@ -36,6 +36,11 @@ parser.add_argument(
     help='Prompt version to use when querying the LLM.',
 )
 parser.add_argument(
+    '--model',
+    default=None,
+    help='OpenAI-compatible model override; adds the model slug to the SUT name.',
+)
+parser.add_argument(
     '--encoding',
     default='utf-8',
     help='CSV encoding to pass through to the prompt builder.',
@@ -55,11 +60,16 @@ args = parser.parse_args()
 
 if args.nrows is not None and args.nrows < 0:
     parser.error('--nrows must be non-negative or omitted')
+if args.model:
+    os.environ['OPENAI_MODEL'] = args.model
 
 if args.overwrite:
     os.environ['FULL_LLM_LOADER_BYPASS_CACHE'] = '1'
 
 sut = f'full_llm_loader_{args.version}'
+if args.model:
+    model_slug = re.sub(r'[^a-z0-9]+', '_', args.model.lower()).strip('_')
+    sut += f'_{model_slug}'
 DATASET = os.environ.get('DATASET', 'polluted_files')
 IN_DIR = join(REPO_ROOT, 'data', DATASET, 'csv')
 OUT_DIR = join(REPO_ROOT, 'results', sut, DATASET, 'loading')

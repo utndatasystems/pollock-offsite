@@ -14,6 +14,7 @@ from lxml import etree
 from lxml.builder import E
 
 from .data_types import parse_cell, normalize_cell
+from .ground_truth import GroundTruthBundle
 
 CSV_XSL = """<xsl:stylesheet version="3.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"> <xsl:output method="text" /> 
 <xsl:template match="/">
@@ -127,6 +128,7 @@ class CSVFile:
     ):
 
         self.filename = filename.split("/")[-1]
+        self.ground_truth_bundle: GroundTruthBundle | None = None
         root = etree.Element("file", filename=self.filename)
         self.size_kb = os.path.getsize(filename) / 1024
         if self.size_kb == 0:
@@ -257,9 +259,8 @@ class CSVFile:
         Path(out_path).mkdir(parents=True, exist_ok=True)
         self.xml.write(out_path + self.filename + ".xml", pretty_print=pretty)
 
-    def write_clean_csv(self, out_path="./"):
-        #TODO: implement multiple clean csv files / multiple ground truth
-
+    def clean_rows(self):
+        """Return the canonical clean table represented by primary row roles."""
         header_rows = self.xml.xpath("/file/table/row[@role='header']")
         if len(header_rows):
             if len(header_rows) == 1:
@@ -292,9 +293,31 @@ class CSVFile:
                 ]
                 rows.append(cell_values)
 
+        root = self.xml.getroot()
+        missing_row = root.attrib.get("ground_truth_insert_empty_row")
+        missing_col = root.attrib.get("ground_truth_insert_empty_col")
+        if missing_row is not None and missing_col is not None and rows:
+            row_idx = int(missing_row)
+            col_idx = int(missing_col)
+            header_width = len(rows[0])
+            if 0 <= row_idx < len(rows) and len(rows[row_idx]) == header_width - 1:
+                rows[row_idx].insert(min(col_idx, len(rows[row_idx])), "")
+
+        return rows
+
+    def write_clean_csv(self, out_path="./"):
+        """Write the legacy, single-table canonical ground truth."""
+        rows = CSVFile.clean_rows(self)
         with open(out_path + self.filename, "w", encoding="utf8") as out:
             writer = csv.writer(out, delimiter=",", dialect="unix")
             writer.writerows(rows)
+
+    def write_ground_truths(self, out_path="./"):
+        """Write a ground-truth bundle, defaulting to the canonical clean table."""
+        bundle = getattr(self, "ground_truth_bundle", None) or GroundTruthBundle.single(
+            CSVFile.clean_rows(self)
+        )
+        return bundle.write(out_path, self.filename)
 
     def write_parameters(self, out_path="./"):
         encoding = self.xml.xpath("/file")[0].attrib["encoding"]

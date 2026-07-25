@@ -19,6 +19,7 @@ except ImportError:  # pragma: no cover - exercised only when dependency is abse
 
 
 REQUIRED_SUBDIRS = ("csv", "clean", "parameters")
+OPTIONAL_SUBDIRS = ("ground_truth",)
 
 
 def parse_args() -> argparse.Namespace:
@@ -80,6 +81,7 @@ def validate_dataset_dir(dataset_dir: Path) -> list[dict[str, Any]]:
     csv_dir = dataset_dir / "csv"
     clean_dir = dataset_dir / "clean"
     parameters_dir = dataset_dir / "parameters"
+    ground_truth_dir = dataset_dir / "ground_truth"
     csv_files = sorted(path for path in csv_dir.iterdir() if path.is_file() and path.suffix.lower() == ".csv")
     if not csv_files:
         raise ValueError(f"No .csv files found in {csv_dir}")
@@ -90,6 +92,7 @@ def validate_dataset_dir(dataset_dir: Path) -> list[dict[str, Any]]:
         filename = polluted_path.name
         clean_path = clean_dir / filename
         parameters_path = parameters_dir / f"{filename}_parameters.json"
+        ground_truth_path = ground_truth_dir / filename / "manifest.json"
 
         if not clean_path.is_file():
             problems.append(f"missing clean file for {filename}: {clean_path}")
@@ -103,12 +106,30 @@ def validate_dataset_dir(dataset_dir: Path) -> list[dict[str, Any]]:
                 problems.append(f"invalid JSON in {parameters_path}: {exc}")
                 parameters = None
 
+        ground_truth_manifest = ""
+        if ground_truth_path.is_file():
+            try:
+                ground_truth = read_json(ground_truth_path)
+                table_entries = ground_truth.get("tables", {})
+                if not table_entries:
+                    raise ValueError("manifest has no tables")
+                for table_id, table_entry in table_entries.items():
+                    table_path = ground_truth_path.parent / table_entry["path"]
+                    if not table_path.is_file():
+                        raise FileNotFoundError(
+                            f"missing table {table_id}: {table_path}"
+                        )
+                ground_truth_manifest = f"ground_truth/{filename}/manifest.json"
+            except (KeyError, ValueError, FileNotFoundError, json.JSONDecodeError) as exc:
+                problems.append(f"invalid ground truth for {filename}: {exc}")
+
         records.append(
             {
                 "file": filename,
                 "polluted_csv": f"csv/{filename}",
                 "clean_csv": f"clean/{filename}",
                 "parameters_json": f"parameters/{filename}_parameters.json",
+                "ground_truth_manifest": ground_truth_manifest,
                 "parameters": parameters,
             }
         )
@@ -124,7 +145,13 @@ def write_manifest(staging_dir: Path, records: list[dict[str, Any]]) -> None:
             handle.write(json.dumps(record, ensure_ascii=False, sort_keys=True) + "\n")
 
     with (staging_dir / "manifest.csv").open("w", encoding="utf-8", newline="") as handle:
-        fieldnames = ["file", "polluted_csv", "clean_csv", "parameters_json"]
+        fieldnames = [
+            "file",
+            "polluted_csv",
+            "clean_csv",
+            "parameters_json",
+            "ground_truth_manifest",
+        ]
         writer = csv.DictWriter(handle, fieldnames=fieldnames)
         writer.writeheader()
         for record in records:
@@ -156,6 +183,7 @@ CSV Storm is a benchmark-style collection of polluted CSV files, their canonical
 - `csv/`: polluted CSV inputs.
 - `clean/`: expected clean CSV outputs with matching filenames.
 - `parameters/`: JSON metadata files named `<filename>_parameters.json`.
+- `ground_truth/`: optional manifests with one or more acceptable parses.
 - `manifest.csv`: file-level paths for quick inspection.
 - `manifest.jsonl`: file-level paths plus embedded parameter JSON.
 
@@ -168,6 +196,10 @@ def stage_dataset(dataset_dir: Path, records: list[dict[str, Any]]) -> Path:
     staging_dir = Path(tempfile.mkdtemp(prefix="csv_storm_hf_"))
     for subdir in REQUIRED_SUBDIRS:
         shutil.copytree(dataset_dir / subdir, staging_dir / subdir)
+    for subdir in OPTIONAL_SUBDIRS:
+        source = dataset_dir / subdir
+        if source.is_dir():
+            shutil.copytree(source, staging_dir / subdir)
     write_manifest(staging_dir, records)
     write_dataset_card(staging_dir, str(dataset_dir), records)
     return staging_dir

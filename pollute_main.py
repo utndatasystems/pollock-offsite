@@ -75,6 +75,7 @@ args = parser.parse_args()
 
 OUT_CSV_PATH = os.path.join(args.output, "csv/")
 OUT_CLEAN_PATH = os.path.join(args.output, "clean/")
+OUT_GROUND_TRUTH_PATH = os.path.join(args.output, "ground_truth/")
 OUT_PARAMETERS_PATH = os.path.join(args.output, "parameters/")
 
 def execute_polluter(file: CSVFile, polluter, new_filename=None, *args, **kwargs):
@@ -100,6 +101,7 @@ def execute_polluter(file: CSVFile, polluter, new_filename=None, *args, **kwargs
         t.xml.getroot().attrib["filename"] = new_filename
     t.write_csv(OUT_CSV_PATH)
     t.write_clean_csv(OUT_CLEAN_PATH)
+    t.write_ground_truths(OUT_GROUND_TRUTH_PATH)
     t.write_parameters(OUT_PARAMETERS_PATH)
 
 if args.overwrite and os.path.exists(args.output):
@@ -110,6 +112,7 @@ if args.overwrite and os.path.exists(args.output):
 
 os.makedirs(OUT_CSV_PATH, exist_ok=True)
 os.makedirs(OUT_CLEAN_PATH, exist_ok=True)
+os.makedirs(OUT_GROUND_TRUTH_PATH, exist_ok=True)
 os.makedirs(OUT_PARAMETERS_PATH, exist_ok=True)
 
 print(f"Seeding RNG: {args.rng_seed}")

@@ -1,6 +1,7 @@
 from __future__ import print_function
 import builtins as __builtin__
 import csv
+import re
 import chardet
 import numpy as np
 import time
@@ -10,6 +11,7 @@ from joblib import Parallel, delayed
 from multiset import Multiset
 from datetime import datetime
 from .data_types import normalize_cell
+from .ground_truth import single_table_alternatives
 
 
 def print(*args, **kwargs):
@@ -156,6 +158,76 @@ def _rows_match(expected_rows, loaded_rows, row_order_invariant):
     return True
 
 
+def _empty_cell_padding_variants(row, width, missing_col=None):
+    if len(row) != width - 1:
+        return []
+    if missing_col is not None:
+        if missing_col < 0 or missing_col >= width:
+            return []
+        indexes = [missing_col]
+    else:
+        indexes = range(width)
+    variants = []
+    for idx in indexes:
+        padded = list(row)
+        padded.insert(idx, "")
+        variants.append(padded)
+    return variants
+
+
+def _rows_match_with_deleted_value_padding(expected_rows, loaded_rows, row_order_invariant, missing_col=None):
+    """Accept jagged legacy GT when a missing value is restored as an empty cell."""
+    if len(expected_rows) != len(loaded_rows) or not expected_rows:
+        return False
+
+    width = len(expected_rows[0])
+    if width == 0:
+        return False
+
+    if any(len(row) not in {width, width - 1} for row in expected_rows):
+        return False
+    if any(len(row) != width for row in loaded_rows):
+        return False
+    if not any(len(row) == width - 1 for row in expected_rows):
+        return False
+
+    def normalize_row(row):
+        return tuple(map(normalize_cell, row))
+
+    def expected_variants(row):
+        if len(row) == width:
+            return [normalize_row(row)]
+        return [normalize_row(variant) for variant in _empty_cell_padding_variants(row, width, missing_col)]
+
+    if not row_order_invariant:
+        return all(
+            normalize_row(loaded) in expected_variants(expected)
+            for expected, loaded in zip(expected_rows, loaded_rows)
+        )
+
+    remaining = Counter(normalize_row(row) for row in loaded_rows)
+    for expected in expected_rows:
+        variants = expected_variants(expected)
+        match = next((variant for variant in variants if remaining[variant] > 0), None)
+        if match is None:
+            return False
+        remaining[match] -= 1
+        if remaining[match] == 0:
+            del remaining[match]
+    return not remaining
+
+
+def _deleted_value_padding_column(path):
+    filename = str(path).rsplit("/", 1)[-1]
+    if not (
+        filename.startswith("file_less_columns_deleted_value_")
+        or filename.startswith("file_variable_column_count_")
+    ):
+        return None
+    match = re.search(r"_col_(\d+)\.csv$", filename)
+    return int(match.group(1)) if match else None
+
+
 def compare_files(source_csv, loaded_csv, n_jobs=1, origin_csv=None, row_order_invariant=False, nrows=None):
     # Both files are parsed as normal comma-delimited CSV after conversion:
     # source_csv is the expected clean file, loaded_csv is the SUT output.
@@ -180,6 +252,15 @@ def compare_files(source_csv, loaded_csv, n_jobs=1, origin_csv=None, row_order_i
     if _rows_match(source_rows, loaded_rows, row_order_invariant):
         return True
 
+    missing_col = _deleted_value_padding_column(source_csv)
+    if missing_col is not None and _rows_match_with_deleted_value_padding(
+        source_rows,
+        loaded_rows,
+        row_order_invariant,
+        missing_col=missing_col,
+    ):
+        return True
+
     if origin_csv is not None:
         try:
             origin_rows = _read_csv_rows(origin_csv)
@@ -190,3 +271,72 @@ def compare_files(source_csv, loaded_csv, n_jobs=1, origin_csv=None, row_order_i
         return _rows_match(origin_rows, loaded_rows, row_order_invariant)
 
     return False
+
+
+def compare_ground_truths(
+    manifest_path,
+    loaded_csv,
+    n_jobs=1,
+    origin_csv=None,
+    row_order_invariant=False,
+    nrows=None,
+):
+    """Compare one loaded table against every acceptable single-table GT."""
+    candidates = single_table_alternatives(manifest_path)
+    if not candidates:
+        raise ValueError("Ground-truth bundle has no single-table alternatives")
+
+    for alternative_id, expected_path in candidates:
+        if compare_files(
+            expected_path,
+            loaded_csv,
+            n_jobs=n_jobs,
+            row_order_invariant=row_order_invariant,
+            nrows=nrows,
+        ):
+            return True, alternative_id
+
+    if origin_csv is not None and compare_files(
+        candidates[0][1],
+        loaded_csv,
+        n_jobs=n_jobs,
+        origin_csv=origin_csv,
+        row_order_invariant=row_order_invariant,
+        nrows=nrows,
+    ):
+        return True, "origin"
+
+    return False, None
+
+
+def best_ground_truth_measures(
+    manifest_path,
+    loaded_csv,
+    n_jobs=1,
+    nrows=None,
+):
+    """Return the strongest metric result across single-table alternatives."""
+    candidates = single_table_alternatives(manifest_path)
+    if not candidates:
+        raise ValueError("Ground-truth bundle has no single-table alternatives")
+
+    measured = [
+        (
+            header_record_cell_measures_csv(
+                expected_path,
+                loaded_csv,
+                n_jobs=n_jobs,
+                nrows=nrows,
+            ),
+            alternative_id,
+        )
+        for alternative_id, expected_path in candidates
+    ]
+    return max(
+        measured,
+        key=lambda result: (
+            result[0][8],
+            result[0][5],
+            result[0][2],
+        ),
+    )

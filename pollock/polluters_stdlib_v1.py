@@ -22,6 +22,11 @@ from dateutil.parser import parse
 
 from . import constants
 from . import polluters_base as pb
+from .ground_truth import (
+    GroundTruthAlternative,
+    GroundTruthBundle,
+    GroundTruthTable,
+)
 from pollock.polluters_utils import (
     _set_polluted_filename,
     _row_values,
@@ -697,6 +702,7 @@ def addTable(file: CSVFile, n_rows, n_cols, empty_boundary=True):
         usable_source_cols = list(range(source_width))
 
     extra_cols = max(0, n_cols - source_width)
+    secondary_ground_truth = []
     for row_idx, source_row in enumerate(source_rows):
         row_values = (source_row + [""] * source_width)[: min(n_cols, source_width)]
 
@@ -711,6 +717,7 @@ def addTable(file: CSVFile, n_rows, n_cols, empty_boundary=True):
             else:
                 row_values.append(source_value)
 
+        secondary_ground_truth.append(row_values)
         pb.addRows(
             file,
             cell_content=row_values,
@@ -720,6 +727,37 @@ def addTable(file: CSVFile, n_rows, n_cols, empty_boundary=True):
             role="secondary_header" if row_idx == 0 else "secondary_data",
             table=1,
         )
+
+    file.ground_truth_bundle = GroundTruthBundle(
+        tables=(
+            GroundTruthTable.from_rows(
+                "primary", CSVFile.clean_rows(file), role="primary"
+            ),
+            GroundTruthTable.from_rows(
+                "secondary",
+                secondary_ground_truth,
+                role="secondary",
+            ),
+        ),
+        alternatives=(
+            GroundTruthAlternative(
+                id="primary_only",
+                table_ids=("primary",),
+                comparison="single_table",
+            ),
+            GroundTruthAlternative(
+                id="secondary_only",
+                table_ids=("secondary",),
+                comparison="single_table",
+            ),
+            GroundTruthAlternative(
+                id="all_tables",
+                table_ids=("primary", "secondary"),
+                comparison="ordered_tables",
+            ),
+        ),
+        canonical="all_tables",
+    )
 
     suffix = "_separated" if empty_boundary else ""
     _set_polluted_filename(

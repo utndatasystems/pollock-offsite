@@ -62,9 +62,10 @@ def evaluate_single_file(filename:str, dataset:str, sut:str, verbose=False, n_jo
     # Each converted result is compared against the canonical clean CSV with
     # the same filename. The original polluted input lives in data/.../csv/.
     clean_path = f"data/{dataset}/clean/{filename}"
+    ground_truth_manifest = f"data/{dataset}/ground_truth/{filename}/manifest.json"
     loaded_path = f"{sut_dir}{filename}_converted.csv"
 
-    dict_measures = {"file": filename}
+    dict_measures = {"file": filename, sut + "_matched_ground_truth": None}
     if verbose:
         print(f"'{filename}'")
     if not os.path.exists(loaded_path):
@@ -72,9 +73,28 @@ def evaluate_single_file(filename:str, dataset:str, sut:str, verbose=False, n_jo
         dict_measures[sut + "_wrong"] = 1
         return dict_measures
     try:
-        correct = metrics.compare_files(clean_path, loaded_path, n_jobs, origin_csv=origin_csv, row_order_invariant=row_order_invariant, nrows=nrows)
+        if os.path.exists(ground_truth_manifest):
+            correct, matched_ground_truth = metrics.compare_ground_truths(
+                ground_truth_manifest,
+                loaded_path,
+                n_jobs,
+                origin_csv=origin_csv,
+                row_order_invariant=row_order_invariant,
+                nrows=nrows,
+            )
+        else:
+            correct = metrics.compare_files(
+                clean_path,
+                loaded_path,
+                n_jobs,
+                origin_csv=origin_csv,
+                row_order_invariant=row_order_invariant,
+                nrows=nrows,
+            )
+            matched_ground_truth = "legacy_clean" if correct else None
         dict_measures[sut + "_correct"] = int(correct)
         dict_measures[sut + "_wrong"] = int(not correct)
+        dict_measures[sut + "_matched_ground_truth"] = matched_ground_truth
     except Exception as e:
         print("Exception:", traceback.format_exc())
         if not verbose:
