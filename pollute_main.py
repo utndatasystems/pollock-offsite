@@ -215,30 +215,31 @@ else:
             " This file contains sampled product activity records for selected catalog items."
         ),
     )
-    execute_polluter(
-        f,
-        pl.addTable,
-        new_filename="file_multitable_less.csv",
-        n_rows=f.row_count - 10,
-        n_cols=f.col_count - 2,
-        empty_boundary=False,
-    )
-    execute_polluter(
-        f,
-        pl.addTable,
-        new_filename="file_multitable_same.csv",
-        n_rows=f.row_count - 1,
-        n_cols=f.col_count,
-        empty_boundary=False,
-    )
-    execute_polluter(
-        f,
-        pl.addTable,
-        new_filename="file_multitable_more.csv",
-        n_rows=f.row_count - 1,
-        n_cols=f.col_count + 10,
-        empty_boundary=False,
-    )
+    
+    # execute_polluter(
+    #     f,
+    #     pl.addTable,
+    #     new_filename="file_multitable_less.csv",
+    #     n_rows=f.row_count - 10,
+    #     n_cols=f.col_count - 2,
+    #     empty_boundary=False,
+    # )
+    # execute_polluter(
+    #     f,
+    #     pl.addTable,
+    #     new_filename="file_multitable_same.csv",
+    #     n_rows=f.row_count - 1,
+    #     n_cols=f.col_count,
+    #     empty_boundary=False,
+    # )
+    # execute_polluter(
+    #     f,
+    #     pl.addTable,
+    #     new_filename="file_multitable_more.csv",
+    #     n_rows=f.row_count - 1,
+    #     n_cols=f.col_count + 10,
+    #     empty_boundary=False,
+    # )
 
 # Data rows: 2 files
 execute_polluter(
@@ -329,9 +330,11 @@ if args.polluters == "pollock2.0":
     execute_polluter(f, pl2.commentRow, row=1)  # comment the header row (1-based)
     execute_polluter(f, pl2.commentRow, comment_marker="//")
     execute_polluter(f, pl2.commentRow, comment_marker="<!--")
-    # TODO verify how often these should run + with which params.
-    for i in range(10):
-        execute_polluter(f, pl2.variableColumnCount)
+    # Variable-width rows: split into explicit wider and narrower cases so
+    # deleted-value ground truth can be handled differently from extra fields.
+    for i in range(5):
+        execute_polluter(f, pl2.moreColumns)
+        execute_polluter(f, pl2.lessColumnsDeletedValues)
 
     execute_polluter(f, pl2.unquotedList, max_list_len=5) # automatically chooses safe row/column
 

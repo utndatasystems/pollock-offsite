@@ -388,19 +388,44 @@ def doubleEscaping(file: CSVFile, row1=2, row2=3, col=1):
     _set_polluted_filename(file, f"file_double_escaping_col_{col}.csv")
 
 
-def variableColumnCount(file: CSVFile, row: int | None = None):
-    """Creates rows with fewer and more fields than the header."""
+def _variable_column_target(file: CSVFile, row: int | None) -> tuple[int, int]:
     if row is None:
         # Pick a data row that both the add and delete paths can address.
         row = random.randint(1, max(1, _safe_row_count(file) - 1))
     col = random.randrange(_safe_col_count(file))
+    return row, col
+
+
+def moreColumns(file: CSVFile, row: int | None = None):
+    """Creates one data row with one more field than the header."""
+    row, col = _variable_column_target(file, row)
+    pb.addCells(file, row + 1, col, n_cells=1, content=randomType(), role="data")
+    _set_polluted_filename(file, f"file_more_columns_row_{row}_col_{col}.csv")
+
+
+def lessColumnsDeletedValues(file: CSVFile, row: int | None = None):
+    """Creates one data row with one deleted field.
+
+    The polluted CSV stays jagged. The clean target is rectangularized by
+    CSVFile.write_clean_csv using these root attributes: the deleted value is
+    unrecoverable, but its column position is known from the source structure.
+    """
+    row, col = _variable_column_target(file, row)
+    pb.deleteCellAndDelimiter(file, row, col)
+    root = file.xml.getroot()
+    root.attrib["ground_truth_insert_empty_row"] = str(row)
+    root.attrib["ground_truth_insert_empty_col"] = str(col)
+    _set_polluted_filename(file, f"file_less_columns_deleted_value_row_{row}_col_{col}.csv")
+
+
+def variableColumnCount(file: CSVFile, row: int | None = None):
+    """Compatibility wrapper that creates either a wider or narrower row."""
+    raise Warning("variableColumnCount is deprecated")
 
     if random.randint(0, 1) == 1:
-        pb.deleteCellAndDelimiter(file, row, col)
+        lessColumnsDeletedValues(file, row=row)
     else:
-        pb.addCells(file, row + 1, col, n_cells=1, content=randomType(), role="data")
-
-    _set_polluted_filename(file, f"file_variable_column_count_row_{row}_col_{col}.csv")
+        moreColumns(file, row=row)
 
 
 def excelExportAutoformat(file: CSVFile, rows=None):  # checked manually
