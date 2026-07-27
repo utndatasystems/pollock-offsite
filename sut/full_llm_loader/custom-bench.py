@@ -30,12 +30,6 @@ parser.add_argument(
     help='Process only this single file from the dataset\'s csv/ dir (basename or path). Output is written to the usual dataset location; existing output is overwritten.',
 )
 parser.add_argument(
-    '--version',
-    choices=('naive', 'guided'),
-    default='naive',
-    help='Prompt version to use when querying the LLM.',
-)
-parser.add_argument(
     '--backend',
     choices=('openai', 'ollama'),
     default=None,
@@ -87,7 +81,7 @@ if args.api_base:
 if args.overwrite:
     os.environ['FULL_LLM_LOADER_BYPASS_CACHE'] = '1'
 
-sut = f'full_llm_loader_{args.version}'
+sut = 'full_llm_loader_naive'
 if args.model:
     model_slug = re.sub(r'[^a-z0-9]+', '_', args.model.lower()).strip('_')
     sut += f'_{model_slug}'
@@ -215,7 +209,6 @@ for idx, file in enumerate(tqdm(benchmark_files, total=len(benchmark_files), des
             df = parse_csv(
                 in_filepath,
                 nrows=args.nrows,
-                prompt_version=args.version,
                 encoding=args.encoding,
                 verbose=args.verbose,
             )

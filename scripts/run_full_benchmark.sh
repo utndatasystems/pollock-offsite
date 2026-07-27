@@ -131,7 +131,7 @@ for dataset in "${datasets[@]}"; do
 done
 
 hybrid_common_args=()
-full_common_args=(--version naive)
+full_common_args=()
 hybrid_suffix=""
 if [[ "$overwrite_results" == true ]]; then
     hybrid_common_args+=(--overwrite)

@@ -1,13 +1,9 @@
 from __future__ import annotations
 
-import random
 import argparse
 from pathlib import Path
-from typing import Literal, TypedDict
+from typing import TypedDict
 
-# Run with python build_parser_prompts.py ./csvstorm_files \ --version both
-
-PromptVersion = Literal["naive", "guided"]      # two options for prompt
 CSV_PLACEHOLDER = "{{CSV_TEXT}}"                # this is where the CSV will go
 BASE_DIR = Path(__file__).resolve().parent      # go to directory full_llm_loader/
 PROMPTS_DIR = BASE_DIR / "prompts"              # full_llm_loader/prompts/
@@ -21,22 +17,13 @@ class PromptMessages(TypedDict):
 def parse_args() -> argparse.Namespace:
     # Parse command-line arguments for the script.
     parser = argparse.ArgumentParser(
-        description=(
-            "Construct naive and/or guided LLM prompts for one "
-            "explicitly specified CSV file."
-        )
+        description="Construct the LLM prompt for one explicitly specified CSV file."
     )
 
     parser.add_argument(
         "csv_path",
         type=Path,
         help="Exact path to the CSV file.",
-    )
-    parser.add_argument(
-        "--version",
-        choices=("naive", "guided", "both"),
-        default="both",
-        help="Prompt version to test. Default: both.",
     )
     parser.add_argument(
         "--encoding",
@@ -47,18 +34,16 @@ def parse_args() -> argparse.Namespace:
     return parser.parse_args()
 
 
-def get_prompt_paths(version: PromptVersion,) -> tuple[Path, Path]:
+def get_prompt_paths() -> tuple[Path, Path]:
     """
-    Return the system- and user-prompt paths for a prompt version.
+    Return the system- and user-prompt paths.
 
     Expected files:
-        prompts/naive_system_prompt.txt
-        prompts/naive_user_prompt.txt
-        prompts/guided_system_prompt.txt
-        prompts/guided_user_prompt.txt
+        prompts/system_prompt.txt
+        prompts/user_prompt.txt
     """
-    system_prompt_path = PROMPTS_DIR / f"{version}_system_prompt.txt"
-    user_prompt_path = PROMPTS_DIR / f"{version}_user_prompt.txt"
+    system_prompt_path = PROMPTS_DIR / "system_prompt.txt"
+    user_prompt_path = PROMPTS_DIR / "user_prompt.txt"
 
     return system_prompt_path, user_prompt_path
 
@@ -79,11 +64,9 @@ def read_text_file(path: Path, encoding: str = "utf-8",) -> str:
             ) from exc
 
 
-def load_prompt_templates(version: PromptVersion,) -> PromptMessages:
-    """
-    Load the system and user prompt templates for one parser version.
-    """
-    system_prompt_path, user_prompt_path = get_prompt_paths(version)
+def load_prompt_templates() -> PromptMessages:
+    """Load the system and user prompt templates."""
+    system_prompt_path, user_prompt_path = get_prompt_paths()
 
     system_prompt = read_text_file(system_prompt_path)
     user_prompt = read_text_file(user_prompt_path)
@@ -124,12 +107,11 @@ def read_csv_file(csv_path: str | Path, encoding: str = "utf-8",) -> str:
     return read_text_file(path, encoding=encoding)
 
 
-def build_prompts(csv_path: str | Path, version: PromptVersion, encoding: str = "utf-8",) -> PromptMessages:
+def build_prompts(csv_path: str | Path, encoding: str = "utf-8",) -> PromptMessages:
     """
-    Load the selected system/user templates and insert the CSV contents
-    into the user prompt.
+    Load the system/user templates and insert the CSV contents into the user prompt.
     """
-    templates = load_prompt_templates(version)
+    templates = load_prompt_templates()
     csv_text = read_csv_file(csv_path, encoding=encoding)
 
     combined_user_prompt = templates["user"].replace(
@@ -144,13 +126,12 @@ def build_prompts(csv_path: str | Path, version: PromptVersion, encoding: str = 
     }
 
 
-def build_messages(csv_path: str | Path, version: PromptVersion, encoding: str = "utf-8",) -> list[dict[str, str]]:
+def build_messages(csv_path: str | Path, encoding: str = "utf-8",) -> list[dict[str, str]]:
     """
     Return OpenAI-compatible chat messages.
     """
     prompts = build_prompts(
         csv_path=csv_path,
-        version=version,
         encoding=encoding,
     )
 
@@ -168,7 +149,7 @@ def build_messages(csv_path: str | Path, version: PromptVersion, encoding: str =
 
 def test_prompt_construction() -> None:
     """
-    Small smoke test for both prompt variants.
+    Small smoke test for the prompt.
 
     Creates a temporary CSV file, constructs the prompts, and checks that:
     - both prompt files can be loaded;
@@ -188,38 +169,33 @@ def test_prompt_construction() -> None:
         csv_path = Path(temporary_directory) / "sample.csv"
         csv_path.write_text(sample_csv, encoding="utf-8")
 
-        for version in ("naive", "guided"):
-            messages = build_messages(
-                csv_path=csv_path,
-                version=version,
-            )
+        messages = build_messages(csv_path=csv_path)
 
-            assert len(messages) == 2
-            assert messages[0]["role"] == "system"
-            assert messages[1]["role"] == "user"
+        assert len(messages) == 2
+        assert messages[0]["role"] == "system"
+        assert messages[1]["role"] == "user"
 
-            system_prompt = messages[0]["content"]
-            user_prompt = messages[1]["content"]
+        system_prompt = messages[0]["content"]
+        user_prompt = messages[1]["content"]
 
-            assert system_prompt.strip()
-            assert user_prompt.strip()
-            assert CSV_PLACEHOLDER not in user_prompt
-            assert sample_csv in user_prompt
+        assert system_prompt.strip()
+        assert user_prompt.strip()
+        assert CSV_PLACEHOLDER not in user_prompt
+        assert sample_csv in user_prompt
 
-            print(f"\n{'=' * 70}")
-            print(f"{version.upper()} PROMPT TEST PASSED")
-            print(f"{'=' * 70}")
-            print(f"System prompt length: {len(system_prompt)} characters")
-            print(f"User prompt length:   {len(user_prompt)} characters")
-            print("\nUser-prompt preview:")
-            print(user_prompt[-300:])
+        print(f"\n{'=' * 70}")
+        print("PROMPT TEST PASSED")
+        print(f"{'=' * 70}")
+        print(f"System prompt length: {len(system_prompt)} characters")
+        print(f"User prompt length:   {len(user_prompt)} characters")
+        print("\nUser-prompt preview:")
+        print(user_prompt[-300:])
 
     print("\nAll prompt-construction tests passed.")
 
 
 def test_real_csv(
     csv_path: str | Path,
-    version: PromptVersion | Literal["both"] = "both",
     encoding: str = "utf-8",
 ) -> None:
     """
@@ -228,8 +204,6 @@ def test_real_csv(
     Args:
         csv_path:
             Exact path of the CSV file to insert into the prompt.
-        version:
-            "naive", "guided", or "both".
         encoding:
             Encoding used to read the CSV file.
     """
@@ -241,63 +215,34 @@ def test_real_csv(
     if path.suffix.lower() != ".csv":
         raise ValueError(f"Expected a .csv file, received: {path}")
 
-    versions: tuple[PromptVersion, ...]
-
-    if version == "both":
-        versions = ("naive", "guided")
-    else:
-        versions = (version,)
-
     original_csv = read_csv_file(path, encoding=encoding)
+    messages = build_messages(csv_path=path, encoding=encoding)
 
-    for prompt_version in versions:
-        messages = build_messages(
-            csv_path=path,
-            version=prompt_version,
-            encoding=encoding,
-        )
+    assert len(messages) == 2, "expected exactly two messages"
+    assert messages[0]["role"] == "system", "first message must be the system prompt"
+    assert messages[1]["role"] == "user", "second message must be the user prompt"
 
-        assert len(messages) == 2, (
-            f"{prompt_version}: expected exactly two messages"
-        )
-        assert messages[0]["role"] == "system", (
-            f"{prompt_version}: first message must be the system prompt"
-        )
-        assert messages[1]["role"] == "user", (
-            f"{prompt_version}: second message must be the user prompt"
-        )
+    system_prompt = messages[0]["content"]
+    user_prompt = messages[1]["content"]
 
-        system_prompt = messages[0]["content"]
-        user_prompt = messages[1]["content"]
+    assert system_prompt.strip(), "system prompt is empty"
+    assert user_prompt.strip(), "user prompt is empty"
+    assert CSV_PLACEHOLDER not in user_prompt, "CSV placeholder was not replaced"
+    assert original_csv in user_prompt, "CSV content is missing from the user prompt"
 
-        assert system_prompt.strip(), (
-            f"{prompt_version}: system prompt is empty"
-        )
-        assert user_prompt.strip(), (
-            f"{prompt_version}: user prompt is empty"
-        )
-        assert CSV_PLACEHOLDER not in user_prompt, (
-            f"{prompt_version}: CSV placeholder was not replaced"
-        )
-        assert original_csv in user_prompt, (
-            f"{prompt_version}: CSV content is missing from the user prompt"
-        )
+    print(f"\n{'=' * 70}")
+    print("PROMPT TEST PASSED")
+    print(f"{'=' * 70}")
+    print(f"CSV file:             {path}")
+    print(f"CSV length:           {len(original_csv)} characters")
+    print(f"System prompt length: {len(system_prompt)} characters")
+    print(f"User prompt length:   {len(user_prompt)} characters")
 
-        print(f"\n{'=' * 70}")
-        print(f"{prompt_version.upper()} PROMPT TEST PASSED")
-        print(f"{'=' * 70}")
-        print(f"CSV file:             {path}")
-        print(f"CSV length:           {len(original_csv)} characters")
-        print(f"System prompt length: {len(system_prompt)} characters")
-        print(f"User prompt length:   {len(user_prompt)} characters")
-
-        print("\nBeginning of user prompt:\n")
-        print(user_prompt[:400])
-
-        print("\n...\n")
-
-        print("End of user prompt:\n")
-        print(user_prompt[-400:])
+    print("\nBeginning of user prompt:\n")
+    print(user_prompt[:400])
+    print("\n...\n")
+    print("End of user prompt:\n")
+    print(user_prompt[-400:])
 
     print("\nAll requested prompt-construction tests passed.")
 
@@ -307,10 +252,5 @@ if __name__ == "__main__":
 
     test_real_csv(
         csv_path=args.csv_path,
-        version=args.version,
         encoding=args.encoding,
     )
-
-
-    # run ... to test
-    # python sut/full_llm_loader/build_prompt_utils.py \ /home/neubauer/src/pollock-offsite/results/source.csv \ --version guided

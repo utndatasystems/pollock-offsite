@@ -13,12 +13,10 @@ except ImportError:
 
 try:
     from .build_prompt_utils import (
-        PromptVersion,
         build_messages,
     )
 except ImportError:
     from build_prompt_utils import (
-        PromptVersion,
         build_messages,
     )
 
@@ -29,7 +27,6 @@ OutputFormat = Literal["fixed_csv", "reconstruction_json"]
 def parse_csv(
     csv_path: str | Path,
     nrows: int | None = None,
-    prompt_version: PromptVersion = "guided",
     encoding: str = "utf-8",
     verbose: bool = False,
 ) -> pd.DataFrame:
@@ -48,8 +45,6 @@ def parse_csv(
         nrows:
             Optional number of reconstructed rows to return. The complete
             source file is still sent to the model.
-        prompt_version:
-            Prompt version to use: "naive" or "guided".
         encoding:
             Encoding used to read the source CSV.
         verbose:
@@ -66,7 +61,6 @@ def parse_csv(
         - df.attrs["llm_messages"]
         - df.attrs["llm_raw_output"]
         - df.attrs["llm_fixed_csv"]
-        - df.attrs["llm_prompt_version"]
         - df.attrs["source_csv_path"]
     """
     path = Path(csv_path).expanduser().resolve()
@@ -80,7 +74,6 @@ def parse_csv(
     # Builds the prompt messages for the LLM, including the source CSV content.
     messages = build_messages(
         csv_path=path,
-        version=prompt_version,
         encoding=encoding,
     )
 
@@ -107,7 +100,6 @@ def parse_csv(
     dataframe.attrs["llm_messages"] = messages
     dataframe.attrs["llm_raw_output"] = llm_output
     dataframe.attrs["llm_fixed_csv"] = fixed_csv
-    dataframe.attrs["llm_prompt_version"] = prompt_version
     dataframe.attrs["source_csv_path"] = str(path)
 
     return dataframe
@@ -226,23 +218,14 @@ def _real_test_solution() -> None:
         "/home/neubauer/src/pollock-offsite/results/source.csv"
     )
 
-    for version in ("naive", "guided"):
-        print(f"\nRunning full-LLM parser with {version} prompt...")
+    print("\nRunning full-LLM parser...")
+    dataframe = parse_csv(csv_path=csv_path, nrows=5)
 
-        dataframe = parse_csv(
-            csv_path=csv_path,
-            prompt_version=version,
-            nrows=5,
-        )
+    print("\nReconstructed DataFrame:")
+    print(dataframe)
 
-        print("\nReconstructed DataFrame:")
-        print(dataframe)
-
-        print("\nPrompt version:")
-        print(dataframe.attrs["llm_prompt_version"])
-
-        print("\nLLM error report:")
-        print(dataframe.attrs["llm_error_report"])
+    print("\nLLM error report:")
+    print(dataframe.attrs["llm_error_report"])
 
 
 if __name__ == "__main__":
