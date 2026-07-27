@@ -1,7 +1,7 @@
 import sys
 import warnings
 from dateutil.parser._parser import UnknownTimezoneWarning
-from pollock import timeparser #This module is not working on windows
+from pollution import timeparser #This module is not working on windows
 from price_parser import Price
 
 warnings.simplefilter(action='ignore', category=UnknownTimezoneWarning)

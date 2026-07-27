@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import csv
 
-from pollock import metrics
+from pollution import metrics
 
 
 def write_rows(path, rows):

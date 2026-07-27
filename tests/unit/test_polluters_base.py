@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from lxml import etree
 
-from pollock import polluters_base as pb
+from pollution import polluters_base as pb
 from tests._helpers import FakeCSVFile, cell, make_csv_file, row, values
 
 

@@ -68,7 +68,7 @@ def _strip_leading_lines(csv_input: str, n_lines: int) -> str:
             break
         idx = nl + 1
     tmp = tempfile.NamedTemporaryFile(
-        "wb", prefix="pollock_stripped_", suffix=".csv", delete=False
+        "wb", prefix="pollution_stripped_", suffix=".csv", delete=False
     )
     try:
         tmp.write(data[idx:])
@@ -645,7 +645,7 @@ def write_repaired_copy(
         "w",
         encoding="utf-8",
         newline="",
-        prefix="pollock_custom_repaired_",
+        prefix="pollution_custom_repaired_",
         suffix=".csv",
         delete=False,
     )

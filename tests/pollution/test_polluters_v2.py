@@ -5,7 +5,7 @@ Run with:
     pytest
 
 Or override the module under test:
-    POLLUTERS_MODULE=pollock.polluters_stdlib_v2 pytest
+    POLLUTERS_MODULE=pollution.polluters_stdlib_v2 pytest
 """
 
 from __future__ import annotations
@@ -16,8 +16,8 @@ import json
 import pytest
 from lxml import etree
 
-from pollock.CSVFile import CSVFile
-from pollock.polluters_utils import _row_values
+from pollution.CSVFile import CSVFile
+from pollution.polluters_utils import _row_values
 from tests._helpers import FakeCSVFile, assert_filename_synced, load_polluters_module, row, values
 
 p = load_polluters_module()

@@ -14,7 +14,7 @@ if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
 
-def load_polluters_module(default: str = "pollock.polluters_stdlib_v2"):
+def load_polluters_module(default: str = "pollution.polluters_stdlib_v2"):
     """Import the polluters module selected for the current test run."""
     module_name = os.environ.get("POLLUTERS_MODULE", default)
     return importlib.import_module(module_name)

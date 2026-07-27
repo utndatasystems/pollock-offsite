@@ -27,7 +27,7 @@ from .ground_truth import (
     GroundTruthBundle,
     GroundTruthTable,
 )
-from pollock.polluters_utils import (
+from pollution.polluters_utils import (
     _set_polluted_filename,
     _row_values,
     _safe_row_count,

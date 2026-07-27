@@ -3,9 +3,9 @@ import json
 
 import pytest
 
-from pollock import polluters_stdlib_v1 as p
-from pollock.CSVFile import CSVFile
-from pollock.polluters_utils import _row_values
+from pollution import polluters_stdlib_v1 as p
+from pollution.CSVFile import CSVFile
+from pollution.polluters_utils import _row_values
 from tests._helpers import make_csv_file
 
 

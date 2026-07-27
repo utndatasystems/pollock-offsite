@@ -4,7 +4,7 @@ from datetime import datetime
 
 import pytest
 
-from pollock import randdata as rd
+from pollution import randdata as rd
 
 
 def test_random_date_uses_the_requested_date_range(monkeypatch):

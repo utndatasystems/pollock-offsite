@@ -15,7 +15,7 @@ from pathlib import Path
 import pandas as pd
 
 sys.path.insert(0, str(Path(__file__).parent.parent))
-from pollock.metrics import compare_files
+from pollution.metrics import compare_files
 
 
 def _counter_subtract(a: Counter, b: Counter) -> Counter:

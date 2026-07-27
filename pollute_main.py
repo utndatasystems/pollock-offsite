@@ -1,17 +1,17 @@
 import argparse
 import os
-import pollock.polluters_stdlib_v1 as pl
-import pollock.polluters_stdlib_v2 as pl2
+import pollution.polluters_stdlib_v1 as pl
+import pollution.polluters_stdlib_v2 as pl2
 import random
 import shutil
 from copy import deepcopy
 
-from pollock.CSVFile import CSVFile
+from pollution.CSVFile import CSVFile
 from sut.utils import print
 from tqdm import tqdm
 from faker import Faker
 
-from pollock.polluters_utils import _set_polluted_filename
+from pollution.polluters_utils import _set_polluted_filename
 
 parser = argparse.ArgumentParser()
 

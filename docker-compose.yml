@@ -196,7 +196,7 @@ services:
       - ./sut/custom/:/app/
       - ./sut/utils.py:/app/utils.py
   pollution:
-    image: pollock_pollution
+    image: pollution
     command: ["python3", "/app/pollute_main.py"]
     build:
       context: .

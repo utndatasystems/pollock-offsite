@@ -21,7 +21,7 @@ from dateutil.parser import parse
 
 from . import constants
 from . import polluters_base as pb
-from pollock.polluters_utils import (
+from pollution.polluters_utils import (
     _set_polluted_filename,
     _row_values,
     _safe_row_count,

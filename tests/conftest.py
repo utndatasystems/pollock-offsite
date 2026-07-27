@@ -21,7 +21,7 @@ def project_root() -> Path:
 @pytest.fixture(scope="session")
 def polluters_module_name() -> str:
     """Return the polluters module import path used by the test suite."""
-    return "pollock.polluters_stdlib_v2"
+    return "pollution.polluters_stdlib_v2"
 
 
 @pytest.fixture(scope="session")

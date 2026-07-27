@@ -160,7 +160,7 @@ def parse_csv_with_validation(
                 with open(csv_input, "r", encoding="utf-8-sig", errors="replace", newline="") as f:
                     all_lines = f.readlines()
                 normalized_header_file = tempfile.NamedTemporaryFile(
-                    "w+", encoding="utf-8", newline="", prefix="pollock_header_", suffix=".csv"
+                    "w+", encoding="utf-8", newline="", prefix="pollution_header_", suffix=".csv"
                 )
                 header_line = all_lines.pop(header_line_idx)
                 normalized_header_file.writelines([header_line, *all_lines])

@@ -5,16 +5,16 @@ import pytest
 
 import evaluate
 
-from pollock import metrics
-from pollock.CSVFile import CSVFile
-from pollock.ground_truth import (
+from pollution import metrics
+from pollution.CSVFile import CSVFile
+from pollution.ground_truth import (
     GroundTruthAlternative,
     GroundTruthBundle,
     GroundTruthTable,
     load_ground_truth_manifest,
     single_table_alternatives,
 )
-from pollock.polluters_stdlib_v1 import addTable
+from pollution.polluters_stdlib_v1 import addTable
 from scripts.upload_csv_storm_to_hf import validate_dataset_dir
 
 

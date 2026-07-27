@@ -12,7 +12,7 @@ import pandas as pd
 
 from typing import List
 
-import pollock.metrics as metrics
+import pollution.metrics as metrics
 from sut.utils import print
 
 from dotenv import load_dotenv
