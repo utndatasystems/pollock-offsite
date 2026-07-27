@@ -12,6 +12,7 @@ from tqdm import tqdm
 from faker import Faker
 
 from pollution.polluters_utils import _set_polluted_filename
+from pollock.combinations import apply_pollution_combination
 
 parser = argparse.ArgumentParser()
 
@@ -58,6 +59,15 @@ parser.add_argument(
 )
 
 parser.add_argument(
+    "--combinations",
+    action="store_true",
+    help=(
+        "Generate curated artifacts containing interacting pollutions. "
+        "Requires --polluters pollock2.0."
+    ),
+)
+
+parser.add_argument(
     "--rng-seed",
     required=False,
     default=1337,
@@ -72,6 +82,8 @@ parser.add_argument(
 
 
 args = parser.parse_args()
+if args.combinations and args.polluters != "pollock2.0":
+    parser.error("--combinations requires --polluters pollock2.0")
 
 OUT_CSV_PATH = os.path.join(args.output, "csv/")
 OUT_CLEAN_PATH = os.path.join(args.output, "clean/")
@@ -103,6 +115,28 @@ def execute_polluter(file: CSVFile, polluter, new_filename=None, *args, **kwargs
     t.write_clean_csv(OUT_CLEAN_PATH)
     t.write_ground_truths(OUT_GROUND_TRUTH_PATH)
     t.write_parameters(OUT_PARAMETERS_PATH)
+
+
+def execute_polluter_combination(
+    file: CSVFile,
+    *,
+    steps,
+):
+    """Apply several polluters to one copy and persist the combined artifact."""
+    combined = apply_pollution_combination(
+        file,
+        steps,
+    )
+    print(
+        "Executing combination",
+        combined.filename,
+        "with polluters",
+        tuple(polluter.__name__ for polluter, _ in steps),
+    )
+    combined.write_csv(OUT_CSV_PATH)
+    combined.write_clean_csv(OUT_CLEAN_PATH)
+    combined.write_ground_truths(OUT_GROUND_TRUTH_PATH)
+    combined.write_parameters(OUT_PARAMETERS_PATH)
 
 if args.overwrite and os.path.exists(args.output):
     if not os.path.isdir(args.output) or os.path.islink(args.output):
@@ -398,6 +432,121 @@ if args.polluters == "pollock2.0":
 
 
 
-# TODO: Combinations of pollutions:
+if args.combinations:
+    # Two interacting pollutions.
+    execute_polluter_combination(
+        f,
+        steps=[
+            (pl2.moveHeaderRow, {"row": 5}),
+            (
+                pl.addPreamble,
+                {
+                    "n_rows": 2,
+                    "emptyrow": True,
+                    "cell_content": [
+                        "Export: product_activity_sample.csv",
+                        "Section: catalog activity",
+                    ],
+                },
+            ),
+        ],
+    )
+    execute_polluter_combination(
+        f,
+        steps=[
+            (pl2.multilineHeader, {"header_rows": 3}),
+            (
+                pl2.addFootnote,
+                {
+                    "n_rows": 2,
+                    "blank_line": True,
+                    "cell_content": "Source: catalog activity export",
+                },
+            ),
+        ],
+    )
+    execute_polluter_combination(
+        f,
+        steps=[
+            (pl2.moreColumns, {"row": 10}),
+            (
+                pl2.mixedDelimiters,
+                {
+                    "row": 11,
+                    "delimiters": [";"],
+                    "mode": "within_row",
+                    "range_within_row": 3,
+                },
+            ),
+        ],
+    )
+    execute_polluter_combination(
+        f,
+        steps=[
+            (
+                pl.changeRowQuotationMark,
+                {"row": 2, "target_quotation": "'"},
+            ),
+            (
+                pl2.mixedDelimiters,
+                {
+                    "row": 2,
+                    "delimiters": [";"],
+                    "mode": "within_row",
+                    "range_within_row": 3,
+                },
+            ),
+        ],
+    )
+
+    # Three interacting syntactic and semantic pollutions.
+    execute_polluter_combination(
+        f,
+        steps=[
+            (pl2.moveHeaderRow, {"row": 5}),
+            (
+                pl.addPreamble,
+                {
+                    "n_rows": 2,
+                    "emptyrow": True,
+                    "cell_content": [
+                        "Export: product_activity_sample.csv",
+                        "Section: catalog activity",
+                    ],
+                },
+            ),
+            (
+                pl2.addFootnote,
+                {
+                    "n_rows": 2,
+                    "blank_line": True,
+                    "cell_content": "Source: catalog activity export",
+                },
+            ),
+        ],
+    )
+    execute_polluter_combination(
+        f,
+        steps=[
+            (pl2.multilineHeader, {"header_rows": 3}),
+            (
+                pl2.mixedDelimiters,
+                {
+                    "row": 4,
+                    "delimiters": [";"],
+                    "mode": "within_row",
+                    "range_within_row": 3,
+                },
+            ),
+            (
+                pl2.addFootnote,
+                {
+                    "n_rows": 2,
+                    "blank_line": True,
+                    "cell_content": "Source: catalog activity export",
+                },
+            ),
+        ],
+    )
 
 print("Pollution process complete.")

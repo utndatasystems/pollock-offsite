@@ -8,6 +8,8 @@ from typing import Any, Dict, List, Optional
 
 DEFAULT_OPENAI_ENDPOINT = "http://dep-eng-data-s-heimgarten.hosts.utn.de:4000/v1/chat/completions"
 DEFAULT_OPENAI_MODEL = "gpt-5.4"
+DEFAULT_OLLAMA_API_BASE = "http://localhost:11434/v1"
+DEFAULT_OLLAMA_MODEL = "qwen3.5:0.8b"
 #DEFAULT_OPENAI_MODEL = "gpt-5.4-mini"
 
 DEFAULT_MODEL_PRICES_USD_PER_1M = {
@@ -149,15 +151,42 @@ def _save_cache_to_disk() -> None:
 
 
 def _openai_endpoint() -> str:
+    if _llm_backend() == "ollama":
+        api_base = os.environ.get("OLLAMA_API_BASE") or DEFAULT_OLLAMA_API_BASE
+        api_base = api_base.rstrip("/")
+        if api_base.endswith("/chat/completions"):
+            return api_base
+        return f"{api_base}/chat/completions"
     return os.environ.get("OPENAI_ENDPOINT") or DEFAULT_OPENAI_ENDPOINT
 
 
 def _openai_model() -> str:
+    if _llm_backend() == "ollama":
+        return (
+            os.environ.get("OLLAMA_MODEL")
+            or os.environ.get("OPENAI_MODEL")
+            or DEFAULT_OLLAMA_MODEL
+        )
     return os.environ.get("OPENAI_MODEL") or DEFAULT_OPENAI_MODEL
 
 
 def _openai_api_key() -> Optional[str]:
+    if _llm_backend() == "ollama":
+        # Ollama's local OpenAI-compatible API ignores this bearer token.
+        return os.environ.get("OPENAI_API_KEY") or "ollama"
     return os.environ.get("OPENAI_API_KEY")
+
+
+def _llm_backend() -> str:
+    backend = os.environ.get(
+        "LLM_BACKEND",
+        os.environ.get("FULL_LLM_LOADER_BACKEND", "openai"),
+    ).strip().lower()
+    if backend not in {"openai", "ollama"}:
+        raise RuntimeError(
+            f"LLM_BACKEND must be 'openai' or 'ollama', received {backend!r}."
+        )
+    return backend
 
 
 def _supports_temperature(model: str) -> bool:
@@ -227,6 +256,11 @@ def call_llm(prompt: str, trace: Any, event_type: str) -> str:
     }
     if _supports_temperature(model):
         payload_dict["temperature"] = 0
+    if _llm_backend() == "ollama":
+        payload_dict["reasoning_effort"] = os.environ.get(
+            "OLLAMA_REASONING_EFFORT",
+            "none",
+        )
     payload = json.dumps(payload_dict).encode("utf-8")
 
     request = urllib.request.Request(
@@ -239,12 +273,25 @@ def call_llm(prompt: str, trace: Any, event_type: str) -> str:
         method="POST",
     )
     try:
-        with urllib.request.urlopen(request, timeout=90) as response_obj:
+        with urllib.request.urlopen(
+            request,
+            timeout=300 if _llm_backend() == "ollama" else 90,
+        ) as response_obj:
             data = json.loads(response_obj.read().decode("utf-8"))
     except urllib.error.HTTPError as exc:
         body = exc.read().decode("utf-8", errors="replace")
         raise RuntimeError(f"HTTP Error {exc.code}: {exc.reason}\n{body}") from exc
-    response = data["choices"][0]["message"]["content"]
+    except urllib.error.URLError as exc:
+        raise RuntimeError(
+            f"Could not reach the {_llm_backend()} LLM endpoint "
+            f"{_openai_endpoint()}: {exc.reason}"
+        ) from exc
+    try:
+        response = data["choices"][0]["message"]["content"]
+    except (KeyError, IndexError, TypeError) as exc:
+        raise RuntimeError(f"Unexpected LLM response: {data}") from exc
+    if not isinstance(response, str) or not response.strip():
+        raise RuntimeError(f"Unexpected LLM response: missing assistant content: {data}")
     usage = data.get("usage") if isinstance(data.get("usage"), dict) else None
     cost_record = _build_cost_record(
         model=model,

@@ -34,6 +34,7 @@ def test_default_ground_truth_bundle_contains_one_canonical_gt(tmp_path):
     manifest = load_ground_truth_manifest(manifest_path)
 
     assert manifest["canonical"] == "canonical"
+    assert manifest["accept_origin"] is False
     assert manifest["alternatives"] == [
         {
             "id": "canonical",
@@ -50,6 +51,47 @@ def test_default_ground_truth_bundle_contains_one_canonical_gt(tmp_path):
     )
     assert correct is True
     assert matched == "canonical"
+
+
+def test_manifest_accept_origin_allows_inferred_source_gt(tmp_path):
+    dataset = tmp_path / "data" / "demo"
+    source = dataset / "csv" / "source.csv"
+    source.parent.mkdir(parents=True)
+    write_source = "name,city,amount\nAlice,Berlin,10\nBob,Munich,20\n"
+    source.write_text(write_source, encoding="utf-8")
+
+    bundle = GroundTruthBundle.single(
+        [["name", "city", "amount"], ["Alice", "Berlin", "999"]],
+        accept_origin=True,
+    )
+    manifest_path = bundle.write(dataset / "ground_truth", "case.csv")
+    loaded = tmp_path / "loaded.csv"
+    shutil.copyfile(source, loaded)
+
+    manifest = load_ground_truth_manifest(manifest_path)
+    assert manifest["accept_origin"] is True
+    assert metrics.compare_ground_truths(manifest_path, loaded) == (True, "origin")
+
+
+def test_cli_origin_still_applies_when_manifest_does_not_accept_origin(tmp_path):
+    dataset = tmp_path / "data" / "demo"
+    source = dataset / "csv" / "source.csv"
+    source.parent.mkdir(parents=True)
+    source.write_text("name,city,amount\nAlice,Berlin,10\n", encoding="utf-8")
+
+    bundle = GroundTruthBundle.single(
+        [["name", "city", "amount"], ["Alice", "Berlin", "999"]],
+    )
+    manifest_path = bundle.write(dataset / "ground_truth", "case.csv")
+    loaded = tmp_path / "loaded.csv"
+    shutil.copyfile(source, loaded)
+
+    assert metrics.compare_ground_truths(manifest_path, loaded) == (False, None)
+    assert metrics.compare_ground_truths(
+        manifest_path,
+        loaded,
+        origin_csv=source,
+    ) == (True, "origin")
 
 
 def test_multitable_bundle_accepts_primary_or_secondary_table(tmp_path):

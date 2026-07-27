@@ -59,9 +59,20 @@ parser.add_argument(
     help="Disable persistent LLM response cache (caching is on by default)",
 )
 parser.add_argument(
+    "--backend",
+    choices=("openai", "ollama"),
+    default=None,
+    help="LLM backend (default: LLM_BACKEND env var, then openai)",
+)
+parser.add_argument(
     "--model",
     default=None,
-    help="OpenAI-compatible model to use (overrides OPENAI_MODEL env var); also sets sut name to custom_<model>",
+    help="Model to use (for example qwen3.5:9b); also adds the model to the SUT name",
+)
+parser.add_argument(
+    "--api-base",
+    default=None,
+    help="API base URL override (for Ollama, default: http://localhost:11434/v1)",
 )
 parser.add_argument(
     "--file",
@@ -77,6 +88,26 @@ parser.add_argument(
 args = parser.parse_args()
 if args.cheat and args.no_llm_repair:
     parser.error("--cheat already disables LLM repair")
+if args.backend:
+    os.environ["LLM_BACKEND"] = args.backend
+backend = os.environ.get(
+    "LLM_BACKEND",
+    os.environ.get("FULL_LLM_LOADER_BACKEND", "openai"),
+).strip().lower()
+if backend not in {"openai", "ollama"}:
+    parser.error("LLM_BACKEND must be 'openai' or 'ollama'")
+if args.model:
+    os.environ["OLLAMA_MODEL" if backend == "ollama" else "OPENAI_MODEL"] = args.model
+if args.api_base:
+    if backend == "ollama":
+        os.environ["OLLAMA_API_BASE"] = args.api_base
+    else:
+        api_base = args.api_base.rstrip("/")
+        os.environ["OPENAI_ENDPOINT"] = (
+            api_base
+            if api_base.endswith("/chat/completions")
+            else f"{api_base}/chat/completions"
+        )
 
 LLM_REPAIR = not args.cheat and not args.no_llm_repair
 LLM_DIALECT = not args.no_llm_dialect
@@ -87,13 +118,10 @@ if USE_CLEVERCSV and USE_DUCKDB_SNIFF:
 if not LLM_DIALECT and not (USE_CLEVERCSV or USE_DUCKDB_SNIFF):
     parser.error("--no-llm-dialect removes the LLM dialect source; pass --clevercsv or "
                  "--duckdb-sniff so a dialect source remains")
-if (LLM_REPAIR or LLM_DIALECT) and not os.environ.get("OPENAI_API_KEY"):
+if backend != "ollama" and (LLM_REPAIR or LLM_DIALECT) and not os.environ.get("OPENAI_API_KEY"):
     parser.error("LLM calls are enabled by default and require OPENAI_API_KEY. Use --no-llm-dialect "
                  "--no-llm-repair (with --clevercsv or --duckdb-sniff), or --cheat "
                  "to avoid LLM calls.")
-
-if args.model:
-    os.environ["OPENAI_MODEL"] = args.model
 
 from utils import print
 from solution import (

@@ -25,6 +25,19 @@ Generate polluted variants (number depends on n_rows + n_cols of your file)
 ```bash
 python3 pollute_main.py --source data/<dataset_name>/<your_csv_file>.csv --output data/<dataset_name>
 ```
+
+Generate Pollock 2.0 together with curated pollution combinations. Combination
+filenames contain the ordered pollution names and their structural parameters:
+
+```bash
+python3 pollute_main.py \
+  --source ./results/source.csv \
+  --output ./data/csv_storm \
+  --polluters pollock2.0 \
+  --combinations \
+  --overwrite
+```
+
 **Note:** The explanations in ```Detailed explanation of the Pollock Benchmark Structure```, the   ```dataset_name``` is already replaced by ```polluted_files``` as it is the default one used by the original authors. This one is set in the ```.env``` file as the ```$DATASET``` variable default -> scripts default back to ```polluted_files``` if no other dataset name is passed or the ```.env``` file is not changed
 
 </details>
@@ -67,7 +80,55 @@ scripts/run_python_suts.sh
 to run on the default (polluted_files) folder in ```./data``` 
 </details>
 
- 
+### Run the LLM parsers locally with Ollama
+
+Both LLM parser architectures use Ollama's OpenAI-compatible API. Start Ollama
+and make sure the exact model name shown by `ollama list` is available:
+
+```bash
+ollama serve
+ollama pull qwen3.5:0.8b
+```
+
+No `OPENAI_API_KEY` is needed. Run the complete CSV Storm dataset with the
+full-LLM parser:
+
+```bash
+DATASET=csv_storm .venv/bin/python sut/full_llm_loader/custom-bench.py \
+  --backend ollama \
+  --model qwen3.5:0.8b \
+  --version naive \
+  --overwrite
+```
+
+Run CSV Storm with the hybrid parser (LLM dialect detection and malformed-row
+repair are enabled by default):
+
+```bash
+DATASET=csv_storm .venv/bin/python sut/llm_hybrid_parser_Robin/llm-hybrid-bench.py \
+  --backend ollama \
+  --model qwen3.5:0.8b \
+  --overwrite
+```
+
+CSV Storm input is read from `data/csv_storm/csv/`. To test only one file,
+append `--file file_field_delimiter_0x3B.csv`. Add `--verbose` to either command
+to print prompts and responses. If Ollama is not listening on its default URL,
+add `--api-base http://<host>:<port>/v1`.
+
+The equivalent shared environment configuration is:
+
+```bash
+export LLM_BACKEND=ollama
+export OLLAMA_MODEL=qwen3.5:0.8b
+export OLLAMA_API_BASE=http://localhost:11434/v1
+```
+
+`OLLAMA_REASONING_EFFORT` defaults to `none`, which makes structured CSV/JSON
+responses more predictable. Override it if the selected model benefits from
+thinking mode. See the
+[Ollama OpenAI compatibility documentation](https://docs.ollama.com/api/openai-compatibility)
+for supported request fields.
 
 ### Run all SUTS (Docker needed)
 
@@ -139,6 +200,19 @@ Have fun and happy hacking ;)
 2. The different SuTs read the files from ```data/polluted_files/csv/```. 
 3. The different SuTs write the content of their respective databases/dataframes etc. into ```results/<sut>/polluted_files/loading/``` 
 4. The evaluation script ```evaluate.py``` uses Multi-Set operations to compare the outputs of the SuTs (```results/<sut>/polluted_files/loading/```) with the expected clean outputs in (```data/polluted_files/clean/```). It does so on a per-row (record) and per-cell basis. The final score is a mix of loading-success and recall + precision metrics (for formula, see the more detailed explanation of the Evaluation below)
+
+### Ground-truth bundles
+
+clean/<filename> remains the backward-compatible canonical single-table output.
+Generation also writes ground_truth/<filename>/manifest.json. Ordinary
+pollutions contain one canonical alternative. Ambiguous pollutions may register
+multiple alternatives that reference reusable table CSVs in the same directory.
+
+For stacked multitable files, the manifest describes primary_only,
+secondary_only, and canonical all_tables interpretations. Single-CSV SUT
+outputs are evaluated against every single_table alternative, and evaluation
+records the matching alternative ID. Ordered and unordered multi-table
+alternatives are represented structurally for SUTs that support table bundles.
 
 ![](overview.png)
 

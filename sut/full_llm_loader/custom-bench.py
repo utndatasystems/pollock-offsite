@@ -36,9 +36,20 @@ parser.add_argument(
     help='Prompt version to use when querying the LLM.',
 )
 parser.add_argument(
+    '--backend',
+    choices=('openai', 'ollama'),
+    default=None,
+    help='LLM backend (default: LLM_BACKEND env var, then openai).',
+)
+parser.add_argument(
     '--model',
     default=None,
-    help='OpenAI-compatible model override; adds the model slug to the SUT name.',
+    help='Model override (for example qwen3.5:9b); adds the model slug to the SUT name.',
+)
+parser.add_argument(
+    '--api-base',
+    default=None,
+    help='API base URL override (for Ollama, default: http://localhost:11434/v1).',
 )
 parser.add_argument(
     '--encoding',
@@ -60,8 +71,18 @@ args = parser.parse_args()
 
 if args.nrows is not None and args.nrows < 0:
     parser.error('--nrows must be non-negative or omitted')
+if args.backend:
+    os.environ['LLM_BACKEND'] = args.backend
+backend = os.environ.get(
+    'LLM_BACKEND',
+    os.environ.get('FULL_LLM_LOADER_BACKEND', 'openai'),
+).strip().lower()
+if backend not in {'openai', 'ollama'}:
+    parser.error("LLM_BACKEND must be 'openai' or 'ollama'")
 if args.model:
-    os.environ['OPENAI_MODEL'] = args.model
+    os.environ['OLLAMA_MODEL' if backend == 'ollama' else 'OPENAI_MODEL'] = args.model
+if args.api_base:
+    os.environ['OLLAMA_API_BASE' if backend == 'ollama' else 'OPENAI_API_BASE'] = args.api_base
 
 if args.overwrite:
     os.environ['FULL_LLM_LOADER_BYPASS_CACHE'] = '1'

@@ -307,7 +307,9 @@ class CSVFile:
 
     def write_clean_csv(self, out_path="./"):
         """Write the legacy, single-table canonical ground truth."""
-        rows = CSVFile.clean_rows(self)
+        rows = getattr(self, "clean_rows_override", None)
+        if rows is None:
+            rows = CSVFile.clean_rows(self)
         with open(out_path + self.filename, "w", encoding="utf8") as out:
             writer = csv.writer(out, delimiter=",", dialect="unix")
             writer.writerows(rows)
@@ -386,6 +388,9 @@ class CSVFile:
             "column_names": column_names,
             "n_columns": n_columns,
         }
+        combination = getattr(self, "pollution_combination", None)
+        if combination is not None:
+            parameters_dict["combination"] = combination
 
         Path(out_path).mkdir(parents=True, exist_ok=True)
         with open(f"{out_path + self.filename}_parameters.json", "w") as out_file:

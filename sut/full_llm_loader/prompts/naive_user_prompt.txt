@@ -16,10 +16,17 @@ Rules for the fixed CSV section:
 - Use a comma as the output delimiter.
 - Use double quotes according to standard CSV escaping rules.
 - Encode an embedded double quote as two double quotes.
+- Preserve every payload character exactly.
+- Do not normalize, infer, translate, reformat, round, complete, shorten, or otherwise rewrite cell values.
 - Preserve embedded line breaks inside quoted fields.
 - Use LF line endings.
+- Return the complete repaired CSV, not a sample, preview, summary, or first portion.
+- Include every recoverable source data row exactly once unless the input clearly marks it as non-data.
+- Finish the entire fixed CSV section before starting the error report.
+- If output length is a concern, keep the error report as short as possible but do not truncate the fixed CSV.
 - Do not wrap the CSV in Markdown fences.
 - Do not include comments, explanations, or section labels inside the CSV.
+- If the input is empty, whitespace-only, or contains no table evidence, leave the fixed CSV section empty. Do not invent headers, rows, columns, examples, placeholder data, or sample content.
 
 The error report must use this format:
 

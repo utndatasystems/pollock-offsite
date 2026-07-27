@@ -52,7 +52,7 @@ def test_duplicate_header_as_data_row(csv_file):
     etree.SubElement(quoted_header_cell, "quotation_char").text = '"'
     etree.SubElement(quoted_header_cell, "quotation_char").text = '"'
 
-    p.duplicateHeaderAsDataRow(csv_file)
+    p.duplicateHeaderIntoRows(csv_file)
 
     first_data_row = values(csv_file, "//table[1]/row[2]/cell/value")
     assert first_data_row == ["name", "city", "amount"]
@@ -70,15 +70,6 @@ def test_extremely_long_fields(csv_file):
     assert len(new_value) == 128
     assert new_value.isalnum()
     assert_filename_synced(csv_file, "file_extremely_long_field")
-
-
-def test_add_group_section_header(csv_file):
-    p.addGroupSectionHeader(csv_file, group_name="Region: North", position=2)
-
-    row_values = values(csv_file, "//table[1]/row[3]/cell/value")
-    assert row_values == ["Region: North", "", ""]
-    assert csv_file.xml.xpath("//table[1]/row[3]")[0].attrib.get("role") == "section_header"
-    assert_filename_synced(csv_file, "file_group_section_header")
 
 
 def test_add_comment_to_file(csv_file):

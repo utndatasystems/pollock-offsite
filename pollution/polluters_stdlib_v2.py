@@ -113,6 +113,7 @@ def addTableSideways( # this is wrong
     )
 
 
+@pollution(category="Header and Schema-Layout", name="Super-Headers")
 @manually_verified
 def multilineHeader(
     file: CSVFile,
@@ -176,6 +177,7 @@ def multilineHeader(
     _set_polluted_filename(file, f"file_multiline_header_rows_{header_rows}.csv",)
 
 
+@pollution(category="Undefined", name="duplicateHeaderIntoRows")
 def duplicateHeaderIntoRows(file: CSVFile, n_duplicates: int = 1):  # checked manually
     """Duplicates the header row as data rows directly below the header.
 
@@ -205,6 +207,7 @@ def duplicateHeaderIntoRows(file: CSVFile, n_duplicates: int = 1):  # checked ma
     file.ground_truth_bundle = GroundTruthBundle.single(CSVFile.clean_rows(file), accept_origin=True,)
     _set_polluted_filename(file, f"file_duplicate_header_as_data{suffix}.csv")
 
+@pollution(category="Operational Scale Stressor", name="Extreme Field Length")
 @todo
 def extremelyLongFields(
     file: CSVFile, row=1, col=1, length=50 * 1024 * 1024):
@@ -232,6 +235,7 @@ def extremelyLongFields(
         file, f"file_extremely_long_field_row_{row}_col_{col}_len_{length}.csv")
 
 
+@pollution(category="File Segmentation and Table-Boundary", name="Inline-End Comments")
 @manually_verified
 def addTrailingCommentToFile(
     file: CSVFile,
@@ -264,6 +268,7 @@ def addTrailingCommentToFile(
     _set_polluted_filename(file, f"file_trailing_comment_{row}.csv")
 
 
+@pollution(category="Undefined", name="commentRow")
 def commentRow(
     file: CSVFile, row: int | None = None, comment_marker: str = "#", space=" "
 ):
@@ -292,6 +297,7 @@ def commentRow(
     _set_polluted_filename(file, f"file_commented_row_{row}.csv")
 
 
+@pollution(category="Dialect and Lexical-Syntax", name="Mixed Delimiters")
 def mixedDelimiters(  # checked manually
     file: CSVFile,
     row=1,
@@ -369,6 +375,7 @@ def mixedDelimiters(  # checked manually
         )
 
 
+@pollution(category="Dialect and Lexical-Syntax", name="Multiline Strings")
 @todo
 def unescapedMultiLineString(file: CSVFile, row=1, col=1, content='This is a String with a newline\n, which will be quite hard I imagine.',): # of course, default param has to be changed as not to give the llm a cue.
     """Places quote, delimiter, and newline characters in a cell without adding escaping metadata."""
@@ -378,6 +385,9 @@ def unescapedMultiLineString(file: CSVFile, row=1, col=1, content='This is a Str
     _set_polluted_filename(file, f"file_unescaped_row_{row}_col_{col}.csv")
 
 
+@pollution(
+    category="Dialect and Lexical-Syntax", name="Mixed Escaping Strategies"
+)
 @manually_verified
 def doubleEscaping(
     file: CSVFile,
@@ -402,6 +412,7 @@ def doubleEscaping(
 
 
 
+@pollution(category="Undefined", name="moreColumns")
 def moreColumns(file: CSVFile, row: int | None = None):
     """Creates one data row with one more field than the header."""
     row, col = _variable_column_target(file, row)
@@ -409,6 +420,7 @@ def moreColumns(file: CSVFile, row: int | None = None):
     _set_polluted_filename(file, f"file_more_columns_row_{row}_col_{col}.csv")
 
 
+@pollution(category="Undefined", name="lessColumnsDeletedValues")
 def lessColumnsDeletedValues(file: CSVFile, row: int | None = None):
     """Creates one data row with one deleted field.
 
@@ -424,6 +436,7 @@ def lessColumnsDeletedValues(file: CSVFile, row: int | None = None):
     _set_polluted_filename(file, f"file_less_columns_deleted_value_row_{row}_col_{col}.csv")
 
 
+@pollution(category="Record-Shape and Alignment", name="Variable Column Counts")
 def variableColumnCount(file: CSVFile, row: int | None = None):
     """Compatibility wrapper that creates either a wider or narrower row."""
     warnings.warn(
@@ -439,6 +452,9 @@ def variableColumnCount(file: CSVFile, row: int | None = None):
         moreColumns(file, row=row)
 
 
+@pollution(
+    category="Value & Semantic Interpretation", name="Excel Autoformat Damage"
+)
 def excelExportAutoformat(file: CSVFile, rows=None):
     """Adds values commonly autoformatted by Excel to end of CSV: leading-zero IDs and date-like strings."""
     if rows is None:
@@ -463,6 +479,9 @@ def excelExportAutoformat(file: CSVFile, rows=None):
     _set_polluted_filename(file, "file_excel_autoformat.csv")
 
 
+@pollution(
+    category="Value & Semantic Interpretation", name="Excel Formulas as Strings"
+)
 def exelExportFormulas(file: CSVFile):  # checked manually
     """Adds spreadsheet formulas as literal CSV cell contents to end of CSV."""
     print("USE WITH CAUTION: only insert fields with same data type for fair pollution")
@@ -480,6 +499,9 @@ def exelExportFormulas(file: CSVFile):  # checked manually
     _set_polluted_filename(file, "file_excel_formulas.csv")
 
 
+@pollution(
+    category="Value & Semantic Interpretation", name="Boolean / Null Variants"
+)
 @todo
 def typeAmbiguity(file: CSVFile):  
     """
@@ -493,6 +515,7 @@ def typeAmbiguity(file: CSVFile):
 
 
 
+@pollution(category="Header and Schema-Layout", name="Super-Headers")
 def superheader(
     file: CSVFile,
     groups: dict[str, list[int]],
@@ -586,10 +609,26 @@ def superheader(
     file.ground_truth_bundle = GroundTruthBundle.single(
             CSVFile.clean_rows(file),
             accept_origin=True,)
-    _set_polluted_filename(file, "file_superheader.csv")
+    mode = "sparse" if sparse else "repeated"
+    encoded_groups = []
+    for label, columns in groups.items():
+        encoded_label = "_".join(
+            part for part in "".join(
+                char.lower() if char.isalnum() else " " for char in label
+            ).split()
+        )
+        encoded_columns = "-".join(str(column) for column in sorted(columns))
+        encoded_groups.append(f"{encoded_label}_cols_{encoded_columns}")
+    _set_polluted_filename(
+        file,
+        f"file_superheader_{mode}_{'_group_'.join(encoded_groups)}.csv",
+    )
 
 
 
+@pollution(
+    category="Value & Semantic Interpretation", name="Embedded JSON Structures"
+)
 @manually_verified
 def embeddedJSON(
     file: CSVFile,
@@ -667,6 +706,10 @@ def embeddedJSON(
         f"file_embedded_json_cell_{row}_{start_col}_len_{l_col}.csv",)
 
 
+@pollution(
+    category="Value & Semantic Interpretation",
+    name="Embedded Sub-CSV Structures",
+)
 @todo
 def embeddedCSV(file: CSVFile):
     """Embeds CSV-like file content inside a single cell."""
@@ -679,6 +722,9 @@ def embeddedCSV(file: CSVFile):
     _set_polluted_filename(file, "file_embedded_csv_cell.csv")
 
 
+@pollution(
+    category="Encoding and Text-Representation", name="Encoding Mismatches"
+)
 def encoding(file: CSVFile, target_encoding: constants.Encoding):
     """Changes the declared file encoding.
 
@@ -706,12 +752,16 @@ def encoding(file: CSVFile, target_encoding: constants.Encoding):
     _set_polluted_filename(file, f"file_encoding_{target}.csv")
 
 
+@pollution(category="Encoding and Text-Representation", name="BOM Issues")
 def bomMarker(file: CSVFile):
     """Adds a UTF-8 BOM marker to the serialized CSV output."""
     file.xml.getroot().attrib["bom"] = "utf-8"
     _set_polluted_filename(file, "file_utf8_bom.csv")
 
 
+@pollution(
+    category="Encoding and Text-Representation", name="Mojibake / Corrupted Text"
+)
 def weirdUnicode(
     file: CSVFile,
     row: int | None = None,
@@ -778,6 +828,9 @@ def weirdUnicode(
     _set_polluted_filename(file, f"file_weird_unicode_row_{row}_col_{col}.csv")
 
 
+@pollution(
+    category="Encoding and Text-Representation", name="Hidden Characters"
+)
 def invisibleCharacters(
     file: CSVFile,
     row: int | None = None,
@@ -834,6 +887,10 @@ def invisibleCharacters(
     )
 
 
+@pollution(
+    category="Encoding and Text-Representation",
+    name="Collation Problems (ä, ö, ü, ß)",
+)
 def collations(file: CSVFile, row: int | None = None):
     """
     Inserts rows containing strings whose ordering/equality differs between collations/locales.
@@ -870,6 +927,7 @@ def collations(file: CSVFile, row: int | None = None):
     _set_polluted_filename(file, "file_collation_edge_cases.csv")
 
 # unclear if this makes sense
+@pollution(category="Value & Semantic Interpretation", name="Muddled Types")
 def mixedTypes(file: CSVFile, row: int | None = None):
     """Adds values with incompatible types (str, Bool, int) in the same logical column."""
     if row is None:
@@ -888,6 +946,9 @@ def mixedTypes(file: CSVFile, row: int | None = None):
     _set_polluted_filename(file, f"file_mixed_types_row_{row}.csv")
 
 
+@pollution(
+    category="Value & Semantic Interpretation", name="Temporal Format Drift"
+)
 def mixedTimeformats(file: CSVFile, max_num_to_change=100):
     """Replaces some random date time cells from the CSV with random values in random formats"""
 
@@ -916,6 +977,7 @@ def mixedTimeformats(file: CSVFile, max_num_to_change=100):
 
 
 
+@pollution(category="Dialect and Lexical-Syntax", name="Unquoted Lists")
 @manually_verified
 def unquotedList(
     file: CSVFile,
@@ -952,6 +1014,7 @@ def unquotedList(
     pb.changeCell(file, row=row, col=col, new_content=payload)
     _set_polluted_filename(file, f"file_unquoted_lists_row_{row}_col_{col}.csv")
 
+@pollution(category="Header and Schema-Layout", name="Header Not in First Row")
 @manually_verified
 def moveHeaderRow(file: CSVFile, row: int | None = None):
     """
@@ -964,6 +1027,9 @@ def moveHeaderRow(file: CSVFile, row: int | None = None):
     _set_polluted_filename(file, f"file_move_header_row{row}.csv")
 
 
+@pollution(
+    category="File Segmentation and Table-Boundary", name="Footers / Footnotes"
+)
 @manually_verified
 def addFootnote(
     file: CSVFile, n_rows=1, blank_line=False, cell_content="FOOTNOTE"
@@ -1000,6 +1066,10 @@ def addFootnote(
     )
 
 
+@pollution(
+    category="Record-Shape and Alignment",
+    name="No Real Delimiter (Whitespace Columns)",
+)
 @manually_verified
 def tableToWhitespaceFormattedTable(
     file: CSVFile, pad_cells=True, quote_strings=True
@@ -1080,6 +1150,9 @@ def tableToWhitespaceFormattedTable(
     )
 
 
+@pollution(
+    category="Value & Semantic Interpretation", name="Different Null Values"
+)
 @manually_verified
 def differentNullValues(file: CSVFile,
     row: int | None = None,

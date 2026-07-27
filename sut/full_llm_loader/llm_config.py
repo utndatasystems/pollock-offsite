@@ -3,7 +3,8 @@ from __future__ import annotations
 import os
 
 
-LLM_BACKEND_ENV = "FULL_LLM_LOADER_BACKEND"
+LLM_BACKEND_ENV = "LLM_BACKEND"
+LEGACY_LLM_BACKEND_ENV = "FULL_LLM_LOADER_BACKEND"
 OPENAI_API_KEY_ENV = "OPENAI_API_KEY"
 OPENAI_MODEL_ENV = "OPENAI_MODEL"
 OPENAI_API_BASE_ENV = "OPENAI_API_BASE"
@@ -19,7 +20,10 @@ OLLAMA_DEFAULT_API_BASE = "http://localhost:11434/v1"
 # Keep the get_openai_* names because llm_utils uses an OpenAI-compatible
 # chat-completions API for both OpenAI and Ollama.
 def get_llm_backend() -> str:
-    backend = os.environ.get(LLM_BACKEND_ENV, "openai").strip().lower()
+    backend = os.environ.get(
+        LLM_BACKEND_ENV,
+        os.environ.get(LEGACY_LLM_BACKEND_ENV, "openai"),
+    ).strip().lower()
     if backend not in {"openai", "ollama"}:
         raise ValueError(
             f"{LLM_BACKEND_ENV} must be 'openai' or 'ollama', received {backend!r}."
@@ -59,9 +63,10 @@ def get_openai_api_key() -> str:
 
 def get_openai_model() -> str:
     if get_llm_backend() == "ollama":
-        return os.environ.get(
-            OLLAMA_MODEL_ENV,
-            OLLAMA_DEFAULT_MODEL,
+        return (
+            os.environ.get(OLLAMA_MODEL_ENV)
+            or os.environ.get(OPENAI_MODEL_ENV)
+            or OLLAMA_DEFAULT_MODEL
         )
 
     return os.environ.get(

@@ -34,10 +34,12 @@ from pollution.polluters_utils import (
     _safe_col_count,
     _last_data_row,
     manually_verified,
-    todo
+    todo,
+    pollution,
 )
 
 
+@pollution(category="Undefined", name="dummyPolluter")
 def dummyPolluter(file: CSVFile):
     """Dummy Polluter - does nothing"""
     pass
@@ -45,6 +47,7 @@ def dummyPolluter(file: CSVFile):
 
 # --- Pollock1.0 Pollutions ---
 
+@pollution(category="Operational Scale Stressor", name="No Payload")
 @manually_verified
 def changeDimension(file: CSVFile, target_dimension=-1):
     """Resize the file to a target text length."""
@@ -78,6 +81,9 @@ def changeDimension(file: CSVFile, target_dimension=-1):
     _set_polluted_filename(file, f"file_size_{str(target_dimension)}.csv")
 
 
+@pollution(
+    category="Encoding and Text-Representation", name="Encoding Mismatches"
+)
 def changeEncoding(file: CSVFile, target_encoding: constants.Encoding):
     """Change the declared file encoding."""
     target = (
@@ -91,6 +97,7 @@ def changeEncoding(file: CSVFile, target_encoding: constants.Encoding):
     file.xml.getroot().attrib["encoding"] = target
     _set_polluted_filename(file, f"file_encoding_{target}.csv")
 
+@pollution(category="Operational Scale Stressor", name="Extreme Width")
 @manually_verified
 def changeNumberColumns(file: CSVFile, target_number_cols: int, pad_with_random_ints:bool):
     """
@@ -131,6 +138,7 @@ def changeNumberColumns(file: CSVFile, target_number_cols: int, pad_with_random_
 
     _set_polluted_filename(file, f"file_num_columns_{'pad_randints_' if pad_with_random_ints else ''}{str(target_number_cols)}.csv")
 
+@pollution(category="Operational Scale Stressor", name="Extreme Volume")
 @manually_verified
 def changeNumberRows(file: CSVFile, target_number_rows: int, remove_header=False, repeat_file=False):
     """Add or remove rows until the file has the requested height.
@@ -179,6 +187,7 @@ def changeNumberRows(file: CSVFile, target_number_rows: int, remove_header=False
     )
 
 
+@pollution(category="Header and Schema-Layout", name="Super-Headers")
 def expandColumnHeader(file: CSVFile, extra_rows=1):
     """Repeat the header across extra header rows. Turns the header into a multi-row header."""
     header = [x for x in file.xml.xpath(f"//row[{1}]//value//node()[not(node())]")]
@@ -186,6 +195,10 @@ def expandColumnHeader(file: CSVFile, extra_rows=1):
 
     _set_polluted_filename(file, f"file_multirow_header_{str(extra_rows)}.csv")
 
+@pollution(
+    category="File Segmentation and Table-Boundary",
+    name="Preambles / Metadata Blocks",
+)
 @manually_verified
 def addPreamble(
     file: CSVFile,
@@ -233,6 +246,9 @@ def addPreamble(
     )
 
 
+@pollution(
+    category="File Segmentation and Table-Boundary", name="Footers / Footnotes"
+)
 def addFootnote(
     file: CSVFile, n_rows=1, delimiters=False, emptyrow=False, cell_content="FOOTNOTE"
 ):
@@ -278,6 +294,9 @@ def addFootnote(
     )
 
 
+@pollution(
+    category="Dialect and Lexical-Syntax", name="Mixed Record Terminators"
+)
 def changeRecordDelimiter(file: CSVFile, target_delimiter="\r\n"):
     """Change the record delimiter used between rows."""
     file.record_delimiter = target_delimiter
@@ -292,6 +311,9 @@ def changeRecordDelimiter(file: CSVFile, target_delimiter="\r\n"):
     _set_polluted_filename(file, f"file_record_delimiter{del_string}.csv")
 
 
+@pollution(
+    category="Dialect and Lexical-Syntax", name="Gloabl Delimiter Change"
+)
 def changeFieldDelimiter(file: CSVFile, target_delimiter=";"):
     """Change the field delimiter used between columns."""
     file.field_delimiter = target_delimiter
@@ -305,6 +327,10 @@ def changeFieldDelimiter(file: CSVFile, target_delimiter=";"):
 
     _set_polluted_filename(file, f"file_field_delimiter{del_string}.csv")
 
+@pollution(
+    category="Dialect and Lexical-Syntax",
+    name="Global Change of Escaping Strategy",
+)
 @manually_verified
 def changeEscapeCharacter(file: CSVFile, target_escape="\\"):
     """Changes the escape character used for quoted content.
@@ -354,6 +380,10 @@ def changeEscapeCharacter(file: CSVFile, target_escape="\\"):
         _set_polluted_filename(file, f"file_escape_char_0x00.csv")
 
 
+@pollution(
+    category="Dialect and Lexical-Syntax",
+    name="Gloabl Quote Character Change",
+)
 @manually_verified
 def changeQuotationChar(file: CSVFile, target_char="\u0022"):
 
@@ -404,6 +434,7 @@ def changeQuotationChar(file: CSVFile, target_char="\u0022"):
 
     _set_polluted_filename(file, f"file_quotation_char{quote_string}.csv")
 
+@pollution(category="Header and Schema-Layout", name="Synthetic Row Identifier")
 def addSynthethicRowID(file: CSVFile):
     """
     Adds a synthetic row identifier column as the first column of the table.
@@ -439,6 +470,7 @@ def addSynthethicRowID(file: CSVFile):
         )
 
 
+@pollution(category="Record-Shape and Alignment", name="Truncated Columns")
 def changeRowNumberFields(file: CSVFile, row=1, target_n_cells=1):
     """Change how many fields a single row contains."""
     if target_n_cells == -1 or target_n_cells == file.col_count:
@@ -470,6 +502,7 @@ def changeRowNumberFields(file: CSVFile, row=1, target_n_cells=1):
     _set_polluted_filename(file, f"row_n_fields_{row}_{strtype}.csv")
 
 
+@pollution(category="Dialect and Lexical-Syntax", name="Trailing Delimiters")
 def addRowFieldDelimiter(file: CSVFile, row, col, n_separators=1):
     """Insert an extra field delimiter into one row."""
     root = file.xml.getroot()
@@ -486,6 +519,7 @@ def addRowFieldDelimiter(file: CSVFile, row, col, n_separators=1):
     _set_polluted_filename(file, f"row_add_separator_{row}_{col}.csv")
 
 
+@pollution(category="Undefined", name="deleteRowFieldDelimiter")
 def deleteRowFieldDelimiter(file: CSVFile, row, col):
     """Remove a field delimiter from one row."""
     root = file.xml.getroot()
@@ -501,6 +535,9 @@ def deleteRowFieldDelimiter(file: CSVFile, row, col):
 
     _set_polluted_filename(file, f"row_n_separator_{file.col_count - 1}.csv")
 
+@pollution(
+    category="Dialect and Lexical-Syntax", name="Extra Quote at start of cell"
+)
 @manually_verified
 def addRowQuoteMark(file: CSVFile, row, col):
     """Add an opening quote to one cell in a row."""
@@ -520,6 +557,9 @@ def addRowQuoteMark(file: CSVFile, row, col):
     _set_polluted_filename(file, f"row_extra_quote{row}_col{col}.csv")
 
 
+@pollution(
+    category="Dialect and Lexical-Syntax", name="Mixed Record Terminators"
+)
 def changeRowRecordDelimiter(file: CSVFile, row=1, target_delimiter="\r\n"):
     """Change the record delimiter used by one row."""
     if type(row) == int and row < 0:
@@ -534,6 +574,7 @@ def changeRowRecordDelimiter(file: CSVFile, row=1, target_delimiter="\r\n"):
 
 
 # obsolete due to function in mixedDelimiter function in v2 
+@pollution(category="Dialect and Lexical-Syntax", name="Mixed Delimiters")
 def changeRowFieldDelimiter(file: CSVFile, row=1, target_delimiter=";"):
     """Change the field delimiter used by one row."""
     root = file.xml.getroot()
@@ -546,6 +587,10 @@ def changeRowFieldDelimiter(file: CSVFile, row=1, target_delimiter=";"):
     _set_polluted_filename(file, f"row_field_delimiter_{row}{del_string}.csv")
 
 
+@pollution(
+    category="Dialect and Lexical-Syntax",
+    name="Row-Wise Quote Character Ambiguity",
+)
 def changeRowQuotationMark(file: CSVFile, row=1, target_quotation="'"):
     """Change the quotation mark used by one row. Row indexing is 1-based. Follows xquery."""
     old_char = file.quotation_char
@@ -588,6 +633,7 @@ def changeRowQuotationMark(file: CSVFile, row=1, target_quotation="'"):
     _set_polluted_filename(file, f"row_quotation_mark_{row}{quote_string}.csv")
 
 
+@pollution(category="Undefined", name="changeColumnHeader")
 def changeColumnHeader(
     file: CSVFile, col: int = None, target_header=None, extra_rows=0
 ):
@@ -635,6 +681,9 @@ def changeColumnHeader(
     _set_polluted_filename(
         file, f"column_header_{col}_{strtype}{'_multiple' if extra_rows > 0 else ''}{'_nonunique' if type(col) == list else ''}.csv")
 
+@pollution(
+    category="File Segmentation and Table-Boundary", name="Stacked Tables"
+)
 @manually_verified
 def addTable(file: CSVFile, n_rows, n_cols, empty_boundary=True):
     """Append a second, vertically stacked table with the requested shape.
