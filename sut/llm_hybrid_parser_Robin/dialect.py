@@ -218,10 +218,7 @@ def infer_dialect_with_llm(
     ]
     prompt = "\n".join(parts)
 
-    # Estimate: fixed JSON skeleton (~120 chars) + column names from sample header line
-    header_line = sample_lines[0] if sample_lines else ""
-    estimated_output = 120 + len(header_line)
-    answer = call_llm(prompt, trace, "llm_dialect_inference", estimated_output_chars=estimated_output)
+    answer = call_llm(prompt, trace, "llm_dialect_inference")
     try:
         parsed = _extract_json_object(answer)
         if isinstance(parsed, dict):

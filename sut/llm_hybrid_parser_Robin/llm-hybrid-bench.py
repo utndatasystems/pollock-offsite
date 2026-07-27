@@ -5,6 +5,8 @@ import json
 import argparse
 from os.path import join, abspath, dirname
 
+import pandas as pd
+
 # make sure this script can be invoked from anywhere by finding repo root
 REPO_ROOT = abspath(join(dirname(__file__), '..', '..'))
 sys.path.insert(0, join(REPO_ROOT, 'sut'))
@@ -62,18 +64,6 @@ parser.add_argument(
     help="OpenAI-compatible model to use (overrides OPENAI_MODEL env var); also sets sut name to custom_<model>",
 )
 parser.add_argument(
-    "--count-tokens",
-    action="store_true",
-    help="Dry-run: build all prompts and count tokens without calling the LLM",
-)
-parser.add_argument(
-    "--max-llm-tokens",
-    type=int,
-    default=100_000,
-    help="Skip uncached LLM calls whose estimated input plus output exceeds this many "
-         "tokens (default: 100000; 0 disables the guard)",
-)
-parser.add_argument(
     "--file",
     default=None,
     help="Process only this single file from the dataset's csv/ dir (basename or path). "
@@ -97,19 +87,23 @@ if USE_CLEVERCSV and USE_DUCKDB_SNIFF:
 if not LLM_DIALECT and not (USE_CLEVERCSV or USE_DUCKDB_SNIFF):
     parser.error("--no-llm-dialect removes the LLM dialect source; pass --clevercsv or "
                  "--duckdb-sniff so a dialect source remains")
-if (LLM_REPAIR or LLM_DIALECT) and not args.count_tokens and not (
-    os.environ.get("OPENAI_API_KEY")
-):
+if (LLM_REPAIR or LLM_DIALECT) and not os.environ.get("OPENAI_API_KEY"):
     parser.error("LLM calls are enabled by default and require OPENAI_API_KEY. Use --no-llm-dialect "
-                 "--no-llm-repair (with --clevercsv or --duckdb-sniff), --cheat, or --count-tokens "
+                 "--no-llm-repair (with --clevercsv or --duckdb-sniff), or --cheat "
                  "to avoid LLM calls.")
 
 if args.model:
     os.environ["OPENAI_MODEL"] = args.model
 
-from utils import print, save_time_df
-from solution import parse_csv_with_validation, configure_llm_cache, configure_llm_dry_run, configure_llm_verbose, get_llm_cache_stats
-from llm import configure_llm_token_limit
+from utils import print
+from solution import (
+    configure_llm_cache,
+    configure_llm_verbose,
+    get_llm_cache_stats,
+    get_llm_cost_summary,
+    parse_csv_with_validation,
+    reset_llm_cost_records,
+)
 from llm import _openai_model
 
 if args.model:
@@ -140,9 +134,7 @@ os.makedirs(TIME_DIR, exist_ok=True)
 _cache_slug = re.sub(r'[^a-z0-9]+', '_', _openai_model().lower()).strip('_')
 _cache_path = None if args.no_llm_cache else join(REPO_ROOT, 'results', '_llm_cache', f'{_cache_slug}.json')
 configure_llm_cache(path=_cache_path, enabled=not args.no_llm_cache)
-configure_llm_dry_run(args.count_tokens)
 configure_llm_verbose(args.verbose)
-configure_llm_token_limit(args.max_llm_tokens)
 
 default_repetitions = 1 if (CHEAT or LLM_REPAIR) else 3
 N_REPETITIONS = int(os.environ.get("N_REPETITIONS", default_repetitions))
@@ -181,7 +173,56 @@ def write_malformed_report(path, malformed=None, error=None):
             text_file.write(json.dumps(payload, ensure_ascii=True))
             text_file.write("\n")
 
-times_dict = {}
+def save_run_df(time_dir, sut_name, run_dict):
+    if not run_dict:
+        print("No run changes to update")
+        return
+
+    rows = []
+    for filename, records in run_dict.items():
+        row = {"filename": filename, "model": _openai_model()}
+        for idx, record in enumerate(records):
+            for field in (
+                "time",
+                "llm_calls",
+                "local_cache_hits",
+                "uncached_input_tokens",
+                "cached_input_tokens",
+                "completion_tokens",
+                "total_tokens",
+                "input_cost_usd",
+                "cached_input_cost_usd",
+                "output_cost_usd",
+                "estimated_api_cost_usd",
+                "billable_cost_usd",
+            ):
+                row[f"{field}_{idx}"] = record.get(field)
+        rows.append(row)
+
+    update_run_df = pd.DataFrame(rows)
+    run_path = join(time_dir, f"{sut_name}_time.csv")
+    try:
+        existing_run_df = pd.read_csv(run_path)
+        if "filename" not in existing_run_df.columns:
+            existing_run_df = existing_run_df.rename(
+                columns={existing_run_df.columns[0]: "filename"}
+            )
+        if "model" not in existing_run_df.columns:
+            existing_run_df["model"] = _openai_model()
+        run_df = pd.concat(
+            [existing_run_df, update_run_df],
+            ignore_index=True,
+        )
+        run_df = run_df.drop_duplicates(
+            subset=["filename", "model"],
+            keep="last",
+        )
+    except FileNotFoundError:
+        run_df = update_run_df
+    run_df.to_csv(run_path, index=False)
+
+
+run_dict = {}
 benchmark_files = os.listdir(IN_DIR)
 if args.file:
     target = os.path.basename(args.file)
@@ -200,6 +241,7 @@ for idx, file in enumerate(benchmark_files):
 
     for time_rep in range(N_REPETITIONS):
         malformed = []
+        reset_llm_cost_records()
         try:
             start = time.time()
             clean_filepath = join(CLEAN_DIR, f)
@@ -237,28 +279,18 @@ for idx, file in enumerate(benchmark_files):
                 text_file.write(str(e))
             write_malformed_report(malformed_path, malformed=malformed, error=e)
 
-        times_dict[f] = times_dict.get(f, []) + [(end - start)]
+        cost_summary = get_llm_cost_summary()
+        cost_summary["time"] = end - start
+        run_dict.setdefault(f, []).append(cost_summary)
 
         try:
             del start, end, df, text_file
         except:
             pass
 
-save_time_df(TIME_DIR, sut, times_dict)
+save_run_df(TIME_DIR, sut, run_dict)
 
 if LLM_REPAIR or LLM_DIALECT:
     stats = get_llm_cache_stats()
     if stats["total"] > 0:
         print(f"LLM calls: {stats['cached']}/{stats['total']} served from cache")
-    if args.count_tokens and stats["total"] > 0:
-        def _tok(chars): return chars // 4
-        inp_total  = _tok(stats["input_chars_total"])
-        inp_cached = _tok(stats["input_chars_cached"])
-        inp_fresh  = inp_total - inp_cached
-        out_cached = _tok(stats["output_chars_cached"])
-        out_fresh  = _tok(stats["output_chars_fresh"])
-        out_total  = out_cached + out_fresh
-        print(f"Token estimate (~4 chars/token, output is estimated):")
-        print(f"  Input:  {inp_total:,} total  ({inp_fresh:,} fresh + {inp_cached:,} cached)")
-        print(f"  Output: {out_total:,} total  ({out_fresh:,} fresh estimated + {out_cached:,} cached)")
-        print(f"  (repair estimate based on CleverCSV sniff; actual may differ if LLM corrects dialect)")

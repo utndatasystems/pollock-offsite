@@ -17,7 +17,14 @@ from dialect import (
     sniff_with_clevercsv,
     sniff_with_duckdb,
 )
-from llm import configure_llm_cache, configure_llm_dry_run, configure_llm_verbose, get_llm_cache_stats
+from llm import (
+    configure_llm_cache,
+    configure_llm_verbose,
+    get_llm_cache_stats,
+    get_llm_cost_records,
+    get_llm_cost_summary,
+    reset_llm_cost_records,
+)
 from loader import (
     _scan_rows_by_width,
     finalize_dataframe,

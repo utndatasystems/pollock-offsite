@@ -451,8 +451,7 @@ def infer_repairs_with_llm(
     ])
 
     # Estimate: output is repaired fields ≈ size of raw faulty lines + JSON overhead per item
-    estimated_output = sum(len(fl.get("raw") or "") for fl in faulty_lines) + len(faulty_lines) * 30
-    answer = call_llm(prompt, trace, "llm_faulty_line_repair", estimated_output_chars=estimated_output)
+    answer = call_llm(prompt, trace, "llm_faulty_line_repair")
     try:
         parsed = _extract_json_object(answer)
     except Exception as exc:
