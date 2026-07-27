@@ -97,15 +97,6 @@ to run the custom sut against the ```data/polluted_files``` folder
 
 evalates all suts if no sut is passed (takes long). dataset defaults to ```polluted_files```
 
-### Take a look at already computed scores
-
-```
-python3 scripts/results_tables.py --dataset <dataset>
-```  
-If you want to get a table of SuTs and their respective scores without having to rerun the evaluate script (which can take some time), run the python file .
-**This only works after evaluate has been run once before.**
-
-
 ### Looking at which loaded files contain errors
 
 
@@ -218,9 +209,6 @@ python3 sut/custom/custom-bench.py
 
 Evaluate my benchmark:
 python3 evaluate.py --sut custom
-
-Replot:
-python3 scripts/results_tables.py
 
 See errors:
 python3 eval/find_errors.py custom
