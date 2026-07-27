@@ -374,9 +374,9 @@ class BaseFormats(list):
 
     def _eval_ingredients(self, string):
 
-        self._alternation = re.findall('[^\W_]+|[\W_]+', string)
-        self._values = re.findall('[^\W_]+', string)
-        self._nonvalues = re.findall('[\W_]+', string)
+        self._alternation = re.findall(r'[^\W_]+|[\W_]+', string)
+        self._values = re.findall(r'[^\W_]+', string)
+        self._nonvalues = re.findall(r'[\W_]+', string)
 
     def _eval_figures(self):
         """
@@ -509,9 +509,9 @@ class TimeFormats(BaseFormats):
 
     def _eval_ingredients(self, string):
 
-        self._values = re.findall('[\d]+', string)
-        self._nonvalues = re.findall('[\D]+', string)
-        self._alternation = re.findall('[\d]+|[\D]+', string)
+        self._values = re.findall(r'[\d]+', string)
+        self._nonvalues = re.findall(r'[\D]+', string)
+        self._alternation = re.findall(r'[\d]+|[\D]+', string)
 
     def _eval_figures(self):
 
@@ -955,7 +955,7 @@ def parsetime(string, formats=list()):
     :raises:                ValueError, if string couldn't been parsed
 
     The string is tried to be parsed with every format of *formats*.
-    If *formats* not given :class:`TimeFormats`\ (string) is used.
+    If *formats* not given :class:`TimeFormats`\\ (string) is used.
     """
     formats = formats or TimeFormats(string=string)
     for f in formats:
@@ -979,7 +979,7 @@ def parsedate(string, formats=list(), today=None):
     :raises:                ValueError, if string couldn't been parsed
 
     *string* is tried to be parsed with every format of *formats*.
-    If *formats* not given :class:`DateFormats`\ (string) is used.
+    If *formats* not given :class:`DateFormats`\\ (string) is used.
 
     If *string* is parsed with an incomplete format (missing year or year and
     month), the date will be completed by *today* or :attr:`timeparser.TODAY`.
@@ -1013,7 +1013,7 @@ def parsedatetime(string, formats=list(), today=None):
     :raises:                ValueError, if string couldn't been parsed
 
     *string* is tried to be parsed with every format of *formats*.
-    If *formats* not given :class:`DatetimeFormats`\ (string) is used.
+    If *formats* not given :class:`DatetimeFormats`\\ (string) is used.
 
     If *string* is parsed with an incomplete format (missing year or year and
     month), the date will be completed by *today* or :attr:`timeparser.TODAY`.
@@ -1067,7 +1067,7 @@ def parsetimedelta(string, key='weeks'):
 
     rkey = key.lower()
 
-    values = [int(x) for x in re.findall('[-+]?\d+', string)]
+    values = [int(x) for x in re.findall(r'[-+]?\d+', string)]
     rkeys = re.findall('[a-zA-Z]+', string)
 
     try:
