@@ -30,9 +30,9 @@ ollama pull qwen3.5:0.8b
 
 CSV Storm will be published on the Hugging Face Dataset Hub:
 
-> **Dataset download:** [CSV Storm on Hugging Face — link to be added](https://huggingface.co/datasets/REPLACE_WITH_ORGANIZATION/REPLACE_WITH_DATASET)
+> <img src="https://huggingface.co/front/assets/huggingface_logo-noborder.svg" alt="Hugging Face" width="20" height="20"> **Dataset download:** [CSV Storm on Hugging Face — link to be added](https://huggingface.co/datasets/REPLACE_WITH_ORGANIZATION/REPLACE_WITH_DATASET)
 
-Until that link is available, generate the dataset locally:
+Or generate the dataset locally:
 
 ```bash
 .venv/bin/python pollute_main.py \
