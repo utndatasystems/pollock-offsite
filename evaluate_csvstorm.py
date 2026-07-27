@@ -3,7 +3,6 @@ import builtins as __builtin__
 import os
 import argparse
 import traceback
-import json
 import re
 import warnings
 
@@ -19,42 +18,14 @@ from dotenv import load_dotenv
 load_dotenv()
 
 
-SUT_ORDER = ["full_llm_loader_naive", "full_llm_loader_guided", "clevercs", "csvcommons",
-            "opencsv", "pandas", "duckdbparse","duckdbauto", "pycsv", 
-            "mysql", "postgres", "sqlite"]
-
-
-def load_weights(dataset: str):
-    if dataset != "polluted_files":
-        return {}
-    weights_path = "pollock_weights.json"
-    if not os.path.exists(weights_path):
-        return {}
-    with open(weights_path) as f:
-        return json.load(f)
-
-
-def add_scores(results_df: pd.DataFrame, sut: str, weights: dict):
+def add_scores(results_df: pd.DataFrame, sut: str):
     correct_col = f"{sut}_correct"
     if correct_col not in results_df.columns:
         return results_df
 
     total_files = len(results_df)
     correct_count = results_df[correct_col].astype(int).sum()
-    accuracy = 0.0 if total_files == 0 else correct_count / total_files
-
-    if weights:
-        total_weight = sum(float(weights.get(filename, 1.0)) for filename in results_df["file"])
-        weighted_correct = sum(
-            float(weights.get(filename, 1.0)) * int(correct)
-            for filename, correct in zip(results_df["file"], results_df[correct_col])
-        )
-        weighted_accuracy = 0.0 if total_weight == 0 else weighted_correct / total_weight
-    else:
-        weighted_accuracy = accuracy
-
-    results_df.attrs["accuracy"] = accuracy
-    results_df.attrs["weighted_accuracy"] = weighted_accuracy
+    results_df.attrs["accuracy"] = 0.0 if total_files == 0 else correct_count / total_files
     return results_df
 
 def evaluate_single_file(filename:str, dataset:str, sut:str, verbose=False, n_jobs=1, origin_csv=None, row_order_invariant=False, nrows=None):
@@ -175,17 +146,11 @@ def main():
                 break
     row_order_invariant = bool(args.row_order_invariant)
     suffix = ("_incl_origin" if origin_csv is not None else "") + ("" if row_order_invariant else "_no_row_order_invariance")
-    weights = load_weights(dataset)
 
     verbose = bool(args.verbose)
     systems = [s for s in next(os.walk(f"{RESULT_DIR}"))[1]
                if s != "archives" and not s.startswith("_")
                and os.path.isdir(f"{RESULT_DIR}/{s}/{dataset}/loading")]
-
-    sut_dirs = {s for s in os.listdir("sut") if os.path.isdir(f"sut/{s}") and not s.startswith("_")}
-    no_results = sorted(sut_dirs - set(systems))
-    if no_results:
-        print(f"Warning: {len(no_results)} SUT(s) in sut/ have no results for dataset '{dataset}': {no_results}")
 
     files= [f for f in os.listdir(f"data/{dataset}/csv") if f.endswith("csv")]
     aggregate = []
@@ -209,10 +174,9 @@ def main():
         if not expected_cols.issubset(df.columns):
             print(f"Skipping {s}: result file uses old scoring columns. Rerun evaluate.py --sut {s} to update it.")
             continue
-        df = add_scores(df, s, weights)
+        df = add_scores(df, s)
         d_aggregate = {key[len(s)+1:]: val for key, val in df.sum(axis=0, numeric_only=True).items() if key.startswith(f"{s}_")}
         d_aggregate["accuracy"] = df.attrs["accuracy"]
-        d_aggregate["weighted_accuracy"] = df.attrs["weighted_accuracy"]
         d_aggregate.update({"sut": s})
         aggregate += [d_aggregate]
         global_df = global_df.merge(df, how="outer", left_on="file", right_on="file")  # , suffixes=(None,"_"+s))
@@ -225,17 +189,9 @@ def main():
         aggregate_df["score"] = aggregate_df["correct"]
 
     global_df.set_index("file", inplace=True)
-    present = [s for s in SUT_ORDER if s in aggregate_df.index]
-    extra = [s for s in aggregate_df.index if s not in SUT_ORDER]
-    missing = [s for s in SUT_ORDER if s not in aggregate_df.index]
-    if missing:
-        print(f"Note: {len(missing)} SUT(s) from SUT_ORDER not in results and skipped: {missing}")
-    if extra:
-        print(f"Note: {len(extra)} SUT(s) not in SUT_ORDER, appended: {extra}")
-        present += extra
     print(
         "\n",
-        aggregate_df.loc[present][["score", "accuracy", "weighted_accuracy", "correct", "wrong"]]
+        aggregate_df[["score", "accuracy", "correct", "wrong"]]
         .sort_values("accuracy", ascending=False)
     )
 

@@ -18,10 +18,6 @@ from dotenv import load_dotenv
 load_dotenv()
 
 
-SUT_ORDER = ["clevercs", "csvcommons",
-            "opencsv", "pandas", "duckdbparse","duckdbauto", "pycsv", "rcsv", "univocity",
-            "mysql", "postgres", "sqlite"]
-
 SUB_MEASURES = {"table" : "file_double.*|file_header.*|file_no.*|file_one.*|file_multi.*|file_preamble.*",
         "inconsistent": "%row_less.*|row_more",
         "structural":"file_field.*|row_field.*|file_quote.*|file_record_delimiter.*|row_extra_quote.*|file_escape.*"}
@@ -148,11 +144,6 @@ def main():
     verbose = bool(args.verbose)
     systems = [s for s in next(os.walk(f"{RESULT_DIR}"))[1]
                if s != "archives" and os.path.isdir(f"{RESULT_DIR}/{s}/{dataset}/loading")]
-
-    sut_dirs = {s for s in os.listdir("sut") if os.path.isdir(f"sut/{s}") and not s.startswith("_")}
-    no_results = sorted(sut_dirs - set(systems))
-    if no_results:
-        print(f"Warning: {len(no_results)} SUT(s) in sut/ have no results for dataset '{dataset}': {no_results}")
 
     files= [f for f in os.listdir(f"data/{dataset}/csv") if f.endswith("csv")]
     aggregate = []
