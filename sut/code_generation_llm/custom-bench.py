@@ -36,7 +36,13 @@ parser.add_argument(
     "--llm-context-lines",
     type=int,
     default=10,
-    help="Number of sample/good lines included in LLM prompts",
+    help="Number of physical lines from the start included in the parser prompt",
+)
+parser.add_argument(
+    "--llm-sample-rows",
+    type=int,
+    default=10,
+    help="Number of logical rows sampled across the remainder of the CSV",
 )
 parser.add_argument(
     "--no-llm-sniff",
@@ -51,7 +57,7 @@ parser.add_argument(
 parser.add_argument(
     "--model",
     default=None,
-    help="OpenAI-compatible model to use (overrides OPENAI_MODEL env var); also sets sut name to custom_<model>",
+    help="OpenAI-compatible model to use (overrides OPENAI_MODEL env var); also sets the SUT name to code_generation_llm_<model>",
 )
 parser.add_argument(
     "--count-tokens",
@@ -74,9 +80,9 @@ from solution import parse_csv_with_validation, configure_llm_cache, configure_l
 
 if args.model:
     _model_slug = re.sub(r'[^a-z0-9]+', '_', args.model.lower()).strip('_')
-    sut = f'custom_{_model_slug}'
+    sut = f'code_generation_llm_{_model_slug}'
 else:
-    sut = 'custom'
+    sut = 'code_generation_llm'
 DATASET = os.environ.get('DATASET', 'polluted_files')
 IN_DIR = join(REPO_ROOT, 'data', DATASET, 'csv')
 CLEAN_DIR = join(REPO_ROOT, 'data', DATASET, 'clean')
@@ -84,6 +90,7 @@ OUT_DIR = join(REPO_ROOT, 'results', sut, DATASET, 'loading')
 TIME_DIR = join(REPO_ROOT, 'results', sut, DATASET)
 CHEAT = args.cheat
 LLM_CONTEXT_LINES = max(0, args.llm_context_lines)
+LLM_SAMPLE_ROWS = max(0, args.llm_sample_rows)
 
 os.makedirs(IN_DIR, exist_ok=True)
 os.makedirs(OUT_DIR, exist_ok=True)
@@ -156,6 +163,7 @@ for idx, file in enumerate(benchmark_files):
                 llm_sniff=LLM_SNIFF,
                 sidecar_path=llm_sidecar,
                 llm_context_lines=LLM_CONTEXT_LINES,
+                llm_sample_rows=LLM_SAMPLE_ROWS,
                 reset_sidecar=(time_rep == 0),
             )
             end = time.time()
