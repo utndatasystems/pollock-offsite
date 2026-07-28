@@ -206,12 +206,7 @@ def infer_dialect_with_llm(
         '"n_columns": integer - number of columns, consistent with length of column_names',
         "",
     ]
-    # if sniff_dialect:
-    #     parts += [
-    #         f"{sniffer_label} guess:",
-    #         json.dumps(sniff_dialect, ensure_ascii=False),
-    #         "",
-    #     ]
+
     parts += [
         "CSV file:",
         sample,
