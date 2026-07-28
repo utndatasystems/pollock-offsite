@@ -134,7 +134,5 @@ target/
 /results/full_llm_loader/
 /results/full_llm_loader_naive/csv_storm/
 /results/full_llm_loader_guided/csv_storm/
-Agentic_Parsing-10.pdf
-.env
-.env
-.env
+Agentic_Parsing.pdf
+eval/CIDR_plots/*
