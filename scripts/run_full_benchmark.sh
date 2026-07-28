@@ -184,7 +184,7 @@ for model in "${models[@]}"; do
 
         echo
         echo "=== Evaluating $hybrid_sut on $dataset ==="
-        "$python_bin" evaluate_csvstorm.py \
+        "$python_bin" evaluate.py \
             --dataset "$dataset" \
             --sut "$hybrid_sut" \
             --njobs "${EVAL_NJOBS:-1}"
@@ -198,7 +198,7 @@ for model in "${models[@]}"; do
 
         echo
         echo "=== Evaluating $full_sut on $dataset ==="
-        "$python_bin" evaluate_csvstorm.py \
+        "$python_bin" evaluate.py \
             --dataset "$dataset" \
             --sut "$full_sut" \
             --njobs "${EVAL_NJOBS:-1}"
@@ -224,6 +224,6 @@ done
 echo
 echo "Dataset-level summaries:"
 for dataset in "${datasets[@]}"; do
-    echo "  results/aggregate_results_${dataset}.csv"
-    echo "  results/global_results_${dataset}.csv"
+    echo "  results/evaluation_summary_${dataset}.csv"
+    echo "  results/evaluation_by_file_${dataset}.csv"
 done

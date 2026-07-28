@@ -13,8 +13,8 @@
 #   data/<source_dataset>_run_<timestamp>/
 # and writes outputs under:
 #   results/<sut>/<source_dataset>_run_<timestamp>/
-#   results/global_results_<source_dataset>_run_<timestamp>.csv
-#   results/aggregate_results_<source_dataset>_run_<timestamp>.csv
+#   results/evaluation_by_file_<source_dataset>_run_<timestamp>.csv
+#   results/evaluation_summary_<source_dataset>_run_<timestamp>.csv
 
 set -euo pipefail
 
@@ -112,5 +112,5 @@ echo ""
 echo "Done."
 echo "Dataset snapshot: data/$RUN_DATASET"
 echo "Per-SUT outputs:  results/<sut>/$RUN_DATASET/"
-echo "Aggregate CSV:    results/aggregate_results_$RUN_DATASET.csv"
-echo "Global CSV:       results/global_results_$RUN_DATASET.csv"
+echo "Summary CSV:      results/evaluation_summary_$RUN_DATASET.csv"
+echo "Per-file CSV:     results/evaluation_by_file_$RUN_DATASET.csv"
