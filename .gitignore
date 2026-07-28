@@ -109,6 +109,9 @@ target/
 */mycustomtest/
 /data/*
 
+# Tests
+/tests/*
+
 # Keep this list explicit when a local generated data file appears outside /data/*.
 /data/additional_csvs/insurance_complaints.csv
 /data/additional_csvs/table.csv
