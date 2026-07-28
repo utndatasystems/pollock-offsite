@@ -80,7 +80,6 @@ parser.add_argument(
     help="Remove the output directory before creating polluted files",
 )
 
-
 args = parser.parse_args()
 if args.combinations and args.polluters != "pollock2.0":
     parser.error("--combinations requires --polluters pollock2.0")
@@ -334,7 +333,8 @@ if args.polluters == "pollock2.0":
     execute_polluter(f, pl.changeQuotationChar, target_char="")  # deleted quotation character everywhere
 
     # Null values
-    execute_polluter(f, pl2.differentNullValues, null_values=["NULL", "N/A", "NaN", "", "None", "undefined"])
+    # Removed this because this is dangerously close to data repair 
+    #execute_polluter(f, pl2.differentNullValues, null_values=["NULL", "N/A", "NaN", "", "None", "undefined"])
 
     # Multi-table / layout structure
     #execute_polluter(f, pl2.addTableSideways, n_rows=min(f.row_count, 5), n_cols=min(f.col_count, 5))
