@@ -370,6 +370,16 @@ def mixedDelimiters(  # checked manually
         if delimiter
     )
 
+    # Mixed delimiters alter serialization only; the recovered logical table is
+    # the original source table. Register it explicitly instead of relying on
+    # CSVFile.write_ground_truths()'s generic fallback bundle.
+    file.ground_truth_bundle = GroundTruthBundle.single(
+        CSVFile.clean_rows(file),
+        table_id="recovered_original_table",
+        alternative_id="recovered_original_table",
+        accept_origin=True,
+    )
+
     if mode == "within_row":
         _set_polluted_filename(
             file,
@@ -446,15 +456,44 @@ def moreColumns(file: CSVFile, row: int | None = None):
 def lessColumnsDeletedValues(file: CSVFile, row: int | None = None):
     """Creates one data row with one deleted field.
 
-    The polluted CSV stays jagged. The clean target is rectangularized by
-    CSVFile.write_clean_csv using these root attributes: the deleted value is
-    unrecoverable, but its column position is known from the source structure.
+    The polluted CSV stays jagged. The canonical clean target inserts an empty
+    placeholder at the known deleted column, while the ground-truth bundle also
+    accepts the emitted shorter row because the value itself is unrecoverable.
     """
     row, col = _variable_column_target(file, row)
     pb.deleteCellAndDelimiter(file, row, col)
+
+    # Capture the emitted jagged interpretation before the canonical clean-row
+    # padding metadata is installed. Both are reasonable parser outputs because
+    # the deleted value itself cannot be recovered.
+    jagged_rows = CSVFile.clean_rows(file)
+
     root = file.xml.getroot()
     root.attrib["ground_truth_insert_empty_row"] = str(row)
     root.attrib["ground_truth_insert_empty_col"] = str(col)
+    rectangular_rows = CSVFile.clean_rows(file)
+    file.ground_truth_bundle = GroundTruthBundle(
+        tables=(
+            GroundTruthTable.from_rows(
+                "rectangular_missing_value", rectangular_rows
+            ),
+            GroundTruthTable.from_rows("jagged_deleted_value", jagged_rows),
+        ),
+        alternatives=(
+            GroundTruthAlternative(
+                id="rectangular_missing_value",
+                table_ids=("rectangular_missing_value",),
+                comparison="single_table",
+            ),
+            GroundTruthAlternative(
+                id="jagged_deleted_value",
+                table_ids=("jagged_deleted_value",),
+                comparison="single_table",
+            ),
+        ),
+        canonical="rectangular_missing_value",
+        accept_origin=False,
+    )
     _set_polluted_filename(file, f"file_less_columns_deleted_value_row_{row}_col_{col}.csv")
 
 
