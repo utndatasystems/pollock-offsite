@@ -8,6 +8,7 @@ import random
 import unicodedata
 import string
 import time
+from copy import deepcopy
 from lxml import etree
 from .CSVFile import CSVFile
 from lxml.builder import E
@@ -164,14 +165,25 @@ def changeNumberRows(file: CSVFile, target_number_rows: int, remove_header=False
     if target_number_rows > file.row_count:
         n_rows = target_number_rows - file.row_count
         t = time.time()
-        for j in range(n_rows):
+        # Build each source row once with the existing row builder, then clone
+        # its XML. Re-parsing every cell for every repeated row dominated runtime.
+        table = file.xml.xpath("//table[1]")[0]
+        templates = []
+        for content in fill_rows:
             pb.addRows(
                 file,
-                cell_content=fill_rows[j % len(fill_rows)],
+                cell_content=content,
                 n_rows=1,
-                position=file.row_count + j,
+                position=len(table),
                 role="data",
             )
+            templates.append(table[-1])
+            table.remove(templates[-1])
+
+        table.extend(
+            deepcopy(templates[j % len(templates)])
+            for j in range(n_rows)
+        )
         print("took", time.time() - t, "seconds")
 
     _set_polluted_filename(

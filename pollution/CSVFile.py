@@ -348,13 +348,9 @@ class CSVFile:
         n_preamble_lines = len(self.xml.xpath(f"/file/table/row[@role='preamble']"))
         n_footnote_lines = len(self.xml.xpath(f"/file/table/row[@role='footnote']"))
 
-        if self.xml.xpath(f"//*[@role='data']/.."):
-            n_columns = max(
-                [
-                    len(row.xpath("cell"))
-                    for row in self.xml.xpath(f"/file/table/row[@role='data']")
-                ]
-            )
+        data_rows = self.xml.xpath("/file/table/row[@role='data']")
+        if data_rows:
+            n_columns = max(len(row.xpath("cell")) for row in data_rows)
         else:
             n_columns = 0
         column_names = []
