@@ -418,7 +418,7 @@ if args.polluters == "pollock2.0":
     execute_polluter(f, pl2.embeddedCSV)
 
     # changeRowQuotationMark() - originally missing in Pollock benchmark 
-    execute_polluter(f, pl.changeRowQuotationMark, row=2 if f.row_count >= 2 else 1, target_quotation="'")
+    execute_polluter(f, pl.changeRowQuotationMark, row=12 if f.row_count >= 2 else 1, target_quotation="'")
 
     # Structural Stress Tests
     execute_polluter(f, pl.changeNumberColumns, target_number_cols = 1000, pad_with_random_ints=True) # extreme width (TODO make larger after code-iteration is over, currently not even 1MB)
