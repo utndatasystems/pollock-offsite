@@ -1,7 +1,6 @@
-"""Deprecated compatibility entry point for CSV-Storm evaluation."""
+"""Deprecated compatibility entry point for CSV-Storm (accuracy, correct/wrong) evaluation."""
 
 from evaluate import main
-
 
 if __name__ == "__main__":
     print(
