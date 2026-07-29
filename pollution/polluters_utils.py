@@ -12,14 +12,6 @@ from .data_types import CellType, parse_cell
 
 # Pollution Utils
 
-def manually_verified(func):
-    func.manually_verified = True
-    return func
-
-def todo(func):
-    func.todo = True
-    return func
-
 def _set_polluted_filename(file: CSVFile, filename: str):
     """Keep the CSVFile metadata and XML root filename in sync."""
     file.filename = filename
