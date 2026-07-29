@@ -186,7 +186,7 @@ def multilineHeader(
     _set_polluted_filename(file, f"file_multiline_header_rows_{header_rows}.csv",)
 
 
-@pollution(category="Undefined", name="duplicateHeaderIntoRows")
+@pollution(category="Header and Schema-Layout", name="duplicateHeaderIntoRows")
 def duplicateHeaderIntoRows(file: CSVFile, n_duplicates: int = 1):  # checked manually
     """Duplicates the header row as data rows directly below the header.
 
@@ -275,7 +275,7 @@ def addTrailingCommentToFile(
     _set_polluted_filename(file, f"file_trailing_comment_{row}.csv")
 
 
-@pollution(category="Undefined", name="commentRow")
+@pollution(category="File Segmentation and Table-Boundary", name="commentRow")
 def commentRow(
     file: CSVFile, row: int | None = None, comment_marker: str = "#", space=" "
 ):
@@ -444,7 +444,7 @@ def doubleEscaping(
 
 
 
-@pollution(category="Undefined", name="moreColumns")
+@pollution(category="Record-Shape and Alignment", name="moreColumns")
 def moreColumns(file: CSVFile, row: int | None = None):
     """Creates one data row with one more field than the header."""
     row, col = _variable_column_target(file, row)
@@ -452,7 +452,7 @@ def moreColumns(file: CSVFile, row: int | None = None):
     _set_polluted_filename(file, f"file_more_columns_row_{row}_col_{col}.csv")
 
 
-@pollution(category="Undefined", name="lessColumnsDeletedValues")
+@pollution(category="Record-Shape and Alignment", name="lessColumnsDeletedValues")
 def lessColumnsDeletedValues(file: CSVFile, row: int | None = None):
     """Creates one data row with one deleted field.
 

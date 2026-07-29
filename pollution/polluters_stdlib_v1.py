@@ -38,7 +38,7 @@ from pollution.polluters_utils import (
 )
 
 
-@pollution(category="Undefined", name="dummyPolluter")
+@pollution(category="Internal", name="dummyPolluter")
 def dummyPolluter(file: CSVFile):
     """Dummy Polluter - does nothing"""
     pass
@@ -551,7 +551,7 @@ def addRowFieldDelimiter(file: CSVFile, row, col, n_separators=1):
     _set_polluted_filename(file, f"row_add_separator_{row}_{col}.csv")
 
 
-@pollution(category="Undefined", name="deleteRowFieldDelimiter")
+@pollution(category="Dialect and Lexical-Syntax", name="deleteRowFieldDelimiter")
 def deleteRowFieldDelimiter(file: CSVFile, row, col):
     """Remove a field delimiter from one row."""
     root = file.xml.getroot()
@@ -664,7 +664,7 @@ def changeRowQuotationMark(file: CSVFile, row=1, target_quotation="'"):
     _set_polluted_filename(file, f"row_quotation_mark_{row}{quote_string}.csv")
 
 
-@pollution(category="Undefined", name="changeColumnHeader")
+@pollution(category="Header and Schema-Layout", name="changeColumnHeader")
 def changeColumnHeader(
     file: CSVFile, col: int = None, target_header=None, extra_rows=0
 ):
