@@ -494,9 +494,9 @@ def excelExportAutoformat(file: CSVFile, rows=None):
 
 
 @pollution(
-    category="Value & Semantic Interpretation", name="Excel Formulas as Strings"
+    category="Value & Semantic Interpretation", name="Spreadsheet Formulas in CSV"
 )
-def exelExportFormulas(file: CSVFile):  # checked manually
+def spreadsheetFormulasInCSV(file: CSVFile):  # checked manually
     """Adds spreadsheet formulas as literal CSV cell contents to end of CSV."""
     print("USE WITH CAUTION: only insert fields with same data type for fair pollution")
 
@@ -766,7 +766,7 @@ def embeddedJSON(
 
     file.ground_truth_bundle = GroundTruthBundle.single(
         CSVFile.clean_rows(file),
-        accept_origin=False,)
+        accept_origin=True,)
     _set_polluted_filename(
         file,
         f"file_embedded_json_cell_{row}_{start_col}_len_{l_col}.csv",)

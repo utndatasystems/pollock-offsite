@@ -421,7 +421,7 @@ if args.polluters == "pollock2.0":
 
     # Spreadsheet / Excel-style edge cases
     execute_polluter(f, pl2.excelExportAutoformat)
-    execute_polluter(f, pl2.exelExportFormulas)
+    execute_polluter(f, pl2.spreadsheetFormulasInCSV)
 
     # Type ambiguity / mixed values
     #execute_polluter(f, pl2.typeAmbiguity)
