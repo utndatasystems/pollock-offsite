@@ -385,14 +385,14 @@ if args.polluters == "pollock2.0":
     execute_polluter(
         f,
         pl2.mixedDelimiters,
-        row=2 if f.row_count >= 2 else 1,
+        row=13 if f.row_count >= 2 else 1,
         delimiters=[";"],
         mode="within_row",
     )
     execute_polluter(
         f,
         pl2.mixedDelimiters,
-        row=2 if f.row_count >= 2 else 1,
+        row=13 if f.row_count >= 2 else 1,
         delimiters=[";"],
         mode="within_row",
         range_within_row=3,
@@ -400,7 +400,7 @@ if args.polluters == "pollock2.0":
     execute_polluter(
         f,
         pl2.mixedDelimiters,
-        row=2 if f.row_count >= 2 else 1,
+        row=13 if f.row_count >= 2 else 1,
         delimiters=[";"],
         mode="whole_row",
     )
@@ -420,7 +420,7 @@ if args.polluters == "pollock2.0":
     execute_polluter(f, pl2.tableToWhitespaceFormattedTable, pad_cells=True, quote_strings=False)
 
     # Spreadsheet / Excel-style edge cases
-    execute_polluter(f, pl2.excelExportAutoformat)
+    #execute_polluter(f, pl2.excelExportAutoformat)
     execute_polluter(f, pl2.spreadsheetFormulasInCSV)
 
     # Type ambiguity / mixed values
@@ -435,7 +435,7 @@ if args.polluters == "pollock2.0":
 
     # Embedded semi-structured payloads
     execute_polluter(f, pl2.embeddedJSON, row=2, start_col=1, l_col=4)
-    execute_polluter(f, pl2.embeddedCSV)
+    #execute_polluter(f, pl2.embeddedCSV)
 
     # changeRowQuotationMark() - originally missing in Pollock benchmark 
     execute_polluter(f, pl.changeRowQuotationMark, row=12 if f.row_count >= 2 else 1, target_quotation="'")
