@@ -12,7 +12,7 @@ from tqdm import tqdm
 from faker import Faker
 
 from pollution.polluters_utils import _set_polluted_filename
-from pollock.combinations import apply_pollution_combination
+from pollution.combinations import apply_pollution_combination
 
 parser = argparse.ArgumentParser()
 
