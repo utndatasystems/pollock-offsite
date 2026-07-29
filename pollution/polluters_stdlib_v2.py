@@ -7,7 +7,11 @@ import warnings
 from copy import deepcopy
 from lxml import etree
 from .CSVFile import CSVFile
-from .ground_truth import GroundTruthBundle
+from .ground_truth import (
+    GroundTruthAlternative,
+    GroundTruthBundle,
+    GroundTruthTable,
+)
 from lxml.builder import E
 from .randdata import (
     randomString,
@@ -563,9 +567,14 @@ def superheader(
     if not isinstance(groups, dict):
         raise ValueError("groups must be a dictionary: dict[str, list[int]]")
 
+    source_rows = CSVFile.clean_rows(file)
+    if not source_rows:
+        raise ValueError("Cannot add a superheader to an empty file")
+
     col_count = file.col_count
     superheader_row = [""] * col_count
     used_columns = set()
+    column_groups = {}
 
     for label, columns in groups.items():
         if not isinstance(label, str):
@@ -596,6 +605,7 @@ def superheader(
                 )
 
             used_columns.add(col)
+            column_groups[col] = label
 
         sorted_columns = sorted(columns)
 
@@ -613,9 +623,32 @@ def superheader(
         col_count=col_count,
         role="superheader",)
 
-    file.ground_truth_bundle = GroundTruthBundle.single(
-            CSVFile.clean_rows(file),
-            accept_origin=True,)
+    flattened_header = [
+        " ".join(part for part in (column_groups.get(index), header) if part)
+        for index, header in enumerate(source_rows[0])
+    ]
+    flattened_rows = [flattened_header, *source_rows[1:]]
+    file.clean_rows_override = flattened_rows
+    file.ground_truth_bundle = GroundTruthBundle(
+        tables=(
+            GroundTruthTable.from_rows("primary", flattened_rows),
+            GroundTruthTable.from_rows("without_superheader", source_rows),
+        ),
+        alternatives=(
+            GroundTruthAlternative(
+                id="canonical",
+                table_ids=("primary",),
+                comparison="single_table",
+            ),
+            GroundTruthAlternative(
+                id="without_superheader",
+                table_ids=("without_superheader",),
+                comparison="single_table",
+            ),
+        ),
+        canonical="canonical",
+        accept_origin=True,
+    )
     mode = "sparse" if sparse else "repeated"
     encoded_groups = []
     for label, columns in groups.items():
@@ -1099,7 +1132,10 @@ def addFootnote(
     name="No Real Delimiter (Whitespace Columns)",
 )
 def tableToWhitespaceFormattedTable(
-    file: CSVFile, pad_cells=True, quote_strings=True
+    file: CSVFile,
+    pad_cells=True,
+    quote_strings=True,
+    quote_empty_last_column=False,
 ):
     """
     Converts a CSV table to a whitespace-formatted table by replacing the field delimiters with spaces.
@@ -1119,12 +1155,25 @@ def tableToWhitespaceFormattedTable(
     Padding cells creates a "visually aligned" table, which is easy for humans, but difficult for machines.
     It is guaranteed that columns are separated by at least one space.
 
-    This function also allows quoting string cells because the might contain spaces.
-    Not quoting strings only makes sense if `pad_cells` is True. A human can still dinguish columns in this case.
+    This function also allows quoting string cells because they might contain spaces.
+    Not quoting strings only makes sense if `pad_cells` is True. A human can still distinguish columns in this case.
+
+    If `quote_empty_last_column` is true, empty cells in the final column are
+    retyped as strings in the XML so that the regular string-quoting pass emits
+    them as `""`. This keeps an otherwise empty trailing column explicit.
     """
     root = file.xml.getroot()
     rows = list(root.iter("row"))
     quote_char = file.quotation_char or '"'
+
+    if quote_empty_last_column and not quote_strings:
+        raise ValueError("quote_empty_last_column requires quote_strings=True")
+
+    if quote_empty_last_column:
+        for row in rows:
+            cells = row.xpath("./cell")
+            if cells and cells[-1].attrib.get("type") == "TYPE_EMPTY":
+                cells[-1].attrib["type"] = "TYPE_STRING"
 
     pb.changeColumnDelimiters(file, col="*", new_delimiter=" ")
 
@@ -1173,6 +1222,7 @@ def tableToWhitespaceFormattedTable(
         file,
         "file_whitespace_delimiter_cells_"
         f"{'quoted' if quote_strings else 'unquoted'}_"
+        f"{'empty_last_column_' if quote_empty_last_column else ''}"
         f"{'padded' if pad_cells else 'unpadded'}.csv",
     )
 
