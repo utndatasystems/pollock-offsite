@@ -338,13 +338,15 @@ if args.polluters == "pollock2.0":
 
     # removed because duplicate to fileheadeMultirow(2)
     #execute_polluter(f, pl2.duplicateHeaderIntoRows) 
-    execute_polluter(f, pl2.superheader, 
-        groups={
-            "Transaction Info": [0, 1],
-            "Product Info": [2, 3, 4, 5, 6, 7],
-            "Notes": [8],
-        },
-        sparse=True,
+    superheader_groups = {
+        "Transaction Info": [0, 1, 2],
+        "Product Info": [3, 4, 5, 6, 7],
+        "Notes": [8],
+    }
+    execute_polluter(
+        f,
+        pl2.whitespaceAlignedSuperheader,
+        groups=superheader_groups,
     )
 
     # Footnote

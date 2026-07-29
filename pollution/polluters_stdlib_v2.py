@@ -634,6 +634,33 @@ def superheader(
 
 
 @pollution(
+    category="Header and Schema-Layout",
+    name="Whitespace-Aligned Super-Headers",
+)
+def whitespaceAlignedSuperheader(
+    file: CSVFile,
+    groups: dict[str, list[int]],
+    position: int = 0,
+):
+    """Add a left-aligned superheader to a padded whitespace table."""
+    superheader(file, groups=groups, sparse=True, position=position)
+    superheader_filename = file.filename
+
+    tableToWhitespaceFormattedTable(
+        file,
+        pad_cells=True,
+        quote_strings=False,
+    )
+
+    filename = superheader_filename.replace(
+        "file_superheader_sparse_",
+        "file_superheader_whitespace_aligned_columns_",
+        1,
+    )
+    _set_polluted_filename(file, filename)
+
+
+@pollution(
     category="Value & Semantic Interpretation", name="Embedded JSON Structures"
 )
 def embeddedJSON(
