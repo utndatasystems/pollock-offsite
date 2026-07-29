@@ -370,7 +370,7 @@ if args.polluters == "pollock2.0":
         execute_polluter(f, pl2.moreColumns)
         execute_polluter(f, pl2.lessColumnsDeletedValues)
 
-    execute_polluter(f, pl2.unquotedList, max_list_len=5) # automatically chooses safe row/column
+    execute_polluter(f, pl2.unquotedList)  # automatically chooses safe row/column
 
     # Delimiter / quoting / escaping edge cases
     # Mixed delimiters, unescaped delimiters, double escaping, unquoted lists, whitespace-formatted tables

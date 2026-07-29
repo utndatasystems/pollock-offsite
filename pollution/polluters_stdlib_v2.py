@@ -988,26 +988,25 @@ def unquotedList(
     row: int | None = None,
     col: int | None = None,
     list_delimiter: str = ",",
-    min_list_len=2,
-    max_list_len=10,
+    list_len: int = 4,
 ):
     """Replace a cell with an unquoted list built from values in its column.
 
     When ``col`` is omitted, a text-oriented column is selected using its header
-    and observed values. 
-    Reusing values from that column keeps the generated list
+    and observed values. Reusing values from that column keeps the generated list
     plausible for the source data, for example ``[Boots,Jacket,Shoes]``.
     """
     if row is None:
         row = random.randint(2, _safe_row_count(file))  # skip header
     if col is None:
         col = _unquoted_list_column(file, list_delimiter)
+    if list_len < 1:
+        raise ValueError("list_len must be at least 1")
 
     items = _unquoted_list_items(file, col, list_delimiter)
     if not items:
         raise ValueError(f"Cannot create an unquoted list: column {col} has no suitable values")
 
-    list_len = random.randint(min_list_len, max_list_len)
     if list_len <= len(items):
         selected_items = random.sample(items, k=list_len)
     else:
