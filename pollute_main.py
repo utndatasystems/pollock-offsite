@@ -191,12 +191,8 @@ execute_polluter(
     remove_header=True,
     new_filename="file_no_header.csv",
 )
-execute_polluter(
-    f, pl.expandColumnHeader, extra_rows=1, new_filename="file_header_multirow_2.csv"
-)  # 1 regular, on multiple rows
-execute_polluter(
-    f, pl.expandColumnHeader, extra_rows=2, new_filename="file_header_multirow_3.csv"
-)  # 1 regular, on multiple rows
+execute_polluter(f, pl.expandColumnHeader, extra_rows=1, new_filename="file_header_multirow_2.csv")
+execute_polluter(f, pl.expandColumnHeader, extra_rows=2, new_filename="file_header_multirow_3.csv")
 
 # two program branches as the params differ between original
 # pollock and CSVStorm

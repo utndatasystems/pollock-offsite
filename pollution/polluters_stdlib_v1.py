@@ -190,16 +190,43 @@ def changeNumberRows(file: CSVFile, target_number_rows: int, remove_header=False
 @pollution(category="Header and Schema-Layout", name="Super-Headers")
 def expandColumnHeader(file: CSVFile, extra_rows=1):
     """Repeat the header across extra header rows. Turns the header into a multi-row header."""
+    source_rows = CSVFile.clean_rows(file)
     header = [x for x in file.xml.xpath(f"//row[{1}]//value//node()[not(node())]")]
     pb.addRows(file, cell_content=header, n_rows=extra_rows, position=0, role="header")
 
+    canonical_rows = CSVFile.clean_rows(file)
+    header_as_string = file.field_delimiter.join(source_rows[0])
+    extra_headers_as_data_rows = [
+        source_rows[0],
+        *([[header_as_string]] * extra_rows),
+        *source_rows[1:],
+    ]
+    file.ground_truth_bundle = GroundTruthBundle(
+        tables=(
+            GroundTruthTable.from_rows("primary", canonical_rows),
+            GroundTruthTable.from_rows(
+                "extra_headers_as_data_rows",
+                extra_headers_as_data_rows,
+            ),
+        ),
+        alternatives=(
+            GroundTruthAlternative(
+                id="canonical",
+                table_ids=("primary",),
+                comparison="single_table",
+            ),
+            GroundTruthAlternative(
+                id="extra_headers_as_data_rows",
+                table_ids=("extra_headers_as_data_rows",),
+                comparison="single_table",
+            ),
+        ),
+        canonical="canonical",
+        accept_origin=True,
+    )
     _set_polluted_filename(file, f"file_multirow_header_{str(extra_rows)}.csv")
 
-@pollution(
-    category="File Segmentation and Table-Boundary",
-    name="Preambles / Metadata Blocks",
-)
-@manually_verified
+@pollution(category="File Segmentation and Table-Boundary", name="Preambles / Metadata Blocks",)
 def addPreamble(
     file: CSVFile,
     n_rows=1,
