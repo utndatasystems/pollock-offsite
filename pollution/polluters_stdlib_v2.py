@@ -376,13 +376,30 @@ def mixedDelimiters(  # checked manually
 
 
 @pollution(category="Dialect and Lexical-Syntax", name="Multiline Strings")
-@todo
-def unescapedMultiLineString(file: CSVFile, row=1, col=1, content='This is a String with a newline\n, which will be quite hard I imagine.',): # of course, default param has to be changed as not to give the llm a cue.
-    """Places quote, delimiter, and newline characters in a cell without adding escaping metadata."""
-    print("USE WITH CAUTION: to be fair only insert in field with String datatype")
+@manually_verified
+def unescapedMultiLineString(file: CSVFile, row=2, col=7):
+    """Insert an unescaped newline into an existing string cell."""
+    cells = file.xml.getroot().xpath(f"//table[1]/row[{row}]/cell[{col}]")
+    if not cells:
+        raise IndexError(f"Cell ({row}, {col}) not found")
 
-    pb.changeCell(file, row=row, col=col, new_content=content)
-    _set_polluted_filename(file, f"file_unescaped_row_{row}_col_{col}.csv")
+    cell = cells[0]
+    if cell.attrib.get("type") != "TYPE_STRING":
+        raise ValueError(f"Cell ({row}, {col}) must contain a string")
+
+    content = "".join(value.text or "" for value in cell.xpath("./value"))
+    insertion_point = content.find(" ", len(content) // 2)
+    if insertion_point == -1:
+        insertion_point = len(content) // 2
+    else:
+        insertion_point += 1
+
+    polluted_content = content[:insertion_point] + "\n" + content[insertion_point:]
+    pb.changeCell(file, row=row, col=col, new_content=polluted_content)
+    _set_polluted_filename(
+        file,
+        f"file_unescaped_multiline_string_row_{row}_col_{col}.csv",
+    )
 
 
 @pollution(
