@@ -346,7 +346,7 @@ def changeRecordDelimiter(file: CSVFile, target_delimiter="\r\n"):
 
 
 @pollution(
-    category="Dialect and Lexical-Syntax", name="Gloabl Delimiter Change"
+    category="Dialect and Lexical-Syntax", name="Global Delimiter Change"
 )
 def changeFieldDelimiter(file: CSVFile, target_delimiter=";"):
     """Change the field delimiter used between columns."""
@@ -415,7 +415,7 @@ def changeEscapeCharacter(file: CSVFile, target_escape="\\"):
 
 @pollution(
     category="Dialect and Lexical-Syntax",
-    name="Gloabl Quote Character Change",
+    name="Global Quote Character Change",
 )
 def changeQuotationChar(file: CSVFile, target_char="\u0022"):
 
