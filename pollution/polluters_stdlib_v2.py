@@ -32,8 +32,6 @@ from pollution.polluters_utils import (
     _variable_column_target,
     _unquoted_list_items,
     _unquoted_list_column,
-    manually_verified,
-    todo,
     pollution
 )
 
@@ -114,7 +112,6 @@ def addTableSideways( # this is wrong
 
 
 @pollution(category="Header and Schema-Layout", name="Super-Headers")
-@manually_verified
 def multilineHeader(
     file: CSVFile,
     header_rows: int = 3,
@@ -208,7 +205,6 @@ def duplicateHeaderIntoRows(file: CSVFile, n_duplicates: int = 1):  # checked ma
     _set_polluted_filename(file, f"file_duplicate_header_as_data{suffix}.csv")
 
 @pollution(category="Operational Scale Stressor", name="Extreme Field Length")
-@todo
 def extremelyLongFields(
     file: CSVFile, row=1, col=1, length=50 * 1024 * 1024):
     """Replaces a cell with an extremely long random alphanumeric field."""
@@ -236,7 +232,6 @@ def extremelyLongFields(
 
 
 @pollution(category="File Segmentation and Table-Boundary", name="Inline-End Comments")
-@manually_verified
 def addTrailingCommentToFile(
     file: CSVFile,
     comment="This is a comment.",
@@ -376,7 +371,6 @@ def mixedDelimiters(  # checked manually
 
 
 @pollution(category="Dialect and Lexical-Syntax", name="Multiline Strings")
-@manually_verified
 def unescapedMultiLineString(file: CSVFile, row=2, col=7):
     """Insert an unescaped newline into an existing string cell."""
     cells = file.xml.getroot().xpath(f"//table[1]/row[{row}]/cell[{col}]")
@@ -405,7 +399,6 @@ def unescapedMultiLineString(file: CSVFile, row=2, col=7):
 @pollution(
     category="Dialect and Lexical-Syntax", name="Mixed Escaping Strategies"
 )
-@manually_verified
 def doubleEscaping(
     file: CSVFile,
     row: int | None = None,
@@ -517,7 +510,6 @@ def exelExportFormulas(file: CSVFile):  # checked manually
 
 
 @pollution(category="Value & Semantic Interpretation", name="Boolean / Null Variants")
-@todo
 def typeAmbiguity(file: CSVFile):  
     """
     Adds rows containing ambiguous nulls, booleans, decimals, dates, and currencies. Examples include:["$20", "20 EUR", "unknown", "zero"],
@@ -644,7 +636,6 @@ def superheader(
 @pollution(
     category="Value & Semantic Interpretation", name="Embedded JSON Structures"
 )
-@manually_verified
 def embeddedJSON(
     file: CSVFile,
     row: int | None = None,
@@ -725,7 +716,6 @@ def embeddedJSON(
     category="Value & Semantic Interpretation",
     name="Embedded Sub-CSV Structures",
 )
-@todo
 def embeddedCSV(file: CSVFile):
     """Embeds CSV-like file content inside a single cell."""
     payload = "id,name\n1,alpha\n2,beta"
@@ -993,7 +983,6 @@ def mixedTimeformats(file: CSVFile, max_num_to_change=100):
 
 
 @pollution(category="Dialect and Lexical-Syntax", name="Unquoted Lists")
-@manually_verified
 def unquotedList(
     file: CSVFile,
     row: int | None = None,
@@ -1030,7 +1019,6 @@ def unquotedList(
     _set_polluted_filename(file, f"file_unquoted_lists_row_{row}_col_{col}.csv")
 
 @pollution(category="Header and Schema-Layout", name="Header Not in First Row")
-@manually_verified
 def moveHeaderRow(file: CSVFile, row: int | None = None):
     """
     This polluter will move the header row down to 'row' index (0 based).
@@ -1045,7 +1033,6 @@ def moveHeaderRow(file: CSVFile, row: int | None = None):
 @pollution(
     category="File Segmentation and Table-Boundary", name="Footers / Footnotes"
 )
-@manually_verified
 def addFootnote(
     file: CSVFile, n_rows=1, blank_line=False, cell_content="FOOTNOTE"
 ):
@@ -1085,7 +1072,6 @@ def addFootnote(
     category="Record-Shape and Alignment",
     name="No Real Delimiter (Whitespace Columns)",
 )
-@manually_verified
 def tableToWhitespaceFormattedTable(
     file: CSVFile, pad_cells=True, quote_strings=True
 ):
@@ -1168,7 +1154,6 @@ def tableToWhitespaceFormattedTable(
 @pollution(
     category="Value & Semantic Interpretation", name="Different Null Values"
 )
-@manually_verified
 def differentNullValues(file: CSVFile,
     row: int | None = None,
     col: int | None = None,

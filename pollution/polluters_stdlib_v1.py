@@ -33,8 +33,6 @@ from pollution.polluters_utils import (
     _safe_row_count,
     _safe_col_count,
     _last_data_row,
-    manually_verified,
-    todo,
     pollution,
 )
 
@@ -48,7 +46,6 @@ def dummyPolluter(file: CSVFile):
 # --- Pollock1.0 Pollutions ---
 
 @pollution(category="Operational Scale Stressor", name="No Payload")
-@manually_verified
 def changeDimension(file: CSVFile, target_dimension=-1):
     """Resize the file to a target text length."""
     content = []
@@ -98,7 +95,6 @@ def changeEncoding(file: CSVFile, target_encoding: constants.Encoding):
     _set_polluted_filename(file, f"file_encoding_{target}.csv")
 
 @pollution(category="Operational Scale Stressor", name="Extreme Width")
-@manually_verified
 def changeNumberColumns(file: CSVFile, target_number_cols: int, pad_with_random_ints:bool):
     """
         Add or remove columns until the file has the requested width.
@@ -139,7 +135,6 @@ def changeNumberColumns(file: CSVFile, target_number_cols: int, pad_with_random_
     _set_polluted_filename(file, f"file_num_columns_{'pad_randints_' if pad_with_random_ints else ''}{str(target_number_cols)}.csv")
 
 @pollution(category="Operational Scale Stressor", name="Extreme Volume")
-@manually_verified
 def changeNumberRows(file: CSVFile, target_number_rows: int, remove_header=False, repeat_file=False):
     """Add or remove rows until the file has the requested height.
 
@@ -358,7 +353,6 @@ def changeFieldDelimiter(file: CSVFile, target_delimiter=";"):
     category="Dialect and Lexical-Syntax",
     name="Global Change of Escaping Strategy",
 )
-@manually_verified
 def changeEscapeCharacter(file: CSVFile, target_escape="\\"):
     """Changes the escape character used for quoted content.
     Replaces the CSV escape character used to escape quotation marks and other
@@ -411,7 +405,6 @@ def changeEscapeCharacter(file: CSVFile, target_escape="\\"):
     category="Dialect and Lexical-Syntax",
     name="Gloabl Quote Character Change",
 )
-@manually_verified
 def changeQuotationChar(file: CSVFile, target_char="\u0022"):
 
     old_char = file.quotation_char
@@ -565,7 +558,6 @@ def deleteRowFieldDelimiter(file: CSVFile, row, col):
 @pollution(
     category="Dialect and Lexical-Syntax", name="Extra Quote at start of cell"
 )
-@manually_verified
 def addRowQuoteMark(file: CSVFile, row, col):
     """Add an opening quote to one cell in a row."""
     if type(row) == int and row < 0:
@@ -711,7 +703,6 @@ def changeColumnHeader(
 @pollution(
     category="File Segmentation and Table-Boundary", name="Stacked Tables"
 )
-@manually_verified
 def addTable(file: CSVFile, n_rows, n_cols, empty_boundary=True):
     """Append a second, vertically stacked table with the requested shape.
 
