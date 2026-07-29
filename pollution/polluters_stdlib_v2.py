@@ -499,9 +499,7 @@ def exelExportFormulas(file: CSVFile):  # checked manually
     _set_polluted_filename(file, "file_excel_formulas.csv")
 
 
-@pollution(
-    category="Value & Semantic Interpretation", name="Boolean / Null Variants"
-)
+@pollution(category="Value & Semantic Interpretation", name="Boolean / Null Variants")
 @todo
 def typeAmbiguity(file: CSVFile):  
     """

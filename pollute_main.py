@@ -409,7 +409,7 @@ if args.polluters == "pollock2.0":
     execute_polluter(f, pl2.exelExportFormulas)
 
     # Type ambiguity / mixed values
-    execute_polluter(f, pl2.typeAmbiguity)
+    #execute_polluter(f, pl2.typeAmbiguity)
     #execute_polluter(f, pl2.mixedTypes) unsure if this makes sense
     execute_polluter(f, pl2.mixedTimeformats)
 
