@@ -70,7 +70,7 @@ parser.add_argument(
 parser.add_argument(
     "--rng-seed",
     required=False,
-    default=1337,
+    default="1337",
     help="RNG seed",
 )
 
