@@ -348,6 +348,12 @@ if args.polluters == "pollock2.0":
         pl2.whitespaceAlignedSuperheader,
         groups=superheader_groups,
     )
+    execute_polluter(
+        f,
+        pl2.superheader,
+        groups=superheader_groups,
+        sparse=True,
+    )
 
     # Footnote
     # Simple
@@ -404,6 +410,13 @@ if args.polluters == "pollock2.0":
     execute_polluter(f, pl2.doubleEscaping, row=3 if f.row_count >= 3 else None, col=7, escaping="backslash",)
     execute_polluter(f, pl2.tableToWhitespaceFormattedTable, pad_cells=False)
     execute_polluter(f, pl2.tableToWhitespaceFormattedTable, pad_cells=True, quote_strings=True)
+    execute_polluter(
+        f,
+        pl2.tableToWhitespaceFormattedTable,
+        pad_cells=True,
+        quote_strings=True,
+        quote_empty_last_column=True,
+    )
     execute_polluter(f, pl2.tableToWhitespaceFormattedTable, pad_cells=True, quote_strings=False)
 
     # Spreadsheet / Excel-style edge cases
