@@ -426,7 +426,12 @@ if args.polluters == "pollock2.0":
     # Type ambiguity / mixed values
     #execute_polluter(f, pl2.typeAmbiguity)
     #execute_polluter(f, pl2.mixedTypes) unsure if this makes sense
-    execute_polluter(f, pl2.mixedTimeformats)
+    for temporal_format in pl2.COMMON_ALTERNATIVE_TEMPORAL_FORMATS:
+        execute_polluter(
+            f,
+            pl2.mixedTimeformats,
+            temporal_format=temporal_format,
+        )
 
     # Embedded semi-structured payloads
     execute_polluter(f, pl2.embeddedJSON, row=2, start_col=1, l_col=4)

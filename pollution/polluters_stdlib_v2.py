@@ -15,7 +15,6 @@ from .ground_truth import (
 from lxml.builder import E
 from .randdata import (
     randomString,
-    randomDateStr,
     randomType,
     randomInt,
     randomLongOfType,
@@ -38,6 +37,15 @@ from pollution.polluters_utils import (
     _unquoted_list_column,
     pollution
 )
+
+COMMON_ALTERNATIVE_TEMPORAL_FORMATS = {
+    "iso_8601": "%Y-%m-%d",
+    "day_month_year": "%d.%m.%Y",
+    "month_day_year": "%m/%d/%Y",
+    "long_month_name": "%B %d, %Y",
+    "long_month_name_unquoted": "%B %d, %Y",
+}
+
 
 @pollution(
     category="File Segmentation and Table-Boundary", name="Side-by-Side Tables")
@@ -1014,11 +1022,44 @@ def mixedTypes(file: CSVFile, row: int | None = None):
 @pollution(
     category="Value & Semantic Interpretation", name="Temporal Format Drift"
 )
-def mixedTimeformats(file: CSVFile, max_num_to_change=100):
-    """Replaces some random date time cells from the CSV with random values in random formats"""
+def mixedTimeformats(
+    file: CSVFile,
+    temporal_format: str = "iso_8601",
+    max_num_to_change: int = 100,
+):
+    """Replace date/time-looking cells using one alternative format.
+
+    Only DATE columns are eligible; TIME and datetime columns are left intact.
+    Half of the matching DATE cells retain their source representation, while
+    the other half use this invocation's one assigned alternative format. The
+    standard generation path produces one independent file per format, plus an
+    intentionally unquoted long-month variant.
+    """
+    try:
+        strftime_format = COMMON_ALTERNATIVE_TEMPORAL_FORMATS[temporal_format]
+    except KeyError as exc:
+        supported = ", ".join(COMMON_ALTERNATIVE_TEMPORAL_FORMATS)
+        raise ValueError(
+            f"Unknown temporal_format {temporal_format!r}; expected one of: {supported}"
+        ) from exc
+
+    header_values = _row_values(file, row=1)
+    date_column_indices = {
+        index
+        for index, header in enumerate(header_values)
+        if "date" in (header or "").strip().casefold()
+        and "time" not in (header or "").strip().casefold()
+    }
+    if not date_column_indices:
+        raise ValueError("Temporal Format Drift requires a DATE column")
 
     def is_datetime(value, row_idx, col_idx):
-        if value is None or row_idx == 0 or str.isdigit(value):
+        if (
+            value is None
+            or row_idx == 0
+            or col_idx not in date_column_indices
+            or str.isdigit(value)
+        ):
             return False
 
         try:
@@ -1032,13 +1073,45 @@ def mixedTimeformats(file: CSVFile, max_num_to_change=100):
     matching_cells = sorted(pb.findMatchingCells(file, matching=is_datetime))
     random.shuffle(matching_cells)
 
-    for entry in matching_cells[:max_num_to_change]:
-        row_idx, col_idx, _ = entry
-        # Change cells with random date strings in various formats
-        # pd.ChangeCell uses 1-based indexing for rows and columns, so we need to add 1 to both indices
-        pb.changeCell(file, row=row_idx + 1, col=col_idx + 1, new_content=randomDateStr())
+    # Keep the other half in the source format so the column remains mixed.
+    mixed_limit = max(1, len(matching_cells) // 2) if matching_cells else 0
+    num_to_change = min(max_num_to_change, mixed_limit)
 
-    _set_polluted_filename(file, f"file_mixed_time_formats.csv")
+    for entry in matching_cells[:num_to_change]:
+        row_idx, col_idx, original_value = entry
+        # Change every selected cell using this artifact's one assigned format.
+        # pd.ChangeCell uses 1-based indexing for rows and columns, so we need to add 1 to both indices
+        new_content = parse(
+            original_value, fuzzy=False, dayfirst=True
+        ).strftime(strftime_format)
+        pb.changeCell(
+            file,
+            row=row_idx + 1,
+            col=col_idx + 1,
+            new_content=new_content,
+        )
+        if (
+            temporal_format != "long_month_name_unquoted"
+            and file.field_delimiter
+            and file.field_delimiter in new_content
+        ):
+            cell = file.xml.xpath(
+                f"//table[1]/row[{row_idx + 1}]/cell[{col_idx + 1}]"
+            )[0]
+            cell.insert(0, E.quotation_char(file.quotation_char))
+            cell.append(E.quotation_char(file.quotation_char))
+
+    # The canonical GT preserves the reformatted values as strings. Parsing the
+    # temporal values back to their source representation is equally acceptable.
+    file.ground_truth_bundle = GroundTruthBundle.single(
+        CSVFile.clean_rows(file),
+        table_id="temporal_values_as_strings",
+        alternative_id="temporal_values_as_strings",
+        accept_origin=True,
+    )
+    _set_polluted_filename(
+        file, f"file_mixed_time_formats_{temporal_format}.csv"
+    )
 
 
 
