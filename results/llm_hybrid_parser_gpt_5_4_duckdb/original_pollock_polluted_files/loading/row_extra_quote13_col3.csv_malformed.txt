@@ -1,2 +1,0 @@
-Malformed rows: 1
-{"line_num": 14, "reason": "MISSING COLUMNS: Expected Number of Columns: 9 Found: 7; MISSING COLUMNS: Expected Number of Columns: 9 Found: 8; UNQUOTED VALUE: Value with unterminated quote found.", "raw": "21/02/2018,03:00,3,\"BH-3190,$65.38,Men's Down Vest,\"Our best-value down vest is packed with ultralight 650-fill for warmth and protection, even when wet.\",\"https://www.example.com/product/BH_3190.html\",", "repaired": true}

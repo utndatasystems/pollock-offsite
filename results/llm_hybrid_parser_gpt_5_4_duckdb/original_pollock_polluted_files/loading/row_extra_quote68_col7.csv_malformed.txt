@@ -1,2 +1,0 @@
-Malformed rows: 1
-{"line_num": 69, "reason": "MISSING COLUMNS: Expected Number of Columns: 9 Found: 8; UNQUOTED VALUE: Value with unterminated quote found.", "raw": "23/06/2018,23:45,0,YY-1196,$90.15,Girls' Tee,\"This girls' fitness tee controls moisture and odor: all at a great price, perfect for camp, sports and play.\",\"\"https://www.example.com/product/YY_1196.html\",", "repaired": true}

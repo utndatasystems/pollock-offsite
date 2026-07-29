@@ -1,2 +1,0 @@
-Malformed rows: 1
-{"line_num": 47, "reason": "MISSING COLUMNS: Expected Number of Columns: 9 Found: 6; MISSING COLUMNS: Expected Number of Columns: 9 Found: 7; MISSING COLUMNS: Expected Number of Columns: 9 Found: 8; UNQUOTED VALUE: Value with unterminated quote found.", "raw": "21/04/2018,13:00,\"8,YY-8239,$72,Men's Boots,\"Here, when we call something good we mean it: just one touch of these soft men's boot slippers and you'll understand why.\",\"https://www.example.com/product/YY_8239.html\",", "repaired": true}

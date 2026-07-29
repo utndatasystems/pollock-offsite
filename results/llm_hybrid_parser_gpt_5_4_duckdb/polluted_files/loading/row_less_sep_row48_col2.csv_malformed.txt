@@ -1,2 +1,0 @@
-Malformed rows: 1
-{"line_num": 49, "reason": "MISSING COLUMNS: Expected Number of Columns: 9 Found: 8", "raw": "25/04/2018,14:0016,BH-4482,$53.95,Portable Game Center,\"This portable game center will provide hours of fun at your barbecue, tailgate, beach trip and more. With easy set-up and take-down, you can take it anywhere.\",\"https://www.example.com/product/BH_4482.html\",", "repaired": true}

@@ -1,2 +1,0 @@
-Malformed rows: 1
-{"line_num": 32, "reason": "UNQUOTED VALUE: Value with unterminated quote found.", "raw": "24/03/2018,07:45,0,BH-4480,$51.42,\"Heated Insoles\",\"This pair of water-resistant, remote-controlled heated insoles features thermal technology engineered to keep your feet warm, not hot, to avoid sweating and freezing.\",\"\"https://www.example.com/product/BH_4480.html\",", "repaired": true}

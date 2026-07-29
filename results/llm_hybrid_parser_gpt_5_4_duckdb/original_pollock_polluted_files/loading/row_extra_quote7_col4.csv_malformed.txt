@@ -1,2 +1,0 @@
-Malformed rows: 1
-{"line_num": 8, "reason": "MISSING COLUMNS: Expected Number of Columns: 9 Found: 7; UNQUOTED VALUE: Value with unterminated quote found.", "raw": "15/02/2018,01:30,2,RI-6052,\"$89.34,Organic Textured Cotton Towel,\"All the softness and absorbency you've come to expect from our towels, in certified organic cotton for natural, ecofriendly comfort.\",\"https://www.example.com/product/RI_6052.html\",", "repaired": true}

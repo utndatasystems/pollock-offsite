@@ -1,2 +1,0 @@
-Malformed rows: 1
-{"line_num": 15, "reason": "TOO MANY COLUMNS: Expected Number of Columns: 9 Found: 10", "raw": "22/02/2018,03:15,3,HK-3372,,$6.45,Tropic Cap,\"Made with the same tropical fabric as our bestselling shirts, this wonderful cap provides UPF 50+ sun protection.\",\"https://www.example.com/product/HK_3372.html\",", "repaired": true}
