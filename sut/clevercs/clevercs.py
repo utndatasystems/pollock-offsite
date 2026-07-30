@@ -5,7 +5,7 @@ import sys
 from os.path import join, dirname
 
 sys.path.insert(0, join(dirname(__file__), '..'))
-from utils import print, save_time_df, load_parameters
+from utils import print, save_time_df
 import clevercsv
 import time
 
@@ -23,7 +23,6 @@ args = parser.parse_args()
 sut = 'clevercs'
 DATASET = os.environ.get('DATASET', 'polluted_files')
 IN_DIR = f'data/{DATASET}/csv/'
-PARAM_DIR = f'data/{DATASET}/parameters'
 OUT_DIR = f'results/{sut}/{DATASET}/loading/'
 TIME_DIR = f'results/{sut}/{DATASET}'
 
@@ -42,11 +41,10 @@ for idx, f in enumerate(benchmark_files):
         continue
     print(f'Processing file ({idx + 1}/{len(benchmark_files)}) {f}')
 
-    sut_params = load_parameters(join(PARAM_DIR, f'{f}_parameters.json'))
     for time_rep in list(range(N_REPETITIONS)):
         start = time.time()
         try:
-            with open(in_filepath, newline='', encoding=sut_params["encoding"]) as in_csvfile:
+            with open(in_filepath, newline='') as in_csvfile:
                 dialect = clevercsv.Sniffer().sniff(in_csvfile.read())
                 in_csvfile.seek(0)
                 reader = clevercsv.reader(in_csvfile, dialect)

@@ -7,7 +7,7 @@ import sys
 import time
 
 sys.path.insert(0, join(dirname(__file__), '..'))
-from utils import print, save_time_df, load_parameters
+from utils import print, save_time_df
 
 parser = argparse.ArgumentParser()
 parser.add_argument(
@@ -20,7 +20,6 @@ args = parser.parse_args()
 sut = 'pycsv'
 DATASET = os.environ.get('DATASET', 'polluted_files')
 IN_DIR = f'data/{DATASET}/csv/'
-PARAM_DIR = f'data/{DATASET}/parameters'
 OUT_DIR = f'results/{sut}/{DATASET}/loading/'
 TIME_DIR = f'results/{sut}/{DATASET}/'
 
@@ -45,11 +44,10 @@ for idx, f in enumerate(benchmark_files):
         continue
     print(f'Processing file ({idx + 1}/{len(benchmark_files)}) {f}')
 
-    sut_params = load_parameters(join(PARAM_DIR, f'{f}_parameters.json'))
     for time_rep in range(N_REPETITIONS):
         start = time.time()
         try:
-            with open(in_filepath, newline='', encoding=sut_params["encoding"]) as in_csvfile:
+            with open(in_filepath, newline='') as in_csvfile:
                 sample = in_csvfile.read(SNIFF_SAMPLE_CHARS)
                 if len(sample) == SNIFF_SAMPLE_CHARS and '\n' in sample:
                     sample = sample[:sample.rindex('\n') + 1]
