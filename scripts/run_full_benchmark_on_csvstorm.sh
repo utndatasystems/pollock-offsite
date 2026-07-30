@@ -6,7 +6,9 @@
 #
 # Options:
 #   --regenerate       Recreate data/csv_storm with Pollock 2.0 first.
-#   --keep-results     Keep existing LLM parser outputs instead of overwriting them.
+#   --keep-results     Keep existing parser outputs instead of overwriting them.
+#   --keep-llm-results Keep existing LLM parser outputs (avoids paid calls) while
+#                      still overwriting the classical SUT outputs.
 #   --verbose          Print hybrid-parser LLM prompts and responses.
 #   --confirm-cost     Confirm the potentially large paid LLM matrix.
 #   -h, --help         Show this help.
@@ -31,11 +33,12 @@ fi
 
 regenerate=false
 overwrite_results=true
+keep_llm_results=false
 verbose=false
 confirm_cost=false
 
 usage() {
-    sed -n '2,20p' "$0" | sed 's/^# \{0,1\}//'
+    sed -n '2,22p' "$0" | sed 's/^# \{0,1\}//'
 }
 
 while [[ $# -gt 0 ]]; do
@@ -45,6 +48,9 @@ while [[ $# -gt 0 ]]; do
             ;;
         --keep-results)
             overwrite_results=false
+            ;;
+        --keep-llm-results)
+            keep_llm_results=true
             ;;
         --verbose)
             verbose=true
@@ -116,10 +122,14 @@ fi
 export DATASET="$dataset"
 export OLLAMA_API_BASE="$ollama_api_base"
 
-llm_common_args=()
+classical_overwrite_args=()
+llm_overwrite_args=()
 hybrid_verbose_args=()
 if [[ "$overwrite_results" == true ]]; then
-    llm_common_args+=(--overwrite)
+    classical_overwrite_args+=(--overwrite)
+    if [[ "$keep_llm_results" != true ]]; then
+        llm_overwrite_args+=(--overwrite)
+    fi
 fi
 if [[ "$verbose" == true ]]; then
     hybrid_verbose_args+=(--verbose)
@@ -149,7 +159,7 @@ run_classical_sut() {
 
     echo
     echo "=== $label on $dataset ==="
-    "$python_bin" "$script"
+    "$python_bin" "$script" "${classical_overwrite_args[@]}"
     evaluate_sut "$sut"
 }
 
@@ -200,7 +210,7 @@ run_llm_model() {
     "$python_bin" sut/llm_hybrid_parser_Robin/llm-hybrid-bench.py \
         --model "$model" \
         "${backend_args[@]}" \
-        "${llm_common_args[@]}" \
+        "${llm_overwrite_args[@]}" \
         "${hybrid_verbose_args[@]}"
     evaluate_sut "$llm_hybrid_sut"
 
@@ -210,7 +220,7 @@ run_llm_model() {
         --model "$model" \
         --duckdb-sniff \
         "${backend_args[@]}" \
-        "${llm_common_args[@]}" \
+        "${llm_overwrite_args[@]}" \
         "${hybrid_verbose_args[@]}"
     evaluate_sut "$duckdb_hybrid_sut"
 
@@ -218,7 +228,7 @@ run_llm_model() {
     echo "=== Code-generation parser: $model via $backend on $dataset ==="
     "$python_bin" sut/code_generation_llm/custom-bench.py \
         --model "$model" \
-        "${llm_common_args[@]}"
+        "${llm_overwrite_args[@]}"
     evaluate_sut "$code_generation_sut"
 }
 

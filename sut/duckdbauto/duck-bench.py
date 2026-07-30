@@ -16,6 +16,11 @@ parser.add_argument(
     help="Enable DuckDB strict_mode (default off). When set, results are written to the "
          "'duckdbauto_strict' folder instead of 'duckdbauto'.",
 )
+parser.add_argument(
+    "--overwrite",
+    action="store_true",
+    help="Re-process files even if output already exists (default: skip already-processed files)",
+)
 args = parser.parse_args()
 
 sut = 'duckdbauto_strict' if args.strict else 'duckdbauto'
@@ -40,7 +45,7 @@ for idx,file in enumerate(benchmark_files):
     in_filepath = join(IN_DIR, f)
     out_filename = f'{f}_converted.csv'
     out_filepath = join(OUT_DIR, out_filename)
-    if os.path.exists(out_filepath):
+    if not args.overwrite and os.path.exists(out_filepath):
         continue
     print(f"({idx + 1}/{len(benchmark_files)}) {f}")
 

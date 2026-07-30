@@ -1,4 +1,5 @@
 from os.path import join, dirname
+import argparse
 import pandas as pd
 import time
 import os
@@ -38,6 +39,14 @@ error_bad_lines=True,
 warn_bad_lines=True,
 low_memory=True"""
 
+parser = argparse.ArgumentParser()
+parser.add_argument(
+    "--overwrite",
+    action="store_true",
+    help="Re-process files even if output already exists (default: skip already-processed files)",
+)
+args = parser.parse_args()
+
 sut='pandas'
 DATASET = os.environ.get('DATASET', 'polluted_files')
 IN_DIR = f'data/{DATASET}/csv/'
@@ -58,7 +67,7 @@ for idx,file in enumerate(benchmark_files):
     out_filename = f'{f}_converted.csv'
     out_filepath = join(OUT_DIR, out_filename)
     sut_params = load_parameters(join(PARAM_DIR, f'{f}_parameters.json'))
-    if os.path.exists(out_filepath):
+    if not args.overwrite and os.path.exists(out_filepath):
         continue
     print(f"({idx + 1}/{len(benchmark_files)}) {f}")
 

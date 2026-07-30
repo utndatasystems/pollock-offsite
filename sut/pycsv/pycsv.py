@@ -1,3 +1,4 @@
+import argparse
 import csv
 from os import listdir
 from os.path import join, dirname
@@ -7,6 +8,14 @@ import time
 
 sys.path.insert(0, join(dirname(__file__), '..'))
 from utils import print, save_time_df, load_parameters
+
+parser = argparse.ArgumentParser()
+parser.add_argument(
+    "--overwrite",
+    action="store_true",
+    help="Re-process files even if output already exists (default: skip already-processed files)",
+)
+args = parser.parse_args()
 
 sut = 'pycsv'
 DATASET = os.environ.get('DATASET', 'polluted_files')
@@ -28,7 +37,7 @@ for idx, f in enumerate(benchmark_files):
     in_filepath = join(IN_DIR, f)
     out_filename = f'{f}_converted.csv'
     out_filepath = join(OUT_DIR, out_filename)
-    if os.path.exists(out_filepath):
+    if not args.overwrite and os.path.exists(out_filepath):
         continue
     print(f'Processing file ({idx + 1}/{len(benchmark_files)}) {f}')
 

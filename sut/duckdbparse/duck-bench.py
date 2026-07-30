@@ -16,6 +16,11 @@ parser.add_argument(
     help="Enable DuckDB strict_mode (default off). When set, results are written to the "
          "'duckdbparse_strict' folder instead of 'duckdbparse'.",
 )
+parser.add_argument(
+    "--overwrite",
+    action="store_true",
+    help="Re-process files even if output already exists (default: skip already-processed files)",
+)
 args = parser.parse_args()
 
 sut = 'duckdbparse_strict' if args.strict else 'duckdbparse'
@@ -60,7 +65,7 @@ for idx,file in enumerate(benchmark_files):
     out_filepath = join(OUT_DIR, out_filename)
     options_json = load_parameters(join(PARAM_DIR, f'{f}_parameters.json'))
     kw = generate_parameters(options_json)
-    if os.path.exists(out_filepath):
+    if not args.overwrite and os.path.exists(out_filepath):
         continue
     print(f"({idx + 1}/{len(benchmark_files)}) {f}")
 
