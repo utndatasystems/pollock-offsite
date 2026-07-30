@@ -28,6 +28,10 @@ os.makedirs(OUT_DIR, exist_ok=True)
 os.makedirs(TIME_DIR, exist_ok=True)
 N_REPETITIONS = int(os.environ.get("N_REPETITIONS", 3))
 
+# csv.Sniffer is quadratic in the sample length, so sniffing a multi-MB file takes
+# minutes. Sniff a prefix instead; files below this size are still sniffed whole.
+SNIFF_SAMPLE_CHARS = int(os.environ.get("SNIFF_SAMPLE_CHARS", 64 * 1024))
+
 TO_SKIP = []
 
 times_dict = {}
@@ -46,7 +50,10 @@ for idx, f in enumerate(benchmark_files):
         start = time.time()
         try:
             with open(in_filepath, newline='', encoding=sut_params["encoding"]) as in_csvfile:
-                dialect = csv.Sniffer().sniff(in_csvfile.read())
+                sample = in_csvfile.read(SNIFF_SAMPLE_CHARS)
+                if len(sample) == SNIFF_SAMPLE_CHARS and '\n' in sample:
+                    sample = sample[:sample.rindex('\n') + 1]
+                dialect = csv.Sniffer().sniff(sample)
                 in_csvfile.seek(0)
                 reader = csv.reader(in_csvfile, dialect)
                 rows = list(reader)
