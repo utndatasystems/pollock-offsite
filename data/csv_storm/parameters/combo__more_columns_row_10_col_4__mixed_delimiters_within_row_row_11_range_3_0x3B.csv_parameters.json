@@ -1,0 +1,47 @@
+{
+    "encoding": "ascii",
+    "delimiter": ",",
+    "quotechar": "\"",
+    "escapechar": "\"",
+    "row_delimiter": "\r\n",
+    "header_lines": 1,
+    "preamble_lines": 0,
+    "footnote_lines": 0,
+    "column_names": [
+        "DATE",
+        "TIME",
+        "Qty",
+        "PRODUCTID",
+        "Price",
+        "ProductType",
+        "ProductDescription",
+        "URL",
+        "Comments"
+    ],
+    "n_columns": 10,
+    "combination": {
+        "pollutions": [
+            {
+                "function": "moreColumns",
+                "name": "moreColumns",
+                "category": "Undefined",
+                "arguments": {
+                    "row": 10
+                }
+            },
+            {
+                "function": "mixedDelimiters",
+                "name": "Mixed Delimiters",
+                "category": "Dialect and Lexical-Syntax",
+                "arguments": {
+                    "row": 11,
+                    "delimiters": [
+                        ";"
+                    ],
+                    "mode": "within_row",
+                    "range_within_row": 3
+                }
+            }
+        ]
+    }
+}

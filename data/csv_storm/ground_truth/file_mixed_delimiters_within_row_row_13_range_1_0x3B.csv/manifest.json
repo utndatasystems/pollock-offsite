@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "canonical": "recovered_original_table",
+  "accept_origin": true,
+  "tables": {
+    "recovered_original_table": {
+      "path": "recovered_original_table.csv",
+      "role": "primary"
+    }
+  },
+  "alternatives": [
+    {
+      "id": "recovered_original_table",
+      "comparison": "single_table",
+      "tables": [
+        "recovered_original_table"
+      ]
+    }
+  ]
+}

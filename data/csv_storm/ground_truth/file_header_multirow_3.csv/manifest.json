@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "canonical": "canonical",
+  "accept_origin": true,
+  "tables": {
+    "primary": {
+      "path": "primary.csv",
+      "role": "primary"
+    },
+    "extra_headers_as_data_rows": {
+      "path": "extra_headers_as_data_rows.csv",
+      "role": "primary"
+    }
+  },
+  "alternatives": [
+    {
+      "id": "canonical",
+      "comparison": "single_table",
+      "tables": [
+        "primary"
+      ]
+    },
+    {
+      "id": "extra_headers_as_data_rows",
+      "comparison": "single_table",
+      "tables": [
+        "extra_headers_as_data_rows"
+      ]
+    }
+  ]
+}

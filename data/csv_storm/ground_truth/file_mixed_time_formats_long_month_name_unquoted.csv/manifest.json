@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "canonical": "temporal_values_as_strings",
+  "accept_origin": true,
+  "tables": {
+    "temporal_values_as_strings": {
+      "path": "temporal_values_as_strings.csv",
+      "role": "primary"
+    }
+  },
+  "alternatives": [
+    {
+      "id": "temporal_values_as_strings",
+      "comparison": "single_table",
+      "tables": [
+        "temporal_values_as_strings"
+      ]
+    }
+  ]
+}

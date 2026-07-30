@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "canonical": "canonical",
+  "accept_origin": true,
+  "tables": {
+    "primary": {
+      "path": "primary.csv",
+      "role": "primary"
+    },
+    "without_superheader": {
+      "path": "without_superheader.csv",
+      "role": "primary"
+    }
+  },
+  "alternatives": [
+    {
+      "id": "canonical",
+      "comparison": "single_table",
+      "tables": [
+        "primary"
+      ]
+    },
+    {
+      "id": "without_superheader",
+      "comparison": "single_table",
+      "tables": [
+        "without_superheader"
+      ]
+    }
+  ]
+}

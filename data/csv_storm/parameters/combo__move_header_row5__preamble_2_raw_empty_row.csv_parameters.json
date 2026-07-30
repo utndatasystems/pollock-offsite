@@ -1,0 +1,47 @@
+{
+    "encoding": "ascii",
+    "delimiter": ",",
+    "quotechar": "\"",
+    "escapechar": "\"",
+    "row_delimiter": "\r\n",
+    "header_lines": 1,
+    "preamble_lines": 3,
+    "footnote_lines": 0,
+    "column_names": [
+        "DATE",
+        "TIME",
+        "Qty",
+        "PRODUCTID",
+        "Price",
+        "ProductType",
+        "ProductDescription",
+        "URL",
+        "Comments"
+    ],
+    "n_columns": 9,
+    "combination": {
+        "pollutions": [
+            {
+                "function": "moveHeaderRow",
+                "name": "Header Not in First Row",
+                "category": "Header and Schema-Layout",
+                "arguments": {
+                    "row": 5
+                }
+            },
+            {
+                "function": "addPreamble",
+                "name": "Preambles / Metadata Blocks",
+                "category": "File Segmentation and Table-Boundary",
+                "arguments": {
+                    "n_rows": 2,
+                    "emptyrow": true,
+                    "cell_content": [
+                        "Export: product_activity_sample.csv",
+                        "Section: catalog activity"
+                    ]
+                }
+            }
+        ]
+    }
+}

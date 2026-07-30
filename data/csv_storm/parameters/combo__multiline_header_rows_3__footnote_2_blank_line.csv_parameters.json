@@ -1,0 +1,44 @@
+{
+    "encoding": "ascii",
+    "delimiter": ",",
+    "quotechar": "\"",
+    "escapechar": "\"",
+    "row_delimiter": "\r\n",
+    "header_lines": 3,
+    "preamble_lines": 0,
+    "footnote_lines": 3,
+    "column_names": [
+        "DATE PRODUCTID ProductDescription",
+        "TIME Price URL",
+        "Qty ProductType Comments",
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+    ],
+    "n_columns": 9,
+    "combination": {
+        "pollutions": [
+            {
+                "function": "multilineHeader",
+                "name": "Super-Headers",
+                "category": "Header and Schema-Layout",
+                "arguments": {
+                    "header_rows": 3
+                }
+            },
+            {
+                "function": "addFootnote",
+                "name": "Footers / Footnotes",
+                "category": "File Segmentation and Table-Boundary",
+                "arguments": {
+                    "n_rows": 2,
+                    "blank_line": true,
+                    "cell_content": "Source: catalog activity export"
+                }
+            }
+        ]
+    }
+}

@@ -108,6 +108,7 @@ target/
 # Project data generated or downloaded locally
 */mycustomtest/
 /data/*
+!/data/csv_storm
 
 # Tests
 /tests/*

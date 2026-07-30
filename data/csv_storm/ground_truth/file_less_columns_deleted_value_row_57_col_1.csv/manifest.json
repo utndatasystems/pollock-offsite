@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "canonical": "rectangular_missing_value",
+  "accept_origin": false,
+  "tables": {
+    "rectangular_missing_value": {
+      "path": "rectangular_missing_value.csv",
+      "role": "primary"
+    },
+    "jagged_deleted_value": {
+      "path": "jagged_deleted_value.csv",
+      "role": "primary"
+    }
+  },
+  "alternatives": [
+    {
+      "id": "rectangular_missing_value",
+      "comparison": "single_table",
+      "tables": [
+        "rectangular_missing_value"
+      ]
+    },
+    {
+      "id": "jagged_deleted_value",
+      "comparison": "single_table",
+      "tables": [
+        "jagged_deleted_value"
+      ]
+    }
+  ]
+}
