@@ -1,9 +1,10 @@
 # Pollock Offsite
 
-Pollock Offsite generates corrupted CSV datasets, runs CSV parsers (systems
-under test, or SUTs), and compares their reconstructed output with known clean
-data. It includes the original Pollock benchmark, CSV Storm, conventional CSV
-parsers, and two LLM-based parsers.
+Pollock Offsite provides the CSV Storm benchmark: a dataset of corrupted CSV
+files generated with Pollock 2.0 and curated pollution combinations. It runs
+CSV parsers (systems under test, or SUTs) and compares their reconstructed
+output with known clean data. The repository includes conventional CSV parsers
+and two LLM-based parser architectures.
 
 ## Setup
 
@@ -18,18 +19,18 @@ environment activated.
 
 ## Run a Benchmark
 
-The repository includes benchmark data under `data/`. Run the included
-Python-only SUTs against the original Pollock dataset, then evaluate them:
+The repository includes CSV Storm under `data/csv_storm/`. Run the included
+Python-only SUTs against it, then evaluate them:
 
 ```bash
-scripts/run_python_suts.sh polluted_files duckdbauto duckdbparse pandas pycsv clevercs
-.venv/bin/python evaluate.py --dataset polluted_files
+scripts/run_python_suts.sh csv_storm duckdbauto duckdbparse pandas pycsv clevercs
+.venv/bin/python evaluate.py --dataset csv_storm
 ```
 
 To run a smaller selection:
 
 ```bash
-scripts/run_python_suts.sh polluted_files duckdbauto clevercs
+scripts/run_python_suts.sh csv_storm duckdbauto clevercs
 ```
 
 Docker-based SUTs can be run with `bash benchmark.sh`. Edit `benchmark.sh` to
@@ -38,19 +39,12 @@ builds several images.
 
 ### Generate a Dataset
 
-Generate the original Pollock dataset:
-
-```bash
-.venv/bin/python pollute_main.py \
-  --source ./results/source.csv \
-  --output ./data/polluted_files
-```
-
-Generate CSV Storm with Pollock 2.0 and curated pollution combinations:
+Download the prepared CSV Storm dataset:
 
 > <img src="https://huggingface.co/front/assets/huggingface_logo-noborder.svg" alt="Hugging Face" width="20" height="20"> **Dataset download:** [CSV Storm on Hugging Face — link to be added](https://huggingface.co/datasets/REPLACE_WITH_ORGANIZATION/REPLACE_WITH_DATASET)
 
-Or generate it locally:
+Alternatively, generate CSV Storm locally with Pollock 2.0 and the curated
+pollution combinations:
 
 ```bash
 .venv/bin/python pollute_main.py \
@@ -138,7 +132,7 @@ recall, F1, and combined scores. It writes:
 Pollock's combined score is the sum of mean success and the mean precision,
 recall, and F1 values for headers, records, and cells. Its maximum is 10.
 Weighted scores use pollution frequencies from a government CSV survey and are
-only comparable for datasets generated from the original `results/source.csv`.
+only comparable for datasets generated from `results/source.csv`.
 
 To inspect parsing errors:
 
@@ -146,22 +140,6 @@ To inspect parsing errors:
 .venv/bin/python eval/find_errors.py --sut <sut>
 ```
 
-## Reference Scores
+## Paper
 
-These original-benchmark scores may vary with updated parser dependencies.
-Compare systems with similar access to dialect metadata.
-
-| SUT | Simple | Weighted | Dialect metadata | Runtime |
-| --- | ---: | ---: | :---: | --- |
-| duckdbparse | 9.961516 | 9.599662 | Yes | Python |
-| mysql | 9.953843 | 9.610157 | Yes | Docker |
-| univocity | 9.939419 | 7.936767 | No | Docker |
-| sqlite | 9.936568 | 9.589233 | Yes | Docker |
-| pandas | 9.884786 | 7.909017 | Yes | Python |
-| pycsv | 9.724189 | 9.436467 | No | Python |
-| duckdbauto | 9.646808 | 8.996221 | No | Python |
-| clevercsv | 9.193083 | 9.453858 | No | Python |
-| postgres | 0.141977 | 7.872715 | Yes | Docker |
-
-For background on the benchmark design, see the
-[original Pollock repository](https://github.com/HPI-Information-Systems/Pollock).
+> **Publication:** [Pollock Offsite paper — link to be added after submission](https://doi.org/REPLACE_WITH_DOI)
