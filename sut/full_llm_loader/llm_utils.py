@@ -57,6 +57,10 @@ def _completion_token_limit_param(model: str) -> str:
     return "max_tokens"
 
 
+def _supports_temperature(model: str) -> bool:
+    return not model.lower().startswith("gpt-5.6")
+
+
 def _env_truthy(name: str) -> bool:
     return os.environ.get(name, '').strip().lower() in {'1', 'true', 'yes', 'on'}
 
@@ -92,14 +96,15 @@ def _query_llm(
     if api_key:
         headers["Authorization"] = f"Bearer {api_key}"
 
-    # Construct the request payload, set temperature to 0.0 for deterministic output, and limit max tokens
+    # Construct the request payload and limit max tokens.
     payload = {
         "model": model,
         "messages": messages,
-        "temperature": 0.0,
         "stream": False,
     }
     payload[_completion_token_limit_param(model)] = 16000
+    if _supports_temperature(model):
+        payload["temperature"] = 0.0
 
     if backend == "ollama":
         payload["reasoning_effort"] = os.environ.get(
