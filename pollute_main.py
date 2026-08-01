@@ -42,7 +42,7 @@ parser.add_argument(
 parser.add_argument(
     "--polluters",
     required=False,
-    choices=["pollock1.0", "pollock2.0"],
+    choices=["pollock1.0", "csv_storm"],
     default="pollock1.0",
     help="Which polluters to use for pollution process. Use pollock1.0 for original pollock pollutions only.",
 )
@@ -63,7 +63,7 @@ parser.add_argument(
     action="store_true",
     help=(
         "Generate curated artifacts containing interacting pollutions. "
-        "Requires --polluters pollock2.0."
+        "Requires --polluters csv_storm."
     ),
 )
 
@@ -81,8 +81,8 @@ parser.add_argument(
 )
 
 args = parser.parse_args()
-if args.combinations and args.polluters != "pollock2.0":
-    parser.error("--combinations requires --polluters pollock2.0")
+if args.combinations and args.polluters != "csv_storm":
+    parser.error("--combinations requires --polluters csv_storm")
 
 OUT_CSV_PATH = os.path.join(args.output, "csv/")
 OUT_CLEAN_PATH = os.path.join(args.output, "clean/")
@@ -158,7 +158,7 @@ f = CSVFile(args.source, quote_all=True)
 # =============================================================================
 # ORIGINAL POLLOCK 1.0 POLLUTIONS
 # The block below reproduces exactly the pollutions of the original pollute_main
-# These run for BOTH pollock1.0 and pollock2.0 (pollock2.0 = 1.0 + extra).
+# These run for BOTH pollock1.0 and csv_storm (csv_storm = 1.0 + extra).
 # =============================================================================
 
 # Returns the source file : 1 file
@@ -230,7 +230,7 @@ if args.polluters == "pollock1.0":
         empty_boundary=False,
     )
 else:
-    # Pollock 2.0 preamble + multitable sizing (richer preamble, larger deltas).
+    # CSV Storm preamble + multitable sizing (richer preamble, larger deltas).
     execute_polluter(
         f,
         pl.addPreamble,
@@ -301,7 +301,7 @@ if args.per_cell_pollutions:
         execute_polluter(f, pl.changeRowFieldDelimiter, new_filename=target_filename, row=i, target_delimiter=" ")
 
     # Restore: later polluters rely on the real row_count
-    f.row_count = old_row_count # TODO: remove after manually decrease rowcount above is removed again
+    f.row_count = old_row_count 
 
 # Change record Delimiter : 2 files
 execute_polluter(f, pl.changeRecordDelimiter, target_delimiter="\n")
@@ -322,9 +322,9 @@ execute_polluter(f, pl.changeEscapeCharacter, target_escape="")         # no esc
 #execute_polluter(f, pl.changeEscapeCharacter, target_escape="WATCHOUT")     # Test Case for check if pollution works
 
 
-# --- NEW POLLUTIONS FOR POLLOCK 2.0 ---
+# --- NEW POLLUTIONS FOR CSV STORM ---
 
-if args.polluters == "pollock2.0":
+if args.polluters == "csv_storm":
 
     execute_polluter(f, pl.changeQuotationChar, target_char="")  # deleted quotation character everywhere
 
@@ -441,9 +441,9 @@ if args.polluters == "pollock2.0":
     execute_polluter(f, pl.changeRowQuotationMark, row=12 if f.row_count >= 2 else 1, target_quotation="'")
 
     # Structural Stress Tests
-    execute_polluter(f, pl.changeNumberColumns, target_number_cols = 1000, pad_with_random_ints=True) # extreme width (TODO make larger after code-iteration is over, currently not even 1MB)
+    execute_polluter(f, pl.changeNumberColumns, target_number_cols = 1000, pad_with_random_ints=True) # extreme width 
     execute_polluter(f, pl.changeNumberColumns, target_number_cols = 1000, pad_with_random_ints=False) # repeats last column
-    execute_polluter(f, pl.changeNumberRows, target_number_rows=50000, repeat_file = True) # Long CSV # TODO make number larger after code-iteration is over
+    execute_polluter(f, pl.changeNumberRows, target_number_rows=50000, repeat_file = True) # Long CSV 
 
 
 

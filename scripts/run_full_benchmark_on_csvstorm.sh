@@ -5,7 +5,7 @@
 #   scripts/run_full_benchmark_on_csvstorm.sh [options]
 #
 # Options:
-#   --regenerate       Recreate data/csv_storm with Pollock 2.0 first.
+#   --regenerate       Recreate data/csv_storm with CSV Storm polluters first.
 #   --keep-results     Keep existing parser outputs instead of overwriting them.
 #   --keep-llm-results Keep existing LLM parser outputs (avoids paid calls) while
 #                      still overwriting the classical SUT outputs.
@@ -99,11 +99,11 @@ remote_openai_endpoint="${OPENAI_ENDPOINT:-https://api.openai.com/v1/chat/comple
 ollama_api_base="${OLLAMA_API_BASE:-http://localhost:11434/v1}"
 
 if [[ "$regenerate" == true ]]; then
-    echo "=== Regenerating data/$dataset with Pollock 2.0 ==="
+    echo "=== Regenerating data/$dataset with CSV Storm ==="
     "$python_bin" pollute_main.py \
         --source ./results/source.csv \
         --output "./data/$dataset" \
-        --polluters pollock2.0 \
+        --polluters csv_storm \
         --combinations \
         --rng-seed 1337 \
         --overwrite
