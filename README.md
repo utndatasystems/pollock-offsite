@@ -1,12 +1,14 @@
-# Pollock Offsite
+# CSV Storm
 
-Pollock Offsite provides the CSV Storm benchmark: a dataset of corrupted CSV
-files generated with Pollock 2.0 and curated pollution combinations. It runs
-CSV parsers (systems under test, or SUTs) and compares their reconstructed
-output with known clean data. The repository includes conventional CSV parsers
-and two LLM-based parser architectures.
+A benchmark for agentic CSV loading and reconstruction.
+
+CSV Storm generates datasets containing deliberately corrupted CSV files alongside corresponding ground-truth data.
+It evaluates systems under test by comparing their reconstructed outputs against the automatically generated ground truth files.
+
+The repository includes conventional CSV parsers as well as three LLM-based parsing architectures.
 
 ## Setup
+
 
 ```bash
 python3 -m venv .venv
@@ -17,40 +19,41 @@ pip install -r requirements.txt
 Commands below assume you are in the repository root with the virtual
 environment activated.
 
-## Run a Benchmark
 
-The repository includes CSV Storm under `data/csv_storm/`. Run the included
-Python-only SUTs against it, then evaluate them:
+## Run the whole Benchmark start to finish
 
-```bash
-scripts/run_python_suts.sh csv_storm duckdbauto duckdbparse pandas pycsv clevercs
-.venv/bin/python evaluate.py --dataset csv_storm
+Needs:
+- environment variable `OPENAI_API_KEY`
+- local Ollama instance with Qwen3.5 0.8B  hosted (see further instructions below)
+
+**!WILL INCUR MONETARY COST FROM API CALLS!**
+
+```
+bash scripts/run_full_benchmark_on_csvstorm.sh --regenerate --confirm-cost
 ```
 
-To run a smaller selection:
+or to just run the classical baselines without LLM-Calls:
 
-```bash
-scripts/run_python_suts.sh csv_storm duckdbauto clevercs
+```
+bash scripts/run_classical_baselines_on_csvstorm.sh --regenerate
 ```
 
-Docker-based SUTs can be run with `bash benchmark.sh`. Edit `benchmark.sh` to
-disable systems you do not need; the first run may take a while because it
-builds several images.
 
-### Generate a Dataset
+## Access or generate the CSV Storm dataset
+
+(automatically done by --regenerate flag in the above benchmark bash scripts)
 
 Download the prepared CSV Storm dataset:
 
 > <img src="https://huggingface.co/front/assets/huggingface_logo-noborder.svg" alt="Hugging Face" width="20" height="20"> **Dataset download:** [CSV Storm on Hugging Face — link to be added](https://huggingface.co/datasets/REPLACE_WITH_ORGANIZATION/REPLACE_WITH_DATASET)
 
-Alternatively, generate CSV Storm locally with Pollock 2.0 and the curated
-pollution combinations:
+Alternatively, generate CSV Storm locally:
 
 ```bash
 .venv/bin/python pollute_main.py \
   --source ./results/source.csv \
   --output ./data/csv_storm \
-  --polluters pollock2.0 \
+  --polluters csv_storm \
   --combinations \
   --overwrite
 ```
@@ -58,6 +61,8 @@ pollution combinations:
 Each dataset contains polluted input in `csv/`, expected output in `clean/`,
 dialect metadata in `parameters/`, and alternative valid interpretations in
 `ground_truth/` where a corruption is ambiguous.
+
+
 
 ## Run the LLM Parsers Locally
 
@@ -75,7 +80,7 @@ DATASET=csv_storm .venv/bin/python sut/full_llm_loader/custom-bench.py \
   --backend ollama --model qwen3.5:0.8b --overwrite
 
 DATASET=csv_storm .venv/bin/python \
-  sut/llm_hybrid_parser_Robin/llm-hybrid-bench.py \
+  sut/llm_hybrid_parser/llm-hybrid-bench.py \
   --backend ollama --model qwen3.5:0.8b --overwrite
 ```
 
@@ -108,37 +113,25 @@ ground truth. Refresh this table after rerunning the parsers:
 .venv/bin/python scripts/update_readme_csv_storm_results.py
 ```
 
-## Add a Parser
-
-Use `sut/custom_template/` as a starting point for a new SUT. Parsers read from
-`data/<dataset>/csv/` and write normalized CSV files to
-`results/<sut>/<dataset>/loading/`; select a dataset with
-`DATASET=<dataset_name>`.
-
 ## Evaluation
 
 ```bash
-.venv/bin/python evaluate.py --sut <sut> --dataset <dataset>
+.venv/bin/python evaluate.py --sut <sut> --dataset csv_storm
 ```
 
-Omit `--sut` to evaluate every SUT with output for that dataset. One invocation
+Omit `--sut` to evaluate every SUT with output for csv_storm. One invocation
 calculates strict whole-file accuracy and Pollock's loading success, precision,
 recall, F1, and combined scores. It writes:
 
-- per-file results to `results/<sut>/<dataset>/<sut>_results.csv`;
-- a dataset summary to `results/evaluation_summary_<dataset>.csv`; and
-- cross-SUT results to `results/evaluation_by_file_<dataset>.csv`.
+- per-file results to `results/<sut>/csv_storm/<sut>_results.csv`;
+- a dataset summary to `results/evaluation_summary_csv_storm.csv`; and
+- cross-SUT results to `results/evaluation_by_file_csv_storm.csv`.
 
 Pollock's combined score is the sum of mean success and the mean precision,
 recall, and F1 values for headers, records, and cells. Its maximum is 10.
 Weighted scores use pollution frequencies from a government CSV survey and are
-only comparable for datasets generated from `results/source.csv`.
+only applicable for set of files used by the original Pollock paper.
 
-To inspect parsing errors:
-
-```bash
-.venv/bin/python eval/find_errors.py --sut <sut>
-```
 
 ## Paper
 
