@@ -22,9 +22,11 @@ environment activated.
 
 ## Run the whole Benchmark start to finish
 
-Needs:
-- environment variable `OPENAI_API_KEY`
-- local Ollama instance with Qwen3.5 0.8B  hosted (see further instructions below)
+
+Required environment variables and hosting
+  - `OPENAI_ENDPOINT`: OpenAI-compatible chat-completions endpoint 
+  - `OPENAI_API_KEY`: Key for OpenAI endpoint
+  - `OLLAMA_API_BASE`: local Ollama API base. Needs Qwen3.5 0.8B hosted. (see further instructions below, default: http://localhost:11434/v1)
 
 **!WILL INCUR MONETARY COST FROM API CALLS!**
 
