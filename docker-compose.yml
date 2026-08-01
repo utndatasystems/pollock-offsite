@@ -1,84 +1,4 @@
 services:
-  mysql-server:
-    image: mysql:8.0.31
-    container_name: mysql-server
-    environment:
-      - MYSQL_USER=benchmark
-      - MYSQL_PASSWORD=benchmark
-      - MYSQL_ROOT_PASSWORD=benchmark
-      - MYSQL_DATABASE=benchmark
-    command:
-      - '--local-infile=1'
-      - '--secure-file-priv=/tmp'
-    ports:
-      - "3336:3336"
-    volumes:
-      - mysql-tmp:/tmp
-    networks:
-      mysql-nw:
-  mysql-client:
-    build:
-      context: .
-      dockerfile: ./sut/mysql/Dockerfile
-    environment:
-      - DATASET=${DATASET}
-      - N_REPETITIONS=${N_REPETITIONS}
-    volumes:
-      - ./results/mysql:/results/mysql
-      - ./data:/data
-      - mysql-tmp:/tmp
-      - ./sut/mysql/:/app/
-      - ./sut/utils.py:/app/utils.py
-    depends_on:
-      - mysql-server
-    networks:
-      mysql-nw:
-  postgres-server:
-    image: postgres:15.0
-    container_name: postgres-server
-    environment:
-      - POSTGRES_USER=benchmark
-      - POSTGRES_PASSWORD=benchmark
-      - POSTGRES_DB=benchmark
-    ports:
-      - "5442:5442"
-    volumes:
-      - postgres-tmp:/tmp
-      - ./results/postgres:/results/postgres
-      - ./data:/data
-    networks:
-      postgres-nw:
-  postgres-client:
-    build:
-      context: .
-      dockerfile: ./sut/postgres/Dockerfile
-    environment:
-      - DATASET=${DATASET}
-      - N_REPETITIONS=${N_REPETITIONS}
-    volumes:
-      - postgres-tmp:/tmp
-      - ./results/postgres:/results/postgres
-      - ./data:/data
-      - ./sut/utils.py:/app/utils.py
-      - ./sut/postgres/:/app/
-    depends_on:
-      - postgres-server
-    networks:
-      postgres-nw:
-  sqlite-client:
-    build:
-      context: .
-      dockerfile: ./sut/sqlite/Dockerfile
-    environment:
-      - DATASET=${DATASET}
-      - N_REPETITIONS=${N_REPETITIONS}
-    volumes:
-      - ./results/sqlite:/results/sqlite
-      - ./data:/data
-      - ./sut/sqlite/:/app/
-      - ./sut/utils.py:/app/utils.py
-    networks:
-      sqlite-nw:
   pandas-client:
     environment:
       - DATASET=${DATASET}
@@ -115,17 +35,6 @@ services:
       - ./data:/app/data
       - ./sut/duckdbauto/:/app/
       - ./sut/utils.py:/app/utils.py
-  opencsv-client:
-    build:
-      context: .
-      dockerfile: ./sut/opencsv/Dockerfile
-    environment:
-      - DATASET=${DATASET}
-      - N_REPETITIONS=${N_REPETITIONS}
-    volumes:
-      - ./results/opencsv:/results/opencsv
-      - ./data:/data
-      - ./sut/opencsv/:/app/
   pycsv-client:
     environment:
       - DATASET=${DATASET}
@@ -138,17 +47,6 @@ services:
       - ./data:/app/data
       - ./sut/pycsv/:/app/
       - ./sut/utils.py:/app/utils.py
-  rcsv-client:
-    build:
-      context: .
-      dockerfile: ./sut/rcsv/Dockerfile
-    environment:
-      - DATASET=${DATASET}
-      - N_REPETITIONS=${N_REPETITIONS}
-    volumes:
-      - ./results/rcsv:/results/rcsv
-      - ./data:/data
-      - ./sut/rcsv/:/app/
   clevercs-client:
     environment:
       - DATASET=${DATASET}
@@ -161,39 +59,74 @@ services:
       - ./data:/app/data
       - ./sut/clevercs/:/app/
       - ./sut/utils.py:/app/utils.py
-  univocity-client:
-    build:
-      context: .
-      dockerfile: ./sut/univocity/Dockerfile
+  code-generation-llm-client:
     environment:
       - DATASET=${DATASET}
       - N_REPETITIONS=${N_REPETITIONS}
+      - LLM_BACKEND=${LLM_BACKEND:-}
+      - OPENAI_API_KEY=${OPENAI_API_KEY:-}
+      - OPENAI_MODEL=${OPENAI_MODEL:-}
+      - OPENAI_ENDPOINT=${OPENAI_ENDPOINT:-}
+    build:
+      context: .
+      dockerfile: ./sut/code_generation_llm/Dockerfile
     volumes:
-      - ./results/univocity:/results/univocity
+      - ./results/code_generation_llm:/results/code_generation_llm
       - ./data:/data
-      - ./sut/univocity/:/app/
-  csvcommons-client:
-    build:
-      context: .
-      dockerfile: ./sut/csvcommons/Dockerfile
+      - ./sut/code_generation_llm/:/app/
+      - ./sut/utils.py:/app/utils.py
+  full-llm-loader-client:
     environment:
       - DATASET=${DATASET}
       - N_REPETITIONS=${N_REPETITIONS}
+      - LLM_BACKEND=${LLM_BACKEND:-}
+      - FULL_LLM_LOADER_BACKEND=${FULL_LLM_LOADER_BACKEND:-}
+      - OPENAI_API_KEY=${OPENAI_API_KEY:-}
+      - OPENAI_MODEL=${OPENAI_MODEL:-}
+      - OPENAI_API_BASE=${OPENAI_API_BASE:-}
+      - OLLAMA_MODEL=${OLLAMA_MODEL:-}
+      - OLLAMA_API_BASE=${OLLAMA_API_BASE:-}
+    build:
+      context: .
+      dockerfile: ./sut/full_llm_loader/Dockerfile
     volumes:
-      - ./results/csvcommons:/results/csvcommons
+      - ./results/full_llm_loader_naive:/results/full_llm_loader_naive
       - ./data:/data
-      - ./sut/csvcommons/:/app/
-  custom-client:
-    build:
-      context: .
-      dockerfile: ./sut/custom/Dockerfile
+      - ./sut/full_llm_loader/:/app/
+      - ./sut/utils.py:/app/utils.py
+  llm-hybrid-parser-client:
     environment:
       - DATASET=${DATASET}
       - N_REPETITIONS=${N_REPETITIONS}
+      - LLM_BACKEND=${LLM_BACKEND:-}
+      - OPENAI_API_KEY=${OPENAI_API_KEY:-}
+      - OPENAI_MODEL=${OPENAI_MODEL:-}
+      - OPENAI_ENDPOINT=${OPENAI_ENDPOINT:-}
+      - OLLAMA_MODEL=${OLLAMA_MODEL:-}
+      - OLLAMA_API_BASE=${OLLAMA_API_BASE:-}
+    build:
+      context: .
+      dockerfile: ./sut/llm_hybrid_parser/Dockerfile
+    volumes:
+      - ./results/llm_hybrid_parser:/results/llm_hybrid_parser
+      - ./results/_llm_cache:/results/_llm_cache
+      - ./data:/data
+      - ./sut/llm_hybrid_parser/:/app/
+      - ./sut/utils.py:/app/utils.py
+  llm-code-generator-client:
+    environment:
+      - DATASET=${DATASET}
+      - N_REPETITIONS=${N_REPETITIONS}
+      - OPENAI_API_KEY=${OPENAI_API_KEY:-}
+      - OPENAI_MODEL=${OPENAI_MODEL:-}
+      - OPENAI_ENDPOINT=${OPENAI_ENDPOINT:-}
+    build:
+      context: .
+      dockerfile: ./sut/llm_code_generator/Dockerfile
     volumes:
       - ./results/custom:/results/custom
       - ./data:/data
-      - ./sut/custom/:/app/
+      - ./sut/llm_code_generator/:/app/
       - ./sut/utils.py:/app/utils.py
   pollution:
     image: pollution
@@ -217,25 +150,4 @@ services:
       - ./data:/app/data
       - ./evaluate.py:/app/evaluate.py
       - ./sut/utils.py:/app/utils.py
-  paper-tables:
-    image: paper_tables
-    build:
-      context: .
-      dockerfile: Dockerfile-pollution
-    environment:
-      - DATASET=${DATASET}
-    command: ["python3", "/app/paper_tables.py"]
-    volumes:
-      - ./results:/app/results
-      - ./data:/app/data
-      - ./paper_tables.py:/app/paper_tables.py
-      - ./sut/utils.py:/app/utils.py
 
-volumes:
-  mysql-tmp:
-  postgres-tmp:
-
-networks:
-  mysql-nw:
-  postgres-nw:
-  sqlite-nw:
