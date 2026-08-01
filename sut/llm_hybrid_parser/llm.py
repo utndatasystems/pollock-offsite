@@ -13,8 +13,6 @@ DEFAULT_OLLAMA_MODEL = "qwen3.5:0.8b"
 #DEFAULT_OPENAI_MODEL = "gpt-5.4-mini"
 
 DEFAULT_MODEL_PRICES_USD_PER_1M = {
-    # Short-context prices. Long-context pricing requires separate context-tier
-    # handling and is intentionally not inferred here.
     "gpt-4o": {
         "input": 2.50,
         "cached_input": 1.25,
@@ -39,6 +37,16 @@ DEFAULT_MODEL_PRICES_USD_PER_1M = {
         "input": 5.00,
         "cached_input": 0.50,
         "output": 30.00,
+    },
+    "gpt-5.6-sol": {
+        "input": 5.00,
+        "cached_input": 0.50,
+        "output": 30.00,
+    },
+    "gpt-5.6-luna": {
+        "input": 0.20,
+        "cached_input": 0.02,
+        "output": 1.20,
     },
 }
 
