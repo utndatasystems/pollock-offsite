@@ -3,8 +3,8 @@ import json
 import os
 from typing import Any, Dict, Iterable, List, Optional, Tuple
 
-from sut.llm_hybrid_parser_Robin.llm import _LLM_RESPONSE_CACHE
-from sut.llm_hybrid_parser_Robin.solution import TRACE_VERSION
+from sut.llm_hybrid_parser.llm import _LLM_RESPONSE_CACHE
+from sut.llm_hybrid_parser.solution import TRACE_VERSION
 
 
 # --- JSON utils ---

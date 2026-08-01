@@ -207,7 +207,7 @@ run_llm_model() {
 
     echo
     echo "=== Hybrid parser (LLM sniffer): $model via $backend on $dataset ==="
-    "$python_bin" sut/llm_hybrid_parser_Robin/llm-hybrid-bench.py \
+    "$python_bin" sut/llm_hybrid_parser/llm-hybrid-bench.py \
         --model "$model" \
         "${backend_args[@]}" \
         "${llm_overwrite_args[@]}" \
@@ -216,7 +216,7 @@ run_llm_model() {
 
     echo
     echo "=== Hybrid parser (DuckDB + LLM sniffer): $model via $backend on $dataset ==="
-    "$python_bin" sut/llm_hybrid_parser_Robin/llm-hybrid-bench.py \
+    "$python_bin" sut/llm_hybrid_parser/llm-hybrid-bench.py \
         --model "$model" \
         --duckdb-sniff \
         "${backend_args[@]}" \
