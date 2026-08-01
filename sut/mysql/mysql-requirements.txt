@@ -1,2 +1,0 @@
-mysql-connector-python~=8.0.28
-pandas==3.0.3
