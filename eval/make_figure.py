@@ -64,25 +64,32 @@ draw_line(lines_y[0], [("id", INK, False), D, ("quote", INK, False), D,
                        ("speaker", INK, False)])
 # polluted row -- highlight the intended atomic value + the offending quotes
 start_val = x0 + CW * len("1,")
-end_val   = start_val + CW * len('said "wait, stop"')
+end_val   = start_val + CW * len("wait, stop!")
 ax.add_patch(Rectangle((start_val - 0.004, lines_y[1] - 0.05),
                         (end_val - start_val) + 0.008, 0.10,
                         facecolor=REDBG, edgecolor="none", zorder=0.5))
 draw_line(lines_y[1], [
     ("1", INK, False), D,
-    ("said ", INK, False),
-    ('"', RED, True), ("wait", INK, False),
+    ("wait", INK, False),
     (",", RED, True),                       # the comma the parser will misread
-    (" stop", INK, False), ('"', RED, True),
+    (" stop!", INK, False),
     D, ("Ann", INK, False),
 ])
-draw_line(lines_y[2], [("2", INK, False), D, ("she agreed", INK, False), D,
+draw_line(lines_y[2], [("2", INK, False), D, ("That is true", INK, False), D,
                        ("Bob", INK, False)])
 # subtle brace under the intended single value
 ax.plot([start_val, end_val], [lines_y[1] - 0.062, lines_y[1] - 0.062],
         color=RED, lw=0.7, zorder=2)
-ax.text((start_val + end_val) / 2, lines_y[1] - 0.10, "one value",
-        family=MONO, fontsize=4.8, color=RED, ha="center", va="center")
+ax.text(
+    (start_val + end_val) / 2,
+    lines_y[1] - 0.085,   # was -0.10
+    "one value",
+    family=MONO,
+    fontsize=4.8,
+    color=RED,
+    ha="center",
+    va="center",
+)
 
 # --------------------------------------------------------------------------
 # generic table renderer
@@ -124,8 +131,8 @@ def table(x_left, y_top, col_w, rows, cell_fs=5.7, header_fs=5.4, row_h=0.098,
 RX = 0.545
 human_rows = [
     ["id", "quote", "speaker"],
-    ["1", 'said "wait, stop"', "Ann"],
-    ["2", "she agreed", "Bob"],
+    ["1", "wait, stop!", "Ann"],
+    ["2", "That is true", "Bob"],
 ]
 ax.text(RX - 0.026, 0.925, "\u2713", fontsize=8.0, color=GREEN,
         weight="bold", va="center", ha="center")
@@ -138,8 +145,8 @@ table(RX, 0.865, [0.056, 0.256, 0.104], human_rows)
 # --------------------------------------------------------------------------
 parser_rows = [
     ["id", "quote", "speaker", ""],
-    ["1", 'said "wait', ' stop"', "Ann"],
-    ["2", "she agreed", "Bob", ""],
+    ["1", "wait", " stop!", "Ann"],
+    ["2", "That is true", "Bob", ""],
 ]
 def p_cell_style(r, c):
     if r == 1 and c in (1, 2, 3):          # silently shifted / phantom cells
@@ -156,7 +163,7 @@ ax.text(RX - 0.026, 0.485, "\u2717", fontsize=7.5, color=RED,
         weight="bold", va="center", ha="center")
 ax.text(RX, 0.485, "standard parser", family=MONO, fontsize=6.0,
         color=RED, weight="bold", va="center")
-pw = [0.056, 0.156, 0.104, 0.066]
+pw = [0.056, 0.186, 0.104, 0.070]
 table(RX, 0.425, pw, parser_rows, cell_style=p_cell_style,
       header_style=p_header_style, ghost_last=True)
 ax.text(RX + sum(pw) - pw[-1] / 2, 0.445, "+1 col", family=MONO,
