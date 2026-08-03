@@ -99,21 +99,6 @@ Evaluate the results:
   --sut llm_hybrid_parser_qwen3_5_0_8b --dataset csv_storm
 ```
 
-### CSV Storm Results
-
-<!-- CSV_STORM_RESULTS_START -->
-| Parser | Model | Exact file matches | Accuracy |
-| --- | --- | ---: | ---: |
-| Full LLM (naive) | `qwen3.5:0.8b` | 0/68 | 0.0% |
-| Hybrid | `qwen3.5:0.8b` | 21/68 | 30.9% |
-<!-- CSV_STORM_RESULTS_END -->
-
-A file is correct only when its complete evaluated output matches an accepted
-ground truth. Refresh this table after rerunning the parsers:
-
-```bash
-.venv/bin/python scripts/update_readme_csv_storm_results.py
-```
 
 ## Evaluation
 
@@ -137,4 +122,4 @@ only applicable for set of files used by the original Pollock paper.
 
 ## Paper
 
-> **Publication:** [Pollock Offsite paper — link to be added after submission](https://doi.org/REPLACE_WITH_DOI)
+> **Publication:** [CSV Storm Paper, link to be added after submission](https://doi.org/REPLACE_WITH_DOI)
