@@ -15,7 +15,8 @@ parser = argparse.ArgumentParser()
 parser.add_argument(
     "--overwrite",
     action="store_true",
-    help="Re-process files even if output already exists (default: skip already-processed files)",
+    help="Re-process files with cold LLM calls even if output already exists "
+         "(default: skip already-processed files)",
 )
 parser.add_argument(
     "--cheat",
@@ -75,8 +76,13 @@ LLM_SNIFF = not args.no_llm_sniff
 if args.model:
     os.environ["OPENAI_MODEL"] = args.model
 
-from utils import print, save_time_df
-from solution import parse_csv_with_validation, configure_llm_cache, configure_llm_dry_run, get_llm_cache_stats
+from utils import print
+from solution import (
+    configure_llm_cache,
+    configure_llm_dry_run,
+    get_llm_cache_stats,
+    parse_csv_with_validation,
+)
 
 if args.model:
     _model_slug = re.sub(r'[^a-z0-9]+', '_', args.model.lower()).strip('_')
@@ -96,8 +102,9 @@ os.makedirs(IN_DIR, exist_ok=True)
 os.makedirs(OUT_DIR, exist_ok=True)
 os.makedirs(TIME_DIR, exist_ok=True)
 
-_cache_path = None if args.no_llm_cache else join(REPO_ROOT, 'results', sut, 'llm_cache.json')
-configure_llm_cache(path=_cache_path, enabled=not args.no_llm_cache)
+_disable_llm_cache = args.no_llm_cache or args.overwrite
+_cache_path = None if _disable_llm_cache else join(REPO_ROOT, 'results', sut, 'llm_cache.json')
+configure_llm_cache(path=_cache_path, enabled=not _disable_llm_cache)
 configure_llm_dry_run(args.count_tokens)
 
 default_repetitions = 1 if (CHEAT or LLM_REPAIR) else 3
@@ -137,7 +144,25 @@ def write_malformed_report(path, malformed=None, error=None):
             text_file.write(json.dumps(payload, ensure_ascii=True))
             text_file.write("\n")
 
-times_dict = {}
+def save_run_df(time_dir, sut_name, filename, records):
+    row = {"filename": filename}
+    for idx, record in enumerate(records):
+        for field in ("time", "success", "error", "llm_calls", "local_cache_hits"):
+            row[f"{field}_{idx}"] = record.get(field)
+
+    update = pd.DataFrame([row]).set_index("filename")
+    run_path = join(time_dir, f"{sut_name}_time.csv")
+    try:
+        existing = pd.read_csv(run_path, index_col="filename")
+        existing = existing.drop(index=filename, errors="ignore")
+        run_df = pd.concat([existing, update])
+    except FileNotFoundError:
+        run_df = update
+    temporary_path = run_path + ".tmp"
+    run_df.to_csv(temporary_path, index_label="filename")
+    os.replace(temporary_path, run_path)
+
+
 benchmark_files = os.listdir(IN_DIR)
 for idx, file in enumerate(benchmark_files):
     f = os.path.basename(file)
@@ -149,10 +174,14 @@ for idx, file in enumerate(benchmark_files):
         continue
     print(f"({idx + 1}/{len(benchmark_files)}) {f}")
 
+    file_records = []
     for time_rep in range(N_REPETITIONS):
         malformed = []
+        stats_before = get_llm_cache_stats()
+        success = False
+        error_message = None
         try:
-            start = time.time()
+            start = time.perf_counter()
             clean_filepath = join(CLEAN_DIR, f)
             llm_sidecar = join(OUT_DIR, f + ".llm.jsonl")
             df, malformed = parse_csv_with_validation(
@@ -166,7 +195,7 @@ for idx, file in enumerate(benchmark_files):
                 llm_sample_rows=LLM_SAMPLE_ROWS,
                 reset_sidecar=(time_rep == 0),
             )
-            end = time.time()
+            end = time.perf_counter()
             if malformed:
                 print(f"\t{len(malformed)} malformed row(s):")
                 for row in malformed:
@@ -175,22 +204,32 @@ for idx, file in enumerate(benchmark_files):
                     print("\t  cheat mode: loaded ground truth")
             df.to_csv(out_filepath, index=False)
             write_malformed_report(malformed_path, malformed=malformed)
+            success = True
         except Exception as e:
-            end = time.time()
+            end = time.perf_counter()
+            error_message = f"{type(e).__name__}: {e}"
             print("\t", e)
             with open(out_filepath, "w") as text_file:
                 text_file.write("Application Error\n")
                 text_file.write(str(e))
             write_malformed_report(malformed_path, malformed=malformed, error=e)
 
-        times_dict[f] = times_dict.get(f, []) + [(end - start)]
+        stats_after = get_llm_cache_stats()
+        file_records.append({
+            "time": end - start,
+            "success": success,
+            "error": error_message,
+            "llm_calls": stats_after["total"] - stats_before["total"],
+            "local_cache_hits": stats_after["cached"] - stats_before["cached"],
+        })
 
         try:
             del start, end, df, text_file
         except:
             pass
 
-save_time_df(TIME_DIR, sut, times_dict)
+    # Checkpoint after each file so interrupted paid runs retain valid timings.
+    save_run_df(TIME_DIR, sut, f, file_records)
 
 if LLM_REPAIR or LLM_SNIFF:
     stats = get_llm_cache_stats()

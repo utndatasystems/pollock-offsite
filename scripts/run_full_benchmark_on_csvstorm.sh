@@ -105,7 +105,6 @@ if [[ "$regenerate" == true ]]; then
         --output "./data/$dataset" \
         --polluters csv_storm \
         --combinations \
-        --rng-seed 1337 \
         --overwrite
 fi
 

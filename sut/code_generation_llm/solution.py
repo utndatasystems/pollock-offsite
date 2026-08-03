@@ -94,6 +94,12 @@ def get_llm_cache_stats() -> Dict[str, int]:
     return dict(_CACHE_STATS)
 
 
+def reset_llm_cache_stats() -> None:
+    """Start a new accounting scope, normally one benchmark repetition."""
+    for key in _CACHE_STATS:
+        _CACHE_STATS[key] = 0
+
+
 def _coerce_cell(value: Any) -> str:
     if value is None:
         return ""

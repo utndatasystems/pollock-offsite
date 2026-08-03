@@ -108,7 +108,8 @@ target/
 # Project data generated or downloaded locally
 */mycustomtest/
 /data/*
-!/data/csv_storm
+!/data/csv_storm/
+!/data/csv_storm/**
 
 # Tests
 /tests/*
@@ -139,5 +140,9 @@ target/
 /results/full_llm_loader_naive/csv_storm/
 /results/full_llm_loader_guided/csv_storm/
 Agentic_Parsing.pdf
+Agentic_Parsing-*.pdf
 eval/CIDR_plots/*
 HuggingFace_dataset_tutorial.txt
+agentic_loading_editorial_notes.md
+CIDR_submission_results.csv
+eval/notebooks/CIDR_submission_results.csv

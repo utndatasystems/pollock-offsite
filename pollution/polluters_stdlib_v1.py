@@ -194,6 +194,13 @@ def changeNumberRows(file: CSVFile, target_number_rows: int, remove_header=False
     )
 
 
+@pollution(category="Header and Schema-Layout", name="No Header Row")
+def removeHeader(file: CSVFile):
+    """Remove the header row while leaving all data rows unchanged."""
+    pb.deleteRows(file, [0])
+    _set_polluted_filename(file, "file_no_header.csv")
+
+
 @pollution(category="Header and Schema-Layout", name="Super-Headers")
 def expandColumnHeader(file: CSVFile, extra_rows=1):
     """Repeat the header across extra header rows. Turns the header into a multi-row header."""

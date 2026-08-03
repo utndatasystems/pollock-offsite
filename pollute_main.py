@@ -186,9 +186,7 @@ execute_polluter(
 # Header and preamble polluters : 7 files
 execute_polluter(
     f,
-    pl.changeNumberRows,
-    target_number_rows=f.row_count,
-    remove_header=True,
+    pl.removeHeader,
     new_filename="file_no_header.csv",
 )
 execute_polluter(f, pl.expandColumnHeader, extra_rows=1, new_filename="file_header_multirow_2.csv")

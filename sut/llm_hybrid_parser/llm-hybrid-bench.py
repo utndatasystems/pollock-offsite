@@ -17,7 +17,8 @@ parser = argparse.ArgumentParser()
 parser.add_argument(
     "--overwrite",
     action="store_true",
-    help="Re-process files even if output already exists (default: skip already-processed files)",
+    help="Re-process files with cold LLM calls even if output already exists "
+         "(default: skip already-processed files)",
 )
 parser.add_argument(
     "--cheat",
@@ -160,8 +161,9 @@ os.makedirs(TIME_DIR, exist_ok=True)
 # identical prompts across parsers hit the same entry. Named after the resolved model so
 # the filename matches the model baked into the keys.
 _cache_slug = re.sub(r'[^a-z0-9]+', '_', _openai_model().lower()).strip('_')
-_cache_path = None if args.no_llm_cache else join(REPO_ROOT, 'results', '_llm_cache', f'{_cache_slug}.json')
-configure_llm_cache(path=_cache_path, enabled=not args.no_llm_cache)
+_disable_llm_cache = args.no_llm_cache or args.overwrite
+_cache_path = None if _disable_llm_cache else join(REPO_ROOT, 'results', '_llm_cache', f'{_cache_slug}.json')
+configure_llm_cache(path=_cache_path, enabled=not _disable_llm_cache)
 configure_llm_verbose(args.verbose)
 
 default_repetitions = 1 if (CHEAT or LLM_REPAIR) else 3
@@ -212,6 +214,8 @@ def save_run_df(time_dir, sut_name, run_dict):
         for idx, record in enumerate(records):
             for field in (
                 "time",
+                "success",
+                "error",
                 "llm_calls",
                 "local_cache_hits",
                 "uncached_input_tokens",
@@ -247,7 +251,9 @@ def save_run_df(time_dir, sut_name, run_dict):
         )
     except FileNotFoundError:
         run_df = update_run_df
-    run_df.to_csv(run_path, index=False)
+    temporary_path = run_path + ".tmp"
+    run_df.to_csv(temporary_path, index=False)
+    os.replace(temporary_path, run_path)
 
 
 run_dict = {}
@@ -270,8 +276,10 @@ for idx, file in enumerate(benchmark_files):
     for time_rep in range(N_REPETITIONS):
         malformed = []
         reset_llm_cost_records()
+        success = False
+        error_message = None
         try:
-            start = time.time()
+            start = time.perf_counter()
             clean_filepath = join(CLEAN_DIR, f)
             llm_sidecar = join(OUT_DIR, f + ".llm.jsonl")
             df, malformed = parse_csv_with_validation(
@@ -287,7 +295,7 @@ for idx, file in enumerate(benchmark_files):
                 reset_sidecar=(time_rep == 0),
                 verbose=args.verbose,
             )
-            end = time.time()
+            end = time.perf_counter()
             if malformed and args.verbose:
                 print(f"\t{len(malformed)} malformed row(s):")
                 for row in malformed:
@@ -299,8 +307,10 @@ for idx, file in enumerate(benchmark_files):
             else:
                 df.to_csv(out_filepath, index=False)
             write_malformed_report(malformed_path, malformed=malformed)
+            success = True
         except Exception as e:
-            end = time.time()
+            end = time.perf_counter()
+            error_message = f"{type(e).__name__}: {e}"
             print("\t", e)
             with open(out_filepath, "w") as text_file:
                 text_file.write("Application Error\n")
@@ -309,6 +319,8 @@ for idx, file in enumerate(benchmark_files):
 
         cost_summary = get_llm_cost_summary()
         cost_summary["time"] = end - start
+        cost_summary["success"] = success
+        cost_summary["error"] = error_message
         run_dict.setdefault(f, []).append(cost_summary)
 
         try:
@@ -316,7 +328,8 @@ for idx, file in enumerate(benchmark_files):
         except:
             pass
 
-save_run_df(TIME_DIR, sut, run_dict)
+    # Checkpoint after each file so interrupted paid runs retain valid timings.
+    save_run_df(TIME_DIR, sut, {f: run_dict[f]})
 
 if LLM_REPAIR or LLM_DIALECT:
     stats = get_llm_cache_stats()
