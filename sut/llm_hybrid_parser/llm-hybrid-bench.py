@@ -276,8 +276,8 @@ for idx, file in enumerate(benchmark_files):
             llm_sidecar = join(OUT_DIR, f + ".llm.jsonl")
             df, malformed = parse_csv_with_validation(
                 in_filepath,
-                clean_csv=clean_filepath,
-                cheat=CHEAT,
+                clean_csv=clean_filepath, # only used with --cheat enabled which is not enabled in the benchmark run
+                cheat=CHEAT, # flag for hypothetical perfect repairs of the *identified* malformed rows, not enabled in benchmark runs
                 llm_repair=LLM_REPAIR,
                 llm_dialect=LLM_DIALECT,
                 use_clevercsv=USE_CLEVERCSV,
