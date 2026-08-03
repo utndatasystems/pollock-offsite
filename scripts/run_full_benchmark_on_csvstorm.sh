@@ -156,10 +156,11 @@ run_classical_sut() {
     local label="$1"
     local sut="$2"
     local script="$3"
+    shift 3
 
     echo
     echo "=== $label on $dataset ==="
-    "$python_bin" "$script" "${classical_overwrite_args[@]}"
+    "$python_bin" "$script" "$@" "${classical_overwrite_args[@]}"
     evaluate_sut "$sut"
 }
 
@@ -237,11 +238,11 @@ echo "Dataset:       $dataset"
 echo "Remote models: ${remote_models[*]}"
 echo "Local models:  ${local_models[*]} (Ollama: $ollama_api_base)"
 echo "LLM methods:   hybrid/LLM-sniffer hybrid/DuckDB-sniffer code-generation"
-echo "Other SUTs:    duckdbauto duckdbparse pandas clevercs pycsv"
+echo "Other SUTs:    duckdbauto_strict duckdbparse pandas clevercs pycsv"
 echo "Python:        $python_bin"
 echo "Remote API:    $remote_openai_endpoint"
 
-run_classical_sut "DuckDB Auto" "duckdbauto" "sut/duckdbauto/duck-bench.py"
+run_classical_sut "DuckDB Auto" "duckdbauto_strict" "sut/duckdbauto/duck-bench.py" --strict
 run_classical_sut "DuckDB Explicit" "duckdbparse" "sut/duckdbparse/duck-bench.py"
 run_classical_sut "pandas" "pandas" "sut/pandas/panda.py"
 run_classical_sut "CleverCSV" "clevercs" "sut/clevercs/clevercs.py"

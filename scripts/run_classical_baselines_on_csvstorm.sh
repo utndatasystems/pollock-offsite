@@ -109,20 +109,21 @@ run_classical_sut() {
     local label="$1"
     local sut="$2"
     local script="$3"
+    shift 3
 
     echo
     echo "=== $label on $dataset ==="
-    "$python_bin" "$script" "${classical_overwrite_args[@]}"
+    "$python_bin" "$script" "$@" "${classical_overwrite_args[@]}"
     evaluate_sut "$sut"
 }
 
 echo "=== Configuration ==="
 echo "Dataset:       $dataset"
-echo "SUTs:          duckdbauto duckdbparse pandas clevercs pycsv"
+echo "SUTs:          duckdbauto_strict duckdbparse pandas clevercs pycsv"
 echo "Python:        $python_bin"
 echo "LLM calls:     none"
 
-run_classical_sut "DuckDB Auto" "duckdbauto" "sut/duckdbauto/duck-bench.py"
+run_classical_sut "DuckDB Auto" "duckdbauto_strict" "sut/duckdbauto/duck-bench.py" --strict
 run_classical_sut "DuckDB Explicit" "duckdbparse" "sut/duckdbparse/duck-bench.py"
 run_classical_sut "pandas" "pandas" "sut/pandas/panda.py"
 run_classical_sut "CleverCSV" "clevercs" "sut/clevercs/clevercs.py"
