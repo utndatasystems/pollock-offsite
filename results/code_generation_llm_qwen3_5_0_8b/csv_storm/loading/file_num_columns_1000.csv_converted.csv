@@ -1,0 +1,2 @@
+Application Error
+Generated parser is not valid Python: leading zeros in decimal integer literals are not permitted; use an 0o prefix for octal integers (<unknown>, line 5)

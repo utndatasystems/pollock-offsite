@@ -1,0 +1,3 @@
+Application Error
+Unable to parse JSON section between --BEGIN ERROR REPORT-- and --END ERROR REPORT--: Extra data: line 1 column 117 (char 116)
+{"fixed_errors":[{"type":"missing_final_newline","description":"Last row lacked terminating newline.","rows":[74]}]},"summary":"Added the missing line ending; all rows preserved."}

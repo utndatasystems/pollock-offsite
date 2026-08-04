@@ -1,0 +1,3 @@
+Application Error
+Unable to parse JSON section between --BEGIN ERROR REPORT-- and --END ERROR REPORT--: Extra data: line 1 column 120 (char 119)
+{"fixed_errors":[{"type":"truncated_row","description":"Last data row was cut off after the final field","rows":[74]}]},"summary":"1 truncated row repaired; all other rows preserved."}

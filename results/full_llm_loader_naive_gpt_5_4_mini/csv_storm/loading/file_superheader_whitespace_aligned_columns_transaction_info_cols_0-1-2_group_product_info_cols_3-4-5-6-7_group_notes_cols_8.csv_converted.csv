@@ -1,0 +1,7 @@
+Application Error
+The LLM response contained a fixed-CSV section, but pandas could not parse it.
+
+Attempts:
+- standard comma-separated CSV: Error tokenizing data. C error: Expected 9 fields in line 4, saw 11
+
+- comma-separated CSV with Python engine: Expected 9 fields in line 4, saw 11

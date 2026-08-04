@@ -1,0 +1,3 @@
+Application Error
+Unable to parse JSON section between --BEGIN ERROR REPORT-- and --END ERROR REPORT--: Extra data: line 1 column 105 (char 104)
+{"fixed_errors":[{"type":"non-data footer","description":"Removed trailing FOOTNOTE line","rows":[82]}]},"summary":"Removed one non-data footer line; all CSV rows preserved."}

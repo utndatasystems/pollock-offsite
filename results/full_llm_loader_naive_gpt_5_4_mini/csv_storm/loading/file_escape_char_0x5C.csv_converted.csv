@@ -1,0 +1,3 @@
+Application Error
+Unable to parse JSON section between --BEGIN ERROR REPORT-- and --END ERROR REPORT--: Extra data: line 1 column 128 (char 127)
+{"fixed_errors":[{"type":"trailing_comma","description":"Removed incomplete trailing line ending after last row","rows":[73]}]},"summary":"Fixed one malformed trailing line; all data rows preserved."}

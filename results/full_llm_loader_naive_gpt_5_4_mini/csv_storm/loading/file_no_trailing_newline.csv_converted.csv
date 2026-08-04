@@ -1,0 +1,3 @@
+Application Error
+Unable to parse JSON section between --BEGIN ERROR REPORT-- and --END ERROR REPORT--: Extra data: line 1 column 152 (char 151)
+{"fixed_errors":[{"type":"unclosed_final_row","description":"Last source row was incomplete and missing the closing fields/line ending.","rows":[74]}]},"summary":"Repaired one truncated final row; all other rows were already well-formed."}

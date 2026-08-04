@@ -1,0 +1,2 @@
+Application Error
+Error parsing CSV: iterator should return strings, not list (the file should be opened in text mode)

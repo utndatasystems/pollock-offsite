@@ -129,6 +129,9 @@ target/
 /results/*/csv_storm/*
 !/results/*/csv_storm/*_results*.csv
 !/results/*/csv_storm/*_time.csv
+!/results/*/csv_storm/loading/
+/results/*/csv_storm/loading/*
+!/results/*/csv_storm/loading/*_converted.csv
 
 Agentic_Parsing.pdf
 Agentic_Parsing-*.pdf
