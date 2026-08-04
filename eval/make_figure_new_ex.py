@@ -236,6 +236,13 @@ from pathlib import Path
 
 output_dir = Path(__file__).resolve().parent
 
+from matplotlib.transforms import Bbox
+crop = Bbox.from_bounds(
+    0, 0.16,          # left, bottom crop
+    FIG_W, FIG_H - 0.16
+)
+
+
 fig.savefig(
     output_dir / "csv_teaser_missing_delimiter.pdf",
     bbox_inches="tight",
