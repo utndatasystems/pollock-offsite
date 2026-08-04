@@ -119,26 +119,17 @@ target/
 /data/additional_csvs/table.csv
 /data/polluted_files/
 
-# Generated aggregate results for local polluted-file runs
-/results/aggregate_results_polluted_files.csv
-/results/global_results_polluted_files.csv
-
-# Generated per-system polluted-file outputs
-/results/*/polluted_files/*_errors.md
-/results/*/polluted_files/*_errors.txt
-/results/*/polluted_files/*_results.csv
-
-# LLM loader caches and generated run artifacts
+# Generated run artifacts. Keep only the final CSV Storm result files.
 /results/*
-/results/*.csv
-/results/*/llm_cache.json
-/results/*/llm_cache/
-/results/*/*/llm_cache/
-/results/*/*/*.jsonl
-/results/*/*/loading/
-/results/full_llm_loader/
-/results/full_llm_loader_naive/csv_storm/
-/results/full_llm_loader_guided/csv_storm/
+!/results/evaluation_by_file_csv_storm.csv
+!/results/evaluation_summary_csv_storm.csv
+!/results/*/
+/results/*/*
+!/results/*/csv_storm/
+/results/*/csv_storm/*
+!/results/*/csv_storm/*_results*.csv
+!/results/*/csv_storm/*_time.csv
+
 Agentic_Parsing.pdf
 Agentic_Parsing-*.pdf
 eval/CIDR_plots/*

@@ -1,0 +1,102 @@
+filename,model,time_0,llm_calls_0,local_cache_hits_0,uncached_input_tokens_0,cached_input_tokens_0,completion_tokens_0,total_tokens_0,input_cost_usd_0,cached_input_cost_usd_0,output_cost_usd_0,estimated_api_cost_usd_0,billable_cost_usd_0,success_0,error_0
+file_less_columns_deleted_value_row_26_col_5.csv,gpt-5.4-mini,3.2510360553860664,2,0,2360,0,144,2504,0.00177,0.0,0.0006479999999999,0.002418,0.002418,True,
+file_commented_row_41.csv,gpt-5.4-mini,1.060766518115997,1,0,972,0,57,1029,0.000729,0.0,0.0002565,0.0009855,0.0009855,True,
+file_unescaped_multiline_string_row_2_col_7.csv,gpt-5.4-mini,2.991875797510147,2,0,2584,0,190,2774,0.001938,0.0,0.000855,0.002793,0.002793,True,
+file_less_columns_deleted_value_row_57_col_1.csv,gpt-5.4-mini,4.285845026373863,2,0,2361,0,145,2506,0.00177075,0.0,0.0006525,0.00242325,0.00242325,True,
+file_field_delimiter_0x20.csv,gpt-5.4-mini,18.121191903948784,2,0,10091,0,4329,14420,0.0075682499999999,0.0,0.0194804999999999,0.0270487499999999,0.0270487499999999,True,
+file_escape_char_0x5C.csv,gpt-5.4-mini,3.781273551285267,2,0,3236,0,596,3832,0.002427,0.0,0.002682,0.005109,0.005109,True,
+file_field_delimiter_0x9.csv,gpt-5.4-mini,1.1553913205862043,1,0,1012,0,58,1070,0.000759,0.0,0.000261,0.00102,0.00102,True,
+combo__move_header_row5__preamble_2_raw_empty_row.csv,gpt-5.4-mini,2.3180437460541725,2,0,2720,0,104,2824,0.00204,0.0,0.000468,0.002508,0.002508,True,
+file_mixed_time_formats_long_month_name_unquoted.csv,gpt-5.4-mini,16.35092032700777,2,0,7449,0,3604,11053,0.00558675,0.0,0.016218,0.02180475,0.02180475,True,
+file_quotation_char_0x27.csv,gpt-5.4-mini,32.06275947391987,2,0,15497,0,7726,23223,0.01162275,0.0,0.034767,0.04638975,0.04638975,True,
+combo__more_columns_row_10_col_4__mixed_delimiters_within_row_row_11_range_3_0x3B.csv,gpt-5.4-mini,2.536476701498032,2,0,2369,0,154,2523,0.00177675,0.0,0.000693,0.00246975,0.00246975,True,
+file_less_columns_deleted_value_row_40_col_1.csv,gpt-5.4-mini,2.37934859842062,2,0,2372,0,156,2528,0.001779,0.0,0.0007019999999999,0.0024809999999999,0.0024809999999999,True,
+file_whitespace_delimiter_cells_unquoted_padded.csv,gpt-5.4-mini,2.2693050503730774,1,0,983,0,56,1039,0.00073725,0.0,0.000252,0.00098925,0.00098925,False,"RuntimeError: HTTP Error 400: Bad Request
+{
+  ""error"": {
+    ""message"": ""Input tokens exceed the configured limit of 272000 tokens. Your messages resulted in 495155 tokens. Please reduce the length of the messages."",
+    ""type"": ""invalid_request_error"",
+    ""param"": ""messages"",
+    ""code"": ""context_length_exceeded""
+  }
+}"
+file_double_escaping_double_quote_row_2_col_7.csv,gpt-5.4-mini,1.010852575302124,1,0,974,0,59,1033,0.0007305,0.0,0.0002655,0.000996,0.000996,True,
+file_more_columns_row_34_col_1.csv,gpt-5.4-mini,2.503503538668156,2,0,2381,0,167,2548,0.00178575,0.0,0.0007515,0.00253725,0.00253725,True,
+file_embedded_json_cell_2_1_len_4.csv,gpt-5.4-mini,2.6779632419347763,2,0,2500,0,204,2704,0.001875,0.0,0.000918,0.002793,0.002793,True,
+file_preamble.csv,gpt-5.4-mini,1.163497194647789,1,0,518,0,57,575,0.0003885,0.0,0.0002565,0.000645,0.000645,True,
+file_less_columns_deleted_value_row_70_col_3.csv,gpt-5.4-mini,3.556168235838413,2,0,2359,0,143,2502,0.00176925,0.0,0.0006435,0.00241275,0.00241275,True,
+file_field_delimiter_0x2C_0x20.csv,gpt-5.4-mini,30.00567866116762,2,0,11984,0,6984,18968,0.008988,0.0,0.031428,0.040416,0.040416,True,
+combo__multiline_header_rows_3__mixed_delimiters_within_row_row_4_range_3_0x3B__footnote_2_blank_line.csv,gpt-5.4-mini,3.5343266651034355,2,0,2980,0,173,3153,0.002235,0.0,0.0007785,0.0030134999999999,0.0030134999999999,True,
+source.csv,gpt-5.4-mini,1.043313816189766,1,0,972,0,57,1029,0.000729,0.0,0.0002565,0.0009855,0.0009855,True,
+file_footnote_3_blank_line.csv,gpt-5.4-mini,2.460668697953224,2,0,3254,0,105,3359,0.0024405,0.0,0.0004725,0.002913,0.002913,True,
+file_quotation_char_none.csv,gpt-5.4-mini,26.81678068637848,2,0,14843,0,6479,21322,0.01113225,0.0,0.0291555,0.04028775,0.04028775,True,
+file_mixed_time_formats_month_day_year.csv,gpt-5.4-mini,1.258777029812336,1,0,972,0,57,1029,0.000729,0.0,0.0002565,0.0009855,0.0009855,True,
+file_move_header_row8.csv,gpt-5.4-mini,1.4152335822582245,1,0,972,0,57,1029,0.000729,0.0,0.0002565,0.0009855,0.0009855,True,
+file_header_multirow_3.csv,gpt-5.4-mini,0.9063698053359984,1,0,869,0,57,926,0.00065175,0.0,0.0002565,0.00090825,0.00090825,True,
+file_more_columns_row_39_col_8.csv,gpt-5.4-mini,2.518422700464725,2,0,2385,0,171,2556,0.00178875,0.0,0.0007695,0.0025582499999999,0.0025582499999999,True,
+file_mixed_delimiters_within_row_row_13_range_1_0x3B.csv,gpt-5.4-mini,2.4378387108445168,2,0,2371,0,152,2523,0.00177825,0.0,0.0006839999999999,0.00246225,0.00246225,True,
+file_mixed_time_formats_iso_8601.csv,gpt-5.4-mini,1.403877042233944,1,0,972,0,57,1029,0.000729,0.0,0.0002565,0.0009855,0.0009855,True,
+file_more_columns_row_9_col_6.csv,gpt-5.4-mini,2.206370458006859,2,0,2394,0,157,2551,0.0017955,0.0,0.0007065,0.002502,0.002502,True,
+file_no_trailing_newline.csv,gpt-5.4-mini,1.024832434952259,1,0,972,0,57,1029,0.000729,0.0,0.0002565,0.0009855,0.0009855,True,
+file_footnote_3.csv,gpt-5.4-mini,2.186925932765007,2,0,3254,0,105,3359,0.0024405,0.0,0.0004725,0.002913,0.002913,True,
+file_extremely_long_field_row_3_col_6_len_10000.csv,gpt-5.4-mini,1.1026005372405052,1,0,2708,0,57,2765,0.002031,0.0,0.0002565,0.0022874999999999,0.0022874999999999,True,
+file_num_columns_1000.csv,gpt-5.4-mini,12.35302384197712,1,0,5195,0,3038,8233,0.00389625,0.0,0.013671,0.01756725,0.01756725,True,
+file_whitespace_delimiter_cells_quoted_unpadded.csv,gpt-5.4-mini,1.009774014353752,1,0,1017,0,56,1073,0.00076275,0.0,0.000252,0.00101475,0.00101475,True,
+file_more_columns_row_72_col_5.csv,gpt-5.4-mini,2.766747623682022,2,0,2378,0,134,2512,0.0017835,0.0,0.000603,0.0023865,0.0023865,True,
+file_mixed_time_formats_long_month_name.csv,gpt-5.4-mini,0.9719130098819732,1,0,978,0,57,1035,0.0007335,0.0,0.0002565,0.00099,0.00099,True,
+combo__multiline_header_rows_3__footnote_2_blank_line.csv,gpt-5.4-mini,2.511568620800972,2,0,2776,0,104,2880,0.002082,0.0,0.000468,0.00255,0.00255,True,
+file_commented_row_56.csv,gpt-5.4-mini,1.009407363831997,1,0,972,0,57,1029,0.000729,0.0,0.0002565,0.0009855,0.0009855,True,
+file_footnote_1.csv,gpt-5.4-mini,1.9900821670889848,2,0,2578,0,83,2661,0.0019335,0.0,0.0003735,0.002307,0.002307,True,
+file_mixed_delimiters_whole_row_row_13_0x3B.csv,gpt-5.4-mini,2.5775050446391106,2,0,2611,0,153,2764,0.00195825,0.0,0.0006885,0.00264675,0.00264675,True,
+file_mixed_time_formats_day_month_year.csv,gpt-5.4-mini,1.0039159953594208,1,0,972,0,57,1029,0.000729,0.0,0.0002565,0.0009855,0.0009855,True,
+file_double_trailing_newline.csv,gpt-5.4-mini,1.1461621075868609,1,0,972,0,57,1029,0.000729,0.0,0.0002565,0.0009855,0.0009855,True,
+file_one_data_row.csv,gpt-5.4-mini,1.0133843198418615,1,0,384,0,57,441,0.000288,0.0,0.0002565,0.0005445,0.0005445,True,
+file_num_columns_pad_randints_1000.csv,gpt-5.4-mini,13.133538521826267,1,0,29708,0,3032,32740,0.022281,0.0,0.013644,0.035925,0.035925,True,
+file_header_multirow_2.csv,gpt-5.4-mini,1.1975666210055351,1,0,917,0,57,974,0.00068775,0.0,0.0002565,0.00094425,0.00094425,True,
+file_multiline_header_rows_3.csv,gpt-5.4-mini,1.0014231875538826,1,0,828,0,57,885,0.000621,0.0,0.0002565,0.0008775,0.0008775,True,
+file_double_escaping_backslash_row_3_col_7.csv,gpt-5.4-mini,4.115997068583965,2,0,3050,0,598,3648,0.0022875,0.0,0.002691,0.0049785,0.0049785,True,
+file_field_delimiter_0x3B.csv,gpt-5.4-mini,1.23246231675148,1,0,985,0,57,1042,0.00073875,0.0,0.0002565,0.00099525,0.00099525,True,
+combo__row_quotation_mark_2_0x27__mixed_delimiters_within_row_row_2_range_3_0x3B.csv,gpt-5.4-mini,2.1794903203845024,2,0,2447,0,152,2599,0.00183525,0.0,0.0006839999999999,0.00251925,0.00251925,True,
+file_less_columns_deleted_value_row_45_col_7.csv,gpt-5.4-mini,2.345842182636261,2,0,2351,0,137,2488,0.00176325,0.0,0.0006165,0.00237975,0.00237975,True,
+file_more_columns_row_79_col_7.csv,gpt-5.4-mini,2.343571402132511,2,0,2388,0,174,2562,0.001791,0.0,0.000783,0.002574,0.002574,True,
+file_commented_row_49.csv,gpt-5.4-mini,0.9573754519224168,1,0,972,0,57,1029,0.000729,0.0,0.0002565,0.0009855,0.0009855,True,
+file_no_payload.csv,gpt-5.4-mini,4.35666473954916,1,0,297,0,36,333,0.00022275,0.0,0.000162,0.00038475,0.00038475,True,
+file_header_only.csv,gpt-5.4-mini,1.0559569373726845,1,0,317,0,57,374,0.00023775,0.0,0.0002565,0.00049425,0.00049425,True,
+file_superheader_sparse_transaction_info_cols_0-1-2_group_product_info_cols_3-4-5-6-7_group_notes_cols_8.csv,gpt-5.4-mini,1.1029758378863337,1,0,905,0,57,962,0.00067875,0.0,0.0002565,0.00093525,0.00093525,True,
+file_num_rows_50000_repeat_file.csv,gpt-5.4-mini,4.88408762216568,1,0,972,0,57,1029,0.000729,0.0,0.0002565,0.0009855,0.0009855,True,
+combo__move_header_row5__preamble_2_raw_empty_row__footnote_2_blank_line.csv,gpt-5.4-mini,2.455198161303997,2,0,1608,1792,118,3518,0.001206,0.0001344,0.000531,0.0018714,0.0018714,True,
+file_escape_char_0x00.csv,gpt-5.4-mini,3.888895146548748,2,0,3230,0,596,3826,0.0024225,0.0,0.002682,0.0051045,0.0051045,True,
+file_record_delimiter_0xD.csv,gpt-5.4-mini,1.0234727561473846,1,0,972,0,57,1029,0.000729,0.0,0.0002565,0.0009855,0.0009855,True,
+file_unquoted_lists_row_9_col_6.csv,gpt-5.4-mini,2.434103712439537,2,0,2460,0,161,2621,0.0018449999999999,0.0,0.0007245,0.0025695,0.0025695,True,
+file_mixed_delimiters_within_row_row_13_range_3_0x3B.csv,gpt-5.4-mini,2.722456693649292,2,0,2451,0,153,2604,0.00183825,0.0,0.0006885,0.00252675,0.00252675,True,
+file_excel_formulas.csv,gpt-5.4-mini,1.0213328748941422,1,0,972,0,57,1029,0.000729,0.0,0.0002565,0.0009855,0.0009855,True,
+file_record_delimiter_0xA.csv,gpt-5.4-mini,0.9593836069107056,1,0,972,0,57,1029,0.000729,0.0,0.0002565,0.0009855,0.0009855,True,
+file_superheader_whitespace_aligned_columns_transaction_info_cols_0-1-2_group_product_info_cols_3-4-5-6-7_group_notes_cols_8.csv,gpt-5.4-mini,2.3115309700369835,1,0,925,0,56,981,0.00069375,0.0,0.000252,0.00094575,0.00094575,False,"RuntimeError: HTTP Error 400: Bad Request
+{
+  ""error"": {
+    ""message"": ""Input tokens exceed the configured limit of 272000 tokens. Your messages resulted in 523362 tokens. Please reduce the length of the messages."",
+    ""type"": ""invalid_request_error"",
+    ""param"": ""messages"",
+    ""code"": ""context_length_exceeded""
+  }
+}"
+file_whitespace_delimiter_cells_quoted_padded.csv,gpt-5.4-mini,2.033079199492932,1,0,1084,0,56,1140,0.000813,0.0,0.000252,0.001065,0.001065,False,"RuntimeError: HTTP Error 400: Bad Request
+{
+  ""error"": {
+    ""message"": ""Input tokens exceed the configured limit of 272000 tokens. Your messages resulted in 423968 tokens. Please reduce the length of the messages."",
+    ""type"": ""invalid_request_error"",
+    ""param"": ""messages"",
+    ""code"": ""context_length_exceeded""
+  }
+}"
+file_no_header.csv,gpt-5.4-mini,1.25957390666008,1,0,1021,0,56,1077,0.00076575,0.0,0.000252,0.00101775,0.00101775,True,
+row_quotation_mark_12_0x27.csv,gpt-5.4-mini,4.707355760037899,2,0,2404,0,155,2559,0.001803,0.0,0.0006975,0.0025005,0.0025005,True,
+file_whitespace_delimiter_cells_quoted_empty_last_column_padded.csv,gpt-5.4-mini,1.896972231566906,1,0,1084,0,56,1140,0.000813,0.0,0.000252,0.001065,0.001065,False,"RuntimeError: HTTP Error 400: Bad Request
+{
+  ""error"": {
+    ""message"": ""Input tokens exceed the configured limit of 272000 tokens. Your messages resulted in 424051 tokens. Please reduce the length of the messages."",
+    ""type"": ""invalid_request_error"",
+    ""param"": ""messages"",
+    ""code"": ""context_length_exceeded""
+  }
+}"
