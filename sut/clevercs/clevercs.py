@@ -22,9 +22,10 @@ args = parser.parse_args()
 
 sut = 'clevercs'
 DATASET = os.environ.get('DATASET', 'polluted_files')
+RESULT_ROOT = os.environ.get('RESULT_ROOT', 'results')
 IN_DIR = f'data/{DATASET}/csv/'
-OUT_DIR = f'results/{sut}/{DATASET}/loading/'
-TIME_DIR = f'results/{sut}/{DATASET}'
+OUT_DIR = join(RESULT_ROOT, sut, DATASET, 'loading')
+TIME_DIR = join(RESULT_ROOT, sut, DATASET)
 
 os.makedirs(OUT_DIR, exist_ok=True)
 os.makedirs(TIME_DIR, exist_ok=True)

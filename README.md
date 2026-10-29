@@ -40,6 +40,24 @@ or to just run the classical baselines without LLM-Calls:
 bash scripts/run_classical_baselines_on_csvstorm.sh --regenerate
 ```
 
+Each benchmark invocation creates a new directory under `results/runs/` and
+prints its run ID. Use `--run-id NAME` to choose an ID, or `--resume NAME` to
+continue an interrupted run. Resume checks the Git commit, dataset fingerprint,
+Python version, and run settings before using existing outputs. Runs require a
+clean Git working tree. The full benchmark makes cold LLM calls for official
+runtime measurements; `--confirm-cost` is still required.
+
+Each run contains `manifest.json`, per-parser outputs, and evaluation summaries.
+Run directories are ignored by Git. To copy a completed run's manifest and
+summary CSVs into the trackable `experiments/NAME/` directory, run:
+
+```bash
+.venv/bin/python scripts/experiment_run.py export --run-id NAME
+```
+
+Review and commit only the experiment records used in the paper. Keep a durable
+copy of the full run directory if raw parser outputs are needed later.
+
 
 ## Access or generate the CSV Storm dataset
 
@@ -110,9 +128,12 @@ Omit `--sut` to evaluate every SUT with output for csv_storm. One invocation
 calculates strict whole-file accuracy and Pollock's loading success, precision,
 recall, F1, and combined scores. It writes:
 
-- per-file results to `results/<sut>/csv_storm/<sut>_results.csv`;
-- a dataset summary to `results/evaluation_summary_csv_storm.csv`; and
-- cross-SUT results to `results/evaluation_by_file_csv_storm.csv`.
+- per-file results to `<result-root>/<sut>/csv_storm/<sut>_results.csv`;
+- a dataset summary to `<result-root>/evaluation_summary_csv_storm.csv`; and
+- cross-SUT results to `<result-root>/evaluation_by_file_csv_storm.csv`.
+
+The benchmark scripts set `<result-root>` to `results/runs/<run-id>`. Direct
+calls to `evaluate.py` still use `results/` unless `--result` is provided.
 
 Pollock's combined score is the sum of mean success and the mean precision,
 recall, and F1 values for headers, records, and cells. Its maximum is 10.

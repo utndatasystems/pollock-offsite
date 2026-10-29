@@ -86,9 +86,10 @@ if args.model:
     model_slug = re.sub(r'[^a-z0-9]+', '_', args.model.lower()).strip('_')
     sut += f'_{model_slug}'
 DATASET = os.environ.get('DATASET', 'polluted_files')
+RESULT_ROOT = os.environ.get('RESULT_ROOT', join(REPO_ROOT, 'results'))
 IN_DIR = join(REPO_ROOT, 'data', DATASET, 'csv')
-OUT_DIR = join(REPO_ROOT, 'results', sut, DATASET, 'loading')
-TIME_DIR = join(REPO_ROOT, 'results', sut, DATASET)
+OUT_DIR = join(RESULT_ROOT, sut, DATASET, 'loading')
+TIME_DIR = join(RESULT_ROOT, sut, DATASET)
 CACHE_DIR = join(TIME_DIR, 'llm_cache')
 os.environ['FULL_LLM_LOADER_CACHE_DIR'] = CACHE_DIR
 

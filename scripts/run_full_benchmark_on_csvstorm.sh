@@ -6,9 +6,8 @@
 #
 # Options:
 #   --regenerate       Recreate data/csv_storm with CSV Storm polluters first.
-#   --keep-results     Keep existing parser outputs instead of overwriting them.
-#   --keep-llm-results Keep existing LLM parser outputs (avoids paid calls) while
-#                      still overwriting the classical SUT outputs.
+#   --run-id ID        Name this isolated run (default: UTC timestamp + commit).
+#   --resume ID        Continue an interrupted run with matching inputs/settings.
 #   --verbose          Print hybrid-parser LLM prompts and responses.
 #   --confirm-cost     Confirm the potentially large paid LLM matrix.
 #   -h, --help         Show this help.
@@ -32,13 +31,13 @@ if [[ -f ".env" ]]; then
 fi
 
 regenerate=false
-overwrite_results=true
-keep_llm_results=false
 verbose=false
 confirm_cost=false
+run_id=""
+resume=false
 
 usage() {
-    sed -n '2,22p' "$0" | sed 's/^# \{0,1\}//'
+    awk 'NR == 1 { next } /^#/ { sub(/^# ?/, ""); print; next } /^$/ { print; next } { exit }' "$0"
 }
 
 while [[ $# -gt 0 ]]; do
@@ -46,11 +45,14 @@ while [[ $# -gt 0 ]]; do
         --regenerate)
             regenerate=true
             ;;
-        --keep-results)
-            overwrite_results=false
+        --run-id)
+            run_id="${2:?--run-id requires an ID}"
+            shift
             ;;
-        --keep-llm-results)
-            keep_llm_results=true
+        --resume)
+            run_id="${2:?--resume requires an ID}"
+            resume=true
+            shift
             ;;
         --verbose)
             verbose=true
@@ -76,6 +78,10 @@ if [[ "$confirm_cost" != true ]]; then
     echo "Rerun with --confirm-cost after reviewing the configured models."
     exit 1
 fi
+if [[ "$resume" == true && "$regenerate" == true ]]; then
+    echo "Error: --regenerate cannot be used with --resume."
+    exit 2
+fi
 
 python_bin="${PYTHON:-}"
 if [[ -z "$python_bin" ]]; then
@@ -93,10 +99,16 @@ if [[ -z "${OPENAI_API_KEY:-}" || "$OPENAI_API_KEY" == "YOUR_OPENAI_API_KEY" ]];
 fi
 
 dataset="csv_storm"
+dataset_seed=1337
 remote_models=("gpt-5.4-mini" "gpt-5.6-sol" "gpt-5.6-luna")
 local_models=("qwen3.5:0.8b")
 remote_openai_endpoint="${OPENAI_ENDPOINT:-https://api.openai.com/v1/chat/completions}"
 ollama_api_base="${OLLAMA_API_BASE:-http://localhost:11434/v1}"
+
+if [[ -z "$run_id" ]]; then
+    run_id="$(date -u +%Y%m%dT%H%M%SZ)-$(git rev-parse --short=8 HEAD)"
+fi
+"$python_bin" scripts/experiment_run.py check-clean
 
 if [[ "$regenerate" == true ]]; then
     echo "=== Regenerating data/$dataset with CSV Storm ==="
@@ -105,6 +117,7 @@ if [[ "$regenerate" == true ]]; then
         --output "./data/$dataset" \
         --polluters csv_storm \
         --combinations \
+        --rng-seed "$dataset_seed" \
         --overwrite
 fi
 
@@ -118,27 +131,55 @@ if [[ ! -d "data/$dataset/ground_truth" ]]; then
     exit 1
 fi
 
-export DATASET="$dataset"
-export OLLAMA_API_BASE="$ollama_api_base"
-
-classical_overwrite_args=()
-llm_overwrite_args=()
-hybrid_verbose_args=()
-if [[ "$overwrite_results" == true ]]; then
-    classical_overwrite_args+=(--overwrite)
-    if [[ "$keep_llm_results" != true ]]; then
-        llm_overwrite_args+=(--overwrite)
-    fi
-fi
-if [[ "$verbose" == true ]]; then
-    hybrid_verbose_args+=(--verbose)
-fi
-
 model_slug() {
     printf "%s" "$1" \
         | tr "[:upper:]" "[:lower:]" \
         | sed -E "s/[^a-z0-9]+/_/g; s/^_+|_+$//g"
 }
+
+suts=(duckdbauto_strict duckdbparse pandas clevercs pycsv)
+for model in "${remote_models[@]}" "${local_models[@]}"; do
+    slug="$(model_slug "$model")"
+    suts+=("llm_hybrid_parser_${slug}" "llm_hybrid_parser_${slug}_duckdb" "code_generation_llm_${slug}")
+done
+
+manifest_args=(
+    init --run-id "$run_id" --script full --dataset "$dataset"
+    --seed "$dataset_seed" --remote-models "${remote_models[*]}"
+    --local-models "${local_models[*]}"
+    --suts "${suts[*]}"
+    --repetitions "${N_REPETITIONS:-classical=3,llm=1}" --eval-njobs "${EVAL_NJOBS:-1}"
+    --cache-policy cold
+)
+if [[ "$resume" == true ]]; then
+    manifest_args+=(--resume)
+fi
+if [[ "$verbose" == true ]]; then
+    manifest_args+=(--verbose)
+fi
+export RESULT_ROOT
+RESULT_ROOT="$("$python_bin" scripts/experiment_run.py "${manifest_args[@]}")"
+
+finish_run() {
+    local exit_code="$1"
+    local status=complete
+    trap - EXIT
+    if [[ "$exit_code" -ne 0 ]]; then
+        status=failed
+    fi
+    "$python_bin" scripts/experiment_run.py finish \
+        --run-id "$run_id" --status "$status" --exit-code "$exit_code" || exit 1
+    exit "$exit_code"
+}
+trap 'finish_run "$?"' EXIT
+
+export DATASET="$dataset"
+export OLLAMA_API_BASE="$ollama_api_base"
+
+hybrid_verbose_args=()
+if [[ "$verbose" == true ]]; then
+    hybrid_verbose_args+=(--verbose)
+fi
 
 evaluate_sut() {
     local sut="$1"
@@ -147,8 +188,10 @@ evaluate_sut() {
     echo "=== Evaluating $sut on $dataset ==="
     "$python_bin" evaluate.py \
         --dataset "$dataset" \
+        --result "$RESULT_ROOT" \
         --sut "$sut" \
         --njobs "${EVAL_NJOBS:-1}"
+    "$python_bin" scripts/experiment_run.py mark-sut --run-id "$run_id" --sut "$sut"
 }
 
 run_classical_sut() {
@@ -159,7 +202,7 @@ run_classical_sut() {
 
     echo
     echo "=== $label on $dataset ==="
-    "$python_bin" "$script" "$@" "${classical_overwrite_args[@]}"
+    "$python_bin" "$script" "$@"
     evaluate_sut "$sut"
 }
 
@@ -209,8 +252,8 @@ run_llm_model() {
     echo "=== Hybrid parser (LLM sniffer): $model via $backend on $dataset ==="
     "$python_bin" sut/llm_hybrid_parser/llm-hybrid-bench.py \
         --model "$model" \
+        --no-llm-cache \
         "${backend_args[@]}" \
-        "${llm_overwrite_args[@]}" \
         "${hybrid_verbose_args[@]}"
     evaluate_sut "$llm_hybrid_sut"
 
@@ -218,9 +261,9 @@ run_llm_model() {
     echo "=== Hybrid parser (DuckDB + LLM sniffer): $model via $backend on $dataset ==="
     "$python_bin" sut/llm_hybrid_parser/llm-hybrid-bench.py \
         --model "$model" \
+        --no-llm-cache \
         --duckdb-sniff \
         "${backend_args[@]}" \
-        "${llm_overwrite_args[@]}" \
         "${hybrid_verbose_args[@]}"
     evaluate_sut "$duckdb_hybrid_sut"
 
@@ -228,11 +271,13 @@ run_llm_model() {
     echo "=== Code-generation parser: $model via $backend on $dataset ==="
     "$python_bin" sut/code_generation_llm/custom-bench.py \
         --model "$model" \
-        "${llm_overwrite_args[@]}"
+        --no-llm-cache
     evaluate_sut "$code_generation_sut"
 }
 
 echo "=== Configuration ==="
+echo "Run ID:        $run_id"
+echo "Result root:   $RESULT_ROOT"
 echo "Dataset:       $dataset"
 echo "Remote models: ${remote_models[*]}"
 echo "Local models:  ${local_models[*]} (Ollama: $ollama_api_base)"
@@ -257,7 +302,7 @@ done
 echo
 echo "=== Benchmark matrix complete ==="
 echo "Dataset-level summaries:"
-echo "  results/evaluation_summary_${dataset}.csv"
-echo "  results/evaluation_by_file_${dataset}.csv"
+echo "  $RESULT_ROOT/evaluation_summary_${dataset}.csv"
+echo "  $RESULT_ROOT/evaluation_by_file_${dataset}.csv"
 echo
-echo "Per-SUT outputs are under results/<sut>/$dataset/."
+echo "Per-SUT outputs are under $RESULT_ROOT/<sut>/$dataset/."

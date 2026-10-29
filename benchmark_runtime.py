@@ -32,7 +32,9 @@ def _output_succeeded(path: Path) -> bool:
         return False
 
 
-def load_file_runtimes(repo_root: Path | str, sut_id: str, dataset: str) -> pd.DataFrame:
+def load_file_runtimes(
+    repo_root: Path | str, sut_id: str, dataset: str, result_root: Path | str | None = None
+) -> pd.DataFrame:
     """Load only successful, cold, non-stale timing repetitions.
 
     Legacy code-generation timing files are rejected because they did not record
@@ -41,7 +43,8 @@ def load_file_runtimes(repo_root: Path | str, sut_id: str, dataset: str) -> pd.D
     the local cache, and failed outputs are detected from their output files.
     """
     repo_root = Path(repo_root)
-    result_dir = repo_root / "results" / sut_id / dataset
+    root = Path(result_root) if result_root is not None else repo_root / "results"
+    result_dir = root / sut_id / dataset
     time_path = result_dir / f"{sut_id}_time.csv"
     if not time_path.exists():
         return pd.DataFrame(columns=_RUNTIME_COLUMNS)

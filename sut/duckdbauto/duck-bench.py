@@ -25,10 +25,11 @@ args = parser.parse_args()
 
 sut = 'duckdbauto_strict' if args.strict else 'duckdbauto'
 DATASET = os.environ.get('DATASET', 'polluted_files')
+RESULT_ROOT = os.environ.get('RESULT_ROOT', 'results')
 IN_DIR = f'data/{DATASET}/csv/'
 PARAM_DIR = f'data/{DATASET}/parameters'
-OUT_DIR = f'results/{sut}/{DATASET}/loading/'
-TIME_DIR = f'results/{sut}/{DATASET}/'
+OUT_DIR = join(RESULT_ROOT, sut, DATASET, 'loading')
+TIME_DIR = join(RESULT_ROOT, sut, DATASET)
 
 # Ensure required directories exist
 os.makedirs(IN_DIR, exist_ok=True)

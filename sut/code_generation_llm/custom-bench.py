@@ -90,10 +90,11 @@ if args.model:
 else:
     sut = 'code_generation_llm'
 DATASET = os.environ.get('DATASET', 'polluted_files')
+RESULT_ROOT = os.environ.get('RESULT_ROOT', join(REPO_ROOT, 'results'))
 IN_DIR = join(REPO_ROOT, 'data', DATASET, 'csv')
 CLEAN_DIR = join(REPO_ROOT, 'data', DATASET, 'clean')
-OUT_DIR = join(REPO_ROOT, 'results', sut, DATASET, 'loading')
-TIME_DIR = join(REPO_ROOT, 'results', sut, DATASET)
+OUT_DIR = join(RESULT_ROOT, sut, DATASET, 'loading')
+TIME_DIR = join(RESULT_ROOT, sut, DATASET)
 CHEAT = args.cheat
 LLM_CONTEXT_LINES = max(0, args.llm_context_lines)
 LLM_SAMPLE_ROWS = max(0, args.llm_sample_rows)
@@ -103,7 +104,7 @@ os.makedirs(OUT_DIR, exist_ok=True)
 os.makedirs(TIME_DIR, exist_ok=True)
 
 _disable_llm_cache = args.no_llm_cache or args.overwrite
-_cache_path = None if _disable_llm_cache else join(REPO_ROOT, 'results', sut, 'llm_cache.json')
+_cache_path = None if _disable_llm_cache else join(RESULT_ROOT, sut, 'llm_cache.json')
 configure_llm_cache(path=_cache_path, enabled=not _disable_llm_cache)
 configure_llm_dry_run(args.count_tokens)
 

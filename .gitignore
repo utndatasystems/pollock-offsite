@@ -129,6 +129,7 @@ target/
 !/results/*/csv_storm/loading/
 /results/*/csv_storm/loading/*
 !/results/*/csv_storm/loading/*_converted.csv
+/results/runs/
 
 Agentic_Parsing.pdf
 Agentic_Parsing-*.pdf

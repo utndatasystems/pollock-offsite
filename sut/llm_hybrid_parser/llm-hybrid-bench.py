@@ -145,10 +145,11 @@ if USE_CLEVERCSV:
 elif USE_DUCKDB_SNIFF:
     sut += '_duckdb' if LLM_DIALECT else '_duckdb_only'
 DATASET = os.environ.get('DATASET', 'polluted_files')
+RESULT_ROOT = os.environ.get('RESULT_ROOT', join(REPO_ROOT, 'results'))
 IN_DIR = join(REPO_ROOT, 'data', DATASET, 'csv')
 CLEAN_DIR = join(REPO_ROOT, 'data', DATASET, 'clean')
-OUT_DIR = join(REPO_ROOT, 'results', sut, DATASET, 'loading')
-TIME_DIR = join(REPO_ROOT, 'results', sut, DATASET)
+OUT_DIR = join(RESULT_ROOT, sut, DATASET, 'loading')
+TIME_DIR = join(RESULT_ROOT, sut, DATASET)
 CHEAT = args.cheat
 LLM_CONTEXT_LINES = max(0, args.llm_context_lines)
 
@@ -162,7 +163,7 @@ os.makedirs(TIME_DIR, exist_ok=True)
 # the filename matches the model baked into the keys.
 _cache_slug = re.sub(r'[^a-z0-9]+', '_', _openai_model().lower()).strip('_')
 _disable_llm_cache = args.no_llm_cache or args.overwrite
-_cache_path = None if _disable_llm_cache else join(REPO_ROOT, 'results', '_llm_cache', f'{_cache_slug}.json')
+_cache_path = None if _disable_llm_cache else join(RESULT_ROOT, '_llm_cache', f'{_cache_slug}.json')
 configure_llm_cache(path=_cache_path, enabled=not _disable_llm_cache)
 configure_llm_verbose(args.verbose)
 
