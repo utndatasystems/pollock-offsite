@@ -122,4 +122,9 @@ only applicable for set of files used by the original Pollock paper.
 
 ## Paper
 
-> **Publication:** [CSV Storm Paper, link to be added after submission](https://doi.org/REPLACE_WITH_DOI)
+The code used for the accepted CIDR submission is preserved at the annotated
+Git tag `cidr-submission` (commit `251c9f8eed0e1c83bbe277d8503a35e365064491`).
+Further experiments for the camera-ready paper are developed on the
+`cidr-camera-ready` branch.
+
+> **Publication:** Link to the camera-ready paper to be added when available.
