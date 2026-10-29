@@ -55,6 +55,10 @@ def main(default_dataset: str = "polluted_files") -> None:
     parser.add_argument("--sut", default=None)
     parser.add_argument("--dataset", default=default_dataset)
     parser.add_argument("--result", default="./results")
+    parser.add_argument(
+        "--file", action="append", default=None,
+        help="Evaluate only this dataset CSV file; repeat for multiple files.",
+    )
     parser.add_argument("--verbose", action="store_true")
     parser.add_argument("--njobs", default=100, type=int)
     parser.add_argument("--origin-csv", default=None)
@@ -96,11 +100,17 @@ def main(default_dataset: str = "polluted_files") -> None:
             f"and dataset {args.dataset!r}"
         )
     selected_systems = systems if args.sut is None else [args.sut]
-    files = sorted(
-        filename
-        for filename in os.listdir(f"data/{args.dataset}/csv")
+    available_files = {
+        filename for filename in os.listdir(f"data/{args.dataset}/csv")
         if filename.endswith(".csv")
-    )
+    }
+    if args.file:
+        missing = set(args.file) - available_files
+        if missing:
+            parser.error(f"dataset CSV files not found: {', '.join(sorted(missing))}")
+        files = sorted(set(args.file))
+    else:
+        files = sorted(available_files)
     suffix = result_suffix(origin_csv, args.row_order_invariant)
     weights = load_weights(args.dataset)
     aggregate_rows = []

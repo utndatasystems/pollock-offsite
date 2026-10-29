@@ -134,6 +134,8 @@ recall, F1, and combined scores. It writes:
 
 The benchmark scripts set `<result-root>` to `results/runs/<run-id>`. Direct
 calls to `evaluate.py` still use `results/` unless `--result` is provided.
+For a small sample run, repeat `evaluate.py --file FILENAME` to evaluate only
+selected dataset files.
 
 Pollock's combined score is the sum of mean success and the mean precision,
 recall, and F1 values for headers, records, and cells. Its maximum is 10.

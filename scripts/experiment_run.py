@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import argparse
+import csv
 import hashlib
 import importlib.metadata
 import json
@@ -89,15 +90,16 @@ def config_from_args(args: argparse.Namespace) -> dict:
         "remote_models": args.remote_models.split(),
         "local_models": args.local_models.split(),
         "suts": args.suts.split(),
+        "files": args.files.split(),
         "repetitions": args.repetitions,
         "eval_njobs": args.eval_njobs,
         "cache_policy": args.cache_policy,
         "remote_endpoint": sanitized_endpoint(
             os.environ.get("OPENAI_ENDPOINT", "https://api.openai.com/v1/chat/completions")
-        ) if args.script == "full" else "",
+        ) if args.script in {"full", "sample"} else "",
         "local_api_base": sanitized_endpoint(
             os.environ.get("OLLAMA_API_BASE", "http://localhost:11434/v1")
-        ) if args.script == "full" else "",
+        ) if args.script in {"full", "sample"} else "",
         "verbose": args.verbose,
         "row_order_invariant": True,
     }
@@ -121,6 +123,11 @@ def init_run(args: argparse.Namespace) -> None:
     directory = run_dir(args.run_id)
     config = config_from_args(args)
     digest = dataset_digest(args.dataset)
+    if config["files"]:
+        csv_dir = REPO_ROOT / "data" / args.dataset / "csv"
+        missing = [name for name in config["files"] if not (csv_dir / name).is_file()]
+        if missing:
+            raise ValueError(f"dataset CSV files not found: {', '.join(sorted(missing))}")
     commit = git("rev-parse", "HEAD")
     requirements = REPO_ROOT / "requirements.txt"
     requirements_digest = hashlib.sha256(requirements.read_bytes()).hexdigest()
@@ -170,6 +177,12 @@ def mark_sut(args: argparse.Namespace) -> None:
     result_file = directory / args.sut / dataset / f"{args.sut}_results.csv"
     if not result_file.is_file():
         raise ValueError(f"evaluation results are missing: {result_file}")
+    expected_files = manifest["config"]["files"]
+    if expected_files:
+        with result_file.open(newline="") as handle:
+            actual_files = {row["file"] for row in csv.DictReader(handle)}
+        if actual_files != set(expected_files):
+            raise ValueError(f"evaluation results do not match selected files: {result_file}")
     if args.sut not in manifest["completed_suts"]:
         manifest["completed_suts"].append(args.sut)
     write_manifest(directory / "manifest.json", manifest)
@@ -223,12 +236,13 @@ def main() -> None:
     init = commands.add_parser("init")
     init.add_argument("--run-id", required=True)
     init.add_argument("--resume", action="store_true")
-    init.add_argument("--script", choices=("full", "classical"), required=True)
+    init.add_argument("--script", choices=("full", "classical", "sample"), required=True)
     init.add_argument("--dataset", required=True)
     init.add_argument("--seed", type=int, required=True)
     init.add_argument("--remote-models", default="")
     init.add_argument("--local-models", default="")
     init.add_argument("--suts", required=True)
+    init.add_argument("--files", default="")
     init.add_argument("--repetitions", required=True)
     init.add_argument("--eval-njobs", type=int, required=True)
     init.add_argument("--cache-policy", choices=("cold", "cached", "none"), required=True)

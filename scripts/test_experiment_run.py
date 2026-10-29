@@ -24,7 +24,7 @@ def run_workspace(tmp_path, monkeypatch):
 def init_args(**changes):
     values = dict(
         run_id="trial", resume=False, script="classical", dataset="tiny", seed=1337,
-        remote_models="", local_models="", suts="pandas", repetitions="3",
+        remote_models="", local_models="", suts="pandas", files="", repetitions="3",
         eval_njobs=1, cache_policy="none", verbose=False,
     )
     values.update(changes)
@@ -53,13 +53,16 @@ def test_manifest_endpoint_omits_credentials():
 
 
 def test_completion_requires_results_and_export_copies_summaries(run_workspace):
-    runs.init_run(init_args())
+    runs.init_run(init_args(files="file.csv"))
     with pytest.raises(ValueError, match="unevaluated"):
         runs.finish_run(Namespace(run_id="trial", status="complete", exit_code=0))
 
     directory = runs.run_dir("trial")
     result_dir = directory / "pandas" / "tiny"
     result_dir.mkdir(parents=True)
+    (result_dir / "pandas_results.csv").write_text("file,pandas_correct\nother.csv,1\n")
+    with pytest.raises(ValueError, match="selected files"):
+        runs.mark_sut(Namespace(run_id="trial", sut="pandas"))
     (result_dir / "pandas_results.csv").write_text("file,pandas_correct\nfile.csv,1\n")
     runs.mark_sut(Namespace(run_id="trial", sut="pandas"))
     for stem in ("evaluation_summary", "evaluation_by_file"):
