@@ -40,6 +40,9 @@ def successful_csv(filepath):
 def header_record_cell_measures_csv(source_csv, loaded_csv, n_jobs=1, nrows=None):
     # Both files are parsed as normal comma-delimited CSV after conversion:
     # source_csv is the expected clean file, loaded_csv is the SUT output.
+    # Pollock's published definitions (Vitagliano et al., PVLDB 2023, Sec. 3.4)
+    # use precision = overlap / expected and recall = overlap / output for all
+    # three levels. These labels reverse the usual prediction-based convention.
     if nrows is not None and nrows < 0:
         raise ValueError("nrows must be non-negative or None")
 
@@ -82,9 +85,7 @@ def header_record_cell_measures_csv(source_csv, loaded_csv, n_jobs=1, nrows=None
             if not len(i):
                 header_p = header_r = header_f1 = 0.0
             else:
-                #TODO: conventionally precision divided predicted / source
                 header_p = np.sum([v for k, v in i.items()]) / len(source_header)
-                #TODO: conventionally recall divides expected / source
                 header_r = np.sum([v for k, v in i.items()]) / len(loaded_header)
                 header_f1 = (header_p * header_r) / (header_p + header_r) * 2
 
@@ -110,7 +111,6 @@ def header_record_cell_measures_csv(source_csv, loaded_csv, n_jobs=1, nrows=None
     elif not len(rec_i):
         rec_p = rec_r = rec_f1 = 0.0
     else:
-        #TODO: conventionally recall / precision divides expected/source 
         rec_p = np.sum([v for k, v in rec_i.items()]) / len(source_records)
         rec_r = np.sum([v for k, v in rec_i.items()]) / len(loaded_records)
         rec_f1 = (rec_p * rec_r) / (rec_p + rec_r) * 2
@@ -129,7 +129,6 @@ def header_record_cell_measures_csv(source_csv, loaded_csv, n_jobs=1, nrows=None
     elif not len(cell_i):
         cell_p = cell_r = cell_f1 = 0.0
     else:
-        #TODO: conventionally recall / precision divides expected/source 
         cell_p = np.sum([v for k, v in cell_i.items()]) / len(source_cells)
         cell_r = np.sum([v for k, v in cell_i.items()]) / len(loaded_cells)
         cell_f1 = (cell_p * cell_r) / (cell_p + cell_r) * 2
