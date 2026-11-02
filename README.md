@@ -145,6 +145,12 @@ only applicable for set of files used by the original Pollock paper.
 
 ## Paper
 
+The LaTeX manuscript lives in the `manuscript/` Git submodule, linked to the
+[Overleaf-connected repository](https://github.com/luisaneubauer/Agentic-Parsing-CR).
+After cloning this repository, fetch it with `git submodule update --init`.
+Commit and push manuscript edits from inside `manuscript/`, then run
+`git add manuscript` and commit the updated submodule pointer in this repository.
+
 The code used for the accepted CIDR submission is preserved at the annotated
 Git tag `cidr-submission` (commit `251c9f8eed0e1c83bbe277d8503a35e365064491`).
 Further experiments for the camera-ready paper are developed on the

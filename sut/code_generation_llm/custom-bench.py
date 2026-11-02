@@ -5,6 +5,8 @@ import json
 import argparse
 from os.path import join, abspath, dirname
 
+import pandas as pd
+
 # make sure this script can be invoked from anywhere by finding repo root
 REPO_ROOT = abspath(join(dirname(__file__), '..', '..'))
 sys.path.insert(0, join(REPO_ROOT, 'sut'))

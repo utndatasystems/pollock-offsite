@@ -48,6 +48,16 @@ DEFAULT_MODEL_PRICES_USD_PER_1M = {
         "cached_input": 0.02,
         "output": 1.20,
     },
+    "gpt-6-luna": {
+        "input": 0.10,
+        "cached_input": 0.01,
+        "output": 0.50,
+    },
+    "gpt-6.1-sol": {
+        "input": 2.00,
+        "cached_input": 0.10,
+        "output": 10.00,
+    },
 }
 
 _LLM_RESPONSE_CACHE: Dict[str, Any] = {}
@@ -199,8 +209,8 @@ def _llm_backend() -> str:
 
 def _supports_temperature(model: str) -> bool:
     normalized = model.lower()
-    # New GPT-5.6 chat-completions models reject configurable temperature.
-    return not normalized.startswith("gpt-5.6")
+    # These reasoning models reject configurable temperature at default effort.
+    return not normalized.startswith(("gpt-5.6", "gpt-6"))
 
 
 def _prompt_hash(prompt: str) -> str:

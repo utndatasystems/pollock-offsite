@@ -1,0 +1,3 @@
+[submodule "manuscript"]
+	path = manuscript
+	url = git@github.com:luisaneubauer/Agentic-Parsing-CR.git

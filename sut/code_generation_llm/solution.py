@@ -483,13 +483,13 @@ def _save_cache(cache: Dict[str, str]) -> None:
 
 def _completion_token_limit_param(model: str) -> str:
     normalized = model.lower()
-    if normalized.startswith("gpt-5") or normalized.startswith("o"):
+    if normalized.startswith(("gpt-5", "gpt-6", "o")):
         return "max_completion_tokens"
     return "max_tokens"
 
 
 def _supports_temperature(model: str) -> bool:
-    return not model.lower().startswith("gpt-5.6")
+    return not model.lower().startswith(("gpt-5.6", "gpt-6"))
 
 
 def _uses_ollama() -> bool:

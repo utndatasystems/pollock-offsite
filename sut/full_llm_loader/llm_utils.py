@@ -57,6 +57,16 @@ DEFAULT_MODEL_PRICES_USD_PER_1M = {
         "cached_input": 0.02,
         "output": 1.20,
     },
+    "gpt-6-luna": {
+        "input": 0.10,
+        "cached_input": 0.01,
+        "output": 0.50,
+    },
+    "gpt-6.1-sol": {
+        "input": 2.00,
+        "cached_input": 0.10,
+        "output": 10.00,
+    },
 }
 
 try:
@@ -77,13 +87,13 @@ except ImportError:
 
 def _completion_token_limit_param(model: str) -> str:
     normalized = model.lower()
-    if normalized.startswith("gpt-5") or normalized.startswith("o"):
+    if normalized.startswith(("gpt-5", "gpt-6", "o")):
         return "max_completion_tokens"
     return "max_tokens"
 
 
 def _supports_temperature(model: str) -> bool:
-    return not model.lower().startswith("gpt-5.6")
+    return not model.lower().startswith(("gpt-5.6", "gpt-6"))
 
 
 def _env_truthy(name: str) -> bool:
