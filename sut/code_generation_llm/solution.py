@@ -4,6 +4,7 @@ import builtins
 import ast
 import hashlib
 import json
+import math
 import os
 import re
 import signal
@@ -25,6 +26,20 @@ OPENAI_ENDPOINT_ENV = "OPENAI_ENDPOINT"
 OPENAI_DEFAULT_MODEL = "gpt-5.4"
 OPENAI_DEFAULT_ENDPOINT = "http://dep-eng-data-s-heimgarten.hosts.utn.de:4000/v1/chat/completions"
 
+# Project rate estimates in USD per million tokens. Override with
+# CODE_GENERATION_LLM_*_USD_PER_1M when running at a different rate.
+MODEL_PRICES_USD_PER_1M = {
+    "gpt-4o": {"input": 2.50, "cached_input": 1.25, "output": 10.00},
+    "gpt-4o-mini": {"input": 0.15, "cached_input": 0.075, "output": 0.60},
+    "gpt-5.4": {"input": 2.50, "cached_input": 0.25, "output": 15.00},
+    "gpt-5.4-mini": {"input": 0.75, "cached_input": 0.075, "output": 4.50},
+    "gpt-5.5": {"input": 5.00, "cached_input": 0.50, "output": 30.00},
+    "gpt-5.6-luna": {"input": 0.20, "cached_input": 0.02, "output": 1.20},
+    "gpt-5.6-sol": {"input": 5.00, "cached_input": 0.50, "output": 30.00},
+    "gpt-6-luna": {"input": 0.10, "cached_input": 0.01, "output": 0.50},
+    "gpt-6.1-sol": {"input": 2.00, "cached_input": 0.10, "output": 10.00},
+}
+
 
 _CACHE_ENABLED = True
 _CACHE_PATH: Optional[str] = None
@@ -37,6 +52,7 @@ _CACHE_STATS: Dict[str, int] = {
     "output_chars_cached": 0,
     "output_chars_fresh": 0,
 }
+_LLM_COST_RECORDS: List[Dict[str, Any]] = []
 
 
 @dataclass(frozen=True)
@@ -98,6 +114,139 @@ def reset_llm_cache_stats() -> None:
     """Start a new accounting scope, normally one benchmark repetition."""
     for key in _CACHE_STATS:
         _CACHE_STATS[key] = 0
+
+
+def reset_llm_cost_records() -> None:
+    """Start a new per-file accounting scope."""
+    _LLM_COST_RECORDS.clear()
+
+
+def get_llm_cost_records() -> List[Dict[str, Any]]:
+    """Return one usage and cost record for each LLM call in this scope."""
+    return [dict(record) for record in _LLM_COST_RECORDS]
+
+
+def get_llm_cost_summary() -> Dict[str, Any]:
+    """Sum measured tokens and configured-rate costs for this scope.
+
+    Missing API usage makes the relevant totals unknown, never zero.
+    """
+    records = get_llm_cost_records()
+    summary: Dict[str, Any] = {
+        "api_requests": sum(record["api_request"] for record in records),
+        "usage_recorded_calls": sum(
+            record["api_request"] and record["usage_available"] for record in records
+        ),
+        "usage_missing_calls": sum(
+            record["api_request"] and not record["usage_available"] for record in records
+        ),
+    }
+    for field in (
+        "prompt_tokens", "cached_input_tokens", "uncached_input_tokens",
+        "completion_tokens", "total_tokens", "reasoning_tokens",
+        "input_cost_usd", "cached_input_cost_usd", "output_cost_usd",
+        "estimated_api_cost_usd", "billable_cost_usd",
+    ):
+        values = [record[field] for record in records]
+        summary[field] = None if any(value is None for value in values) else sum(values)
+    return summary
+
+
+def _usage_count(value: Any) -> Optional[int]:
+    return value if isinstance(value, int) and not isinstance(value, bool) and value >= 0 else None
+
+
+def _model_prices_usd_per_1m(model: str) -> Dict[str, Optional[float]]:
+    if _uses_ollama():
+        return {"input": 0.0, "cached_input": 0.0, "output": 0.0}
+    prices: Dict[str, Optional[float]] = dict(MODEL_PRICES_USD_PER_1M.get(
+        model.lower(), {"input": None, "cached_input": None, "output": None}
+    ))
+    for field, suffix in (
+        ("input", "INPUT"), ("cached_input", "CACHED_INPUT"),
+        ("output", "OUTPUT"),
+    ):
+        override = os.environ.get(f"CODE_GENERATION_LLM_{suffix}_USD_PER_1M")
+        if override is not None:
+            try:
+                price = float(override)
+                prices[field] = price if math.isfinite(price) and price >= 0 else None
+            except ValueError:
+                prices[field] = None
+    return prices
+
+
+def _build_cost_record(
+    *, model: str, status: str, usage: Optional[Dict[str, Any]],
+    api_request: bool, local_cache_hit: bool = False,
+) -> Dict[str, Any]:
+    usage = usage if isinstance(usage, dict) else None
+    prices = _model_prices_usd_per_1m(model)
+    free_call = not api_request or _uses_ollama()
+    if not api_request:
+        prompt_tokens = completion_tokens = cached_input_tokens = 0
+        total_tokens = reasoning_tokens = uncached_input_tokens = 0
+        usage_available = False
+    else:
+        prompt_tokens = _usage_count(usage.get("prompt_tokens")) if usage else None
+        completion_tokens = _usage_count(usage.get("completion_tokens")) if usage else None
+        details = usage.get("prompt_tokens_details") if usage else None
+        cached_input_tokens = (
+            _usage_count(details.get("cached_tokens", 0)) if isinstance(details, dict) else 0
+        )
+        completion_details = usage.get("completion_tokens_details") if usage else None
+        reasoning_tokens = (
+            _usage_count(completion_details.get("reasoning_tokens"))
+            if isinstance(completion_details, dict) else None
+        )
+        usage_available = (
+            prompt_tokens is not None and completion_tokens is not None
+            and cached_input_tokens is not None
+            and cached_input_tokens <= prompt_tokens
+        )
+        total_tokens = _usage_count(usage.get("total_tokens")) if usage else None
+        if usage_available and total_tokens is None:
+            total_tokens = prompt_tokens + completion_tokens
+        uncached_input_tokens = (
+            prompt_tokens - cached_input_tokens if usage_available else None
+        )
+        if not usage_available:
+            prompt_tokens = completion_tokens = cached_input_tokens = None
+            total_tokens = reasoning_tokens = None
+
+    def cost(tokens: Optional[int], rate: Optional[float]) -> Optional[float]:
+        if free_call:
+            return 0.0
+        return None if tokens is None or rate is None else tokens * rate / 1_000_000
+
+    input_cost = cost(uncached_input_tokens, prices["input"])
+    cached_input_cost = cost(cached_input_tokens, prices["cached_input"])
+    # Provider completion_tokens already includes any billed reasoning tokens.
+    output_cost = cost(completion_tokens, prices["output"])
+    cost_parts = (input_cost, cached_input_cost, output_cost)
+    estimated_cost = None if any(part is None for part in cost_parts) else sum(cost_parts)
+    return {
+        "model": model,
+        "status": status,
+        "api_request": api_request,
+        "local_cache_hit": local_cache_hit,
+        "usage_available": usage_available,
+        "usage": usage,
+        "prompt_tokens": prompt_tokens,
+        "cached_input_tokens": cached_input_tokens,
+        "uncached_input_tokens": uncached_input_tokens,
+        "completion_tokens": completion_tokens,
+        "total_tokens": total_tokens,
+        "reasoning_tokens": reasoning_tokens,
+        "input_usd_per_1m": prices["input"],
+        "cached_input_usd_per_1m": prices["cached_input"],
+        "output_usd_per_1m": prices["output"],
+        "input_cost_usd": input_cost,
+        "cached_input_cost_usd": cached_input_cost,
+        "output_cost_usd": output_cost,
+        "estimated_api_cost_usd": estimated_cost,
+        "billable_cost_usd": estimated_cost,
+    }
 
 
 def _coerce_cell(value: Any) -> str:
@@ -528,6 +677,7 @@ def _build_chat_payload(prompt: str) -> Dict[str, Any]:
 def _query_llm(prompt: str) -> str:
     _CACHE_STATS["total"] += 1
     _CACHE_STATS["input_chars_total"] += len(prompt)
+    model = os.environ.get(OPENAI_MODEL_ENV, OPENAI_DEFAULT_MODEL)
     prompt_sha = _prompt_hash(prompt)
     cache = _ensure_cache_loaded()
 
@@ -536,6 +686,10 @@ def _query_llm(prompt: str) -> str:
         _CACHE_STATS["cached"] += 1
         _CACHE_STATS["input_chars_cached"] += len(prompt)
         _CACHE_STATS["output_chars_cached"] += len(response)
+        _LLM_COST_RECORDS.append(_build_cost_record(
+            model=model, status="local_cache_hit", usage=None,
+            api_request=False, local_cache_hit=True,
+        ))
         return response
 
     if _DRY_RUN:
@@ -544,6 +698,9 @@ def _query_llm(prompt: str) -> str:
             "    return raw_csv\n"
         )
         _CACHE_STATS["output_chars_fresh"] += len(response)
+        _LLM_COST_RECORDS.append(_build_cost_record(
+            model=model, status="dry_run", usage=None, api_request=False,
+        ))
         if _CACHE_ENABLED:
             cache[prompt_sha] = response
             _save_cache(cache)
@@ -568,21 +725,53 @@ def _query_llm(prompt: str) -> str:
 
     try:
         with urllib_request.urlopen(request, timeout=300) as response_obj:
-            body = json.loads(response_obj.read().decode("utf-8"))
+            response_text = response_obj.read().decode("utf-8")
     except urllib_error.HTTPError as exc:
         detail = exc.read().decode("utf-8", errors="replace") if hasattr(exc, "read") else str(exc)
+        try:
+            error_body = json.loads(detail)
+        except ValueError:
+            error_body = None
+        _LLM_COST_RECORDS.append(_build_cost_record(
+            model=model, status="http_error",
+            usage=error_body.get("usage") if isinstance(error_body, dict) else None,
+            api_request=True,
+        ))
         raise RuntimeError(f"LLM request failed: {detail}") from exc
+    except Exception:
+        _LLM_COST_RECORDS.append(_build_cost_record(
+            model=model, status="request_error", usage=None, api_request=True,
+        ))
+        raise
+
+    try:
+        body = json.loads(response_text)
+    except ValueError as exc:
+        _LLM_COST_RECORDS.append(_build_cost_record(
+            model=model, status="invalid_json", usage=None, api_request=True,
+        ))
+        raise RuntimeError("Unexpected LLM response: invalid JSON") from exc
+
+    cost_record = _build_cost_record(
+        model=model, status="response_received",
+        usage=body.get("usage") if isinstance(body, dict) else None,
+        api_request=True,
+    )
+    _LLM_COST_RECORDS.append(cost_record)
 
     choices = body.get("choices") if isinstance(body, dict) else None
     if not choices:
+        cost_record["status"] = "missing_choices"
         raise RuntimeError("Unexpected LLM response: missing choices")
     message = choices[0].get("message", {}) if isinstance(choices[0], dict) else {}
     response = message.get("content")
     if not isinstance(response, str) or not response.strip():
+        cost_record["status"] = "missing_assistant_content"
         reasoning = message.get("reasoning") or message.get("thinking")
         detail = " after producing reasoning tokens" if reasoning else ""
         raise RuntimeError(f"Unexpected LLM response: missing assistant content{detail}")
 
+    cost_record["status"] = "success"
     _CACHE_STATS["output_chars_fresh"] += len(response)
     if _CACHE_ENABLED:
         cache[prompt_sha] = response

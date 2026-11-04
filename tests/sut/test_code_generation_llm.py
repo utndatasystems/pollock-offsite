@@ -1,6 +1,10 @@
 from __future__ import annotations
 
+from io import BytesIO
+import json
 from pathlib import Path
+
+import pytest
 
 from sut.code_generation_llm import solution
 
@@ -159,3 +163,92 @@ def test_chat_payload_uses_ollama_reasoning_control(monkeypatch):
 
     assert payload["max_tokens"] == 4096
     assert payload["reasoning_effort"] == "none"
+
+
+def test_api_usage_and_local_cache_costs(tmp_path: Path, monkeypatch):
+    monkeypatch.setenv("OPENAI_API_KEY", "test-key")
+    monkeypatch.setenv("OPENAI_MODEL", "gpt-6-luna")
+    monkeypatch.setenv("OPENAI_ENDPOINT", "https://example.test/v1/chat/completions")
+    monkeypatch.setattr(solution, "_CACHE_ENABLED", True)
+    monkeypatch.setattr(solution, "_CACHE_PATH", str(tmp_path / "llm_cache.json"))
+    monkeypatch.setattr(solution, "_DRY_RUN", False)
+    solution.reset_llm_cost_records()
+    calls = []
+    response = {
+        "choices": [{"message": {"content": "def parse_csv(raw_csv): return raw_csv"}}],
+        "usage": {
+            "prompt_tokens": 120,
+            "completion_tokens": 40,
+            "total_tokens": 160,
+            "prompt_tokens_details": {"cached_tokens": 20},
+            "completion_tokens_details": {"reasoning_tokens": 12},
+        },
+    }
+
+    def fake_urlopen(request, timeout):
+        calls.append(request)
+        return BytesIO(json.dumps(response).encode("utf-8"))
+
+    monkeypatch.setattr(solution.urllib_request, "urlopen", fake_urlopen)
+    assert solution._query_llm("test prompt") == response["choices"][0]["message"]["content"]
+    assert solution._query_llm("test prompt") == response["choices"][0]["message"]["content"]
+
+    records = solution.get_llm_cost_records()
+    summary = solution.get_llm_cost_summary()
+    assert len(calls) == 1
+    assert records[0]["usage"] == response["usage"]
+    assert records[0]["reasoning_tokens"] == 12
+    assert records[1]["local_cache_hit"] is True
+    assert records[1]["billable_cost_usd"] == 0
+    assert summary["api_requests"] == 1
+    assert summary["usage_recorded_calls"] == 1
+    assert summary["uncached_input_tokens"] == 100
+    assert summary["cached_input_tokens"] == 20
+    assert summary["completion_tokens"] == 40
+    assert summary["billable_cost_usd"] == pytest.approx(0.0000302)
+
+
+def test_no_content_response_keeps_billable_usage(monkeypatch):
+    monkeypatch.setenv("OPENAI_API_KEY", "test-key")
+    monkeypatch.setenv("OPENAI_MODEL", "gpt-6-luna")
+    monkeypatch.setenv("OPENAI_ENDPOINT", "https://example.test/v1/chat/completions")
+    monkeypatch.setattr(solution, "_CACHE_ENABLED", False)
+    monkeypatch.setattr(solution, "_DRY_RUN", False)
+    solution.reset_llm_cost_records()
+    response = {
+        "choices": [{"message": {"content": None, "reasoning": "thinking"}}],
+        "usage": {"prompt_tokens": 100, "completion_tokens": 30, "total_tokens": 130},
+    }
+    monkeypatch.setattr(
+        solution.urllib_request, "urlopen",
+        lambda request, timeout: BytesIO(json.dumps(response).encode("utf-8")),
+    )
+
+    with pytest.raises(RuntimeError, match="missing assistant content"):
+        solution._query_llm("failing prompt")
+
+    record = solution.get_llm_cost_records()[0]
+    assert record["status"] == "missing_assistant_content"
+    assert record["completion_tokens"] == 30
+    assert record["billable_cost_usd"] == pytest.approx(0.000025)
+
+
+def test_missing_usage_does_not_become_zero_cost(monkeypatch):
+    monkeypatch.setenv("OPENAI_API_KEY", "test-key")
+    monkeypatch.setenv("OPENAI_MODEL", "gpt-6-luna")
+    monkeypatch.setenv("OPENAI_ENDPOINT", "https://example.test/v1/chat/completions")
+    monkeypatch.setattr(solution, "_CACHE_ENABLED", False)
+    monkeypatch.setattr(solution, "_DRY_RUN", False)
+    solution.reset_llm_cost_records()
+    response = {"choices": [{"message": {"content": "def parse_csv(raw_csv): return raw_csv"}}]}
+    monkeypatch.setattr(
+        solution.urllib_request, "urlopen",
+        lambda request, timeout: BytesIO(json.dumps(response).encode("utf-8")),
+    )
+
+    solution._query_llm("prompt without reported usage")
+
+    summary = solution.get_llm_cost_summary()
+    assert summary["usage_missing_calls"] == 1
+    assert summary["completion_tokens"] is None
+    assert summary["billable_cost_usd"] is None

@@ -1,3 +1,10 @@
+"""Benchmark generated CSV parsers and checkpoint their API usage.
+
+Each *_time.csv row contains per-file token totals and configured-rate cost
+estimates. Each loading/<file>.llm_usage.jsonl contains the raw usage reported
+for every request. Missing API usage or model rates leave costs blank.
+"""
+
 import sys
 import os
 import re
@@ -87,7 +94,10 @@ from solution import (
     configure_llm_cache,
     configure_llm_dry_run,
     get_llm_cache_stats,
+    get_llm_cost_records,
+    get_llm_cost_summary,
     parse_csv_with_validation,
+    reset_llm_cost_records,
 )
 
 if args.model:
@@ -152,9 +162,16 @@ def write_malformed_report(path, malformed=None, error=None):
             text_file.write("\n")
 
 def save_run_df(time_dir, sut_name, filename, records):
-    row = {"filename": filename}
+    row = {"filename": filename, "model": os.environ.get("OPENAI_MODEL", "gpt-5.4")}
     for idx, record in enumerate(records):
-        for field in ("time", "success", "error", "llm_calls", "local_cache_hits"):
+        for field in (
+            "time", "success", "error", "llm_calls", "local_cache_hits",
+            "api_requests", "usage_recorded_calls", "usage_missing_calls",
+            "prompt_tokens", "cached_input_tokens", "uncached_input_tokens",
+            "completion_tokens", "total_tokens", "reasoning_tokens",
+            "input_cost_usd", "cached_input_cost_usd", "output_cost_usd",
+            "estimated_api_cost_usd", "billable_cost_usd",
+        ):
             row[f"{field}_{idx}"] = record.get(field)
 
     update = pd.DataFrame([row]).set_index("filename")
@@ -168,6 +185,17 @@ def save_run_df(time_dir, sut_name, filename, records):
     temporary_path = run_path + ".tmp"
     run_df.to_csv(temporary_path, index_label="filename")
     os.replace(temporary_path, run_path)
+
+
+def save_usage_records(path, records, repetition):
+    """Checkpoint raw API usage for every call, including failed generations."""
+    with open(path, "w" if repetition == 0 else "a", encoding="utf-8") as output:
+        for call_index, record in enumerate(records):
+            output.write(json.dumps({
+                "repetition": repetition,
+                "call_index": call_index,
+                **record,
+            }, ensure_ascii=True) + "\n")
 
 
 benchmark_files = os.listdir(IN_DIR)
@@ -189,6 +217,7 @@ for idx, file in enumerate(benchmark_files):
     file_records = []
     for time_rep in range(N_REPETITIONS):
         malformed = []
+        reset_llm_cost_records()
         stats_before = get_llm_cache_stats()
         success = False
         error_message = None
@@ -227,13 +256,19 @@ for idx, file in enumerate(benchmark_files):
             write_malformed_report(malformed_path, malformed=malformed, error=e)
 
         stats_after = get_llm_cache_stats()
-        file_records.append({
+        cost_summary = get_llm_cost_summary()
+        cost_summary.update({
             "time": end - start,
             "success": success,
             "error": error_message,
             "llm_calls": stats_after["total"] - stats_before["total"],
             "local_cache_hits": stats_after["cached"] - stats_before["cached"],
         })
+        file_records.append(cost_summary)
+        save_usage_records(
+            join(OUT_DIR, f + ".llm_usage.jsonl"),
+            get_llm_cost_records(), time_rep,
+        )
 
         try:
             del start, end, df, text_file
