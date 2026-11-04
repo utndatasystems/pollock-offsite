@@ -168,8 +168,10 @@ def save_run_df(time_dir, sut_name, filename, records):
             "time", "success", "error", "llm_calls", "local_cache_hits",
             "api_requests", "usage_recorded_calls", "usage_missing_calls",
             "prompt_tokens", "cached_input_tokens", "uncached_input_tokens",
+            "ordinary_input_tokens", "cache_write_tokens",
             "completion_tokens", "total_tokens", "reasoning_tokens",
-            "input_cost_usd", "cached_input_cost_usd", "output_cost_usd",
+            "input_cost_usd", "cached_input_cost_usd", "cache_write_cost_usd",
+            "output_cost_usd",
             "estimated_api_cost_usd", "billable_cost_usd",
         ):
             row[f"{field}_{idx}"] = record.get(field)

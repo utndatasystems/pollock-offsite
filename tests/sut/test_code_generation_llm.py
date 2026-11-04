@@ -180,7 +180,7 @@ def test_api_usage_and_local_cache_costs(tmp_path: Path, monkeypatch):
             "prompt_tokens": 120,
             "completion_tokens": 40,
             "total_tokens": 160,
-            "prompt_tokens_details": {"cached_tokens": 20},
+            "prompt_tokens_details": {"cached_tokens": 20, "cache_write_tokens": 40},
             "completion_tokens_details": {"reasoning_tokens": 12},
         },
     }
@@ -204,8 +204,11 @@ def test_api_usage_and_local_cache_costs(tmp_path: Path, monkeypatch):
     assert summary["usage_recorded_calls"] == 1
     assert summary["uncached_input_tokens"] == 100
     assert summary["cached_input_tokens"] == 20
+    assert summary["ordinary_input_tokens"] == 60
+    assert summary["cache_write_tokens"] == 40
     assert summary["completion_tokens"] == 40
-    assert summary["billable_cost_usd"] == pytest.approx(0.0000302)
+    assert summary["cache_write_cost_usd"] == pytest.approx(0.000005)
+    assert summary["billable_cost_usd"] == pytest.approx(0.0000312)
 
 
 def test_no_content_response_keeps_billable_usage(monkeypatch):

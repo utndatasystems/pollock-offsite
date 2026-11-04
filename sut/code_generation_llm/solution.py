@@ -143,8 +143,10 @@ def get_llm_cost_summary() -> Dict[str, Any]:
     }
     for field in (
         "prompt_tokens", "cached_input_tokens", "uncached_input_tokens",
+        "ordinary_input_tokens", "cache_write_tokens",
         "completion_tokens", "total_tokens", "reasoning_tokens",
-        "input_cost_usd", "cached_input_cost_usd", "output_cost_usd",
+        "input_cost_usd", "cached_input_cost_usd", "cache_write_cost_usd",
+        "output_cost_usd",
         "estimated_api_cost_usd", "billable_cost_usd",
     ):
         values = [record[field] for record in records]
@@ -158,7 +160,8 @@ def _usage_count(value: Any) -> Optional[int]:
 
 def _model_prices_usd_per_1m(model: str) -> Dict[str, Optional[float]]:
     if _uses_ollama():
-        return {"input": 0.0, "cached_input": 0.0, "output": 0.0}
+        return {"input": 0.0, "cached_input": 0.0,
+                "cache_write": 0.0, "output": 0.0}
     prices: Dict[str, Optional[float]] = dict(MODEL_PRICES_USD_PER_1M.get(
         model.lower(), {"input": None, "cached_input": None, "output": None}
     ))
@@ -173,6 +176,19 @@ def _model_prices_usd_per_1m(model: str) -> Dict[str, Optional[float]]:
                 prices[field] = price if math.isfinite(price) and price >= 0 else None
             except ValueError:
                 prices[field] = None
+    # GPT-5.6 and later charge 1.25x input for default 30-minute cache writes.
+    prices["cache_write"] = (
+        prices["input"] * 1.25
+        if model.lower().startswith(("gpt-5.6", "gpt-6")) and prices["input"] is not None
+        else prices["input"]
+    )
+    override = os.environ.get("CODE_GENERATION_LLM_CACHE_WRITE_USD_PER_1M")
+    if override is not None:
+        try:
+            price = float(override)
+            prices["cache_write"] = price if math.isfinite(price) and price >= 0 else None
+        except ValueError:
+            prices["cache_write"] = None
     return prices
 
 
@@ -186,6 +202,7 @@ def _build_cost_record(
     if not api_request:
         prompt_tokens = completion_tokens = cached_input_tokens = 0
         total_tokens = reasoning_tokens = uncached_input_tokens = 0
+        ordinary_input_tokens = cache_write_tokens = 0
         usage_available = False
     else:
         prompt_tokens = _usage_count(usage.get("prompt_tokens")) if usage else None
@@ -193,6 +210,10 @@ def _build_cost_record(
         details = usage.get("prompt_tokens_details") if usage else None
         cached_input_tokens = (
             _usage_count(details.get("cached_tokens", 0)) if isinstance(details, dict) else 0
+        )
+        cache_write_tokens = (
+            _usage_count(details.get("cache_write_tokens", 0))
+            if isinstance(details, dict) else 0
         )
         completion_details = usage.get("completion_tokens_details") if usage else None
         reasoning_tokens = (
@@ -202,7 +223,8 @@ def _build_cost_record(
         usage_available = (
             prompt_tokens is not None and completion_tokens is not None
             and cached_input_tokens is not None
-            and cached_input_tokens <= prompt_tokens
+            and cache_write_tokens is not None
+            and cached_input_tokens + cache_write_tokens <= prompt_tokens
         )
         total_tokens = _usage_count(usage.get("total_tokens")) if usage else None
         if usage_available and total_tokens is None:
@@ -210,20 +232,24 @@ def _build_cost_record(
         uncached_input_tokens = (
             prompt_tokens - cached_input_tokens if usage_available else None
         )
+        ordinary_input_tokens = (
+            uncached_input_tokens - cache_write_tokens if usage_available else None
+        )
         if not usage_available:
             prompt_tokens = completion_tokens = cached_input_tokens = None
-            total_tokens = reasoning_tokens = None
+            total_tokens = reasoning_tokens = cache_write_tokens = None
 
     def cost(tokens: Optional[int], rate: Optional[float]) -> Optional[float]:
         if free_call:
             return 0.0
         return None if tokens is None or rate is None else tokens * rate / 1_000_000
 
-    input_cost = cost(uncached_input_tokens, prices["input"])
+    input_cost = cost(ordinary_input_tokens, prices["input"])
     cached_input_cost = cost(cached_input_tokens, prices["cached_input"])
+    cache_write_cost = cost(cache_write_tokens, prices["cache_write"])
     # Provider completion_tokens already includes any billed reasoning tokens.
     output_cost = cost(completion_tokens, prices["output"])
-    cost_parts = (input_cost, cached_input_cost, output_cost)
+    cost_parts = (input_cost, cached_input_cost, cache_write_cost, output_cost)
     estimated_cost = None if any(part is None for part in cost_parts) else sum(cost_parts)
     return {
         "model": model,
@@ -235,14 +261,18 @@ def _build_cost_record(
         "prompt_tokens": prompt_tokens,
         "cached_input_tokens": cached_input_tokens,
         "uncached_input_tokens": uncached_input_tokens,
+        "ordinary_input_tokens": ordinary_input_tokens,
+        "cache_write_tokens": cache_write_tokens,
         "completion_tokens": completion_tokens,
         "total_tokens": total_tokens,
         "reasoning_tokens": reasoning_tokens,
         "input_usd_per_1m": prices["input"],
         "cached_input_usd_per_1m": prices["cached_input"],
+        "cache_write_usd_per_1m": prices["cache_write"],
         "output_usd_per_1m": prices["output"],
         "input_cost_usd": input_cost,
         "cached_input_cost_usd": cached_input_cost,
+        "cache_write_cost_usd": cache_write_cost,
         "output_cost_usd": output_cost,
         "estimated_api_cost_usd": estimated_cost,
         "billable_cost_usd": estimated_cost,
