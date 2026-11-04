@@ -203,6 +203,13 @@ def _query_llm(
         ) from exc
 
     body = response.json()
+    # Record usage before validating the answer: reasoning-only and truncated
+    # replies can still be billed by the provider.
+    usage = body.get("usage")
+    _LAST_LLM_COST_RECORD = _build_cost_record(
+        backend=backend, model=model, api_base=api_base, cache_path=cache_path,
+        usage=usage, local_cache_hit=False,
+    )
 
     choices = body.get("choices")
     if not choices:
@@ -238,16 +245,6 @@ def _query_llm(
         raise RuntimeError(
             f"Unexpected LLM response: missing message content\nResponse: {body}"
         )
-
-    usage = body.get("usage")
-    _LAST_LLM_COST_RECORD = _build_cost_record(
-        backend=backend,
-        model=model,
-        api_base=api_base,
-        cache_path=cache_path,
-        usage=usage,
-        local_cache_hit=False,
-    )
 
     _write_llm_cache(
         cache_path=cache_path,
@@ -346,37 +343,66 @@ def _build_cost_record(
     local_cache_hit: bool,
 ) -> dict:
     usage = usage if isinstance(usage, dict) else {}
-    prompt_tokens = _int_or_zero(usage.get("prompt_tokens"))
-    completion_tokens = _int_or_zero(usage.get("completion_tokens"))
-    total_tokens = _int_or_zero(usage.get("total_tokens"))
+    prompt_tokens = _int_or_none(usage.get("prompt_tokens"))
+    completion_tokens = _int_or_none(usage.get("completion_tokens"))
+    total_tokens = _int_or_none(usage.get("total_tokens"))
     prompt_details = usage.get("prompt_tokens_details")
     cached_input_tokens = 0
     if isinstance(prompt_details, dict):
         cached_input_tokens = _int_or_zero(prompt_details.get("cached_tokens"))
-    uncached_input_tokens = max(prompt_tokens - cached_input_tokens, 0)
+    cache_write_tokens = (
+        _int_or_zero(prompt_details.get("cache_write_tokens"))
+        if isinstance(prompt_details, dict) else 0
+    )
+    usage_available = (
+        prompt_tokens is not None and completion_tokens is not None
+        and cached_input_tokens + cache_write_tokens <= prompt_tokens
+    )
+    if usage_available:
+        uncached_input_tokens = prompt_tokens - cached_input_tokens
+        ordinary_input_tokens = uncached_input_tokens - cache_write_tokens
+        if total_tokens is None:
+            total_tokens = prompt_tokens + completion_tokens
+    else:
+        prompt_tokens = cached_input_tokens = cache_write_tokens = None
+        completion_tokens = total_tokens = None
+        uncached_input_tokens = ordinary_input_tokens = None
     prices = _model_prices_usd_per_1m(model, backend)
 
-    input_cost = _token_cost(uncached_input_tokens, prices.get("input"))
+    input_cost = _token_cost(ordinary_input_tokens, prices.get("input"))
     cached_input_cost = _token_cost(cached_input_tokens, prices.get("cached_input"))
+    cache_write_rate = (
+        prices.get("input") * 1.25
+        if model.lower().startswith(("gpt-5.6", "gpt-6"))
+        and prices.get("input") is not None else prices.get("input")
+    )
+    cache_write_cost = _token_cost(cache_write_tokens, cache_write_rate)
     output_cost = _token_cost(completion_tokens, prices.get("output"))
-    estimated_api_cost = _sum_costs(input_cost, cached_input_cost, output_cost)
+    estimated_api_cost = _sum_costs(
+        input_cost, cached_input_cost, cache_write_cost, output_cost,
+    )
 
     return {
         "backend": backend,
         "model": model,
         "api_base": api_base,
         "local_cache_hit": local_cache_hit,
+        "usage_available": usage_available,
         "cache_path": str(cache_path),
         "prompt_tokens": prompt_tokens,
         "cached_input_tokens": cached_input_tokens,
         "uncached_input_tokens": uncached_input_tokens,
+        "ordinary_input_tokens": ordinary_input_tokens,
+        "cache_write_tokens": cache_write_tokens,
         "completion_tokens": completion_tokens,
         "total_tokens": total_tokens,
         "input_usd_per_1m": prices.get("input"),
         "cached_input_usd_per_1m": prices.get("cached_input"),
+        "cache_write_usd_per_1m": cache_write_rate,
         "output_usd_per_1m": prices.get("output"),
         "input_cost_usd": input_cost,
         "cached_input_cost_usd": cached_input_cost,
+        "cache_write_cost_usd": cache_write_cost,
         "output_cost_usd": output_cost,
         "estimated_api_cost_usd": estimated_api_cost,
         "billable_cost_usd": 0.0 if local_cache_hit else estimated_api_cost,
@@ -410,8 +436,8 @@ def _model_prices_usd_per_1m(model: str, backend: str) -> dict:
     return {"input": None, "cached_input": None, "output": None}
 
 
-def _token_cost(tokens: int, usd_per_1m: float | None) -> float | None:
-    if usd_per_1m is None:
+def _token_cost(tokens: int | None, usd_per_1m: float | None) -> float | None:
+    if tokens is None or usd_per_1m is None:
         return None
     return tokens * usd_per_1m / 1_000_000
 
@@ -427,6 +453,14 @@ def _int_or_zero(value: object) -> int:
         return int(value)
     except (TypeError, ValueError):
         return 0
+
+
+def _int_or_none(value: object) -> int | None:
+    try:
+        count = int(value)
+    except (TypeError, ValueError):
+        return None
+    return count if count >= 0 else None
 
 
 def _float_or_none(value: str | None) -> float | None:

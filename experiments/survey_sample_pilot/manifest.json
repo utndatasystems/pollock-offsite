@@ -1,0 +1,38 @@
+{
+  "dataset": "survey_sample",
+  "files": [
+    "download (6).csv",
+    "epcs-dwp-cmg-spend-july-2017.csv",
+    "Note_4_Staff_costs_-_Average_number_of_persons_employed_13-14.csv",
+    "20170320-ePC_Data-Travel-Stationery.csv"
+  ],
+  "models": [
+    "gpt-6-luna",
+    "gpt-6.1-sol"
+  ],
+  "architectures": [
+    "hybrid",
+    "full_llm",
+    "code_generation"
+  ],
+  "baselines": [
+    "clevercsv",
+    "pandas_oracle_dialect"
+  ],
+  "started_utc": "2026-11-02T12:38:20.017124+00:00",
+  "reference": "Existing data/survey_sample/clean files; no new human adjudication",
+  "metric": "evaluate_single_file strict whole-table match, row-order invariant",
+  "input_sha256": {
+    "download (6).csv": "2ee9276e77a0119d12c6aa77fffbbd507f65b31d11d2c8b095a3ee8dab12aecb",
+    "epcs-dwp-cmg-spend-july-2017.csv": "3124e2945b560fd811458dcc50e1c2d1c264e7077ae5a061681cbdad35f4a0b2",
+    "Note_4_Staff_costs_-_Average_number_of_persons_employed_13-14.csv": "c0698748e95a4101f09576a8a6599cb78203cc13915f47ed8e0bbd2eada970de",
+    "20170320-ePC_Data-Travel-Stationery.csv": "e4c0e6ae66288ce44b85778d0c47eec70a585f9321c1a63f59aac05dc71b237b"
+  },
+  "reference_sha256": {
+    "download (6).csv": "8ce393a217e8303808540595c885dfc604ff8c4d02aeda1c20b24444067394cb",
+    "epcs-dwp-cmg-spend-july-2017.csv": "d5aeb405d54b67d558de98287416cedbacc21914b1a89a241117e3c886cda278",
+    "Note_4_Staff_costs_-_Average_number_of_persons_employed_13-14.csv": "00a429da7e4e48a278c6cd22fc40f07e88d6c707c9ba2512239aeb82fa7b6c6d",
+    "20170320-ePC_Data-Travel-Stationery.csv": "87f68b719dc8a553f3d7850016ef931f6decc4309ba145fba6d6c7aa671a468d"
+  },
+  "completed_utc": "2026-11-02T12:43:36.688700+00:00"
+}

@@ -10,6 +10,7 @@ REPO_ROOT = abspath(join(dirname(__file__), '..', '..'))
 sys.path.insert(0, join(REPO_ROOT, 'sut'))
 
 import pandas as pd
+import requests
 from tqdm import tqdm
 
 from utils import print
@@ -173,7 +174,12 @@ def save_run_df(time_dir, sut_name, run_dict):
             row[f"time_{idx}"] = record.get('time')
             row[f"uncached_input_tokens_{idx}"] = record.get('uncached_input_tokens')
             row[f"cached_input_tokens_{idx}"] = record.get('cached_input_tokens')
+            row[f"cache_write_tokens_{idx}"] = record.get('cache_write_tokens')
             row[f"completion_tokens_{idx}"] = record.get('completion_tokens')
+            for field in ('input_cost_usd', 'cached_input_cost_usd',
+                          'cache_write_cost_usd', 'output_cost_usd',
+                          'billable_cost_usd'):
+                row[f"{field}_{idx}"] = record.get(field)
         rows.append(row)
 
     update_run_df = pd.DataFrame(rows)
@@ -205,6 +211,7 @@ for idx, file in enumerate(tqdm(benchmark_files, total=len(benchmark_files), des
 
     for time_rep in range(N_REPETITIONS):
         start = time.time()
+        rejected_before_generation = False
         try:
             # This is where the full_llm_parser is being called
             df = parse_csv(
@@ -223,17 +230,30 @@ for idx, file in enumerate(tqdm(benchmark_files, total=len(benchmark_files), des
         except Exception as e:
             end = time.time()
             print('\t', e)
+            rejected_before_generation = (
+                isinstance(e, requests.HTTPError)
+                and getattr(e.response, 'status_code', None) == 400
+                and 'string too long' in str(e)
+            )
             with open(out_filepath, 'w') as text_file:
                 text_file.write('Application Error\n')
                 text_file.write(str(e))
 
         elapsed = end - start
         cost_record = get_last_llm_cost_record() or {}
+        if rejected_before_generation and not cost_record:
+            cost_record = {'billable_cost_usd': 0.0}
         run_dict.setdefault(f, []).append({
             "time": elapsed,
             "uncached_input_tokens": cost_record.get("uncached_input_tokens"),
             "cached_input_tokens": cost_record.get("cached_input_tokens"),
+            "cache_write_tokens": cost_record.get("cache_write_tokens"),
             "completion_tokens": cost_record.get("completion_tokens"),
+            "input_cost_usd": cost_record.get("input_cost_usd"),
+            "cached_input_cost_usd": cost_record.get("cached_input_cost_usd"),
+            "cache_write_cost_usd": cost_record.get("cache_write_cost_usd"),
+            "output_cost_usd": cost_record.get("output_cost_usd"),
+            "billable_cost_usd": cost_record.get("billable_cost_usd"),
         })
 
         try:
