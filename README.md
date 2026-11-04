@@ -1,4 +1,4 @@
-# CSV Storm
+# CSVStorm
 
 A benchmark for agentic CSV loading and reconstruction.
 
