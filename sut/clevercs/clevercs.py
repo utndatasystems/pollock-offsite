@@ -18,6 +18,10 @@ parser.add_argument(
     action="store_true",
     help="Re-process files even if output already exists (default: skip already-processed files)",
 )
+parser.add_argument(
+    "--file", action="append", default=None,
+    help="Process only these dataset CSV filenames; repeat for multiple files.",
+)
 args = parser.parse_args()
 
 sut = 'clevercs'
@@ -33,6 +37,11 @@ N_REPETITIONS = int(os.environ.get("N_REPETITIONS", 3))
 
 times_dict = {}
 benchmark_files = listdir(IN_DIR)
+if args.file:
+    missing = sorted(set(args.file) - set(benchmark_files))
+    if missing:
+        parser.error(f"dataset CSV files not found: {', '.join(missing)}")
+    benchmark_files = sorted(set(args.file))
 
 for idx, f in enumerate(benchmark_files):
     in_filepath = join(IN_DIR, f)

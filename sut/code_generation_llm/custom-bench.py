@@ -21,6 +21,10 @@ parser.add_argument(
          "(default: skip already-processed files)",
 )
 parser.add_argument(
+    "--file", action="append", default=None,
+    help="Process only these dataset CSV filenames; repeat for multiple files.",
+)
+parser.add_argument(
     "--cheat",
     action="store_true",
     help="Load the ground-truth file from data/<dataset>/clean instead of using LLM repair",
@@ -167,6 +171,11 @@ def save_run_df(time_dir, sut_name, filename, records):
 
 
 benchmark_files = os.listdir(IN_DIR)
+if args.file:
+    missing = sorted(set(args.file) - set(benchmark_files))
+    if missing:
+        parser.error(f"dataset CSV files not found: {', '.join(missing)}")
+    benchmark_files = sorted(set(args.file))
 for idx, file in enumerate(benchmark_files):
     f = os.path.basename(file)
     in_filepath = join(IN_DIR, f)
