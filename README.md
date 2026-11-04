@@ -65,7 +65,7 @@ copy of the full run directory if raw parser outputs are needed later.
 
 Download the prepared CSV Storm dataset:
 
-> <img src="https://huggingface.co/front/assets/huggingface_logo-noborder.svg" alt="Hugging Face" width="20" height="20"> **Dataset download:** [CSV Storm on Hugging Face — link to be added](https://huggingface.co/datasets/REPLACE_WITH_ORGANIZATION/REPLACE_WITH_DATASET)
+> <img src="https://huggingface.co/front/assets/huggingface_logo-noborder.svg" alt="Hugging Face" width="20" height="20"> **Dataset download:**  [CSV Storm on Hugging Face](https://huggingface.co/datasets/csvstorm/csvstorm)
 
 Alternatively, generate CSV Storm locally:
 
