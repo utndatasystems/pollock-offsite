@@ -39,9 +39,9 @@ DEFAULT_MODEL_PRICES_USD_PER_1M = {
         "output": 30.00,
     },
     "gpt-5.6-sol": {
-        "input": 5.00,
-        "cached_input": 0.50,
-        "output": 30.00,
+        "input": 4.00,
+        "cached_input": 0.40,
+        "output": 20.00,
     },
     "gpt-5.6-luna": {
         "input": 0.20,
