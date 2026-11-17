@@ -37,6 +37,17 @@ def successful_csv(filepath):
         return 1
 
 
+def _unescape_line_breaks(rows):
+    # Treat literal "\r\n", "\n" and "\r" text in a cell the same as a real line
+    # break, so a GT that escaped quoted line breaks matches an output that kept them.
+    # Files are read in universal-newline mode, which already turns every real break
+    # into "\n", so all three escapes map to "\n" too.
+    return [
+        [c.replace("\\r\\n", "\n").replace("\\n", "\n").replace("\\r", "\n") for c in row]
+        for row in rows
+    ]
+
+
 def header_record_cell_measures_csv(source_csv, loaded_csv, n_jobs=1, nrows=None):
     # Both files are parsed as normal comma-delimited CSV after conversion:
     # source_csv is the expected clean file, loaded_csv is the SUT output.
@@ -58,6 +69,9 @@ def header_record_cell_measures_csv(source_csv, loaded_csv, n_jobs=1, nrows=None
         with open(loaded_csv, "r", encoding=encoding) as f:
             reader = csv.reader(f, delimiter=",", quotechar='"', doublequote=True)
             loaded_rows = [row for row in reader]
+
+    source_rows = _unescape_line_breaks(source_rows)
+    loaded_rows = _unescape_line_breaks(loaded_rows)
 
     if nrows is not None:
         source_rows = source_rows[: nrows + 1]
@@ -139,7 +153,7 @@ def header_record_cell_measures_csv(source_csv, loaded_csv, n_jobs=1, nrows=None
 
 def _read_csv_rows(path):
     with open(path, "r", encoding="utf-8-sig") as f:
-        return list(csv.reader(f, delimiter=",", quotechar='"', doublequote=True))
+        return _unescape_line_breaks(csv.reader(f, delimiter=",", quotechar='"', doublequote=True))
 
 
 def _rows_match(expected_rows, loaded_rows, row_order_invariant):
