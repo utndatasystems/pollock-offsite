@@ -27,6 +27,14 @@ Priority order: exactly hit the expected column count; each value fits its colum
 """.strip()
 
 
+# A wrong dialect makes every row a reject, so the repair prompt can grow to the
+# whole file. Estimate the call at ~4 characters per token and skip it when it
+# would exceed what the model can accept anyway.
+REPAIR_CHARS_PER_TOKEN = 4
+REPAIR_TOKEN_BUDGET = 600_000
+
+
+
 def _unique_duckdb_columns(count: int) -> Dict[str, str]:
     return {f"_c{i}": "VARCHAR" for i in range(count)}
 
@@ -451,6 +459,17 @@ def infer_repairs_with_llm(
     ])
 
     # Estimate: output is repaired fields ≈ size of raw faulty lines + JSON overhead per item
+    faulty_chars = sum(len(item.get("raw") or "") for item in faulty_lines)
+    estimated_tokens = (len(prompt) + faulty_chars) // REPAIR_CHARS_PER_TOKEN
+    if estimated_tokens > REPAIR_TOKEN_BUDGET:
+        trace.write(
+            "llm_faulty_line_repair_skipped",
+            estimated_tokens=estimated_tokens,
+            budget=REPAIR_TOKEN_BUDGET,
+            faulty_lines=len(faulty_lines),
+        )
+        return {}
+
     answer = call_llm(prompt, trace, "llm_faulty_line_repair")
     try:
         parsed = _extract_json_object(answer)
