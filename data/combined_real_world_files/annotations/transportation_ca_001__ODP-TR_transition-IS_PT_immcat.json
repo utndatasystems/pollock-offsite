@@ -1,0 +1,94 @@
+{
+  "provenance": {
+    "candidate_id": "transportation_ca_001",
+    "topic": "transportation",
+    "search_term": "transit",
+    "repository": "open.canada.ca/cic/1b026aab-edb3-4d5d-8231-270a09ed4e82",
+    "repository_url": "https://open.canada.ca/data/en/dataset/1b026aab-edb3-4d5d-8231-270a09ed4e82",
+    "source_path": "[rounded numbers - not for calculations] Canada – Permanent Residents with Prior Study Permit Holder Status by Province/Territory and Immigration Category",
+    "source_url": "https://www.ircc.canada.ca/opendata-donneesouvertes/data/ODP-TR_transition-IS_PT_immcat.csv",
+    "commit_ref": "2019-01-14T17:50:36.174545",
+    "license_spdx": "OGL-Canada-2.0",
+    "license_url": "https://open.canada.ca/en/open-government-licence-canada",
+    "local_path": "transportation/transportation_ca_001__ODP-TR_transition-IS_PT_immcat.csv",
+    "encoding": "utf-8",
+    "delimiter": "TAB",
+    "byte_size": "1864305",
+    "physical_lines": "9274",
+    "logical_rows": "9274",
+    "mode_columns": "15",
+    "anomaly_score": "3",
+    "anomalies": "non_comma_delimiter",
+    "profile_error": ""
+  },
+  "annotation": {
+    "source": "transportation/transportation_ca_001__ODP-TR_transition-IS_PT_immcat.csv",
+    "source_encoding": "utf-8",
+    "input_delimiter": ",",
+    "source_line_ranges": [
+      {
+        "start": 1,
+        "end": 100
+      }
+    ],
+    "shown_line_count": 100,
+    "source_total_lines": 9274,
+    "issues": [
+      {
+        "label": "non_comma_delimiter",
+        "reason": "The detected delimiter is not a comma.",
+        "lines": "file-level"
+      }
+    ],
+    "copy_events": [
+      {
+        "ranges": [
+          {
+            "start": 2,
+            "end": 100
+          }
+        ],
+        "characters": 19405,
+        "copied_at": "2026-11-17T12:25:51.133Z"
+      }
+    ],
+    "error_description": "tab delimiter",
+    "working_origin_spans": [
+      {
+        "start": 0,
+        "end": 4,
+        "source_line": 2
+      },
+      {
+        "start": 19304,
+        "end": 19405,
+        "source_line": 100
+      }
+    ],
+    "header": {
+      "present": true,
+      "text": "EN_YEAR,EN_QUARTER,EN_MONTH,FR_ANNEÉ,FR_TRIMESTRE,FR_MOIS,EN_PROVINCE_TERRITORY,FR_PROVINCE_TERRITOIRE,EN_IMMIGRATION_CATEGORY-MAIN_CATEGORY,FR_CATÉGORIE_D'IMMIGRATION-CATÉGORIE_PRINCIPALE,EN_IMMIGRATION_CATEGORY-GROUP,FR_CATÉGORIE_D'IMMIGRATION-GROUPE,EN_IMMIGRATION_CATEGORY-COMPONENT,FR_CATÉGORIE_D'IMMIGRATION-COMPOSANTE,TOTAL",
+      "source_line": 1
+    },
+    "cleaned_rows": 99,
+    "cleaned_column_count": 15,
+    "cleaned_columns": [
+      "EN_YEAR",
+      "EN_QUARTER",
+      "EN_MONTH",
+      "FR_ANNEÉ",
+      "FR_TRIMESTRE",
+      "FR_MOIS",
+      "EN_PROVINCE_TERRITORY",
+      "FR_PROVINCE_TERRITOIRE",
+      "EN_IMMIGRATION_CATEGORY-MAIN_CATEGORY",
+      "FR_CATÉGORIE_D'IMMIGRATION-CATÉGORIE_PRINCIPALE",
+      "EN_IMMIGRATION_CATEGORY-GROUP",
+      "FR_CATÉGORIE_D'IMMIGRATION-GROUPE",
+      "EN_IMMIGRATION_CATEGORY-COMPONENT",
+      "FR_CATÉGORIE_D'IMMIGRATION-COMPOSANTE",
+      "TOTAL"
+    ],
+    "exported_at": "2026-11-17T12:28:42.224321+00:00"
+  }
+}

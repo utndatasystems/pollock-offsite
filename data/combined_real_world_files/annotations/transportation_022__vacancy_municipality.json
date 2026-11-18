@@ -1,0 +1,596 @@
+{
+  "provenance": {
+    "candidate_id": "transportation_022",
+    "topic": "transportation",
+    "search_term": "gtfs",
+    "repository": "ingo-stallknecht/swiss-commute-housing",
+    "repository_url": "https://github.com/ingo-stallknecht/swiss-commute-housing",
+    "source_path": "data/vacancy_municipality.csv",
+    "source_url": "https://github.com/ingo-stallknecht/swiss-commute-housing/blob/main/data/vacancy_municipality.csv",
+    "commit_ref": "main",
+    "license_spdx": "MIT",
+    "license_url": "https://api.github.com/repos/ingo-stallknecht/swiss-commute-housing/license?ref=main",
+    "local_path": "transportation/transportation_022__vacancy_municipality.csv",
+    "encoding": "utf-8-sig",
+    "delimiter": ";",
+    "byte_size": "738694",
+    "physical_lines": "2116",
+    "logical_rows": "2116",
+    "mode_columns": "32",
+    "anomaly_score": "3",
+    "anomalies": "non_comma_delimiter",
+    "profile_error": ""
+  },
+  "annotation": {
+    "source": "transportation/transportation_022__vacancy_municipality.csv",
+    "source_encoding": "utf-8-sig",
+    "input_delimiter": ";",
+    "source_line_ranges": [
+      {
+        "start": 1,
+        "end": 100
+      }
+    ],
+    "shown_line_count": 100,
+    "source_total_lines": 2116,
+    "issues": [
+      {
+        "label": "non_comma_delimiter",
+        "reason": "The detected delimiter is not a comma.",
+        "lines": "file-level"
+      }
+    ],
+    "copy_events": [
+      {
+        "ranges": [
+          {
+            "start": 2,
+            "end": 100
+          }
+        ],
+        "characters": 34287,
+        "copied_at": "2026-11-17T12:13:18.031Z"
+      }
+    ],
+    "error_description": "semicolon delimiter",
+    "working_origin_spans": [
+      {
+        "start": 0,
+        "end": 350,
+        "source_line": 2
+      },
+      {
+        "start": 350,
+        "end": 694,
+        "source_line": 3
+      },
+      {
+        "start": 694,
+        "end": 1037,
+        "source_line": 4
+      },
+      {
+        "start": 1037,
+        "end": 1388,
+        "source_line": 5
+      },
+      {
+        "start": 1388,
+        "end": 1735,
+        "source_line": 6
+      },
+      {
+        "start": 1735,
+        "end": 2079,
+        "source_line": 7
+      },
+      {
+        "start": 2079,
+        "end": 2427,
+        "source_line": 8
+      },
+      {
+        "start": 2427,
+        "end": 2771,
+        "source_line": 9
+      },
+      {
+        "start": 2771,
+        "end": 3119,
+        "source_line": 10
+      },
+      {
+        "start": 3119,
+        "end": 3469,
+        "source_line": 11
+      },
+      {
+        "start": 3469,
+        "end": 3815,
+        "source_line": 12
+      },
+      {
+        "start": 3815,
+        "end": 4172,
+        "source_line": 13
+      },
+      {
+        "start": 4172,
+        "end": 4515,
+        "source_line": 14
+      },
+      {
+        "start": 4515,
+        "end": 4863,
+        "source_line": 15
+      },
+      {
+        "start": 4863,
+        "end": 5208,
+        "source_line": 16
+      },
+      {
+        "start": 5208,
+        "end": 5551,
+        "source_line": 17
+      },
+      {
+        "start": 5551,
+        "end": 5897,
+        "source_line": 18
+      },
+      {
+        "start": 5897,
+        "end": 6250,
+        "source_line": 19
+      },
+      {
+        "start": 6250,
+        "end": 6597,
+        "source_line": 20
+      },
+      {
+        "start": 6597,
+        "end": 6942,
+        "source_line": 21
+      },
+      {
+        "start": 6942,
+        "end": 7289,
+        "source_line": 22
+      },
+      {
+        "start": 7289,
+        "end": 7632,
+        "source_line": 23
+      },
+      {
+        "start": 7632,
+        "end": 7974,
+        "source_line": 24
+      },
+      {
+        "start": 7974,
+        "end": 8321,
+        "source_line": 25
+      },
+      {
+        "start": 8321,
+        "end": 8669,
+        "source_line": 26
+      },
+      {
+        "start": 8669,
+        "end": 9015,
+        "source_line": 27
+      },
+      {
+        "start": 9015,
+        "end": 9364,
+        "source_line": 28
+      },
+      {
+        "start": 9364,
+        "end": 9710,
+        "source_line": 29
+      },
+      {
+        "start": 9710,
+        "end": 10056,
+        "source_line": 30
+      },
+      {
+        "start": 10056,
+        "end": 10400,
+        "source_line": 31
+      },
+      {
+        "start": 10400,
+        "end": 10744,
+        "source_line": 32
+      },
+      {
+        "start": 10744,
+        "end": 11089,
+        "source_line": 33
+      },
+      {
+        "start": 11089,
+        "end": 11431,
+        "source_line": 34
+      },
+      {
+        "start": 11431,
+        "end": 11775,
+        "source_line": 35
+      },
+      {
+        "start": 11775,
+        "end": 12119,
+        "source_line": 36
+      },
+      {
+        "start": 12119,
+        "end": 12464,
+        "source_line": 37
+      },
+      {
+        "start": 12464,
+        "end": 12808,
+        "source_line": 38
+      },
+      {
+        "start": 12808,
+        "end": 13158,
+        "source_line": 39
+      },
+      {
+        "start": 13158,
+        "end": 13500,
+        "source_line": 40
+      },
+      {
+        "start": 13500,
+        "end": 13851,
+        "source_line": 41
+      },
+      {
+        "start": 13851,
+        "end": 14200,
+        "source_line": 42
+      },
+      {
+        "start": 14200,
+        "end": 14545,
+        "source_line": 43
+      },
+      {
+        "start": 14545,
+        "end": 14889,
+        "source_line": 44
+      },
+      {
+        "start": 14889,
+        "end": 15238,
+        "source_line": 45
+      },
+      {
+        "start": 15238,
+        "end": 15581,
+        "source_line": 46
+      },
+      {
+        "start": 15581,
+        "end": 15928,
+        "source_line": 47
+      },
+      {
+        "start": 15928,
+        "end": 16270,
+        "source_line": 48
+      },
+      {
+        "start": 16270,
+        "end": 16616,
+        "source_line": 49
+      },
+      {
+        "start": 16616,
+        "end": 16964,
+        "source_line": 50
+      },
+      {
+        "start": 16964,
+        "end": 17314,
+        "source_line": 51
+      },
+      {
+        "start": 17314,
+        "end": 17659,
+        "source_line": 52
+      },
+      {
+        "start": 17659,
+        "end": 18005,
+        "source_line": 53
+      },
+      {
+        "start": 18005,
+        "end": 18353,
+        "source_line": 54
+      },
+      {
+        "start": 18353,
+        "end": 18698,
+        "source_line": 55
+      },
+      {
+        "start": 18698,
+        "end": 19045,
+        "source_line": 56
+      },
+      {
+        "start": 19045,
+        "end": 19398,
+        "source_line": 57
+      },
+      {
+        "start": 19398,
+        "end": 19742,
+        "source_line": 58
+      },
+      {
+        "start": 19742,
+        "end": 20085,
+        "source_line": 59
+      },
+      {
+        "start": 20085,
+        "end": 20430,
+        "source_line": 60
+      },
+      {
+        "start": 20430,
+        "end": 20779,
+        "source_line": 61
+      },
+      {
+        "start": 20779,
+        "end": 21124,
+        "source_line": 62
+      },
+      {
+        "start": 21124,
+        "end": 21468,
+        "source_line": 63
+      },
+      {
+        "start": 21468,
+        "end": 21814,
+        "source_line": 64
+      },
+      {
+        "start": 21814,
+        "end": 22160,
+        "source_line": 65
+      },
+      {
+        "start": 22160,
+        "end": 22506,
+        "source_line": 66
+      },
+      {
+        "start": 22506,
+        "end": 22850,
+        "source_line": 67
+      },
+      {
+        "start": 22850,
+        "end": 23197,
+        "source_line": 68
+      },
+      {
+        "start": 23197,
+        "end": 23543,
+        "source_line": 69
+      },
+      {
+        "start": 23543,
+        "end": 23891,
+        "source_line": 70
+      },
+      {
+        "start": 23891,
+        "end": 24241,
+        "source_line": 71
+      },
+      {
+        "start": 24241,
+        "end": 24587,
+        "source_line": 72
+      },
+      {
+        "start": 24587,
+        "end": 24933,
+        "source_line": 73
+      },
+      {
+        "start": 24933,
+        "end": 25280,
+        "source_line": 74
+      },
+      {
+        "start": 25280,
+        "end": 25624,
+        "source_line": 75
+      },
+      {
+        "start": 25624,
+        "end": 25974,
+        "source_line": 76
+      },
+      {
+        "start": 25974,
+        "end": 26334,
+        "source_line": 77
+      },
+      {
+        "start": 26334,
+        "end": 26679,
+        "source_line": 78
+      },
+      {
+        "start": 26679,
+        "end": 27024,
+        "source_line": 79
+      },
+      {
+        "start": 27024,
+        "end": 27369,
+        "source_line": 80
+      },
+      {
+        "start": 27369,
+        "end": 27715,
+        "source_line": 81
+      },
+      {
+        "start": 27715,
+        "end": 28063,
+        "source_line": 82
+      },
+      {
+        "start": 28063,
+        "end": 28407,
+        "source_line": 83
+      },
+      {
+        "start": 28407,
+        "end": 28755,
+        "source_line": 84
+      },
+      {
+        "start": 28755,
+        "end": 29099,
+        "source_line": 85
+      },
+      {
+        "start": 29099,
+        "end": 29444,
+        "source_line": 86
+      },
+      {
+        "start": 29444,
+        "end": 29788,
+        "source_line": 87
+      },
+      {
+        "start": 29788,
+        "end": 30131,
+        "source_line": 88
+      },
+      {
+        "start": 30131,
+        "end": 30479,
+        "source_line": 89
+      },
+      {
+        "start": 30479,
+        "end": 30825,
+        "source_line": 90
+      },
+      {
+        "start": 30825,
+        "end": 31171,
+        "source_line": 91
+      },
+      {
+        "start": 31171,
+        "end": 31517,
+        "source_line": 92
+      },
+      {
+        "start": 31517,
+        "end": 31860,
+        "source_line": 93
+      },
+      {
+        "start": 31860,
+        "end": 32206,
+        "source_line": 94
+      },
+      {
+        "start": 32206,
+        "end": 32549,
+        "source_line": 95
+      },
+      {
+        "start": 32549,
+        "end": 32895,
+        "source_line": 96
+      },
+      {
+        "start": 32895,
+        "end": 33241,
+        "source_line": 97
+      },
+      {
+        "start": 33241,
+        "end": 33590,
+        "source_line": 98
+      },
+      {
+        "start": 33590,
+        "end": 33937,
+        "source_line": 99
+      },
+      {
+        "start": 33937,
+        "end": 34287,
+        "source_line": 100
+      }
+    ],
+    "header": {
+      "present": true,
+      "text": "STRUCTURE;STRUCTURE_ID;STRUCTURE_NAME;ACTION;GR_KT_GDE;Grossregionen, Kantone, Bezirke und Gemeinden;WOHN_ANZAHL;Anzahl Zimmer;LEERWOHN_TYP;Typ der leer stehenden Wohnung;MEASURE_DIMENSION;Art der Messung;FREQ;Frequenz der Beobachtung;TIME_PERIOD;Zeitperiode;OBS_VALUE;Beobachtungswert;DIFF_DB_STATE;Stand der Datenbank;DIFF_EMBARGO_DATE;Publikationsdatum;DIFF_LAST_UPDATE;Aktualisierungsdatum;DIFF_REGION_STATE;Raumbezugsdatum;DECIMALS;Dezimalstellen;DIFF_REGION_REF;Raumbezug;OBS_STATUS;Beobachtungsstatus",
+      "source_line": 1
+    },
+    "cleaned_rows": 99,
+    "cleaned_column_count": 32,
+    "cleaned_columns": [
+      "STRUCTURE",
+      "STRUCTURE_ID",
+      "STRUCTURE_NAME",
+      "ACTION",
+      "GR_KT_GDE",
+      "Grossregionen, Kantone, Bezirke und Gemeinden",
+      "WOHN_ANZAHL",
+      "Anzahl Zimmer",
+      "LEERWOHN_TYP",
+      "Typ der leer stehenden Wohnung",
+      "MEASURE_DIMENSION",
+      "Art der Messung",
+      "FREQ",
+      "Frequenz der Beobachtung",
+      "TIME_PERIOD",
+      "Zeitperiode",
+      "OBS_VALUE",
+      "Beobachtungswert",
+      "DIFF_DB_STATE",
+      "Stand der Datenbank",
+      "DIFF_EMBARGO_DATE",
+      "Publikationsdatum",
+      "DIFF_LAST_UPDATE",
+      "Aktualisierungsdatum",
+      "DIFF_REGION_STATE",
+      "Raumbezugsdatum",
+      "DECIMALS",
+      "Dezimalstellen",
+      "DIFF_REGION_REF",
+      "Raumbezug",
+      "OBS_STATUS",
+      "Beobachtungsstatus"
+    ],
+    "exported_at": "2026-11-17T12:13:34.283668+00:00"
+  }
+}

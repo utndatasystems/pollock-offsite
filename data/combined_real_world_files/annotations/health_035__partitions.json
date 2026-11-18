@@ -1,0 +1,199 @@
+{
+  "provenance": {
+    "candidate_id": "health_035",
+    "topic": "health",
+    "search_term": "health",
+    "repository": "tan0528/esp32-monitor-terminal",
+    "repository_url": "https://github.com/tan0528/esp32-monitor-terminal",
+    "source_path": "partitions.csv",
+    "source_url": "https://github.com/tan0528/esp32-monitor-terminal/blob/main/partitions.csv",
+    "commit_ref": "main",
+    "license_spdx": "MIT",
+    "license_url": "https://api.github.com/repos/tan0528/esp32-monitor-terminal/license?ref=main",
+    "local_path": "health/health_035__partitions.csv",
+    "encoding": "utf-8",
+    "delimiter": ",",
+    "byte_size": "404",
+    "physical_lines": "8",
+    "logical_rows": "8",
+    "mode_columns": "6",
+    "anomaly_score": "15",
+    "anomalies": "comment_rows;inconsistent_field_counts;leading_comment;possible_unescaped_multiline",
+    "profile_error": ""
+  },
+  "annotation": {
+    "source": "health/health_035__partitions.csv",
+    "source_file": "original_inspected.csv",
+    "source_encoding": "utf-8",
+    "source_line_ranges": [
+      {
+        "start": 1,
+        "end": 8
+      }
+    ],
+    "shown_line_count": 8,
+    "source_total_lines": 8,
+    "issues": [
+      {
+        "label": "comment_rows",
+        "reason": "Rows beginning with '#' may be comments rather than table records.",
+        "lines": "1, 6"
+      },
+      {
+        "label": "inconsistent_field_counts",
+        "reason": "Logical records do not all contain the modal number of fields.",
+        "lines": "6"
+      },
+      {
+        "label": "leading_comment",
+        "reason": "The file begins with a possible comment row.",
+        "lines": "1"
+      },
+      {
+        "label": "possible_unescaped_multiline",
+        "reason": "A text fragment inside the table may be an unescaped continuation of an adjacent record.",
+        "lines": "6"
+      }
+    ],
+    "ground_truth": {
+      "mode": "multiple",
+      "count": 2,
+      "relationship": "alternative_valid_reconstructions_of_same_source",
+      "files": [
+        {
+          "id": "gt1",
+          "file": "cleaned_gt1.csv",
+          "relationship": "alternative_valid_reconstruction",
+          "input_delimiter": ",",
+          "copy_events": [
+            {
+              "ranges": [
+                {
+                  "start": 2,
+                  "end": 8
+                }
+              ],
+              "characters": 353,
+              "copied_at": "2026-11-17T10:09:40.965Z"
+            }
+          ],
+          "error_description": "padded to tab\nheader starts with # -> multi gt, one with, one without",
+          "working_origin_spans": [
+            {
+              "start": 0,
+              "end": 28,
+              "source_line": 2
+            },
+            {
+              "start": 28,
+              "end": 60,
+              "source_line": 3
+            },
+            {
+              "start": 60,
+              "end": 93,
+              "source_line": 4
+            },
+            {
+              "start": 93,
+              "end": 127,
+              "source_line": 5
+            },
+            {
+              "start": 127,
+              "end": 164,
+              "source_line": 7
+            },
+            {
+              "start": 164,
+              "end": 205,
+              "source_line": 8
+            }
+          ],
+          "header": {
+            "present": true,
+            "text": "# Name,Type,SubType,Offset,Size,Flags",
+            "source_line": 1
+          },
+          "cleaned_rows": 6,
+          "cleaned_column_count": 6,
+          "cleaned_columns": [
+            "# Name",
+            "Type",
+            "SubType",
+            "Offset",
+            "Size",
+            "Flags"
+          ]
+        },
+        {
+          "id": "gt2",
+          "file": "cleaned_gt2.csv",
+          "relationship": "alternative_valid_reconstruction",
+          "input_delimiter": ",",
+          "copy_events": [
+            {
+              "ranges": [
+                {
+                  "start": 2,
+                  "end": 8
+                }
+              ],
+              "characters": 353,
+              "copied_at": "2026-11-17T10:09:40.965Z"
+            }
+          ],
+          "error_description": "padded to tab\nheader starts with # -> multi gt, one with, one without",
+          "working_origin_spans": [
+            {
+              "start": 0,
+              "end": 28,
+              "source_line": 2
+            },
+            {
+              "start": 28,
+              "end": 60,
+              "source_line": 3
+            },
+            {
+              "start": 60,
+              "end": 93,
+              "source_line": 4
+            },
+            {
+              "start": 93,
+              "end": 127,
+              "source_line": 5
+            },
+            {
+              "start": 127,
+              "end": 164,
+              "source_line": 7
+            },
+            {
+              "start": 164,
+              "end": 205,
+              "source_line": 8
+            }
+          ],
+          "header": {
+            "present": true,
+            "text": "Name,Type,SubType,Offset,Size,Flags",
+            "source_line": 1
+          },
+          "cleaned_rows": 6,
+          "cleaned_column_count": 6,
+          "cleaned_columns": [
+            "Name",
+            "Type",
+            "SubType",
+            "Offset",
+            "Size",
+            "Flags"
+          ]
+        }
+      ]
+    },
+    "exported_at": "2026-11-17T10:11:55.372773+00:00"
+  }
+}

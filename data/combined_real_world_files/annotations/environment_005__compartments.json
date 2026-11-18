@@ -1,0 +1,641 @@
+{
+  "provenance": {
+    "candidate_id": "environment_005",
+    "topic": "environment",
+    "search_term": "climate",
+    "repository": "ccomb/volca",
+    "repository_url": "https://github.com/ccomb/volca",
+    "source_path": "data/compartments.csv",
+    "source_url": "https://github.com/ccomb/volca/blob/main/data/compartments.csv",
+    "commit_ref": "main",
+    "license_spdx": "Apache-2.0",
+    "license_url": "https://api.github.com/repos/ccomb/volca/license?ref=main",
+    "local_path": "environment/environment_005__compartments.csv",
+    "encoding": "utf-8",
+    "delimiter": ",",
+    "byte_size": "3392",
+    "physical_lines": "56",
+    "logical_rows": "56",
+    "mode_columns": "6",
+    "anomaly_score": "9",
+    "anomalies": "inconsistent_field_counts;possible_preamble",
+    "profile_error": ""
+  },
+  "annotation": {
+    "source": "environment/environment_005__compartments.csv",
+    "source_encoding": "utf-8",
+    "input_delimiter": ",",
+    "source_line_ranges": [
+      {
+        "start": 1,
+        "end": 56
+      }
+    ],
+    "shown_line_count": 56,
+    "source_total_lines": 56,
+    "issues": [
+      {
+        "label": "inconsistent_field_counts",
+        "reason": "Logical records do not all contain the modal number of fields.",
+        "lines": "51-56"
+      },
+      {
+        "label": "possible_preamble",
+        "reason": "Records before the stable table shape resemble title or metadata rows.",
+        "lines": "1"
+      }
+    ],
+    "copy_events": [
+      {
+        "characters": 3303,
+        "copied_at": "2026-11-10T10:17:37.374Z",
+        "ranges": [
+          {
+            "end": 56,
+            "start": 2
+          }
+        ]
+      },
+      {
+        "ranges": [
+          {
+            "start": 2,
+            "end": 56
+          }
+        ],
+        "characters": 3303,
+        "copied_at": "2026-11-17T12:06:15.789Z"
+      }
+    ],
+    "error_description": "some rows dont have enough trailing commas to make everything the same shape\n\nPLUS: header has the same datatypes as rows -> header detection is harder",
+    "working_origin_spans": [
+      {
+        "end": 70,
+        "source_line": 2,
+        "start": 0
+      },
+      {
+        "end": 122,
+        "source_line": 3,
+        "start": 70
+      },
+      {
+        "end": 192,
+        "source_line": 4,
+        "start": 122
+      },
+      {
+        "end": 236,
+        "source_line": 5,
+        "start": 192
+      },
+      {
+        "end": 285,
+        "source_line": 6,
+        "start": 236
+      },
+      {
+        "end": 324,
+        "source_line": 7,
+        "start": 285
+      },
+      {
+        "end": 365,
+        "source_line": 8,
+        "start": 324
+      },
+      {
+        "end": 400,
+        "source_line": 9,
+        "start": 365
+      },
+      {
+        "end": 435,
+        "source_line": 10,
+        "start": 400
+      },
+      {
+        "end": 498,
+        "source_line": 11,
+        "start": 435
+      },
+      {
+        "end": 538,
+        "source_line": 12,
+        "start": 498
+      },
+      {
+        "end": 604,
+        "source_line": 13,
+        "start": 538
+      },
+      {
+        "end": 635,
+        "source_line": 14,
+        "start": 604
+      },
+      {
+        "end": 660,
+        "source_line": 15,
+        "start": 635
+      },
+      {
+        "end": 721,
+        "source_line": 16,
+        "start": 660
+      },
+      {
+        "end": 774,
+        "source_line": 17,
+        "start": 721
+      },
+      {
+        "end": 826,
+        "source_line": 18,
+        "start": 774
+      },
+      {
+        "end": 870,
+        "source_line": 19,
+        "start": 826
+      },
+      {
+        "end": 958,
+        "source_line": 20,
+        "start": 870
+      },
+      {
+        "end": 984,
+        "source_line": 21,
+        "start": 958
+      },
+      {
+        "end": 1014,
+        "source_line": 22,
+        "start": 984
+      },
+      {
+        "end": 1042,
+        "source_line": 23,
+        "start": 1014
+      },
+      {
+        "end": 1074,
+        "source_line": 24,
+        "start": 1042
+      },
+      {
+        "end": 1165,
+        "source_line": 25,
+        "start": 1074
+      },
+      {
+        "end": 1252,
+        "source_line": 26,
+        "start": 1165
+      },
+      {
+        "end": 1342,
+        "source_line": 27,
+        "start": 1252
+      },
+      {
+        "end": 1434,
+        "source_line": 28,
+        "start": 1342
+      },
+      {
+        "end": 1522,
+        "source_line": 29,
+        "start": 1434
+      },
+      {
+        "end": 1608,
+        "source_line": 30,
+        "start": 1522
+      },
+      {
+        "end": 1697,
+        "source_line": 31,
+        "start": 1608
+      },
+      {
+        "end": 1787,
+        "source_line": 32,
+        "start": 1697
+      },
+      {
+        "end": 1873,
+        "source_line": 33,
+        "start": 1787
+      },
+      {
+        "end": 1957,
+        "source_line": 34,
+        "start": 1873
+      },
+      {
+        "end": 2038,
+        "source_line": 35,
+        "start": 1957
+      },
+      {
+        "end": 2120,
+        "source_line": 36,
+        "start": 2038
+      },
+      {
+        "end": 2200,
+        "source_line": 37,
+        "start": 2120
+      },
+      {
+        "end": 2288,
+        "source_line": 38,
+        "start": 2200
+      },
+      {
+        "end": 2374,
+        "source_line": 39,
+        "start": 2288
+      },
+      {
+        "end": 2416,
+        "source_line": 40,
+        "start": 2374
+      },
+      {
+        "end": 2462,
+        "source_line": 41,
+        "start": 2416
+      },
+      {
+        "end": 2502,
+        "source_line": 42,
+        "start": 2462
+      },
+      {
+        "end": 2557,
+        "source_line": 43,
+        "start": 2502
+      },
+      {
+        "end": 2627,
+        "source_line": 44,
+        "start": 2557
+      },
+      {
+        "end": 2675,
+        "source_line": 45,
+        "start": 2627
+      },
+      {
+        "end": 2736,
+        "source_line": 46,
+        "start": 2675
+      },
+      {
+        "end": 2804,
+        "source_line": 47,
+        "start": 2736
+      },
+      {
+        "end": 2881,
+        "source_line": 48,
+        "start": 2804
+      },
+      {
+        "end": 2972,
+        "source_line": 49,
+        "start": 2881
+      },
+      {
+        "end": 3008,
+        "source_line": 50,
+        "start": 2972
+      },
+      {
+        "end": 3056,
+        "source_line": 51,
+        "start": 3008
+      },
+      {
+        "end": 3106,
+        "source_line": 52,
+        "start": 3056
+      },
+      {
+        "end": 3156,
+        "source_line": 53,
+        "start": 3106
+      },
+      {
+        "end": 3199,
+        "source_line": 54,
+        "start": 3156
+      },
+      {
+        "end": 3272,
+        "source_line": 55,
+        "start": 3199
+      },
+      {
+        "end": 3352,
+        "source_line": 56,
+        "start": 3272
+      },
+      {
+        "start": 3352,
+        "end": 3422,
+        "source_line": 2
+      },
+      {
+        "start": 3422,
+        "end": 3474,
+        "source_line": 3
+      },
+      {
+        "start": 3474,
+        "end": 3544,
+        "source_line": 4
+      },
+      {
+        "start": 3544,
+        "end": 3588,
+        "source_line": 5
+      },
+      {
+        "start": 3588,
+        "end": 3637,
+        "source_line": 6
+      },
+      {
+        "start": 3637,
+        "end": 3676,
+        "source_line": 7
+      },
+      {
+        "start": 3676,
+        "end": 3717,
+        "source_line": 8
+      },
+      {
+        "start": 3717,
+        "end": 3752,
+        "source_line": 9
+      },
+      {
+        "start": 3752,
+        "end": 3787,
+        "source_line": 10
+      },
+      {
+        "start": 3787,
+        "end": 3850,
+        "source_line": 11
+      },
+      {
+        "start": 3850,
+        "end": 3890,
+        "source_line": 12
+      },
+      {
+        "start": 3890,
+        "end": 3956,
+        "source_line": 13
+      },
+      {
+        "start": 3956,
+        "end": 3987,
+        "source_line": 14
+      },
+      {
+        "start": 3987,
+        "end": 4012,
+        "source_line": 15
+      },
+      {
+        "start": 4012,
+        "end": 4073,
+        "source_line": 16
+      },
+      {
+        "start": 4073,
+        "end": 4126,
+        "source_line": 17
+      },
+      {
+        "start": 4126,
+        "end": 4178,
+        "source_line": 18
+      },
+      {
+        "start": 4178,
+        "end": 4222,
+        "source_line": 19
+      },
+      {
+        "start": 4222,
+        "end": 4310,
+        "source_line": 20
+      },
+      {
+        "start": 4310,
+        "end": 4336,
+        "source_line": 21
+      },
+      {
+        "start": 4336,
+        "end": 4366,
+        "source_line": 22
+      },
+      {
+        "start": 4366,
+        "end": 4394,
+        "source_line": 23
+      },
+      {
+        "start": 4394,
+        "end": 4426,
+        "source_line": 24
+      },
+      {
+        "start": 4426,
+        "end": 4517,
+        "source_line": 25
+      },
+      {
+        "start": 4517,
+        "end": 4604,
+        "source_line": 26
+      },
+      {
+        "start": 4604,
+        "end": 4694,
+        "source_line": 27
+      },
+      {
+        "start": 4694,
+        "end": 4786,
+        "source_line": 28
+      },
+      {
+        "start": 4786,
+        "end": 4874,
+        "source_line": 29
+      },
+      {
+        "start": 4874,
+        "end": 4960,
+        "source_line": 30
+      },
+      {
+        "start": 4960,
+        "end": 5049,
+        "source_line": 31
+      },
+      {
+        "start": 5049,
+        "end": 5139,
+        "source_line": 32
+      },
+      {
+        "start": 5139,
+        "end": 5225,
+        "source_line": 33
+      },
+      {
+        "start": 5225,
+        "end": 5309,
+        "source_line": 34
+      },
+      {
+        "start": 5309,
+        "end": 5390,
+        "source_line": 35
+      },
+      {
+        "start": 5390,
+        "end": 5472,
+        "source_line": 36
+      },
+      {
+        "start": 5472,
+        "end": 5552,
+        "source_line": 37
+      },
+      {
+        "start": 5552,
+        "end": 5640,
+        "source_line": 38
+      },
+      {
+        "start": 5640,
+        "end": 5726,
+        "source_line": 39
+      },
+      {
+        "start": 5726,
+        "end": 5768,
+        "source_line": 40
+      },
+      {
+        "start": 5768,
+        "end": 5814,
+        "source_line": 41
+      },
+      {
+        "start": 5814,
+        "end": 5854,
+        "source_line": 42
+      },
+      {
+        "start": 5854,
+        "end": 5909,
+        "source_line": 43
+      },
+      {
+        "start": 5909,
+        "end": 5979,
+        "source_line": 44
+      },
+      {
+        "start": 5979,
+        "end": 6027,
+        "source_line": 45
+      },
+      {
+        "start": 6027,
+        "end": 6088,
+        "source_line": 46
+      },
+      {
+        "start": 6088,
+        "end": 6156,
+        "source_line": 47
+      },
+      {
+        "start": 6156,
+        "end": 6233,
+        "source_line": 48
+      },
+      {
+        "start": 6233,
+        "end": 6324,
+        "source_line": 49
+      },
+      {
+        "start": 6324,
+        "end": 6360,
+        "source_line": 50
+      },
+      {
+        "start": 6360,
+        "end": 6408,
+        "source_line": 51
+      },
+      {
+        "start": 6408,
+        "end": 6458,
+        "source_line": 52
+      },
+      {
+        "start": 6458,
+        "end": 6508,
+        "source_line": 53
+      },
+      {
+        "start": 6508,
+        "end": 6551,
+        "source_line": 54
+      },
+      {
+        "start": 6551,
+        "end": 6624,
+        "source_line": 55
+      },
+      {
+        "start": 6624,
+        "end": 6704,
+        "source_line": 56
+      }
+    ],
+    "header": {
+      "present": true,
+      "text": "source_medium,source_sub,source_qualifier,target_medium,target_sub,target_qualifier,kind",
+      "source_line": 1
+    },
+    "cleaned_rows": 110,
+    "cleaned_column_count": 7,
+    "cleaned_columns": [
+      "source_medium",
+      "source_sub",
+      "source_qualifier",
+      "target_medium",
+      "target_sub",
+      "target_qualifier",
+      "kind"
+    ],
+    "exported_at": "2026-11-17T12:08:07.835409+00:00"
+  }
+}

@@ -1,0 +1,99 @@
+{
+  "provenance": {
+    "candidate_id": "health_043",
+    "topic": "health",
+    "search_term": "disease",
+    "repository": "psych251/leahy2020",
+    "repository_url": "https://github.com/psych251/leahy2020",
+    "source_path": "data/raw/leahy2020-final/errors.csv",
+    "source_url": "https://github.com/psych251/leahy2020/blob/main/data/raw/leahy2020-final/errors.csv",
+    "commit_ref": "main",
+    "license_spdx": "MIT",
+    "license_url": "https://api.github.com/repos/psych251/leahy2020/license?ref=main",
+    "local_path": "health/health_043__errors.csv",
+    "encoding": "utf-8",
+    "delimiter": ",",
+    "byte_size": "1284",
+    "physical_lines": "5",
+    "logical_rows": "4",
+    "mode_columns": "10",
+    "anomaly_score": "0",
+    "anomalies": "",
+    "profile_error": ""
+  },
+  "annotation": {
+    "source": "health/health_043__errors.csv",
+    "source_encoding": "utf-8",
+    "input_delimiter": ",",
+    "source_line_ranges": [
+      {
+        "start": 1,
+        "end": 5
+      }
+    ],
+    "shown_line_count": 5,
+    "source_total_lines": 5,
+    "issues": [
+      {
+        "label": "embedded_structured_values",
+        "reason": "Cells contain JSON or XML-like payloads that require value-level interpretation.",
+        "lines": "2-5"
+      }
+    ],
+    "copy_events": [
+      {
+        "ranges": [
+          {
+            "start": 2,
+            "end": 5
+          }
+        ],
+        "characters": 1207,
+        "copied_at": "2026-11-17T10:16:25.054Z"
+      }
+    ],
+    "error_description": "json column and multiline string",
+    "working_origin_spans": [
+      {
+        "start": 0,
+        "end": 371,
+        "source_line": 2
+      },
+      {
+        "start": 371,
+        "end": 742,
+        "source_line": 3
+      },
+      {
+        "start": 742,
+        "end": 922,
+        "source_line": 4
+      },
+      {
+        "start": 922,
+        "end": 1208,
+        "source_line": 5
+      }
+    ],
+    "header": {
+      "present": true,
+      "text": "error_id,uid,at,message,trial_index,stack,context,url,user_agent,client_time",
+      "source_line": 1
+    },
+    "cleaned_rows": 3,
+    "cleaned_column_count": 10,
+    "cleaned_columns": [
+      "error_id",
+      "uid",
+      "at",
+      "message",
+      "trial_index",
+      "stack",
+      "context",
+      "url",
+      "user_agent",
+      "client_time"
+    ],
+    "exported_at": "2026-11-17T10:17:26.464092+00:00"
+  }
+}

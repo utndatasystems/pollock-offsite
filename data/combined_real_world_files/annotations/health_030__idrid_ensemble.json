@@ -1,0 +1,159 @@
+{
+  "provenance": {
+    "candidate_id": "health_030",
+    "topic": "health",
+    "search_term": "disease",
+    "repository": "monishabirlin/aptos-duplicate-aware-dr",
+    "repository_url": "https://github.com/monishabirlin/aptos-duplicate-aware-dr",
+    "source_path": "idrid_ensemble.csv",
+    "source_url": "https://github.com/monishabirlin/aptos-duplicate-aware-dr/blob/main/idrid_ensemble.csv",
+    "commit_ref": "main",
+    "license_spdx": "MIT",
+    "license_url": "https://api.github.com/repos/monishabirlin/aptos-duplicate-aware-dr/license?ref=main",
+    "local_path": "health/health_030__idrid_ensemble.csv",
+    "encoding": "utf-8",
+    "delimiter": ",",
+    "byte_size": "2962",
+    "physical_lines": "17",
+    "logical_rows": "17",
+    "mode_columns": "10",
+    "anomaly_score": "0",
+    "anomalies": "",
+    "profile_error": ""
+  },
+  "annotation": {
+    "source": "health/health_030__idrid_ensemble.csv",
+    "source_encoding": "utf-8",
+    "input_delimiter": ",",
+    "source_line_ranges": [
+      {
+        "start": 1,
+        "end": 17
+      }
+    ],
+    "shown_line_count": 17,
+    "source_total_lines": 17,
+    "issues": [
+      {
+        "label": "embedded_structured_values",
+        "reason": "Cells contain JSON or XML-like payloads that require value-level interpretation.",
+        "lines": "2-17"
+      }
+    ],
+    "copy_events": [
+      {
+        "ranges": [
+          {
+            "start": 2,
+            "end": 17
+          }
+        ],
+        "characters": 2875,
+        "copied_at": "2026-11-17T09:42:02.203Z"
+      }
+    ],
+    "error_description": "embedded python list column",
+    "working_origin_spans": [
+      {
+        "start": 0,
+        "end": 185,
+        "source_line": 2
+      },
+      {
+        "start": 185,
+        "end": 366,
+        "source_line": 3
+      },
+      {
+        "start": 366,
+        "end": 548,
+        "source_line": 4
+      },
+      {
+        "start": 548,
+        "end": 729,
+        "source_line": 5
+      },
+      {
+        "start": 729,
+        "end": 911,
+        "source_line": 6
+      },
+      {
+        "start": 911,
+        "end": 1090,
+        "source_line": 7
+      },
+      {
+        "start": 1090,
+        "end": 1268,
+        "source_line": 8
+      },
+      {
+        "start": 1268,
+        "end": 1444,
+        "source_line": 9
+      },
+      {
+        "start": 1444,
+        "end": 1625,
+        "source_line": 10
+      },
+      {
+        "start": 1625,
+        "end": 1801,
+        "source_line": 11
+      },
+      {
+        "start": 1801,
+        "end": 1983,
+        "source_line": 12
+      },
+      {
+        "start": 1983,
+        "end": 2161,
+        "source_line": 13
+      },
+      {
+        "start": 2161,
+        "end": 2338,
+        "source_line": 14
+      },
+      {
+        "start": 2338,
+        "end": 2514,
+        "source_line": 15
+      },
+      {
+        "start": 2514,
+        "end": 2696,
+        "source_line": 16
+      },
+      {
+        "start": 2696,
+        "end": 2875,
+        "source_line": 17
+      }
+    ],
+    "header": {
+      "present": true,
+      "text": "run,version,n_models,QWK,QWK_95CI,accuracy,macro_F1,ref_sens,ref_spec,recall_per_grade",
+      "source_line": 1
+    },
+    "cleaned_rows": 16,
+    "cleaned_column_count": 10,
+    "cleaned_columns": [
+      "run",
+      "version",
+      "n_models",
+      "QWK",
+      "QWK_95CI",
+      "accuracy",
+      "macro_F1",
+      "ref_sens",
+      "ref_spec",
+      "recall_per_grade"
+    ],
+    "exported_at": "2026-11-17T09:42:19.720961+00:00"
+  }
+}

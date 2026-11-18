@@ -1,0 +1,386 @@
+{
+  "provenance": {
+    "candidate_id": "finance_023",
+    "topic": "finance",
+    "search_term": "banking",
+    "repository": "Arshu-1104/RMIC",
+    "repository_url": "https://github.com/Arshu-1104/RMIC",
+    "source_path": "experiment/exports/run_20260506_050231.csv",
+    "source_url": "https://github.com/Arshu-1104/RMIC/blob/main/experiment/exports/run_20260506_050231.csv",
+    "commit_ref": "main",
+    "license_spdx": "MIT",
+    "license_url": "https://api.github.com/repos/Arshu-1104/RMIC/license?ref=main",
+    "local_path": "finance/finance_023__run_20260506_050231.csv",
+    "encoding": "utf-8",
+    "delimiter": ",",
+    "byte_size": "15950",
+    "physical_lines": "60",
+    "logical_rows": "49",
+    "mode_columns": "24",
+    "anomaly_score": "0",
+    "anomalies": "",
+    "profile_error": ""
+  },
+  "annotation": {
+    "source": "finance/finance_023__run_20260506_050231.csv",
+    "source_encoding": "utf-8",
+    "input_delimiter": ",",
+    "source_line_ranges": [
+      {
+        "start": 1,
+        "end": 60
+      }
+    ],
+    "shown_line_count": 60,
+    "source_total_lines": 60,
+    "issues": [
+      {
+        "label": "embedded_structured_values",
+        "reason": "Cells contain JSON or XML-like payloads that require value-level interpretation.",
+        "lines": "2-4, 17-19, 32-34, 46-48"
+      }
+    ],
+    "copy_events": [
+      {
+        "ranges": [
+          {
+            "start": 2,
+            "end": 60
+          }
+        ],
+        "characters": 15686,
+        "copied_at": "2026-11-13T11:05:48.688Z"
+      }
+    ],
+    "error_description": "json column",
+    "working_origin_spans": [
+      {
+        "start": 0,
+        "end": 396,
+        "source_line": 2
+      },
+      {
+        "start": 396,
+        "end": 826,
+        "source_line": 3
+      },
+      {
+        "start": 826,
+        "end": 1255,
+        "source_line": 4
+      },
+      {
+        "start": 1255,
+        "end": 1553,
+        "source_line": 5
+      },
+      {
+        "start": 1553,
+        "end": 1853,
+        "source_line": 6
+      },
+      {
+        "start": 1853,
+        "end": 2153,
+        "source_line": 7
+      },
+      {
+        "start": 2153,
+        "end": 2347,
+        "source_line": 8
+      },
+      {
+        "start": 2347,
+        "end": 2541,
+        "source_line": 9
+      },
+      {
+        "start": 2541,
+        "end": 2735,
+        "source_line": 10
+      },
+      {
+        "start": 2735,
+        "end": 3046,
+        "source_line": 11
+      },
+      {
+        "start": 3046,
+        "end": 3167,
+        "source_line": 12
+      },
+      {
+        "start": 3167,
+        "end": 3480,
+        "source_line": 13
+      },
+      {
+        "start": 3480,
+        "end": 3601,
+        "source_line": 14
+      },
+      {
+        "start": 3601,
+        "end": 3914,
+        "source_line": 15
+      },
+      {
+        "start": 3914,
+        "end": 4035,
+        "source_line": 16
+      },
+      {
+        "start": 4035,
+        "end": 4382,
+        "source_line": 17
+      },
+      {
+        "start": 4382,
+        "end": 4719,
+        "source_line": 18
+      },
+      {
+        "start": 4719,
+        "end": 5057,
+        "source_line": 19
+      },
+      {
+        "start": 5057,
+        "end": 5352,
+        "source_line": 20
+      },
+      {
+        "start": 5352,
+        "end": 5650,
+        "source_line": 21
+      },
+      {
+        "start": 5650,
+        "end": 5949,
+        "source_line": 22
+      },
+      {
+        "start": 5949,
+        "end": 6142,
+        "source_line": 23
+      },
+      {
+        "start": 6142,
+        "end": 6335,
+        "source_line": 24
+      },
+      {
+        "start": 6335,
+        "end": 6528,
+        "source_line": 25
+      },
+      {
+        "start": 6528,
+        "end": 6835,
+        "source_line": 26
+      },
+      {
+        "start": 6835,
+        "end": 6956,
+        "source_line": 27
+      },
+      {
+        "start": 6956,
+        "end": 7268,
+        "source_line": 28
+      },
+      {
+        "start": 7268,
+        "end": 7389,
+        "source_line": 29
+      },
+      {
+        "start": 7389,
+        "end": 7700,
+        "source_line": 30
+      },
+      {
+        "start": 7700,
+        "end": 7821,
+        "source_line": 31
+      },
+      {
+        "start": 7821,
+        "end": 8228,
+        "source_line": 32
+      },
+      {
+        "start": 8228,
+        "end": 8640,
+        "source_line": 33
+      },
+      {
+        "start": 8640,
+        "end": 8942,
+        "source_line": 34
+      },
+      {
+        "start": 8942,
+        "end": 9253,
+        "source_line": 35
+      },
+      {
+        "start": 9253,
+        "end": 9563,
+        "source_line": 36
+      },
+      {
+        "start": 9563,
+        "end": 9873,
+        "source_line": 37
+      },
+      {
+        "start": 9873,
+        "end": 10078,
+        "source_line": 38
+      },
+      {
+        "start": 10078,
+        "end": 10283,
+        "source_line": 39
+      },
+      {
+        "start": 10283,
+        "end": 10488,
+        "source_line": 40
+      },
+      {
+        "start": 10488,
+        "end": 10810,
+        "source_line": 41
+      },
+      {
+        "start": 10810,
+        "end": 10931,
+        "source_line": 42
+      },
+      {
+        "start": 10931,
+        "end": 11255,
+        "source_line": 43
+      },
+      {
+        "start": 11255,
+        "end": 11376,
+        "source_line": 44
+      },
+      {
+        "start": 11376,
+        "end": 11670,
+        "source_line": 45
+      },
+      {
+        "start": 11670,
+        "end": 12076,
+        "source_line": 46
+      },
+      {
+        "start": 12076,
+        "end": 12482,
+        "source_line": 47
+      },
+      {
+        "start": 12482,
+        "end": 12885,
+        "source_line": 48
+      },
+      {
+        "start": 12885,
+        "end": 13191,
+        "source_line": 49
+      },
+      {
+        "start": 13191,
+        "end": 13494,
+        "source_line": 50
+      },
+      {
+        "start": 13494,
+        "end": 13794,
+        "source_line": 51
+      },
+      {
+        "start": 13794,
+        "end": 13992,
+        "source_line": 52
+      },
+      {
+        "start": 13992,
+        "end": 14190,
+        "source_line": 53
+      },
+      {
+        "start": 14190,
+        "end": 14388,
+        "source_line": 54
+      },
+      {
+        "start": 14388,
+        "end": 14704,
+        "source_line": 55
+      },
+      {
+        "start": 14704,
+        "end": 14825,
+        "source_line": 56
+      },
+      {
+        "start": 14825,
+        "end": 15140,
+        "source_line": 57
+      },
+      {
+        "start": 15140,
+        "end": 15261,
+        "source_line": 58
+      },
+      {
+        "start": 15261,
+        "end": 15576,
+        "source_line": 59
+      },
+      {
+        "start": 15576,
+        "end": 15697,
+        "source_line": 60
+      }
+    ],
+    "header": {
+      "text": "id,run_id,provider,prompt_id,prompt_type,detected_drift_type,role,condition,expected_drift,drift_detected,blocked,ids_score,base_ids,mahalanobis,kl_divergence,js_divergence,wasserstein,hellinger,tool_frequency,decision,score,latency_ms,response_excerpt,created_at",
+      "source_line": 1
+    },
+    "cleaned_rows": 48,
+    "cleaned_columns": [
+      "id",
+      "run_id",
+      "provider",
+      "prompt_id",
+      "prompt_type",
+      "detected_drift_type",
+      "role",
+      "condition",
+      "expected_drift",
+      "drift_detected",
+      "blocked",
+      "ids_score",
+      "base_ids",
+      "mahalanobis",
+      "kl_divergence",
+      "js_divergence",
+      "wasserstein",
+      "hellinger",
+      "tool_frequency",
+      "decision",
+      "score",
+      "latency_ms",
+      "response_excerpt",
+      "created_at"
+    ],
+    "exported_at": "2026-11-13T11:07:50.964550+00:00"
+  }
+}

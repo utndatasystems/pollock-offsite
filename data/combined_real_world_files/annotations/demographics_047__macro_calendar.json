@@ -1,0 +1,329 @@
+{
+  "provenance": {
+    "candidate_id": "demographics_047",
+    "topic": "demographics",
+    "search_term": "census",
+    "repository": "IOITI/WATA",
+    "repository_url": "https://github.com/IOITI/WATA",
+    "source_path": "src/trade/data/macro_calendar.csv",
+    "source_url": "https://github.com/IOITI/WATA/blob/main/src/trade/data/macro_calendar.csv",
+    "commit_ref": "main",
+    "license_spdx": "MIT",
+    "license_url": "https://api.github.com/repos/IOITI/WATA/license?ref=main",
+    "local_path": "demographics/demographics_047__macro_calendar.csv",
+    "encoding": "utf-8",
+    "delimiter": ",",
+    "byte_size": "15365",
+    "physical_lines": "219",
+    "logical_rows": "219",
+    "mode_columns": "5",
+    "anomaly_score": "9",
+    "anomalies": "comment_rows;leading_comment;possible_preamble",
+    "profile_error": ""
+  },
+  "annotation": {
+    "source": "demographics/demographics_047__macro_calendar.csv",
+    "source_encoding": "utf-8",
+    "input_delimiter": ",",
+    "source_line_ranges": [
+      {
+        "start": 1,
+        "end": 60
+      }
+    ],
+    "shown_line_count": 60,
+    "source_total_lines": 219,
+    "issues": [
+      {
+        "label": "comment_rows",
+        "reason": "Rows beginning with '#' may be comments rather than table records.",
+        "lines": "1-10"
+      },
+      {
+        "label": "leading_comment",
+        "reason": "The file begins with a possible comment row.",
+        "lines": "1"
+      },
+      {
+        "label": "possible_preamble",
+        "reason": "Records before the stable table shape resemble title or metadata rows.",
+        "lines": "1-10"
+      }
+    ],
+    "copy_events": [
+      {
+        "ranges": [
+          {
+            "start": 2,
+            "end": 60
+          }
+        ],
+        "characters": 4252,
+        "copied_at": "2026-11-17T11:40:31.892Z"
+      }
+    ],
+    "error_description": "preamble ",
+    "working_origin_spans": [
+      {
+        "start": 0,
+        "end": 65,
+        "source_line": 12
+      },
+      {
+        "start": 65,
+        "end": 127,
+        "source_line": 13
+      },
+      {
+        "start": 127,
+        "end": 196,
+        "source_line": 14
+      },
+      {
+        "start": 196,
+        "end": 280,
+        "source_line": 15
+      },
+      {
+        "start": 280,
+        "end": 345,
+        "source_line": 16
+      },
+      {
+        "start": 345,
+        "end": 407,
+        "source_line": 17
+      },
+      {
+        "start": 407,
+        "end": 476,
+        "source_line": 18
+      },
+      {
+        "start": 476,
+        "end": 541,
+        "source_line": 19
+      },
+      {
+        "start": 541,
+        "end": 603,
+        "source_line": 20
+      },
+      {
+        "start": 603,
+        "end": 687,
+        "source_line": 21
+      },
+      {
+        "start": 687,
+        "end": 756,
+        "source_line": 22
+      },
+      {
+        "start": 756,
+        "end": 821,
+        "source_line": 23
+      },
+      {
+        "start": 821,
+        "end": 883,
+        "source_line": 24
+      },
+      {
+        "start": 883,
+        "end": 952,
+        "source_line": 25
+      },
+      {
+        "start": 952,
+        "end": 1036,
+        "source_line": 26
+      },
+      {
+        "start": 1036,
+        "end": 1101,
+        "source_line": 27
+      },
+      {
+        "start": 1101,
+        "end": 1163,
+        "source_line": 28
+      },
+      {
+        "start": 1163,
+        "end": 1232,
+        "source_line": 29
+      },
+      {
+        "start": 1232,
+        "end": 1297,
+        "source_line": 30
+      },
+      {
+        "start": 1297,
+        "end": 1359,
+        "source_line": 31
+      },
+      {
+        "start": 1359,
+        "end": 1443,
+        "source_line": 32
+      },
+      {
+        "start": 1443,
+        "end": 1512,
+        "source_line": 33
+      },
+      {
+        "start": 1512,
+        "end": 1577,
+        "source_line": 34
+      },
+      {
+        "start": 1577,
+        "end": 1639,
+        "source_line": 35
+      },
+      {
+        "start": 1639,
+        "end": 1708,
+        "source_line": 36
+      },
+      {
+        "start": 1708,
+        "end": 1792,
+        "source_line": 37
+      },
+      {
+        "start": 1792,
+        "end": 1857,
+        "source_line": 38
+      },
+      {
+        "start": 1857,
+        "end": 1919,
+        "source_line": 39
+      },
+      {
+        "start": 1919,
+        "end": 1988,
+        "source_line": 40
+      },
+      {
+        "start": 1988,
+        "end": 2053,
+        "source_line": 41
+      },
+      {
+        "start": 2053,
+        "end": 2115,
+        "source_line": 42
+      },
+      {
+        "start": 2115,
+        "end": 2199,
+        "source_line": 43
+      },
+      {
+        "start": 2199,
+        "end": 2268,
+        "source_line": 44
+      },
+      {
+        "start": 2268,
+        "end": 2333,
+        "source_line": 45
+      },
+      {
+        "start": 2333,
+        "end": 2395,
+        "source_line": 46
+      },
+      {
+        "start": 2395,
+        "end": 2464,
+        "source_line": 47
+      },
+      {
+        "start": 2464,
+        "end": 2529,
+        "source_line": 48
+      },
+      {
+        "start": 2529,
+        "end": 2613,
+        "source_line": 49
+      },
+      {
+        "start": 2613,
+        "end": 2675,
+        "source_line": 50
+      },
+      {
+        "start": 2675,
+        "end": 2744,
+        "source_line": 51
+      },
+      {
+        "start": 2744,
+        "end": 2809,
+        "source_line": 52
+      },
+      {
+        "start": 2809,
+        "end": 2871,
+        "source_line": 53
+      },
+      {
+        "start": 2871,
+        "end": 2955,
+        "source_line": 54
+      },
+      {
+        "start": 2955,
+        "end": 3024,
+        "source_line": 55
+      },
+      {
+        "start": 3024,
+        "end": 3089,
+        "source_line": 56
+      },
+      {
+        "start": 3089,
+        "end": 3151,
+        "source_line": 57
+      },
+      {
+        "start": 3151,
+        "end": 3235,
+        "source_line": 58
+      },
+      {
+        "start": 3235,
+        "end": 3296,
+        "source_line": 59
+      },
+      {
+        "start": 3296,
+        "end": 3361,
+        "source_line": 60
+      }
+    ],
+    "header": {
+      "present": true,
+      "text": "date,time_new_york,event,covers,source",
+      "source_line": 1
+    },
+    "cleaned_rows": 49,
+    "cleaned_column_count": 5,
+    "cleaned_columns": [
+      "date",
+      "time_new_york",
+      "event",
+      "covers",
+      "source"
+    ],
+    "exported_at": "2026-11-17T11:41:15.612855+00:00"
+  }
+}

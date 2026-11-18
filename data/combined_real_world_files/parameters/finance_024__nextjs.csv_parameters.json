@@ -1,0 +1,26 @@
+{
+    "delimiter": ",",
+    "quotechar": "\"",
+    "escapechar": "\"",
+    "row_delimiter": "\n",
+    "header_lines": "1",
+    "preamble_lines": "0",
+    "footnote_lines": "0",
+    "column_names": [
+        "No",
+        "Category",
+        "Guideline",
+        "Description",
+        "Do",
+        "Don't",
+        "Code Good",
+        "Code Bad",
+        "Severity",
+        "Docs URL",
+        "Applies To",
+        "Status",
+        "Verified At"
+    ],
+    "encoding": "utf-8",
+    "n_columns": 13
+}

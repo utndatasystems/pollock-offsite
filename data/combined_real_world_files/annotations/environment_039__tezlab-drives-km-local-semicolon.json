@@ -1,0 +1,86 @@
+{
+  "provenance": {
+    "candidate_id": "environment_039",
+    "topic": "environment",
+    "search_term": "climate",
+    "repository": "apohor/rivolt",
+    "repository_url": "https://github.com/apohor/rivolt",
+    "source_path": "internal/histimport/testdata/tezlab-drives-km-local-semicolon.csv",
+    "source_url": "https://github.com/apohor/rivolt/blob/main/internal/histimport/testdata/tezlab-drives-km-local-semicolon.csv",
+    "commit_ref": "main",
+    "license_spdx": "MIT",
+    "license_url": "https://api.github.com/repos/apohor/rivolt/license?ref=main",
+    "local_path": "environment/environment_039__tezlab-drives-km-local-semicolon.csv",
+    "encoding": "utf-8",
+    "delimiter": ";",
+    "byte_size": "221",
+    "physical_lines": "3",
+    "logical_rows": "3",
+    "mode_columns": "7",
+    "anomaly_score": "3",
+    "anomalies": "non_comma_delimiter",
+    "profile_error": ""
+  },
+  "annotation": {
+    "source": "environment/environment_039__tezlab-drives-km-local-semicolon.csv",
+    "source_encoding": "utf-8",
+    "input_delimiter": ";",
+    "source_line_ranges": [
+      {
+        "start": 1,
+        "end": 3
+      }
+    ],
+    "shown_line_count": 3,
+    "source_total_lines": 3,
+    "issues": [
+      {
+        "label": "non_comma_delimiter",
+        "reason": "The detected delimiter is not a comma.",
+        "lines": "file-level"
+      }
+    ],
+    "copy_events": [
+      {
+        "ranges": [
+          {
+            "start": 2,
+            "end": 3
+          }
+        ],
+        "characters": 120,
+        "copied_at": "2026-11-17T13:11:56.033Z"
+      }
+    ],
+    "error_description": "semicolon delimiter",
+    "working_origin_spans": [
+      {
+        "start": 0,
+        "end": 60,
+        "source_line": 2
+      },
+      {
+        "start": 60,
+        "end": 120,
+        "source_line": 3
+      }
+    ],
+    "header": {
+      "present": true,
+      "text": "Started At;Ended At;Distance (km);Starting Battery;Ending Battery;Top Speed (km/h);Energy Used (kWh)",
+      "source_line": 1
+    },
+    "cleaned_rows": 2,
+    "cleaned_column_count": 7,
+    "cleaned_columns": [
+      "Started At",
+      "Ended At",
+      "Distance (km)",
+      "Starting Battery",
+      "Ending Battery",
+      "Top Speed (km/h)",
+      "Energy Used (kWh)"
+    ],
+    "exported_at": "2026-11-17T13:12:04.091331+00:00"
+  }
+}

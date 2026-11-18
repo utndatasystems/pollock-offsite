@@ -1,0 +1,13 @@
+# Verbatim columns of results/nbglm_real_summary.csv at commit 1c0c940
+# (git show 1c0c940:results/nbglm_real_summary.csv), written before the GLM
+# log2FC and the pseudobulk log2FC were put on one normalisation. Kept so
+# scripts/make_figures.py can plot before/after without git history.
+# Superseded by results/nbglm_real_summary.csv; do not use for new analysis.
+cell_type,pearson,spearman,mean_abs_diff
+CD4 T cells,0.9988955338271762,0.9992305473092054,0.11058930664562296
+CD14+ Monocytes,0.9989135097379446,0.9995943892246927,0.44688355337744173
+B cells,0.9815537469933596,0.9860413738262056,0.2099936778771036
+NK cells,0.9763897502148668,0.9856226299371754,0.2318711645372886
+CD8 T cells,0.969407275975547,0.9791604238067853,0.24995583755031428
+FCGR3A+ Monocytes,0.9938583591356674,0.9991628836844166,0.18180064133036067
+Dendritic cells,0.988150527040523,0.9991845328001023,0.2782433501538522

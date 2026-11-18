@@ -1,0 +1,634 @@
+{
+  "provenance": {
+    "candidate_id": "transportation_023",
+    "topic": "transportation",
+    "search_term": "transit",
+    "repository": "Traewelling/line-colors",
+    "repository_url": "https://github.com/Traewelling/line-colors",
+    "source_path": "hafas-operators.csv",
+    "source_url": "https://github.com/Traewelling/line-colors/blob/main/hafas-operators.csv",
+    "commit_ref": "main",
+    "license_spdx": "CC0-1.0",
+    "license_url": "https://api.github.com/repos/Traewelling/line-colors/license?ref=main",
+    "local_path": "transportation/transportation_023__hafas-operators.csv",
+    "encoding": "utf-8",
+    "delimiter": ",",
+    "byte_size": "25219",
+    "physical_lines": "536",
+    "logical_rows": "536",
+    "mode_columns": "2",
+    "anomaly_score": "5",
+    "anomalies": "inconsistent_field_counts",
+    "profile_error": ""
+  },
+  "annotation": {
+    "source": "transportation/transportation_023__hafas-operators.csv",
+    "source_encoding": "utf-8",
+    "input_delimiter": ",",
+    "source_line_ranges": [
+      {
+        "start": 1,
+        "end": 10
+      },
+      {
+        "start": 175,
+        "end": 275
+      }
+    ],
+    "shown_line_count": 111,
+    "source_total_lines": 536,
+    "issues": [
+      {
+        "label": "inconsistent_field_counts",
+        "reason": "Logical records do not all contain the modal number of fields.",
+        "lines": "225"
+      }
+    ],
+    "copy_events": [
+      {
+        "ranges": [
+          {
+            "start": 2,
+            "end": 10
+          },
+          {
+            "start": 175,
+            "end": 275
+          }
+        ],
+        "characters": 4702,
+        "copied_at": "2026-11-17T12:13:56.696Z"
+      }
+    ],
+    "error_description": "unquoted string field with comma",
+    "working_origin_spans": [
+      {
+        "start": 0,
+        "end": 38,
+        "source_line": 2
+      },
+      {
+        "start": 38,
+        "end": 74,
+        "source_line": 3
+      },
+      {
+        "start": 74,
+        "end": 110,
+        "source_line": 4
+      },
+      {
+        "start": 110,
+        "end": 182,
+        "source_line": 5
+      },
+      {
+        "start": 182,
+        "end": 232,
+        "source_line": 6
+      },
+      {
+        "start": 232,
+        "end": 260,
+        "source_line": 7
+      },
+      {
+        "start": 260,
+        "end": 298,
+        "source_line": 8
+      },
+      {
+        "start": 298,
+        "end": 312,
+        "source_line": 9
+      },
+      {
+        "start": 312,
+        "end": 350,
+        "source_line": 10
+      },
+      {
+        "start": 350,
+        "end": 388,
+        "source_line": 175
+      },
+      {
+        "start": 388,
+        "end": 400,
+        "source_line": 176
+      },
+      {
+        "start": 400,
+        "end": 440,
+        "source_line": 177
+      },
+      {
+        "start": 440,
+        "end": 458,
+        "source_line": 178
+      },
+      {
+        "start": 458,
+        "end": 492,
+        "source_line": 179
+      },
+      {
+        "start": 492,
+        "end": 510,
+        "source_line": 180
+      },
+      {
+        "start": 510,
+        "end": 550,
+        "source_line": 181
+      },
+      {
+        "start": 550,
+        "end": 590,
+        "source_line": 182
+      },
+      {
+        "start": 590,
+        "end": 638,
+        "source_line": 183
+      },
+      {
+        "start": 638,
+        "end": 714,
+        "source_line": 184
+      },
+      {
+        "start": 714,
+        "end": 754,
+        "source_line": 185
+      },
+      {
+        "start": 754,
+        "end": 774,
+        "source_line": 186
+      },
+      {
+        "start": 774,
+        "end": 794,
+        "source_line": 187
+      },
+      {
+        "start": 794,
+        "end": 824,
+        "source_line": 188
+      },
+      {
+        "start": 824,
+        "end": 890,
+        "source_line": 189
+      },
+      {
+        "start": 890,
+        "end": 972,
+        "source_line": 190
+      },
+      {
+        "start": 972,
+        "end": 1070,
+        "source_line": 191
+      },
+      {
+        "start": 1070,
+        "end": 1148,
+        "source_line": 192
+      },
+      {
+        "start": 1148,
+        "end": 1196,
+        "source_line": 193
+      },
+      {
+        "start": 1196,
+        "end": 1230,
+        "source_line": 194
+      },
+      {
+        "start": 1230,
+        "end": 1260,
+        "source_line": 195
+      },
+      {
+        "start": 1260,
+        "end": 1330,
+        "source_line": 196
+      },
+      {
+        "start": 1330,
+        "end": 1360,
+        "source_line": 197
+      },
+      {
+        "start": 1360,
+        "end": 1388,
+        "source_line": 198
+      },
+      {
+        "start": 1388,
+        "end": 1418,
+        "source_line": 199
+      },
+      {
+        "start": 1418,
+        "end": 1448,
+        "source_line": 200
+      },
+      {
+        "start": 1448,
+        "end": 1470,
+        "source_line": 201
+      },
+      {
+        "start": 1470,
+        "end": 1508,
+        "source_line": 202
+      },
+      {
+        "start": 1508,
+        "end": 1544,
+        "source_line": 203
+      },
+      {
+        "start": 1544,
+        "end": 1602,
+        "source_line": 204
+      },
+      {
+        "start": 1602,
+        "end": 1632,
+        "source_line": 205
+      },
+      {
+        "start": 1632,
+        "end": 1654,
+        "source_line": 206
+      },
+      {
+        "start": 1654,
+        "end": 1684,
+        "source_line": 207
+      },
+      {
+        "start": 1684,
+        "end": 1696,
+        "source_line": 208
+      },
+      {
+        "start": 1696,
+        "end": 1722,
+        "source_line": 209
+      },
+      {
+        "start": 1722,
+        "end": 1770,
+        "source_line": 210
+      },
+      {
+        "start": 1770,
+        "end": 1826,
+        "source_line": 211
+      },
+      {
+        "start": 1826,
+        "end": 1848,
+        "source_line": 212
+      },
+      {
+        "start": 1848,
+        "end": 1892,
+        "source_line": 213
+      },
+      {
+        "start": 1892,
+        "end": 1926,
+        "source_line": 214
+      },
+      {
+        "start": 1926,
+        "end": 1956,
+        "source_line": 215
+      },
+      {
+        "start": 1956,
+        "end": 1998,
+        "source_line": 216
+      },
+      {
+        "start": 1998,
+        "end": 2028,
+        "source_line": 217
+      },
+      {
+        "start": 2028,
+        "end": 2068,
+        "source_line": 218
+      },
+      {
+        "start": 2068,
+        "end": 2136,
+        "source_line": 219
+      },
+      {
+        "start": 2136,
+        "end": 2160,
+        "source_line": 220
+      },
+      {
+        "start": 2160,
+        "end": 2170,
+        "source_line": 221
+      },
+      {
+        "start": 2170,
+        "end": 2192,
+        "source_line": 222
+      },
+      {
+        "start": 2192,
+        "end": 2238,
+        "source_line": 223
+      },
+      {
+        "start": 2238,
+        "end": 2262,
+        "source_line": 224
+      },
+      {
+        "start": 2262,
+        "end": 2297,
+        "source_line": 225
+      },
+      {
+        "start": 2298,
+        "end": 2334,
+        "source_line": 225
+      },
+      {
+        "start": 2336,
+        "end": 2380,
+        "source_line": 226
+      },
+      {
+        "start": 2380,
+        "end": 2406,
+        "source_line": 227
+      },
+      {
+        "start": 2406,
+        "end": 2443,
+        "source_line": 228
+      },
+      {
+        "start": 2443,
+        "end": 2503,
+        "source_line": 229
+      },
+      {
+        "start": 2503,
+        "end": 2537,
+        "source_line": 230
+      },
+      {
+        "start": 2537,
+        "end": 2565,
+        "source_line": 231
+      },
+      {
+        "start": 2565,
+        "end": 2595,
+        "source_line": 232
+      },
+      {
+        "start": 2595,
+        "end": 2635,
+        "source_line": 233
+      },
+      {
+        "start": 2635,
+        "end": 2673,
+        "source_line": 234
+      },
+      {
+        "start": 2673,
+        "end": 2711,
+        "source_line": 235
+      },
+      {
+        "start": 2711,
+        "end": 2741,
+        "source_line": 236
+      },
+      {
+        "start": 2741,
+        "end": 2783,
+        "source_line": 237
+      },
+      {
+        "start": 2783,
+        "end": 2881,
+        "source_line": 238
+      },
+      {
+        "start": 2881,
+        "end": 2933,
+        "source_line": 239
+      },
+      {
+        "start": 2933,
+        "end": 2970,
+        "source_line": 240
+      },
+      {
+        "start": 2970,
+        "end": 3024,
+        "source_line": 241
+      },
+      {
+        "start": 3024,
+        "end": 3054,
+        "source_line": 242
+      },
+      {
+        "start": 3054,
+        "end": 3106,
+        "source_line": 243
+      },
+      {
+        "start": 3106,
+        "end": 3160,
+        "source_line": 244
+      },
+      {
+        "start": 3160,
+        "end": 3202,
+        "source_line": 245
+      },
+      {
+        "start": 3202,
+        "end": 3226,
+        "source_line": 246
+      },
+      {
+        "start": 3226,
+        "end": 3278,
+        "source_line": 247
+      },
+      {
+        "start": 3278,
+        "end": 3318,
+        "source_line": 248
+      },
+      {
+        "start": 3318,
+        "end": 3326,
+        "source_line": 249
+      },
+      {
+        "start": 3326,
+        "end": 3372,
+        "source_line": 250
+      },
+      {
+        "start": 3372,
+        "end": 3451,
+        "source_line": 251
+      },
+      {
+        "start": 3451,
+        "end": 3503,
+        "source_line": 252
+      },
+      {
+        "start": 3503,
+        "end": 3557,
+        "source_line": 253
+      },
+      {
+        "start": 3557,
+        "end": 3587,
+        "source_line": 254
+      },
+      {
+        "start": 3587,
+        "end": 3623,
+        "source_line": 255
+      },
+      {
+        "start": 3623,
+        "end": 3661,
+        "source_line": 256
+      },
+      {
+        "start": 3661,
+        "end": 3733,
+        "source_line": 257
+      },
+      {
+        "start": 3733,
+        "end": 3795,
+        "source_line": 258
+      },
+      {
+        "start": 3795,
+        "end": 3857,
+        "source_line": 259
+      },
+      {
+        "start": 3857,
+        "end": 3913,
+        "source_line": 260
+      },
+      {
+        "start": 3913,
+        "end": 3981,
+        "source_line": 261
+      },
+      {
+        "start": 3981,
+        "end": 4057,
+        "source_line": 262
+      },
+      {
+        "start": 4057,
+        "end": 4145,
+        "source_line": 263
+      },
+      {
+        "start": 4145,
+        "end": 4205,
+        "source_line": 264
+      },
+      {
+        "start": 4205,
+        "end": 4285,
+        "source_line": 265
+      },
+      {
+        "start": 4285,
+        "end": 4331,
+        "source_line": 266
+      },
+      {
+        "start": 4331,
+        "end": 4385,
+        "source_line": 267
+      },
+      {
+        "start": 4385,
+        "end": 4423,
+        "source_line": 268
+      },
+      {
+        "start": 4423,
+        "end": 4459,
+        "source_line": 269
+      },
+      {
+        "start": 4459,
+        "end": 4509,
+        "source_line": 270
+      },
+      {
+        "start": 4509,
+        "end": 4547,
+        "source_line": 271
+      },
+      {
+        "start": 4547,
+        "end": 4607,
+        "source_line": 272
+      },
+      {
+        "start": 4607,
+        "end": 4665,
+        "source_line": 273
+      },
+      {
+        "start": 4665,
+        "end": 4673,
+        "source_line": 274
+      },
+      {
+        "start": 4673,
+        "end": 4704,
+        "source_line": 275
+      }
+    ],
+    "header": {
+      "present": true,
+      "text": "hafas-id,name",
+      "source_line": 1
+    },
+    "cleaned_rows": 110,
+    "cleaned_column_count": 2,
+    "cleaned_columns": [
+      "hafas-id",
+      "name"
+    ],
+    "exported_at": "2026-11-17T12:14:30.924752+00:00"
+  }
+}

@@ -1,0 +1,648 @@
+{
+  "provenance": {
+    "candidate_id": "health_uk_013",
+    "topic": "health",
+    "search_term": "hospital",
+    "repository": "data.gov.uk/department-for-exiting-the-european-union/senior-officials-business-expenses-and-hospitality-october-to-december-2016",
+    "repository_url": "https://www.data.gov.uk/dataset/65df109a-ecea-4edf-a640-5e75e4cc6514/senior-officials-business-expenses-and-hospitality-october-to-december-2016",
+    "source_path": "SCS_Transparency_Oct-Dec_2016_hospitality.csv",
+    "source_url": "https://www.gov.uk/government/uploads/system/uploads/attachment_data/file/604554/SCS_Transparency_Oct-Dec_2016_hospitality.csv",
+    "commit_ref": "2017-11-26T22:05:55.832193",
+    "license_spdx": "OGL-UK-3.0",
+    "license_url": "http://reference.data.gov.uk/id/open-government-licence",
+    "local_path": "health/health_uk_013__SCS_Transparency_Oct-Dec_2016_hospitality.csv",
+    "encoding": "utf-8",
+    "delimiter": ",",
+    "byte_size": "26253",
+    "physical_lines": "998",
+    "logical_rows": "998",
+    "mode_columns": "26",
+    "anomaly_score": "3",
+    "anomalies": "cr_line_endings",
+    "profile_error": ""
+  },
+  "annotation": {
+    "source": "health/health_uk_013__SCS_Transparency_Oct-Dec_2016_hospitality.csv",
+    "source_file": "original_inspected.csv",
+    "source_encoding": "utf-8",
+    "source_line_ranges": [
+      {
+        "start": 1,
+        "end": 100
+      }
+    ],
+    "shown_line_count": 100,
+    "source_total_lines": 998,
+    "issues": [
+      {
+        "label": "cr_line_endings",
+        "reason": "Records end with bare CR (classic Mac OS) line breaks; line-based readers see one long line.",
+        "lines": "file-level"
+      }
+    ],
+    "ground_truth": {
+      "mode": "multiple",
+      "count": 2,
+      "relationship": "alternative_valid_reconstructions_of_same_source",
+      "files": [
+        {
+          "id": "gt1",
+          "file": "cleaned_gt1.csv",
+          "relationship": "alternative_valid_reconstruction",
+          "input_delimiter": ",",
+          "copy_events": [
+            {
+              "ranges": [
+                {
+                  "start": 2,
+                  "end": 100
+                }
+              ],
+              "characters": 2717,
+              "copied_at": "2026-11-17T11:26:41.104Z"
+            }
+          ],
+          "error_description": "",
+          "working_origin_spans": [
+            {
+              "start": 0,
+              "end": 124,
+              "source_line": 2
+            },
+            {
+              "start": 124,
+              "end": 195,
+              "source_line": 3
+            },
+            {
+              "start": 195,
+              "end": 221,
+              "source_line": 4
+            },
+            {
+              "start": 221,
+              "end": 247,
+              "source_line": 5
+            },
+            {
+              "start": 247,
+              "end": 273,
+              "source_line": 6
+            },
+            {
+              "start": 273,
+              "end": 299,
+              "source_line": 7
+            },
+            {
+              "start": 299,
+              "end": 325,
+              "source_line": 8
+            },
+            {
+              "start": 325,
+              "end": 351,
+              "source_line": 9
+            },
+            {
+              "start": 351,
+              "end": 377,
+              "source_line": 10
+            },
+            {
+              "start": 377,
+              "end": 403,
+              "source_line": 11
+            },
+            {
+              "start": 403,
+              "end": 429,
+              "source_line": 12
+            },
+            {
+              "start": 429,
+              "end": 455,
+              "source_line": 13
+            },
+            {
+              "start": 455,
+              "end": 481,
+              "source_line": 14
+            },
+            {
+              "start": 481,
+              "end": 507,
+              "source_line": 15
+            },
+            {
+              "start": 507,
+              "end": 533,
+              "source_line": 16
+            },
+            {
+              "start": 533,
+              "end": 559,
+              "source_line": 17
+            },
+            {
+              "start": 559,
+              "end": 585,
+              "source_line": 18
+            },
+            {
+              "start": 585,
+              "end": 611,
+              "source_line": 19
+            },
+            {
+              "start": 611,
+              "end": 637,
+              "source_line": 20
+            },
+            {
+              "start": 637,
+              "end": 663,
+              "source_line": 21
+            },
+            {
+              "start": 663,
+              "end": 689,
+              "source_line": 22
+            },
+            {
+              "start": 689,
+              "end": 715,
+              "source_line": 23
+            },
+            {
+              "start": 715,
+              "end": 741,
+              "source_line": 24
+            },
+            {
+              "start": 741,
+              "end": 767,
+              "source_line": 25
+            },
+            {
+              "start": 767,
+              "end": 793,
+              "source_line": 26
+            },
+            {
+              "start": 793,
+              "end": 819,
+              "source_line": 27
+            },
+            {
+              "start": 819,
+              "end": 845,
+              "source_line": 28
+            },
+            {
+              "start": 845,
+              "end": 871,
+              "source_line": 29
+            },
+            {
+              "start": 871,
+              "end": 897,
+              "source_line": 30
+            },
+            {
+              "start": 897,
+              "end": 923,
+              "source_line": 31
+            },
+            {
+              "start": 923,
+              "end": 949,
+              "source_line": 32
+            },
+            {
+              "start": 949,
+              "end": 975,
+              "source_line": 33
+            },
+            {
+              "start": 975,
+              "end": 1001,
+              "source_line": 34
+            },
+            {
+              "start": 1001,
+              "end": 1027,
+              "source_line": 35
+            },
+            {
+              "start": 1027,
+              "end": 1053,
+              "source_line": 36
+            },
+            {
+              "start": 1053,
+              "end": 1079,
+              "source_line": 37
+            },
+            {
+              "start": 1079,
+              "end": 1105,
+              "source_line": 38
+            },
+            {
+              "start": 1105,
+              "end": 1131,
+              "source_line": 39
+            },
+            {
+              "start": 1131,
+              "end": 1157,
+              "source_line": 40
+            },
+            {
+              "start": 1157,
+              "end": 1183,
+              "source_line": 41
+            },
+            {
+              "start": 1183,
+              "end": 1209,
+              "source_line": 42
+            },
+            {
+              "start": 1209,
+              "end": 1235,
+              "source_line": 43
+            },
+            {
+              "start": 1235,
+              "end": 1261,
+              "source_line": 44
+            },
+            {
+              "start": 1261,
+              "end": 1287,
+              "source_line": 45
+            },
+            {
+              "start": 1287,
+              "end": 1313,
+              "source_line": 46
+            },
+            {
+              "start": 1313,
+              "end": 1339,
+              "source_line": 47
+            },
+            {
+              "start": 1339,
+              "end": 1365,
+              "source_line": 48
+            },
+            {
+              "start": 1365,
+              "end": 1391,
+              "source_line": 49
+            },
+            {
+              "start": 1391,
+              "end": 1417,
+              "source_line": 50
+            },
+            {
+              "start": 1417,
+              "end": 1443,
+              "source_line": 51
+            },
+            {
+              "start": 1443,
+              "end": 1469,
+              "source_line": 52
+            },
+            {
+              "start": 1469,
+              "end": 1495,
+              "source_line": 53
+            },
+            {
+              "start": 1495,
+              "end": 1521,
+              "source_line": 54
+            },
+            {
+              "start": 1521,
+              "end": 1547,
+              "source_line": 55
+            },
+            {
+              "start": 1547,
+              "end": 1573,
+              "source_line": 56
+            },
+            {
+              "start": 1573,
+              "end": 1599,
+              "source_line": 57
+            },
+            {
+              "start": 1599,
+              "end": 1625,
+              "source_line": 58
+            },
+            {
+              "start": 1625,
+              "end": 1651,
+              "source_line": 59
+            },
+            {
+              "start": 1651,
+              "end": 1677,
+              "source_line": 60
+            },
+            {
+              "start": 1677,
+              "end": 1703,
+              "source_line": 61
+            },
+            {
+              "start": 1703,
+              "end": 1729,
+              "source_line": 62
+            },
+            {
+              "start": 1729,
+              "end": 1755,
+              "source_line": 63
+            },
+            {
+              "start": 1755,
+              "end": 1781,
+              "source_line": 64
+            },
+            {
+              "start": 1781,
+              "end": 1807,
+              "source_line": 65
+            },
+            {
+              "start": 1807,
+              "end": 1833,
+              "source_line": 66
+            },
+            {
+              "start": 1833,
+              "end": 1859,
+              "source_line": 67
+            },
+            {
+              "start": 1859,
+              "end": 1885,
+              "source_line": 68
+            },
+            {
+              "start": 1885,
+              "end": 1911,
+              "source_line": 69
+            },
+            {
+              "start": 1911,
+              "end": 1937,
+              "source_line": 70
+            },
+            {
+              "start": 1937,
+              "end": 1963,
+              "source_line": 71
+            },
+            {
+              "start": 1963,
+              "end": 1989,
+              "source_line": 72
+            },
+            {
+              "start": 1989,
+              "end": 2015,
+              "source_line": 73
+            },
+            {
+              "start": 2015,
+              "end": 2041,
+              "source_line": 74
+            },
+            {
+              "start": 2041,
+              "end": 2067,
+              "source_line": 75
+            },
+            {
+              "start": 2067,
+              "end": 2093,
+              "source_line": 76
+            },
+            {
+              "start": 2093,
+              "end": 2119,
+              "source_line": 77
+            },
+            {
+              "start": 2119,
+              "end": 2145,
+              "source_line": 78
+            },
+            {
+              "start": 2145,
+              "end": 2171,
+              "source_line": 79
+            },
+            {
+              "start": 2171,
+              "end": 2197,
+              "source_line": 80
+            },
+            {
+              "start": 2197,
+              "end": 2223,
+              "source_line": 81
+            },
+            {
+              "start": 2223,
+              "end": 2249,
+              "source_line": 82
+            },
+            {
+              "start": 2249,
+              "end": 2275,
+              "source_line": 83
+            },
+            {
+              "start": 2275,
+              "end": 2301,
+              "source_line": 84
+            },
+            {
+              "start": 2301,
+              "end": 2327,
+              "source_line": 85
+            },
+            {
+              "start": 2327,
+              "end": 2353,
+              "source_line": 86
+            },
+            {
+              "start": 2353,
+              "end": 2379,
+              "source_line": 87
+            },
+            {
+              "start": 2379,
+              "end": 2405,
+              "source_line": 88
+            },
+            {
+              "start": 2405,
+              "end": 2431,
+              "source_line": 89
+            },
+            {
+              "start": 2431,
+              "end": 2457,
+              "source_line": 90
+            },
+            {
+              "start": 2457,
+              "end": 2483,
+              "source_line": 91
+            },
+            {
+              "start": 2483,
+              "end": 2509,
+              "source_line": 92
+            },
+            {
+              "start": 2509,
+              "end": 2535,
+              "source_line": 93
+            },
+            {
+              "start": 2535,
+              "end": 2561,
+              "source_line": 94
+            },
+            {
+              "start": 2561,
+              "end": 2587,
+              "source_line": 95
+            },
+            {
+              "start": 2587,
+              "end": 2613,
+              "source_line": 96
+            },
+            {
+              "start": 2613,
+              "end": 2639,
+              "source_line": 97
+            },
+            {
+              "start": 2639,
+              "end": 2665,
+              "source_line": 98
+            },
+            {
+              "start": 2665,
+              "end": 2691,
+              "source_line": 99
+            },
+            {
+              "start": 2691,
+              "end": 2717,
+              "source_line": 100
+            }
+          ],
+          "header": {
+            "present": true,
+            "text": "Senior Official (SCS2 and above),Date,Person or organisation that offered hospitality,Type of hospitality received,\"Accompanied by spouse, family member(s) or friend?\",,,,,,,,,,,,,,,,,,,,,",
+            "source_line": 1
+          },
+          "cleaned_rows": 99,
+          "cleaned_column_count": 26,
+          "cleaned_columns": [
+            "Senior Official (SCS2 and above)",
+            "Date",
+            "Person or organisation that offered hospitality",
+            "Type of hospitality received",
+            "Accompanied by spouse, family member(s) or friend?",
+            "Unnamed: 5",
+            "Unnamed: 6",
+            "Unnamed: 7",
+            "Unnamed: 8",
+            "Unnamed: 9",
+            "Unnamed: 10",
+            "Unnamed: 11",
+            "Unnamed: 12",
+            "Unnamed: 13",
+            "Unnamed: 14",
+            "Unnamed: 15",
+            "Unnamed: 16",
+            "Unnamed: 17",
+            "Unnamed: 18",
+            "Unnamed: 19",
+            "Unnamed: 20",
+            "Unnamed: 21",
+            "Unnamed: 22",
+            "Unnamed: 23",
+            "Unnamed: 24",
+            "Unnamed: 25"
+          ]
+        },
+        {
+          "id": "gt2",
+          "file": "cleaned_gt2.csv",
+          "relationship": "alternative_valid_reconstruction",
+          "input_delimiter": ",",
+          "copy_events": [
+            {
+              "ranges": [
+                {
+                  "start": 2,
+                  "end": 100
+                }
+              ],
+              "characters": 2717,
+              "copied_at": "2026-11-17T11:26:41.104Z"
+            }
+          ],
+          "error_description": "huge non-needed empty spreadsheet cell-padding in both width and height.\nMulti-gt, accepts both",
+          "working_origin_spans": [
+            {
+              "start": 0,
+              "end": 103,
+              "source_line": 2
+            },
+            {
+              "start": 103,
+              "end": 153,
+              "source_line": 3
+            }
+          ],
+          "header": {
+            "present": true,
+            "text": "Senior Official (SCS2 and above),Date,Person or organisation that offered hospitality,Type of hospitality received,\"Accompanied by spouse, family member(s) or friend?\"",
+            "source_line": 1
+          },
+          "cleaned_rows": 2,
+          "cleaned_column_count": 5,
+          "cleaned_columns": [
+            "Senior Official (SCS2 and above)",
+            "Date",
+            "Person or organisation that offered hospitality",
+            "Type of hospitality received",
+            "Accompanied by spouse, family member(s) or friend?"
+          ]
+        }
+      ]
+    },
+    "exported_at": "2026-11-17T11:28:28.678289+00:00"
+  }
+}

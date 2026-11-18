@@ -1,0 +1,21 @@
+{
+    "delimiter": ";",
+    "quotechar": "\"",
+    "escapechar": "\"",
+    "row_delimiter": "\n",
+    "header_lines": "1",
+    "preamble_lines": "0",
+    "footnote_lines": "0",
+    "column_names": [
+        "Unnamed: 0",
+        "CD_UF",
+        "NM_UF",
+        "SIGLA",
+        "NM_REGIAO",
+        "AREA",
+        "X_TXT_OFF",
+        "Y_TXT_OFF"
+    ],
+    "encoding": "utf-8",
+    "n_columns": 8
+}

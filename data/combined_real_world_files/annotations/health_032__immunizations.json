@@ -1,0 +1,62 @@
+{
+  "provenance": {
+    "candidate_id": "health_032",
+    "topic": "health",
+    "search_term": "disease",
+    "repository": "noor-fatima81/synthea-healthcare",
+    "repository_url": "https://github.com/noor-fatima81/synthea-healthcare",
+    "source_path": "src/main/resources/costs/immunizations.csv",
+    "source_url": "https://github.com/noor-fatima81/synthea-healthcare/blob/main/src/main/resources/costs/immunizations.csv",
+    "commit_ref": "main",
+    "license_spdx": "Apache-2.0",
+    "license_url": "https://api.github.com/repos/noor-fatima81/synthea-healthcare/license?ref=main",
+    "local_path": "health/health_032__immunizations.csv",
+    "encoding": "utf-8",
+    "delimiter": ",",
+    "byte_size": "27",
+    "physical_lines": "1",
+    "logical_rows": "1",
+    "mode_columns": "5",
+    "anomaly_score": "3",
+    "anomalies": "single_record_table",
+    "profile_error": ""
+  },
+  "annotation": {
+    "source": "health/health_032__immunizations.csv",
+    "source_encoding": "utf-8",
+    "input_delimiter": ",",
+    "source_line_ranges": [
+      {
+        "start": 1,
+        "end": 1
+      }
+    ],
+    "shown_line_count": 1,
+    "source_total_lines": 1,
+    "issues": [
+      {
+        "label": "single_record_table",
+        "reason": "The file contains only one non-empty logical record.",
+        "lines": "file-level"
+      }
+    ],
+    "copy_events": [],
+    "error_description": "just header row, no data rows",
+    "working_origin_spans": [],
+    "header": {
+      "present": true,
+      "text": "CODE,MIN,MODE,MAX,COMMENTS",
+      "source_line": 1
+    },
+    "cleaned_rows": 0,
+    "cleaned_column_count": 5,
+    "cleaned_columns": [
+      "CODE",
+      "MIN",
+      "MODE",
+      "MAX",
+      "COMMENTS"
+    ],
+    "exported_at": "2026-11-17T09:44:22.348663+00:00"
+  }
+}

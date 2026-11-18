@@ -1,0 +1,88 @@
+{
+  "provenance": {
+    "candidate_id": "demographics_048",
+    "topic": "demographics",
+    "search_term": "census",
+    "repository": "Back-Road-Creative/framegrade",
+    "repository_url": "https://github.com/Back-Road-Creative/framegrade",
+    "source_path": "metricool_reference_header.csv",
+    "source_url": "https://github.com/Back-Road-Creative/framegrade/blob/main/metricool_reference_header.csv",
+    "commit_ref": "main",
+    "license_spdx": "Apache-2.0",
+    "license_url": "https://api.github.com/repos/Back-Road-Creative/framegrade/license?ref=main",
+    "local_path": "demographics/demographics_048__metricool_reference_header.csv",
+    "encoding": "utf-8-sig",
+    "delimiter": ",",
+    "byte_size": "442",
+    "physical_lines": "1",
+    "logical_rows": "1",
+    "mode_columns": "31",
+    "anomaly_score": "3",
+    "anomalies": "single_record_table",
+    "profile_error": ""
+  },
+  "annotation": {
+    "source": "demographics/demographics_048__metricool_reference_header.csv",
+    "source_encoding": "utf-8-sig",
+    "input_delimiter": ",",
+    "source_line_ranges": [
+      {
+        "start": 1,
+        "end": 1
+      }
+    ],
+    "shown_line_count": 1,
+    "source_total_lines": 1,
+    "issues": [
+      {
+        "label": "single_record_table",
+        "reason": "The file contains only one non-empty logical record.",
+        "lines": "file-level"
+      }
+    ],
+    "copy_events": [],
+    "error_description": "just a header",
+    "working_origin_spans": [],
+    "header": {
+      "present": true,
+      "text": "Text,Date,Time,Draft,Facebook,Twitter,LinkedIn,GBP,Instagram,Pinterest,TikTok,YouTube,Threads,Picture Url 1,Shortener,Instagram Post Type,Facebook Post Type,YouTube Video Title,YouTube Video Type,YouTube Video Privacy,YouTube video for kids,YouTube Video Category,YouTube Video Tags,TikTok Title,TikTok disable comments,TikTok disable duet,TikTok disable stitch,TikTok Post Privacy,TikTok Auto Add Music,Pinterest Board,First Comment Text",
+      "source_line": 1
+    },
+    "cleaned_rows": 0,
+    "cleaned_column_count": 31,
+    "cleaned_columns": [
+      "Text",
+      "Date",
+      "Time",
+      "Draft",
+      "Facebook",
+      "Twitter",
+      "LinkedIn",
+      "GBP",
+      "Instagram",
+      "Pinterest",
+      "TikTok",
+      "YouTube",
+      "Threads",
+      "Picture Url 1",
+      "Shortener",
+      "Instagram Post Type",
+      "Facebook Post Type",
+      "YouTube Video Title",
+      "YouTube Video Type",
+      "YouTube Video Privacy",
+      "YouTube video for kids",
+      "YouTube Video Category",
+      "YouTube Video Tags",
+      "TikTok Title",
+      "TikTok disable comments",
+      "TikTok disable duet",
+      "TikTok disable stitch",
+      "TikTok Post Privacy",
+      "TikTok Auto Add Music",
+      "Pinterest Board",
+      "First Comment Text"
+    ],
+    "exported_at": "2026-11-17T11:42:17.573279+00:00"
+  }
+}

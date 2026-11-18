@@ -1,0 +1,12 @@
+{
+    "delimiter": ",",
+    "quotechar": "\"",
+    "escapechar": "\"",
+    "row_delimiter": "\n",
+    "header_lines": "0",
+    "preamble_lines": "1",
+    "footnote_lines": "0",
+    "column_names": [],
+    "encoding": "utf-8",
+    "n_columns": 4
+}

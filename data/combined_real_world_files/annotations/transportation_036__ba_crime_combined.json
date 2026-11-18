@@ -1,0 +1,323 @@
+{
+  "provenance": {
+    "candidate_id": "transportation_036",
+    "topic": "transportation",
+    "search_term": "transit",
+    "repository": "tanay-pant/bay-area-opportunity-mapper",
+    "repository_url": "https://github.com/tanay-pant/bay-area-opportunity-mapper",
+    "source_path": "raw datasets/ba_crime_combined.csv",
+    "source_url": "https://github.com/tanay-pant/bay-area-opportunity-mapper/blob/main/raw%20datasets/ba_crime_combined.csv",
+    "commit_ref": "main",
+    "license_spdx": "MIT",
+    "license_url": "https://api.github.com/repos/tanay-pant/bay-area-opportunity-mapper/license?ref=main",
+    "local_path": "transportation/transportation_036__ba_crime_combined.csv",
+    "encoding": "utf-8",
+    "delimiter": ",",
+    "byte_size": "17546",
+    "physical_lines": "586",
+    "logical_rows": "586",
+    "mode_columns": "4",
+    "anomaly_score": "4",
+    "anomalies": "possible_missing_header",
+    "profile_error": ""
+  },
+  "annotation": {
+    "source": "transportation/transportation_036__ba_crime_combined.csv",
+    "source_encoding": "utf-8",
+    "input_delimiter": ",",
+    "source_line_ranges": [
+      {
+        "start": 1,
+        "end": 51
+      }
+    ],
+    "shown_line_count": 51,
+    "source_total_lines": 586,
+    "issues": [
+      {
+        "label": "possible_missing_header",
+        "reason": "The first record has the same type pattern as later data records.",
+        "lines": "1"
+      }
+    ],
+    "copy_events": [
+      {
+        "ranges": [
+          {
+            "start": 2,
+            "end": 51
+          }
+        ],
+        "characters": 1692,
+        "copied_at": "2026-11-17T12:21:23.697Z"
+      }
+    ],
+    "error_description": "header has same datatypes as body, so automatic header detection is harder",
+    "working_origin_spans": [
+      {
+        "start": 0,
+        "end": 20,
+        "source_line": 2
+      },
+      {
+        "start": 20,
+        "end": 62,
+        "source_line": 3
+      },
+      {
+        "start": 62,
+        "end": 88,
+        "source_line": 4
+      },
+      {
+        "start": 88,
+        "end": 146,
+        "source_line": 5
+      },
+      {
+        "start": 146,
+        "end": 174,
+        "source_line": 6
+      },
+      {
+        "start": 174,
+        "end": 206,
+        "source_line": 7
+      },
+      {
+        "start": 206,
+        "end": 241,
+        "source_line": 8
+      },
+      {
+        "start": 241,
+        "end": 261,
+        "source_line": 9
+      },
+      {
+        "start": 261,
+        "end": 288,
+        "source_line": 10
+      },
+      {
+        "start": 288,
+        "end": 335,
+        "source_line": 11
+      },
+      {
+        "start": 335,
+        "end": 367,
+        "source_line": 12
+      },
+      {
+        "start": 367,
+        "end": 401,
+        "source_line": 13
+      },
+      {
+        "start": 401,
+        "end": 423,
+        "source_line": 14
+      },
+      {
+        "start": 423,
+        "end": 450,
+        "source_line": 15
+      },
+      {
+        "start": 450,
+        "end": 480,
+        "source_line": 16
+      },
+      {
+        "start": 480,
+        "end": 509,
+        "source_line": 17
+      },
+      {
+        "start": 509,
+        "end": 546,
+        "source_line": 18
+      },
+      {
+        "start": 546,
+        "end": 575,
+        "source_line": 19
+      },
+      {
+        "start": 575,
+        "end": 597,
+        "source_line": 20
+      },
+      {
+        "start": 597,
+        "end": 630,
+        "source_line": 21
+      },
+      {
+        "start": 630,
+        "end": 676,
+        "source_line": 22
+      },
+      {
+        "start": 676,
+        "end": 696,
+        "source_line": 23
+      },
+      {
+        "start": 696,
+        "end": 723,
+        "source_line": 24
+      },
+      {
+        "start": 723,
+        "end": 770,
+        "source_line": 25
+      },
+      {
+        "start": 770,
+        "end": 810,
+        "source_line": 26
+      },
+      {
+        "start": 810,
+        "end": 852,
+        "source_line": 27
+      },
+      {
+        "start": 852,
+        "end": 897,
+        "source_line": 28
+      },
+      {
+        "start": 897,
+        "end": 933,
+        "source_line": 29
+      },
+      {
+        "start": 933,
+        "end": 961,
+        "source_line": 30
+      },
+      {
+        "start": 961,
+        "end": 1003,
+        "source_line": 31
+      },
+      {
+        "start": 1003,
+        "end": 1039,
+        "source_line": 32
+      },
+      {
+        "start": 1039,
+        "end": 1068,
+        "source_line": 33
+      },
+      {
+        "start": 1068,
+        "end": 1105,
+        "source_line": 34
+      },
+      {
+        "start": 1105,
+        "end": 1134,
+        "source_line": 35
+      },
+      {
+        "start": 1134,
+        "end": 1161,
+        "source_line": 36
+      },
+      {
+        "start": 1161,
+        "end": 1192,
+        "source_line": 37
+      },
+      {
+        "start": 1192,
+        "end": 1233,
+        "source_line": 38
+      },
+      {
+        "start": 1233,
+        "end": 1266,
+        "source_line": 39
+      },
+      {
+        "start": 1266,
+        "end": 1293,
+        "source_line": 40
+      },
+      {
+        "start": 1293,
+        "end": 1324,
+        "source_line": 41
+      },
+      {
+        "start": 1324,
+        "end": 1371,
+        "source_line": 42
+      },
+      {
+        "start": 1371,
+        "end": 1409,
+        "source_line": 43
+      },
+      {
+        "start": 1409,
+        "end": 1453,
+        "source_line": 44
+      },
+      {
+        "start": 1453,
+        "end": 1478,
+        "source_line": 45
+      },
+      {
+        "start": 1478,
+        "end": 1521,
+        "source_line": 46
+      },
+      {
+        "start": 1521,
+        "end": 1539,
+        "source_line": 47
+      },
+      {
+        "start": 1539,
+        "end": 1572,
+        "source_line": 48
+      },
+      {
+        "start": 1572,
+        "end": 1606,
+        "source_line": 49
+      },
+      {
+        "start": 1606,
+        "end": 1645,
+        "source_line": 50
+      },
+      {
+        "start": 1645,
+        "end": 1692,
+        "source_line": 51
+      }
+    ],
+    "header": {
+      "present": true,
+      "text": "CRIME_CATEGORY,2020,2024,COUNTY",
+      "source_line": 1
+    },
+    "cleaned_rows": 50,
+    "cleaned_column_count": 4,
+    "cleaned_columns": [
+      "CRIME_CATEGORY",
+      "2020",
+      "2024",
+      "COUNTY"
+    ],
+    "exported_at": "2026-11-17T12:21:50.763307+00:00"
+  }
+}

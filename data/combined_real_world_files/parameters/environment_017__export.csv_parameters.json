@@ -1,0 +1,22 @@
+{
+    "delimiter": ",",
+    "quotechar": "\"",
+    "escapechar": "\"",
+    "row_delimiter": "\n",
+    "header_lines": "1",
+    "preamble_lines": "0",
+    "footnote_lines": "0",
+    "column_names": [
+        "id",
+        "area_ha",
+        "vv_before_db",
+        "vv_flood_db",
+        "vv_change_db",
+        "centroid_lon",
+        "centroid_lat",
+        "passes_before",
+        "passes_flood"
+    ],
+    "encoding": "utf-8",
+    "n_columns": 9
+}

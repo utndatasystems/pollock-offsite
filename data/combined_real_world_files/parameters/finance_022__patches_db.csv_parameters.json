@@ -1,0 +1,21 @@
+{
+    "delimiter": ";",
+    "quotechar": "\"",
+    "escapechar": "\"",
+    "row_delimiter": "\n",
+    "header_lines": "1",
+    "preamble_lines": "0",
+    "footnote_lines": "0",
+    "column_names": [
+        "patch",
+        "platform",
+        "file_regexp",
+        "required",
+        "step",
+        "description",
+        "dir",
+        "sha256"
+    ],
+    "encoding": "utf-8",
+    "n_columns": 8
+}

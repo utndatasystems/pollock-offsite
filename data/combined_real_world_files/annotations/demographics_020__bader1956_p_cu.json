@@ -1,0 +1,160 @@
+{
+  "provenance": {
+    "candidate_id": "demographics_020",
+    "topic": "demographics",
+    "search_term": "survey",
+    "repository": "2AMLogic/lindhard",
+    "repository_url": "https://github.com/2AMLogic/lindhard",
+    "source_path": "validation/data/stopping/bader1956_p_cu.csv",
+    "source_url": "https://github.com/2AMLogic/lindhard/blob/main/validation/data/stopping/bader1956_p_cu.csv",
+    "commit_ref": "main",
+    "license_spdx": "MIT",
+    "license_url": "https://api.github.com/repos/2AMLogic/lindhard/license?ref=main",
+    "local_path": "demographics/demographics_020__bader1956_p_cu.csv",
+    "encoding": "utf-8",
+    "delimiter": ",",
+    "byte_size": "3848",
+    "physical_lines": "21",
+    "logical_rows": "21",
+    "mode_columns": "8",
+    "anomaly_score": "9",
+    "anomalies": "comment_rows;leading_comment;possible_preamble",
+    "profile_error": ""
+  },
+  "annotation": {
+    "source": "demographics/demographics_020__bader1956_p_cu.csv",
+    "source_encoding": "utf-8",
+    "input_delimiter": ",",
+    "source_line_ranges": [
+      {
+        "start": 1,
+        "end": 21
+      }
+    ],
+    "shown_line_count": 21,
+    "source_total_lines": 21,
+    "issues": [
+      {
+        "label": "comment_rows",
+        "reason": "Rows beginning with '#' may be comments rather than table records.",
+        "lines": "1-5"
+      },
+      {
+        "label": "leading_comment",
+        "reason": "The file begins with a possible comment row.",
+        "lines": "1"
+      },
+      {
+        "label": "possible_preamble",
+        "reason": "Records before the stable table shape resemble title or metadata rows.",
+        "lines": "1-5"
+      }
+    ],
+    "copy_events": [
+      {
+        "ranges": [
+          {
+            "start": 2,
+            "end": 21
+          }
+        ],
+        "characters": 3813,
+        "copied_at": "2026-11-11T12:29:19.292Z"
+      }
+    ],
+    "error_description": "preamble",
+    "working_origin_spans": [
+      {
+        "start": 0,
+        "end": 222,
+        "source_line": 7
+      },
+      {
+        "start": 222,
+        "end": 444,
+        "source_line": 8
+      },
+      {
+        "start": 444,
+        "end": 667,
+        "source_line": 9
+      },
+      {
+        "start": 667,
+        "end": 890,
+        "source_line": 10
+      },
+      {
+        "start": 890,
+        "end": 1113,
+        "source_line": 11
+      },
+      {
+        "start": 1113,
+        "end": 1336,
+        "source_line": 12
+      },
+      {
+        "start": 1336,
+        "end": 1559,
+        "source_line": 13
+      },
+      {
+        "start": 1559,
+        "end": 1782,
+        "source_line": 14
+      },
+      {
+        "start": 1782,
+        "end": 2005,
+        "source_line": 15
+      },
+      {
+        "start": 2005,
+        "end": 2228,
+        "source_line": 16
+      },
+      {
+        "start": 2228,
+        "end": 2451,
+        "source_line": 17
+      },
+      {
+        "start": 2451,
+        "end": 2674,
+        "source_line": 18
+      },
+      {
+        "start": 2674,
+        "end": 2897,
+        "source_line": 19
+      },
+      {
+        "start": 2897,
+        "end": 3120,
+        "source_line": 20
+      },
+      {
+        "start": 3120,
+        "end": 3343,
+        "source_line": 21
+      }
+    ],
+    "header": {
+      "text": "ion_z,ion_mass_amu,target,energy_ev,s_e_ev_1e15_cm2,sigma_ev_1e15_cm2,method,citation",
+      "source_line": 1
+    },
+    "cleaned_rows": 15,
+    "cleaned_columns": [
+      "ion_z",
+      "ion_mass_amu",
+      "target",
+      "energy_ev",
+      "s_e_ev_1e15_cm2",
+      "sigma_ev_1e15_cm2",
+      "method",
+      "citation"
+    ],
+    "exported_at": "2026-11-11T12:30:17.464092+00:00"
+  }
+}

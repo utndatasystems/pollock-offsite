@@ -1,0 +1,326 @@
+{
+  "provenance": {
+    "candidate_id": "finance_046",
+    "topic": "finance",
+    "search_term": "banking",
+    "repository": "yanivil/home-threat-feed",
+    "repository_url": "https://github.com/yanivil/home-threat-feed",
+    "source_path": "spark-ioc-feed.csv",
+    "source_url": "https://github.com/yanivil/home-threat-feed/blob/main/spark-ioc-feed.csv",
+    "commit_ref": "main",
+    "license_spdx": "MIT",
+    "license_url": "https://api.github.com/repos/yanivil/home-threat-feed/license?ref=main",
+    "local_path": "finance/finance_046__spark-ioc-feed.csv",
+    "encoding": "utf-8",
+    "delimiter": ",",
+    "byte_size": "290924",
+    "physical_lines": "1938",
+    "logical_rows": "1938",
+    "mode_columns": "7",
+    "anomaly_score": "3",
+    "anomalies": "leading_comment",
+    "profile_error": ""
+  },
+  "annotation": {
+    "source": "finance/finance_046__spark-ioc-feed.csv",
+    "source_encoding": "utf-8",
+    "input_delimiter": ",",
+    "source_line_ranges": [
+      {
+        "start": 1,
+        "end": 51
+      }
+    ],
+    "shown_line_count": 51,
+    "source_total_lines": 1938,
+    "issues": [
+      {
+        "label": "leading_comment",
+        "reason": "The file begins with a possible comment row.",
+        "lines": "1"
+      }
+    ],
+    "copy_events": [
+      {
+        "ranges": [
+          {
+            "start": 2,
+            "end": 51
+          }
+        ],
+        "characters": 8347,
+        "copied_at": "2026-11-17T12:48:38.038Z"
+      }
+    ],
+    "error_description": "header first column starts with # -> might trip auto preamble detection up",
+    "working_origin_spans": [
+      {
+        "start": 0,
+        "end": 101,
+        "source_line": 2
+      },
+      {
+        "start": 101,
+        "end": 247,
+        "source_line": 3
+      },
+      {
+        "start": 247,
+        "end": 391,
+        "source_line": 4
+      },
+      {
+        "start": 391,
+        "end": 535,
+        "source_line": 5
+      },
+      {
+        "start": 535,
+        "end": 681,
+        "source_line": 6
+      },
+      {
+        "start": 681,
+        "end": 824,
+        "source_line": 7
+      },
+      {
+        "start": 824,
+        "end": 973,
+        "source_line": 8
+      },
+      {
+        "start": 973,
+        "end": 1166,
+        "source_line": 9
+      },
+      {
+        "start": 1166,
+        "end": 1359,
+        "source_line": 10
+      },
+      {
+        "start": 1359,
+        "end": 1552,
+        "source_line": 11
+      },
+      {
+        "start": 1552,
+        "end": 1745,
+        "source_line": 12
+      },
+      {
+        "start": 1745,
+        "end": 1938,
+        "source_line": 13
+      },
+      {
+        "start": 1938,
+        "end": 2131,
+        "source_line": 14
+      },
+      {
+        "start": 2131,
+        "end": 2324,
+        "source_line": 15
+      },
+      {
+        "start": 2324,
+        "end": 2519,
+        "source_line": 16
+      },
+      {
+        "start": 2519,
+        "end": 2714,
+        "source_line": 17
+      },
+      {
+        "start": 2714,
+        "end": 2909,
+        "source_line": 18
+      },
+      {
+        "start": 2909,
+        "end": 3104,
+        "source_line": 19
+      },
+      {
+        "start": 3104,
+        "end": 3299,
+        "source_line": 20
+      },
+      {
+        "start": 3299,
+        "end": 3494,
+        "source_line": 21
+      },
+      {
+        "start": 3494,
+        "end": 3689,
+        "source_line": 22
+      },
+      {
+        "start": 3689,
+        "end": 3884,
+        "source_line": 23
+      },
+      {
+        "start": 3884,
+        "end": 4048,
+        "source_line": 24
+      },
+      {
+        "start": 4048,
+        "end": 4215,
+        "source_line": 25
+      },
+      {
+        "start": 4215,
+        "end": 4373,
+        "source_line": 26
+      },
+      {
+        "start": 4373,
+        "end": 4532,
+        "source_line": 27
+      },
+      {
+        "start": 4532,
+        "end": 4694,
+        "source_line": 28
+      },
+      {
+        "start": 4694,
+        "end": 4861,
+        "source_line": 29
+      },
+      {
+        "start": 4861,
+        "end": 5021,
+        "source_line": 30
+      },
+      {
+        "start": 5021,
+        "end": 5187,
+        "source_line": 31
+      },
+      {
+        "start": 5187,
+        "end": 5353,
+        "source_line": 32
+      },
+      {
+        "start": 5353,
+        "end": 5518,
+        "source_line": 33
+      },
+      {
+        "start": 5518,
+        "end": 5689,
+        "source_line": 34
+      },
+      {
+        "start": 5689,
+        "end": 5854,
+        "source_line": 35
+      },
+      {
+        "start": 5854,
+        "end": 6022,
+        "source_line": 36
+      },
+      {
+        "start": 6022,
+        "end": 6182,
+        "source_line": 37
+      },
+      {
+        "start": 6182,
+        "end": 6343,
+        "source_line": 38
+      },
+      {
+        "start": 6343,
+        "end": 6507,
+        "source_line": 39
+      },
+      {
+        "start": 6507,
+        "end": 6672,
+        "source_line": 40
+      },
+      {
+        "start": 6672,
+        "end": 6824,
+        "source_line": 41
+      },
+      {
+        "start": 6824,
+        "end": 6979,
+        "source_line": 42
+      },
+      {
+        "start": 6979,
+        "end": 7139,
+        "source_line": 43
+      },
+      {
+        "start": 7139,
+        "end": 7287,
+        "source_line": 44
+      },
+      {
+        "start": 7287,
+        "end": 7438,
+        "source_line": 45
+      },
+      {
+        "start": 7438,
+        "end": 7607,
+        "source_line": 46
+      },
+      {
+        "start": 7607,
+        "end": 7776,
+        "source_line": 47
+      },
+      {
+        "start": 7776,
+        "end": 7919,
+        "source_line": 48
+      },
+      {
+        "start": 7919,
+        "end": 8068,
+        "source_line": 49
+      },
+      {
+        "start": 8068,
+        "end": 8212,
+        "source_line": 50
+      },
+      {
+        "start": 8212,
+        "end": 8347,
+        "source_line": 51
+      }
+    ],
+    "header": {
+      "present": true,
+      "text": "# UNIQ-NAME,VALUE,TYPE,CONFIDENCE,SEVERITY,PRODUCT,COMMENT",
+      "source_line": 1
+    },
+    "cleaned_rows": 50,
+    "cleaned_column_count": 7,
+    "cleaned_columns": [
+      "# UNIQ-NAME",
+      "VALUE",
+      "TYPE",
+      "CONFIDENCE",
+      "SEVERITY",
+      "PRODUCT",
+      "COMMENT"
+    ],
+    "exported_at": "2026-11-17T12:52:18.597224+00:00"
+  }
+}

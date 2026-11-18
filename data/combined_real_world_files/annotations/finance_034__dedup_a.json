@@ -1,0 +1,88 @@
+{
+  "provenance": {
+    "candidate_id": "finance_034",
+    "topic": "finance",
+    "search_term": "banking",
+    "repository": "MaMissaoui/Finglass",
+    "repository_url": "https://github.com/MaMissaoui/Finglass",
+    "source_path": "testdata/inputs/dedup/dedup_a.csv",
+    "source_url": "https://github.com/MaMissaoui/Finglass/blob/main/testdata/inputs/dedup/dedup_a.csv",
+    "commit_ref": "main",
+    "license_spdx": "MIT",
+    "license_url": "https://api.github.com/repos/MaMissaoui/Finglass/license?ref=main",
+    "local_path": "finance/finance_034__dedup_a.csv",
+    "encoding": "utf-8",
+    "delimiter": ";",
+    "byte_size": "166",
+    "physical_lines": "4",
+    "logical_rows": "4",
+    "mode_columns": "4",
+    "anomaly_score": "3",
+    "anomalies": "non_comma_delimiter",
+    "profile_error": ""
+  },
+  "annotation": {
+    "source": "finance/finance_034__dedup_a.csv",
+    "source_encoding": "utf-8",
+    "input_delimiter": ";",
+    "source_line_ranges": [
+      {
+        "start": 1,
+        "end": 4
+      }
+    ],
+    "shown_line_count": 4,
+    "source_total_lines": 4,
+    "issues": [
+      {
+        "label": "non_comma_delimiter",
+        "reason": "The detected delimiter is not a comma.",
+        "lines": "file-level"
+      }
+    ],
+    "copy_events": [
+      {
+        "ranges": [
+          {
+            "start": 2,
+            "end": 4
+          }
+        ],
+        "characters": 94,
+        "copied_at": "2026-11-17T12:42:24.554Z"
+      }
+    ],
+    "error_description": "semicolon delimiter",
+    "working_origin_spans": [
+      {
+        "start": 0,
+        "end": 31,
+        "source_line": 2
+      },
+      {
+        "start": 31,
+        "end": 62,
+        "source_line": 3
+      },
+      {
+        "start": 62,
+        "end": 94,
+        "source_line": 4
+      }
+    ],
+    "header": {
+      "present": true,
+      "text": "Buchungstag;Betrag;Beguenstigter/Zahlungspflichtiger;Verwendungszweck",
+      "source_line": 1
+    },
+    "cleaned_rows": 3,
+    "cleaned_column_count": 4,
+    "cleaned_columns": [
+      "Buchungstag",
+      "Betrag",
+      "Beguenstigter/Zahlungspflichtiger",
+      "Verwendungszweck"
+    ],
+    "exported_at": "2026-11-17T12:42:35.971009+00:00"
+  }
+}

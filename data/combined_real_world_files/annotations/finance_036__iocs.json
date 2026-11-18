@@ -1,0 +1,636 @@
+{
+  "provenance": {
+    "candidate_id": "finance_036",
+    "topic": "finance",
+    "search_term": "banking",
+    "repository": "daniyyell-dev/rapid-threat-intel",
+    "repository_url": "https://github.com/daniyyell-dev/rapid-threat-intel",
+    "source_path": "all/iocs.csv",
+    "source_url": "https://github.com/daniyyell-dev/rapid-threat-intel/blob/main/all/iocs.csv",
+    "commit_ref": "main",
+    "license_spdx": "MIT",
+    "license_url": "https://api.github.com/repos/daniyyell-dev/rapid-threat-intel/license?ref=main",
+    "local_path": "finance/finance_036__iocs.csv",
+    "encoding": "utf-8",
+    "delimiter": ",",
+    "byte_size": "664211",
+    "physical_lines": "1348",
+    "logical_rows": "1348",
+    "mode_columns": "9",
+    "anomaly_score": "2",
+    "anomalies": "comment_rows",
+    "profile_error": ""
+  },
+  "annotation": {
+    "source": "finance/finance_036__iocs.csv",
+    "source_encoding": "utf-8",
+    "input_delimiter": ",",
+    "source_line_ranges": [
+      {
+        "start": 1,
+        "end": 10
+      },
+      {
+        "start": 1055,
+        "end": 1155
+      }
+    ],
+    "shown_line_count": 111,
+    "source_total_lines": 1348,
+    "issues": [
+      {
+        "label": "comment_rows",
+        "reason": "Rows beginning with '#' may be comments rather than table records.",
+        "lines": "1105"
+      }
+    ],
+    "copy_events": [
+      {
+        "ranges": [
+          {
+            "start": 2,
+            "end": 10
+          },
+          {
+            "start": 1055,
+            "end": 1155
+          }
+        ],
+        "characters": 53759,
+        "copied_at": "2026-11-17T12:43:21.544Z"
+      }
+    ],
+    "error_description": "row starting with # (which is valid data)\nmight trip auto-comment detectors up",
+    "working_origin_spans": [
+      {
+        "start": 0,
+        "end": 731,
+        "source_line": 2
+      },
+      {
+        "start": 731,
+        "end": 1307,
+        "source_line": 3
+      },
+      {
+        "start": 1307,
+        "end": 1883,
+        "source_line": 4
+      },
+      {
+        "start": 1883,
+        "end": 2592,
+        "source_line": 5
+      },
+      {
+        "start": 2592,
+        "end": 3184,
+        "source_line": 6
+      },
+      {
+        "start": 3184,
+        "end": 3762,
+        "source_line": 7
+      },
+      {
+        "start": 3762,
+        "end": 4356,
+        "source_line": 8
+      },
+      {
+        "start": 4356,
+        "end": 4924,
+        "source_line": 9
+      },
+      {
+        "start": 4924,
+        "end": 5502,
+        "source_line": 10
+      },
+      {
+        "start": 5502,
+        "end": 5823,
+        "source_line": 1055
+      },
+      {
+        "start": 5823,
+        "end": 6203,
+        "source_line": 1056
+      },
+      {
+        "start": 6203,
+        "end": 6518,
+        "source_line": 1057
+      },
+      {
+        "start": 6518,
+        "end": 6829,
+        "source_line": 1058
+      },
+      {
+        "start": 6829,
+        "end": 7161,
+        "source_line": 1059
+      },
+      {
+        "start": 7161,
+        "end": 7632,
+        "source_line": 1060
+      },
+      {
+        "start": 7632,
+        "end": 8188,
+        "source_line": 1061
+      },
+      {
+        "start": 8188,
+        "end": 8716,
+        "source_line": 1062
+      },
+      {
+        "start": 8716,
+        "end": 9257,
+        "source_line": 1063
+      },
+      {
+        "start": 9257,
+        "end": 9804,
+        "source_line": 1064
+      },
+      {
+        "start": 9804,
+        "end": 10327,
+        "source_line": 1065
+      },
+      {
+        "start": 10327,
+        "end": 10887,
+        "source_line": 1066
+      },
+      {
+        "start": 10887,
+        "end": 11401,
+        "source_line": 1067
+      },
+      {
+        "start": 11401,
+        "end": 11889,
+        "source_line": 1068
+      },
+      {
+        "start": 11889,
+        "end": 12445,
+        "source_line": 1069
+      },
+      {
+        "start": 12445,
+        "end": 12929,
+        "source_line": 1070
+      },
+      {
+        "start": 12929,
+        "end": 13344,
+        "source_line": 1071
+      },
+      {
+        "start": 13344,
+        "end": 13901,
+        "source_line": 1072
+      },
+      {
+        "start": 13901,
+        "end": 14393,
+        "source_line": 1073
+      },
+      {
+        "start": 14393,
+        "end": 14839,
+        "source_line": 1074
+      },
+      {
+        "start": 14839,
+        "end": 15318,
+        "source_line": 1075
+      },
+      {
+        "start": 15318,
+        "end": 15694,
+        "source_line": 1076
+      },
+      {
+        "start": 15694,
+        "end": 16117,
+        "source_line": 1077
+      },
+      {
+        "start": 16117,
+        "end": 16548,
+        "source_line": 1078
+      },
+      {
+        "start": 16548,
+        "end": 16929,
+        "source_line": 1079
+      },
+      {
+        "start": 16929,
+        "end": 17301,
+        "source_line": 1080
+      },
+      {
+        "start": 17301,
+        "end": 17713,
+        "source_line": 1081
+      },
+      {
+        "start": 17713,
+        "end": 18078,
+        "source_line": 1082
+      },
+      {
+        "start": 18078,
+        "end": 18429,
+        "source_line": 1083
+      },
+      {
+        "start": 18429,
+        "end": 18854,
+        "source_line": 1084
+      },
+      {
+        "start": 18854,
+        "end": 19246,
+        "source_line": 1085
+      },
+      {
+        "start": 19246,
+        "end": 19638,
+        "source_line": 1086
+      },
+      {
+        "start": 19638,
+        "end": 20132,
+        "source_line": 1087
+      },
+      {
+        "start": 20132,
+        "end": 20580,
+        "source_line": 1088
+      },
+      {
+        "start": 20580,
+        "end": 21088,
+        "source_line": 1089
+      },
+      {
+        "start": 21088,
+        "end": 21583,
+        "source_line": 1090
+      },
+      {
+        "start": 21583,
+        "end": 22246,
+        "source_line": 1091
+      },
+      {
+        "start": 22246,
+        "end": 22608,
+        "source_line": 1092
+      },
+      {
+        "start": 22608,
+        "end": 22986,
+        "source_line": 1093
+      },
+      {
+        "start": 22986,
+        "end": 23392,
+        "source_line": 1094
+      },
+      {
+        "start": 23392,
+        "end": 23814,
+        "source_line": 1095
+      },
+      {
+        "start": 23814,
+        "end": 24294,
+        "source_line": 1096
+      },
+      {
+        "start": 24294,
+        "end": 24724,
+        "source_line": 1097
+      },
+      {
+        "start": 24724,
+        "end": 25166,
+        "source_line": 1098
+      },
+      {
+        "start": 25166,
+        "end": 25694,
+        "source_line": 1099
+      },
+      {
+        "start": 25694,
+        "end": 26501,
+        "source_line": 1100
+      },
+      {
+        "start": 26501,
+        "end": 26923,
+        "source_line": 1101
+      },
+      {
+        "start": 26923,
+        "end": 27243,
+        "source_line": 1102
+      },
+      {
+        "start": 27243,
+        "end": 27629,
+        "source_line": 1103
+      },
+      {
+        "start": 27629,
+        "end": 28031,
+        "source_line": 1104
+      },
+      {
+        "start": 28031,
+        "end": 28414,
+        "source_line": 1105
+      },
+      {
+        "start": 28414,
+        "end": 28905,
+        "source_line": 1106
+      },
+      {
+        "start": 28905,
+        "end": 29323,
+        "source_line": 1107
+      },
+      {
+        "start": 29323,
+        "end": 29749,
+        "source_line": 1108
+      },
+      {
+        "start": 29749,
+        "end": 30158,
+        "source_line": 1109
+      },
+      {
+        "start": 30158,
+        "end": 30555,
+        "source_line": 1110
+      },
+      {
+        "start": 30555,
+        "end": 31069,
+        "source_line": 1111
+      },
+      {
+        "start": 31069,
+        "end": 31509,
+        "source_line": 1112
+      },
+      {
+        "start": 31509,
+        "end": 31904,
+        "source_line": 1113
+      },
+      {
+        "start": 31904,
+        "end": 32386,
+        "source_line": 1114
+      },
+      {
+        "start": 32386,
+        "end": 32859,
+        "source_line": 1115
+      },
+      {
+        "start": 32859,
+        "end": 33319,
+        "source_line": 1116
+      },
+      {
+        "start": 33319,
+        "end": 33941,
+        "source_line": 1117
+      },
+      {
+        "start": 33941,
+        "end": 34548,
+        "source_line": 1118
+      },
+      {
+        "start": 34548,
+        "end": 35068,
+        "source_line": 1119
+      },
+      {
+        "start": 35068,
+        "end": 35545,
+        "source_line": 1120
+      },
+      {
+        "start": 35545,
+        "end": 36073,
+        "source_line": 1121
+      },
+      {
+        "start": 36073,
+        "end": 36546,
+        "source_line": 1122
+      },
+      {
+        "start": 36546,
+        "end": 36971,
+        "source_line": 1123
+      },
+      {
+        "start": 36971,
+        "end": 37459,
+        "source_line": 1124
+      },
+      {
+        "start": 37459,
+        "end": 38018,
+        "source_line": 1125
+      },
+      {
+        "start": 38018,
+        "end": 38660,
+        "source_line": 1126
+      },
+      {
+        "start": 38660,
+        "end": 39183,
+        "source_line": 1127
+      },
+      {
+        "start": 39183,
+        "end": 39661,
+        "source_line": 1128
+      },
+      {
+        "start": 39661,
+        "end": 40139,
+        "source_line": 1129
+      },
+      {
+        "start": 40139,
+        "end": 40618,
+        "source_line": 1130
+      },
+      {
+        "start": 40618,
+        "end": 41147,
+        "source_line": 1131
+      },
+      {
+        "start": 41147,
+        "end": 41657,
+        "source_line": 1132
+      },
+      {
+        "start": 41657,
+        "end": 42142,
+        "source_line": 1133
+      },
+      {
+        "start": 42142,
+        "end": 42615,
+        "source_line": 1134
+      },
+      {
+        "start": 42615,
+        "end": 43107,
+        "source_line": 1135
+      },
+      {
+        "start": 43107,
+        "end": 43584,
+        "source_line": 1136
+      },
+      {
+        "start": 43584,
+        "end": 44119,
+        "source_line": 1137
+      },
+      {
+        "start": 44119,
+        "end": 44685,
+        "source_line": 1138
+      },
+      {
+        "start": 44685,
+        "end": 45235,
+        "source_line": 1139
+      },
+      {
+        "start": 45235,
+        "end": 45772,
+        "source_line": 1140
+      },
+      {
+        "start": 45772,
+        "end": 46277,
+        "source_line": 1141
+      },
+      {
+        "start": 46277,
+        "end": 46696,
+        "source_line": 1142
+      },
+      {
+        "start": 46696,
+        "end": 47026,
+        "source_line": 1143
+      },
+      {
+        "start": 47026,
+        "end": 47614,
+        "source_line": 1144
+      },
+      {
+        "start": 47614,
+        "end": 48219,
+        "source_line": 1145
+      },
+      {
+        "start": 48219,
+        "end": 48794,
+        "source_line": 1146
+      },
+      {
+        "start": 48794,
+        "end": 49337,
+        "source_line": 1147
+      },
+      {
+        "start": 49337,
+        "end": 49899,
+        "source_line": 1148
+      },
+      {
+        "start": 49899,
+        "end": 50449,
+        "source_line": 1149
+      },
+      {
+        "start": 50449,
+        "end": 50996,
+        "source_line": 1150
+      },
+      {
+        "start": 50996,
+        "end": 51529,
+        "source_line": 1151
+      },
+      {
+        "start": 51529,
+        "end": 52061,
+        "source_line": 1152
+      },
+      {
+        "start": 52061,
+        "end": 52638,
+        "source_line": 1153
+      },
+      {
+        "start": 52638,
+        "end": 53198,
+        "source_line": 1154
+      },
+      {
+        "start": 53198,
+        "end": 53759,
+        "source_line": 1155
+      }
+    ],
+    "header": {
+      "present": true,
+      "text": "indicator,type,threat,confidence,recommended_action,source_url,description,notes,sources",
+      "source_line": 1
+    },
+    "cleaned_rows": 110,
+    "cleaned_column_count": 9,
+    "cleaned_columns": [
+      "indicator",
+      "type",
+      "threat",
+      "confidence",
+      "recommended_action",
+      "source_url",
+      "description",
+      "notes",
+      "sources"
+    ],
+    "exported_at": "2026-11-17T12:44:04.140655+00:00"
+  }
+}

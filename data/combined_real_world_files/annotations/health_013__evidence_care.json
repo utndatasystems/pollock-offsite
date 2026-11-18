@@ -1,0 +1,404 @@
+{
+  "provenance": {
+    "candidate_id": "health_013",
+    "topic": "health",
+    "search_term": "health",
+    "repository": "gamze-kose/TR-Health-Tourism-Surge-Sim",
+    "repository_url": "https://github.com/gamze-kose/TR-Health-Tourism-Surge-Sim",
+    "source_path": "data/raw/needs/evidence_care.csv",
+    "source_url": "https://github.com/gamze-kose/TR-Health-Tourism-Surge-Sim/blob/main/data/raw/needs/evidence_care.csv",
+    "commit_ref": "main",
+    "license_spdx": "MIT",
+    "license_url": "https://api.github.com/repos/gamze-kose/TR-Health-Tourism-Surge-Sim/license?ref=main",
+    "local_path": "health/health_013__evidence_care.csv",
+    "encoding": "utf-8",
+    "delimiter": ",",
+    "byte_size": "13012",
+    "physical_lines": "62",
+    "logical_rows": "62",
+    "mode_columns": "12",
+    "anomaly_score": "5",
+    "anomalies": "inconsistent_field_counts",
+    "profile_error": ""
+  },
+  "annotation": {
+    "source": "health/health_013__evidence_care.csv",
+    "source_encoding": "utf-8",
+    "input_delimiter": ",",
+    "source_line_ranges": [
+      {
+        "start": 1,
+        "end": 62
+      }
+    ],
+    "shown_line_count": 62,
+    "source_total_lines": 62,
+    "issues": [
+      {
+        "label": "inconsistent_field_counts",
+        "reason": "Logical records do not all contain the modal number of fields.",
+        "lines": "50-51"
+      }
+    ],
+    "copy_events": [
+      {
+        "characters": 12928,
+        "copied_at": "2026-11-17T08:36:55.753Z",
+        "ranges": [
+          {
+            "end": 62,
+            "start": 2
+          }
+        ]
+      }
+    ],
+    "error_description": "Unquoted commas. Lines 50,51\nAuto-export or manual editor must have thought that the single-quote-character at the start of the field escapes the comma in the field. But the real quote character across the file is a double quote. AND the single quote ends in the middle of the field, which is why this is not a case of real \"mixed\" delimiters",
+    "working_origin_spans": [
+      {
+        "end": 249,
+        "source_line": 2,
+        "start": 0
+      },
+      {
+        "end": 490,
+        "source_line": 3,
+        "start": 249
+      },
+      {
+        "end": 781,
+        "source_line": 4,
+        "start": 490
+      },
+      {
+        "end": 1079,
+        "source_line": 5,
+        "start": 781
+      },
+      {
+        "end": 1406,
+        "source_line": 6,
+        "start": 1079
+      },
+      {
+        "end": 1530,
+        "source_line": 7,
+        "start": 1406
+      },
+      {
+        "end": 1753,
+        "source_line": 8,
+        "start": 1530
+      },
+      {
+        "end": 1899,
+        "source_line": 9,
+        "start": 1753
+      },
+      {
+        "end": 2284,
+        "source_line": 10,
+        "start": 1899
+      },
+      {
+        "end": 2490,
+        "source_line": 11,
+        "start": 2284
+      },
+      {
+        "end": 2655,
+        "source_line": 12,
+        "start": 2490
+      },
+      {
+        "end": 2833,
+        "source_line": 13,
+        "start": 2655
+      },
+      {
+        "end": 3151,
+        "source_line": 14,
+        "start": 2833
+      },
+      {
+        "end": 3435,
+        "source_line": 15,
+        "start": 3151
+      },
+      {
+        "end": 3627,
+        "source_line": 16,
+        "start": 3435
+      },
+      {
+        "end": 3890,
+        "source_line": 17,
+        "start": 3627
+      },
+      {
+        "end": 4223,
+        "source_line": 18,
+        "start": 3890
+      },
+      {
+        "end": 4408,
+        "source_line": 19,
+        "start": 4223
+      },
+      {
+        "end": 4642,
+        "source_line": 20,
+        "start": 4408
+      },
+      {
+        "end": 4886,
+        "source_line": 21,
+        "start": 4642
+      },
+      {
+        "end": 5074,
+        "source_line": 22,
+        "start": 4886
+      },
+      {
+        "end": 5391,
+        "source_line": 23,
+        "start": 5074
+      },
+      {
+        "end": 5659,
+        "source_line": 24,
+        "start": 5391
+      },
+      {
+        "end": 5838,
+        "source_line": 25,
+        "start": 5659
+      },
+      {
+        "end": 6123,
+        "source_line": 26,
+        "start": 5838
+      },
+      {
+        "end": 6353,
+        "source_line": 27,
+        "start": 6123
+      },
+      {
+        "end": 6586,
+        "source_line": 28,
+        "start": 6353
+      },
+      {
+        "end": 6942,
+        "source_line": 29,
+        "start": 6586
+      },
+      {
+        "end": 7136,
+        "source_line": 30,
+        "start": 6942
+      },
+      {
+        "end": 7431,
+        "source_line": 31,
+        "start": 7136
+      },
+      {
+        "end": 7644,
+        "source_line": 32,
+        "start": 7431
+      },
+      {
+        "end": 7861,
+        "source_line": 33,
+        "start": 7644
+      },
+      {
+        "end": 8063,
+        "source_line": 34,
+        "start": 7861
+      },
+      {
+        "end": 8267,
+        "source_line": 35,
+        "start": 8063
+      },
+      {
+        "end": 8477,
+        "source_line": 36,
+        "start": 8267
+      },
+      {
+        "end": 8689,
+        "source_line": 37,
+        "start": 8477
+      },
+      {
+        "end": 8924,
+        "source_line": 38,
+        "start": 8689
+      },
+      {
+        "end": 9157,
+        "source_line": 39,
+        "start": 8924
+      },
+      {
+        "end": 9351,
+        "source_line": 40,
+        "start": 9157
+      },
+      {
+        "end": 9547,
+        "source_line": 41,
+        "start": 9351
+      },
+      {
+        "end": 9678,
+        "source_line": 42,
+        "start": 9547
+      },
+      {
+        "end": 9833,
+        "source_line": 43,
+        "start": 9678
+      },
+      {
+        "end": 9997,
+        "source_line": 44,
+        "start": 9833
+      },
+      {
+        "end": 10148,
+        "source_line": 45,
+        "start": 9997
+      },
+      {
+        "end": 10297,
+        "source_line": 46,
+        "start": 10148
+      },
+      {
+        "end": 10432,
+        "source_line": 47,
+        "start": 10297
+      },
+      {
+        "end": 10558,
+        "source_line": 48,
+        "start": 10432
+      },
+      {
+        "end": 10685,
+        "source_line": 49,
+        "start": 10558
+      },
+      {
+        "end": 10813,
+        "source_line": 50,
+        "start": 10685
+      },
+      {
+        "end": 10894,
+        "source_line": 50,
+        "start": 10814
+      },
+      {
+        "end": 10896,
+        "source_line": 50,
+        "start": 10895
+      },
+      {
+        "end": 11054,
+        "source_line": 51,
+        "start": 10896
+      },
+      {
+        "end": 11107,
+        "source_line": 51,
+        "start": 11055
+      },
+      {
+        "end": 11109,
+        "source_line": 51,
+        "start": 11108
+      },
+      {
+        "end": 11268,
+        "source_line": 52,
+        "start": 11109
+      },
+      {
+        "end": 11424,
+        "source_line": 53,
+        "start": 11268
+      },
+      {
+        "end": 11553,
+        "source_line": 54,
+        "start": 11424
+      },
+      {
+        "end": 11691,
+        "source_line": 55,
+        "start": 11553
+      },
+      {
+        "end": 11832,
+        "source_line": 56,
+        "start": 11691
+      },
+      {
+        "end": 11962,
+        "source_line": 57,
+        "start": 11832
+      },
+      {
+        "end": 12181,
+        "source_line": 58,
+        "start": 11962
+      },
+      {
+        "end": 12382,
+        "source_line": 59,
+        "start": 12181
+      },
+      {
+        "end": 12529,
+        "source_line": 60,
+        "start": 12382
+      },
+      {
+        "end": 12700,
+        "source_line": 61,
+        "start": 12529
+      },
+      {
+        "end": 12932,
+        "source_line": 62,
+        "start": 12700
+      }
+    ],
+    "header": {
+      "text": "need_id,crisis_type,setting,metric,value,unit,denominator,low,high,n,source_id,note",
+      "source_line": 1
+    },
+    "cleaned_rows": 61,
+    "cleaned_columns": [
+      "need_id",
+      "crisis_type",
+      "setting",
+      "metric",
+      "value",
+      "unit",
+      "denominator",
+      "low",
+      "high",
+      "n",
+      "source_id",
+      "note"
+    ],
+    "exported_at": "2026-11-17T08:49:15.108586+00:00"
+  }
+}

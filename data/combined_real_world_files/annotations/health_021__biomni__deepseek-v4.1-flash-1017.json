@@ -1,0 +1,411 @@
+{
+  "provenance": {
+    "candidate_id": "health_021",
+    "topic": "health",
+    "search_term": "disease",
+    "repository": "mbzuai-ai4bio/BioXArena-Pro",
+    "repository_url": "https://github.com/mbzuai-ai4bio/BioXArena-Pro",
+    "source_path": "scoring/results/biomni__deepseek-v4.1-flash-1017.csv",
+    "source_url": "https://github.com/mbzuai-ai4bio/BioXArena-Pro/blob/main/scoring/results/biomni__deepseek-v4.1-flash-1017.csv",
+    "commit_ref": "main",
+    "license_spdx": "MIT",
+    "license_url": "https://api.github.com/repos/mbzuai-ai4bio/BioXArena-Pro/license?ref=main",
+    "local_path": "health/health_021__biomni__deepseek-v4.1-flash-1017.csv",
+    "encoding": "utf-8",
+    "delimiter": ",",
+    "byte_size": "17435",
+    "physical_lines": "66",
+    "logical_rows": "65",
+    "mode_columns": "12",
+    "anomaly_score": "2",
+    "anomalies": "mixed_line_endings",
+    "profile_error": ""
+  },
+  "annotation": {
+    "source": "health/health_021__biomni__deepseek-v4.1-flash-1017.csv",
+    "source_encoding": "utf-8",
+    "input_delimiter": ",",
+    "source_line_ranges": [
+      {
+        "start": 1,
+        "end": 66
+      }
+    ],
+    "shown_line_count": 66,
+    "source_total_lines": 66,
+    "issues": [
+      {
+        "label": "embedded_structured_values",
+        "reason": "Cells contain JSON or XML-like payloads that require value-level interpretation.",
+        "lines": "2-66"
+      },
+      {
+        "label": "mixed_line_endings",
+        "reason": "The file mixes CRLF, LF, or CR line endings.",
+        "lines": "file-level"
+      }
+    ],
+    "copy_events": [
+      {
+        "characters": 17320,
+        "copied_at": "2026-11-17T09:18:48.209Z",
+        "ranges": [
+          {
+            "end": 66,
+            "start": 2
+          }
+        ]
+      }
+    ],
+    "error_description": "valid csv but json as column type",
+    "working_origin_spans": [
+      {
+        "end": 262,
+        "source_line": 2,
+        "start": 0
+      },
+      {
+        "end": 576,
+        "source_line": 3,
+        "start": 262
+      },
+      {
+        "end": 890,
+        "source_line": 4,
+        "start": 576
+      },
+      {
+        "end": 1209,
+        "source_line": 5,
+        "start": 890
+      },
+      {
+        "end": 1458,
+        "source_line": 6,
+        "start": 1209
+      },
+      {
+        "end": 1694,
+        "source_line": 7,
+        "start": 1458
+      },
+      {
+        "end": 2012,
+        "source_line": 8,
+        "start": 1694
+      },
+      {
+        "end": 2255,
+        "source_line": 9,
+        "start": 2012
+      },
+      {
+        "end": 2512,
+        "source_line": 10,
+        "start": 2255
+      },
+      {
+        "end": 2742,
+        "source_line": 11,
+        "start": 2512
+      },
+      {
+        "end": 3065,
+        "source_line": 12,
+        "start": 2742
+      },
+      {
+        "end": 3110,
+        "source_line": 13,
+        "start": 3065
+      },
+      {
+        "end": 3282,
+        "source_line": 14,
+        "start": 3110
+      },
+      {
+        "end": 3516,
+        "source_line": 15,
+        "start": 3282
+      },
+      {
+        "end": 3772,
+        "source_line": 16,
+        "start": 3516
+      },
+      {
+        "end": 4027,
+        "source_line": 17,
+        "start": 3772
+      },
+      {
+        "end": 4258,
+        "source_line": 18,
+        "start": 4027
+      },
+      {
+        "end": 4532,
+        "source_line": 19,
+        "start": 4258
+      },
+      {
+        "end": 4788,
+        "source_line": 20,
+        "start": 4532
+      },
+      {
+        "end": 5052,
+        "source_line": 21,
+        "start": 4788
+      },
+      {
+        "end": 5300,
+        "source_line": 22,
+        "start": 5052
+      },
+      {
+        "end": 5545,
+        "source_line": 23,
+        "start": 5300
+      },
+      {
+        "end": 5816,
+        "source_line": 24,
+        "start": 5545
+      },
+      {
+        "end": 6108,
+        "source_line": 25,
+        "start": 5816
+      },
+      {
+        "end": 6378,
+        "source_line": 26,
+        "start": 6108
+      },
+      {
+        "end": 6597,
+        "source_line": 27,
+        "start": 6378
+      },
+      {
+        "end": 6853,
+        "source_line": 28,
+        "start": 6597
+      },
+      {
+        "end": 7129,
+        "source_line": 29,
+        "start": 6853
+      },
+      {
+        "end": 7387,
+        "source_line": 30,
+        "start": 7129
+      },
+      {
+        "end": 7620,
+        "source_line": 31,
+        "start": 7387
+      },
+      {
+        "end": 7899,
+        "source_line": 32,
+        "start": 7620
+      },
+      {
+        "end": 8169,
+        "source_line": 33,
+        "start": 7899
+      },
+      {
+        "end": 8443,
+        "source_line": 34,
+        "start": 8169
+      },
+      {
+        "end": 8741,
+        "source_line": 35,
+        "start": 8443
+      },
+      {
+        "end": 9031,
+        "source_line": 36,
+        "start": 8741
+      },
+      {
+        "end": 9327,
+        "source_line": 37,
+        "start": 9031
+      },
+      {
+        "end": 9640,
+        "source_line": 38,
+        "start": 9327
+      },
+      {
+        "end": 9889,
+        "source_line": 39,
+        "start": 9640
+      },
+      {
+        "end": 10160,
+        "source_line": 40,
+        "start": 9889
+      },
+      {
+        "end": 10419,
+        "source_line": 41,
+        "start": 10160
+      },
+      {
+        "end": 10712,
+        "source_line": 42,
+        "start": 10419
+      },
+      {
+        "end": 11006,
+        "source_line": 43,
+        "start": 10712
+      },
+      {
+        "end": 11242,
+        "source_line": 44,
+        "start": 11006
+      },
+      {
+        "end": 11604,
+        "source_line": 45,
+        "start": 11242
+      },
+      {
+        "end": 11889,
+        "source_line": 46,
+        "start": 11604
+      },
+      {
+        "end": 12166,
+        "source_line": 47,
+        "start": 11889
+      },
+      {
+        "end": 12425,
+        "source_line": 48,
+        "start": 12166
+      },
+      {
+        "end": 12709,
+        "source_line": 49,
+        "start": 12425
+      },
+      {
+        "end": 12990,
+        "source_line": 50,
+        "start": 12709
+      },
+      {
+        "end": 13279,
+        "source_line": 51,
+        "start": 12990
+      },
+      {
+        "end": 13587,
+        "source_line": 52,
+        "start": 13279
+      },
+      {
+        "end": 13890,
+        "source_line": 53,
+        "start": 13587
+      },
+      {
+        "end": 14169,
+        "source_line": 54,
+        "start": 13890
+      },
+      {
+        "end": 14445,
+        "source_line": 55,
+        "start": 14169
+      },
+      {
+        "end": 14728,
+        "source_line": 56,
+        "start": 14445
+      },
+      {
+        "end": 15002,
+        "source_line": 57,
+        "start": 14728
+      },
+      {
+        "end": 15302,
+        "source_line": 58,
+        "start": 15002
+      },
+      {
+        "end": 15559,
+        "source_line": 59,
+        "start": 15302
+      },
+      {
+        "end": 15808,
+        "source_line": 60,
+        "start": 15559
+      },
+      {
+        "end": 16076,
+        "source_line": 61,
+        "start": 15808
+      },
+      {
+        "end": 16325,
+        "source_line": 62,
+        "start": 16076
+      },
+      {
+        "end": 16598,
+        "source_line": 63,
+        "start": 16325
+      },
+      {
+        "end": 16826,
+        "source_line": 64,
+        "start": 16598
+      },
+      {
+        "end": 17085,
+        "source_line": 65,
+        "start": 16826
+      },
+      {
+        "end": 17321,
+        "source_line": 66,
+        "start": 17085
+      }
+    ],
+    "header": {
+      "present": true,
+      "text": "task,domain,run_dir,status,score,raw,metric,runtime_sec,input_tokens_total,output_tokens_total,served_models,note",
+      "source_line": 1
+    },
+    "cleaned_rows": 64,
+    "cleaned_column_count": 12,
+    "cleaned_columns": [
+      "task",
+      "domain",
+      "run_dir",
+      "status",
+      "score",
+      "raw",
+      "metric",
+      "runtime_sec",
+      "input_tokens_total",
+      "output_tokens_total",
+      "served_models",
+      "note"
+    ],
+    "exported_at": "2026-11-17T09:32:31.736624+00:00"
+  }
+}

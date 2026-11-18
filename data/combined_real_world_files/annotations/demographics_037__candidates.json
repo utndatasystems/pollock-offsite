@@ -1,0 +1,66 @@
+{
+  "provenance": {
+    "candidate_id": "demographics_037",
+    "topic": "demographics",
+    "search_term": "census",
+    "repository": "munimtechnologies/advisory-import-census",
+    "repository_url": "https://github.com/munimtechnologies/advisory-import-census",
+    "source_path": "study/reserved-alias-s7/candidates.csv",
+    "source_url": "https://github.com/munimtechnologies/advisory-import-census/blob/main/study/reserved-alias-s7/candidates.csv",
+    "commit_ref": "main",
+    "license_spdx": "Apache-2.0",
+    "license_url": "https://api.github.com/repos/munimtechnologies/advisory-import-census/license?ref=main",
+    "local_path": "demographics/demographics_037__candidates.csv",
+    "encoding": "utf-8",
+    "delimiter": ",",
+    "byte_size": "120",
+    "physical_lines": "1",
+    "logical_rows": "1",
+    "mode_columns": "9",
+    "anomaly_score": "3",
+    "anomalies": "single_record_table",
+    "profile_error": ""
+  },
+  "annotation": {
+    "source": "demographics/demographics_037__candidates.csv",
+    "source_encoding": "utf-8",
+    "input_delimiter": ",",
+    "source_line_ranges": [
+      {
+        "start": 1,
+        "end": 1
+      }
+    ],
+    "shown_line_count": 1,
+    "source_total_lines": 1,
+    "issues": [
+      {
+        "label": "single_record_table",
+        "reason": "The file contains only one non-empty logical record.",
+        "lines": "file-level"
+      }
+    ],
+    "copy_events": [],
+    "error_description": "only header present",
+    "working_origin_spans": [],
+    "header": {
+      "present": true,
+      "text": "cve,reviewed,candidate,distance,candidate_is_alias,candidate_assigner,advisory_summary,advisory_details,candidate_text",
+      "source_line": 1
+    },
+    "cleaned_rows": 0,
+    "cleaned_column_count": 9,
+    "cleaned_columns": [
+      "cve",
+      "reviewed",
+      "candidate",
+      "distance",
+      "candidate_is_alias",
+      "candidate_assigner",
+      "advisory_summary",
+      "advisory_details",
+      "candidate_text"
+    ],
+    "exported_at": "2026-11-17T11:36:46.155521+00:00"
+  }
+}

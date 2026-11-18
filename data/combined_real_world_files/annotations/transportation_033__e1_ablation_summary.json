@@ -1,0 +1,204 @@
+{
+  "provenance": {
+    "candidate_id": "transportation_033",
+    "topic": "transportation",
+    "search_term": "traffic",
+    "repository": "ezhilmarch12-jpg/facad",
+    "repository_url": "https://github.com/ezhilmarch12-jpg/facad",
+    "source_path": "experiments/experiment1_mobility/keyword_fix_rerun/e1_ablation_summary.csv",
+    "source_url": "https://github.com/ezhilmarch12-jpg/facad/blob/main/experiments/experiment1_mobility/keyword_fix_rerun/e1_ablation_summary.csv",
+    "commit_ref": "main",
+    "license_spdx": "MIT",
+    "license_url": "https://api.github.com/repos/ezhilmarch12-jpg/facad/license?ref=main",
+    "local_path": "transportation/transportation_033__e1_ablation_summary.csv",
+    "encoding": "utf-8",
+    "delimiter": ",",
+    "byte_size": "736",
+    "physical_lines": "10",
+    "logical_rows": "10",
+    "mode_columns": "11",
+    "anomaly_score": "4",
+    "anomalies": "hierarchical_header",
+    "profile_error": ""
+  },
+  "annotation": {
+    "source": "transportation/transportation_033__e1_ablation_summary.csv",
+    "source_file": "original_inspected.csv",
+    "source_encoding": "utf-8",
+    "source_line_ranges": [
+      {
+        "start": 1,
+        "end": 10
+      }
+    ],
+    "shown_line_count": 10,
+    "source_total_lines": 10,
+    "issues": [
+      {
+        "label": "hierarchical_header",
+        "reason": "The first two table rows resemble a sparse or hierarchical header.",
+        "lines": "1-2"
+      }
+    ],
+    "ground_truth": {
+      "mode": "multiple",
+      "count": 2,
+      "relationship": "alternative_valid_reconstructions_of_same_source",
+      "files": [
+        {
+          "id": "gt1",
+          "file": "cleaned_gt1.csv",
+          "relationship": "alternative_valid_reconstruction",
+          "input_delimiter": ",",
+          "copy_events": [
+            {
+              "characters": 599,
+              "copied_at": "2026-11-17T12:16:44.925Z",
+              "ranges": [
+                {
+                  "end": 10,
+                  "start": 2
+                }
+              ]
+            }
+          ],
+          "error_description": "multiline header,\nbut can be collapsed to one line unambiguously",
+          "working_origin_spans": [
+            {
+              "end": 71,
+              "source_line": 4,
+              "start": 0
+            },
+            {
+              "end": 145,
+              "source_line": 5,
+              "start": 71
+            },
+            {
+              "end": 220,
+              "source_line": 6,
+              "start": 145
+            },
+            {
+              "end": 293,
+              "source_line": 7,
+              "start": 220
+            },
+            {
+              "end": 369,
+              "source_line": 8,
+              "start": 293
+            },
+            {
+              "end": 452,
+              "source_line": 9,
+              "start": 369
+            },
+            {
+              "end": 535,
+              "source_line": 10,
+              "start": 452
+            }
+          ],
+          "header": {
+            "present": true,
+            "text": "variant,FPR_festival\\nmean,FPR_festival\\nstd,festival_share_of_FP\\nmean,festival_share_of_FP\\nstd,F\\nmean1,F1\\nstd,PR_AUC\\nmean,PR_AUC\\nstd,recall_festival_attacks\\nmean,recall_festival_attacks\\nstd",
+            "source_line": 1
+          },
+          "cleaned_rows": 7,
+          "cleaned_column_count": 11,
+          "cleaned_columns": [
+            "variant",
+            "FPR_festival\\nmean",
+            "FPR_festival\\nstd",
+            "festival_share_of_FP\\nmean",
+            "festival_share_of_FP\\nstd",
+            "F\\nmean1",
+            "F1\\nstd",
+            "PR_AUC\\nmean",
+            "PR_AUC\\nstd",
+            "recall_festival_attacks\\nmean",
+            "recall_festival_attacks\\nstd"
+          ]
+        },
+        {
+          "id": "gt2",
+          "file": "cleaned_gt2.csv",
+          "relationship": "alternative_valid_reconstruction",
+          "input_delimiter": ",",
+          "copy_events": [
+            {
+              "characters": 599,
+              "copied_at": "2026-11-17T12:16:44.925Z",
+              "ranges": [
+                {
+                  "end": 10,
+                  "start": 2
+                }
+              ]
+            }
+          ],
+          "error_description": "multiline header,\nbut can be collapsed to one line unambiguously",
+          "working_origin_spans": [
+            {
+              "end": 71,
+              "source_line": 4,
+              "start": 0
+            },
+            {
+              "end": 145,
+              "source_line": 5,
+              "start": 71
+            },
+            {
+              "end": 220,
+              "source_line": 6,
+              "start": 145
+            },
+            {
+              "end": 293,
+              "source_line": 7,
+              "start": 220
+            },
+            {
+              "end": 369,
+              "source_line": 8,
+              "start": 293
+            },
+            {
+              "end": 452,
+              "source_line": 9,
+              "start": 369
+            },
+            {
+              "end": 535,
+              "source_line": 10,
+              "start": 452
+            }
+          ],
+          "header": {
+            "present": true,
+            "text": "variant,FPR_festival mean,FPR_festival std,festival_share_of_FP mean,festival_share_of_FP std,F mean1,F1 std,PR_AUC mean,PR_AUC std,recall_festival_attacks mean,recall_festival_attacks std",
+            "source_line": 1
+          },
+          "cleaned_rows": 7,
+          "cleaned_column_count": 11,
+          "cleaned_columns": [
+            "variant",
+            "FPR_festival mean",
+            "FPR_festival std",
+            "festival_share_of_FP mean",
+            "festival_share_of_FP std",
+            "F mean1",
+            "F1 std",
+            "PR_AUC mean",
+            "PR_AUC std",
+            "recall_festival_attacks mean",
+            "recall_festival_attacks std"
+          ]
+        }
+      ]
+    },
+    "exported_at": "2026-11-17T12:20:47.219127+00:00"
+  }
+}

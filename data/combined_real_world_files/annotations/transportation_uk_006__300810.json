@@ -1,0 +1,322 @@
+{
+  "provenance": {
+    "candidate_id": "transportation_uk_006",
+    "topic": "transportation",
+    "search_term": "transportation",
+    "repository": "data.gov.uk/directgov/directgov-external-search",
+    "repository_url": "https://www.data.gov.uk/dataset/0b8fa165-aff0-426c-b6c6-ba248e432faf/directgov-external-search",
+    "source_path": "300810.csv",
+    "source_url": "https://directgovinnovate.s3.amazonaws.com/ext-search/300810.csv",
+    "commit_ref": "2026-07-08T13:32:41.806614",
+    "license_spdx": "OGL-UK-3.0",
+    "license_url": "https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/",
+    "local_path": "transportation/transportation_uk_006__300810.csv",
+    "encoding": "cp1252",
+    "delimiter": ",",
+    "byte_size": "152122",
+    "physical_lines": "5001",
+    "logical_rows": "5001",
+    "mode_columns": "3",
+    "anomaly_score": "3",
+    "anomalies": "leading_comment",
+    "profile_error": ""
+  },
+  "annotation": {
+    "source": "transportation/transportation_uk_006__300810.csv",
+    "source_encoding": "cp1252",
+    "input_delimiter": ",",
+    "source_line_ranges": [
+      {
+        "start": 1,
+        "end": 51
+      }
+    ],
+    "shown_line_count": 51,
+    "source_total_lines": 5001,
+    "issues": [
+      {
+        "label": "leading_comment",
+        "reason": "The file begins with a possible comment row.",
+        "lines": "1"
+      }
+    ],
+    "copy_events": [
+      {
+        "ranges": [
+          {
+            "start": 2,
+            "end": 51
+          }
+        ],
+        "characters": 1400,
+        "copied_at": "2026-11-17T12:39:57.133Z"
+      }
+    ],
+    "error_description": "id column has \"#\" as column name. Thismight trip automated preamble detectors up",
+    "working_origin_spans": [
+      {
+        "start": 0,
+        "end": 29,
+        "source_line": 2
+      },
+      {
+        "start": 29,
+        "end": 56,
+        "source_line": 3
+      },
+      {
+        "start": 56,
+        "end": 78,
+        "source_line": 4
+      },
+      {
+        "start": 78,
+        "end": 101,
+        "source_line": 5
+      },
+      {
+        "start": 101,
+        "end": 124,
+        "source_line": 6
+      },
+      {
+        "start": 124,
+        "end": 144,
+        "source_line": 7
+      },
+      {
+        "start": 144,
+        "end": 180,
+        "source_line": 8
+      },
+      {
+        "start": 180,
+        "end": 206,
+        "source_line": 9
+      },
+      {
+        "start": 206,
+        "end": 233,
+        "source_line": 10
+      },
+      {
+        "start": 233,
+        "end": 255,
+        "source_line": 11
+      },
+      {
+        "start": 255,
+        "end": 290,
+        "source_line": 12
+      },
+      {
+        "start": 290,
+        "end": 308,
+        "source_line": 13
+      },
+      {
+        "start": 308,
+        "end": 349,
+        "source_line": 14
+      },
+      {
+        "start": 349,
+        "end": 379,
+        "source_line": 15
+      },
+      {
+        "start": 379,
+        "end": 408,
+        "source_line": 16
+      },
+      {
+        "start": 408,
+        "end": 431,
+        "source_line": 17
+      },
+      {
+        "start": 431,
+        "end": 455,
+        "source_line": 18
+      },
+      {
+        "start": 455,
+        "end": 482,
+        "source_line": 19
+      },
+      {
+        "start": 482,
+        "end": 510,
+        "source_line": 20
+      },
+      {
+        "start": 510,
+        "end": 532,
+        "source_line": 21
+      },
+      {
+        "start": 532,
+        "end": 560,
+        "source_line": 22
+      },
+      {
+        "start": 560,
+        "end": 590,
+        "source_line": 23
+      },
+      {
+        "start": 590,
+        "end": 614,
+        "source_line": 24
+      },
+      {
+        "start": 614,
+        "end": 649,
+        "source_line": 25
+      },
+      {
+        "start": 649,
+        "end": 687,
+        "source_line": 26
+      },
+      {
+        "start": 687,
+        "end": 703,
+        "source_line": 27
+      },
+      {
+        "start": 703,
+        "end": 743,
+        "source_line": 28
+      },
+      {
+        "start": 743,
+        "end": 769,
+        "source_line": 29
+      },
+      {
+        "start": 769,
+        "end": 797,
+        "source_line": 30
+      },
+      {
+        "start": 797,
+        "end": 830,
+        "source_line": 31
+      },
+      {
+        "start": 830,
+        "end": 856,
+        "source_line": 32
+      },
+      {
+        "start": 856,
+        "end": 889,
+        "source_line": 33
+      },
+      {
+        "start": 889,
+        "end": 927,
+        "source_line": 34
+      },
+      {
+        "start": 927,
+        "end": 952,
+        "source_line": 35
+      },
+      {
+        "start": 952,
+        "end": 977,
+        "source_line": 36
+      },
+      {
+        "start": 977,
+        "end": 1015,
+        "source_line": 37
+      },
+      {
+        "start": 1015,
+        "end": 1041,
+        "source_line": 38
+      },
+      {
+        "start": 1041,
+        "end": 1066,
+        "source_line": 39
+      },
+      {
+        "start": 1066,
+        "end": 1089,
+        "source_line": 40
+      },
+      {
+        "start": 1089,
+        "end": 1118,
+        "source_line": 41
+      },
+      {
+        "start": 1118,
+        "end": 1134,
+        "source_line": 42
+      },
+      {
+        "start": 1134,
+        "end": 1159,
+        "source_line": 43
+      },
+      {
+        "start": 1159,
+        "end": 1193,
+        "source_line": 44
+      },
+      {
+        "start": 1193,
+        "end": 1226,
+        "source_line": 45
+      },
+      {
+        "start": 1226,
+        "end": 1264,
+        "source_line": 46
+      },
+      {
+        "start": 1264,
+        "end": 1290,
+        "source_line": 47
+      },
+      {
+        "start": 1290,
+        "end": 1317,
+        "source_line": 48
+      },
+      {
+        "start": 1317,
+        "end": 1352,
+        "source_line": 49
+      },
+      {
+        "start": 1352,
+        "end": 1381,
+        "source_line": 50
+      },
+      {
+        "start": 1381,
+        "end": 1400,
+        "source_line": 51
+      }
+    ],
+    "header": {
+      "present": true,
+      "text": "#,Search Term,Visits from this term",
+      "source_line": 1
+    },
+    "cleaned_rows": 50,
+    "cleaned_column_count": 3,
+    "cleaned_columns": [
+      "#",
+      "Search Term",
+      "Visits from this term"
+    ],
+    "exported_at": "2026-11-17T12:40:06.575119+00:00"
+  }
+}

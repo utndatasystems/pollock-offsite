@@ -1,0 +1,128 @@
+{
+  "provenance": {
+    "candidate_id": "health_uk_012",
+    "topic": "health",
+    "search_term": "hospital",
+    "repository": "data.gov.uk/scotland-office/hospitality-received-by-ministers-and-special-advisers",
+    "repository_url": "https://www.data.gov.uk/dataset/8a324651-96d5-46fc-b163-c537a59fe6d3/hospitality-received-by-ministers-and-special-advisers",
+    "source_path": "disclosure-ministerial-hospitality-July-Sept-2011.csv",
+    "source_url": "https://www.gov.uk/government/uploads/system/uploads/attachment_data/file/51052/disclosure-ministerial-hospitality-July-Sept-2011.csv",
+    "commit_ref": "2026-07-08T13:32:39.597926",
+    "license_spdx": "OGL-UK-3.0",
+    "license_url": "https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/",
+    "local_path": "health/health_uk_012__disclosure-ministerial-hospitality-July-Sept-2011.csv",
+    "encoding": "utf-8",
+    "delimiter": ",",
+    "byte_size": "969",
+    "physical_lines": "12",
+    "logical_rows": "12",
+    "mode_columns": "4",
+    "anomaly_score": "4",
+    "anomalies": "possible_preamble",
+    "profile_error": ""
+  },
+  "annotation": {
+    "source": "health/health_uk_012__disclosure-ministerial-hospitality-July-Sept-2011.csv",
+    "source_encoding": "utf-8",
+    "input_delimiter": ",",
+    "source_line_ranges": [
+      {
+        "start": 1,
+        "end": 12
+      }
+    ],
+    "shown_line_count": 12,
+    "source_total_lines": 12,
+    "issues": [
+      {
+        "label": "possible_preamble",
+        "reason": "Records before the stable table shape resemble title or metadata rows.",
+        "lines": "1-2"
+      }
+    ],
+    "copy_events": [
+      {
+        "ranges": [
+          {
+            "start": 2,
+            "end": 12
+          }
+        ],
+        "characters": 889,
+        "copied_at": "2026-11-17T11:25:23.117Z"
+      }
+    ],
+    "error_description": "empty line between header and body",
+    "working_origin_spans": [
+      {
+        "start": 0,
+        "end": 1,
+        "source_line": 2
+      },
+      {
+        "start": 1,
+        "end": 93,
+        "source_line": 3
+      },
+      {
+        "start": 93,
+        "end": 180,
+        "source_line": 4
+      },
+      {
+        "start": 180,
+        "end": 258,
+        "source_line": 5
+      },
+      {
+        "start": 258,
+        "end": 315,
+        "source_line": 6
+      },
+      {
+        "start": 315,
+        "end": 435,
+        "source_line": 7
+      },
+      {
+        "start": 435,
+        "end": 491,
+        "source_line": 8
+      },
+      {
+        "start": 491,
+        "end": 604,
+        "source_line": 9
+      },
+      {
+        "start": 604,
+        "end": 704,
+        "source_line": 10
+      },
+      {
+        "start": 704,
+        "end": 808,
+        "source_line": 11
+      },
+      {
+        "start": 808,
+        "end": 888,
+        "source_line": 12
+      }
+    ],
+    "header": {
+      "present": true,
+      "text": "Minister,Date of Hospitality,Name of Organisation,Type of hospitality received",
+      "source_line": 1
+    },
+    "cleaned_rows": 10,
+    "cleaned_column_count": 4,
+    "cleaned_columns": [
+      "Minister",
+      "Date of Hospitality",
+      "Name of Organisation",
+      "Type of hospitality received"
+    ],
+    "exported_at": "2026-11-17T11:25:44.059173+00:00"
+  }
+}

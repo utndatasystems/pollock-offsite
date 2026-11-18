@@ -1,0 +1,144 @@
+{
+  "provenance": {
+    "candidate_id": "environment_042",
+    "topic": "environment",
+    "search_term": "climate",
+    "repository": "m4bwav/mapwright",
+    "repository_url": "https://github.com/m4bwav/mapwright",
+    "source_path": "scripts/data/near-stars.csv",
+    "source_url": "https://github.com/m4bwav/mapwright/blob/main/scripts/data/near-stars.csv",
+    "commit_ref": "main",
+    "license_spdx": "MIT",
+    "license_url": "https://api.github.com/repos/m4bwav/mapwright/license?ref=main",
+    "local_path": "environment/environment_042__near-stars.csv",
+    "encoding": "utf-8",
+    "delimiter": ",",
+    "byte_size": "1066",
+    "physical_lines": "17",
+    "logical_rows": "17",
+    "mode_columns": "5",
+    "anomaly_score": "9",
+    "anomalies": "comment_rows;leading_comment;possible_preamble",
+    "profile_error": ""
+  },
+  "annotation": {
+    "source": "environment/environment_042__near-stars.csv",
+    "source_encoding": "utf-8",
+    "input_delimiter": ",",
+    "source_line_ranges": [
+      {
+        "start": 1,
+        "end": 17
+      }
+    ],
+    "shown_line_count": 17,
+    "source_total_lines": 17,
+    "issues": [
+      {
+        "label": "comment_rows",
+        "reason": "Rows beginning with '#' may be comments rather than table records.",
+        "lines": "1-4"
+      },
+      {
+        "label": "leading_comment",
+        "reason": "The file begins with a possible comment row.",
+        "lines": "1"
+      },
+      {
+        "label": "possible_preamble",
+        "reason": "Records before the stable table shape resemble title or metadata rows.",
+        "lines": "1-4"
+      }
+    ],
+    "copy_events": [
+      {
+        "ranges": [
+          {
+            "start": 2,
+            "end": 17
+          }
+        ],
+        "characters": 959,
+        "copied_at": "2026-11-17T13:13:31.307Z"
+      }
+    ],
+    "error_description": "preamble",
+    "working_origin_spans": [
+      {
+        "start": 0,
+        "end": 51,
+        "source_line": 6
+      },
+      {
+        "start": 51,
+        "end": 100,
+        "source_line": 7
+      },
+      {
+        "start": 100,
+        "end": 145,
+        "source_line": 8
+      },
+      {
+        "start": 145,
+        "end": 184,
+        "source_line": 9
+      },
+      {
+        "start": 184,
+        "end": 229,
+        "source_line": 10
+      },
+      {
+        "start": 229,
+        "end": 268,
+        "source_line": 11
+      },
+      {
+        "start": 268,
+        "end": 314,
+        "source_line": 12
+      },
+      {
+        "start": 314,
+        "end": 356,
+        "source_line": 13
+      },
+      {
+        "start": 356,
+        "end": 397,
+        "source_line": 14
+      },
+      {
+        "start": 397,
+        "end": 442,
+        "source_line": 15
+      },
+      {
+        "start": 442,
+        "end": 482,
+        "source_line": 16
+      },
+      {
+        "start": 482,
+        "end": 519,
+        "source_line": 17
+      }
+    ],
+    "header": {
+      "present": true,
+      "text": "name,ra_deg,dec_deg,parallax_mas,spectral",
+      "source_line": 1
+    },
+    "cleaned_rows": 12,
+    "cleaned_column_count": 5,
+    "cleaned_columns": [
+      "name",
+      "ra_deg",
+      "dec_deg",
+      "parallax_mas",
+      "spectral"
+    ],
+    "exported_at": "2026-11-17T13:13:51.394673+00:00"
+  }
+}

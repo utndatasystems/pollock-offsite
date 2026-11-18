@@ -1,0 +1,22 @@
+{
+    "delimiter": ",",
+    "quotechar": "\"",
+    "escapechar": "\"",
+    "row_delimiter": "\r\n",
+    "header_lines": "1",
+    "preamble_lines": "0",
+    "footnote_lines": "0",
+    "column_names": [
+        "indicator",
+        "type",
+        "threat",
+        "confidence",
+        "recommended_action",
+        "source_url",
+        "description",
+        "notes",
+        "sources"
+    ],
+    "encoding": "utf-8",
+    "n_columns": 9
+}

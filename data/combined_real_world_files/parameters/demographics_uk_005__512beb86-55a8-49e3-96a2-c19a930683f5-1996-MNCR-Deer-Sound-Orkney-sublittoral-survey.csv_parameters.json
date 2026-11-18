@@ -1,0 +1,32 @@
+{
+    "delimiter": ",",
+    "quotechar": "\"",
+    "escapechar": "\"",
+    "row_delimiter": "\r\n",
+    "header_lines": "1",
+    "preamble_lines": "0",
+    "footnote_lines": "0",
+    "column_names": [
+        "RecordKey",
+        "SurveyKey",
+        "SurveyName",
+        "SampleKey",
+        "StartDate",
+        "EndDate",
+        "DateType",
+        "LocationName",
+        "DataType",
+        "Latitude",
+        "Longitude",
+        "Projection",
+        "AphiaId",
+        "Species",
+        "Uncertain",
+        "Abundance_SACFORN",
+        "Abundance_Count",
+        "IsDead",
+        "SampleComment"
+    ],
+    "encoding": "utf-8",
+    "n_columns": 19
+}

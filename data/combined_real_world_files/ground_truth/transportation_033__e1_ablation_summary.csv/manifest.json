@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "canonical": "gt1",
+  "accept_origin": false,
+  "tables": {
+    "gt1": {
+      "path": "gt1.csv",
+      "role": "primary"
+    },
+    "gt2": {
+      "path": "gt2.csv",
+      "role": "primary"
+    }
+  },
+  "alternatives": [
+    {
+      "id": "gt1",
+      "comparison": "single_table",
+      "tables": [
+        "gt1"
+      ]
+    },
+    {
+      "id": "gt2",
+      "comparison": "single_table",
+      "tables": [
+        "gt2"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,84 @@
+{
+  "provenance": {
+    "candidate_id": "demographics_012",
+    "topic": "demographics",
+    "search_term": "population",
+    "repository": "KristofM854/FTIR-LDIR-Raman",
+    "repository_url": "https://github.com/KristofM854/FTIR-LDIR-Raman",
+    "source_path": "inst/materials/ftir.csv",
+    "source_url": "https://github.com/KristofM854/FTIR-LDIR-Raman/blob/main/inst/materials/ftir.csv",
+    "commit_ref": "main",
+    "license_spdx": "MIT",
+    "license_url": "https://api.github.com/repos/KristofM854/FTIR-LDIR-Raman/license?ref=main",
+    "local_path": "demographics/demographics_012__ftir.csv",
+    "encoding": "utf-8",
+    "delimiter": ",",
+    "byte_size": "261",
+    "physical_lines": "5",
+    "logical_rows": "5",
+    "mode_columns": "1",
+    "anomaly_score": "10",
+    "anomalies": "comment_rows;inconsistent_field_counts;leading_comment",
+    "profile_error": ""
+  },
+  "annotation": {
+    "source": "demographics/demographics_012__ftir.csv",
+    "source_encoding": "utf-8",
+    "input_delimiter": ",",
+    "source_line_ranges": [
+      {
+        "start": 1,
+        "end": 5
+      }
+    ],
+    "shown_line_count": 5,
+    "source_total_lines": 5,
+    "issues": [
+      {
+        "label": "comment_rows",
+        "reason": "Rows beginning with '#' may be comments rather than table records.",
+        "lines": "1-3"
+      },
+      {
+        "label": "inconsistent_field_counts",
+        "reason": "Logical records do not all contain the modal number of fields.",
+        "lines": "4-5"
+      },
+      {
+        "label": "leading_comment",
+        "reason": "The file begins with a possible comment row.",
+        "lines": "1"
+      }
+    ],
+    "copy_events": [
+      {
+        "characters": 261,
+        "copied_at": "2026-11-10T09:56:18.396Z",
+        "ranges": [
+          {
+            "end": 5,
+            "start": 1
+          }
+        ]
+      }
+    ],
+    "error_description": "",
+    "working_origin_spans": [
+      {
+        "end": 25,
+        "source_line": 5,
+        "start": 0
+      }
+    ],
+    "header": {
+      "text": "label,material",
+      "source_line": 1
+    },
+    "cleaned_rows": 1,
+    "cleaned_columns": [
+      "label",
+      "material"
+    ],
+    "exported_at": "2026-11-10T10:06:26.706197+00:00"
+  }
+}

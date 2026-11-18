@@ -1,0 +1,569 @@
+{
+  "provenance": {
+    "candidate_id": "health_023",
+    "topic": "health",
+    "search_term": "health",
+    "repository": "kraloveckey/threat-intelligence-feeds",
+    "repository_url": "https://github.com/kraloveckey/threat-intelligence-feeds",
+    "source_path": "threat-intelligence-feeds.csv",
+    "source_url": "https://github.com/kraloveckey/threat-intelligence-feeds/blob/main/threat-intelligence-feeds.csv",
+    "commit_ref": "main",
+    "license_spdx": "MIT",
+    "license_url": "https://api.github.com/repos/kraloveckey/threat-intelligence-feeds/license?ref=main",
+    "local_path": "health/health_023__threat-intelligence-feeds.csv",
+    "encoding": "utf-8",
+    "delimiter": ";",
+    "byte_size": "52204",
+    "physical_lines": "426",
+    "logical_rows": "426",
+    "mode_columns": "5",
+    "anomaly_score": "3",
+    "anomalies": "non_comma_delimiter",
+    "profile_error": ""
+  },
+  "annotation": {
+    "source": "health/health_023__threat-intelligence-feeds.csv",
+    "source_encoding": "utf-8",
+    "input_delimiter": ";",
+    "source_line_ranges": [
+      {
+        "start": 1,
+        "end": 100
+      }
+    ],
+    "shown_line_count": 100,
+    "source_total_lines": 426,
+    "issues": [
+      {
+        "label": "non_comma_delimiter",
+        "reason": "The detected delimiter is not a comma.",
+        "lines": "file-level"
+      }
+    ],
+    "copy_events": [
+      {
+        "ranges": [
+          {
+            "start": 2,
+            "end": 100
+          }
+        ],
+        "characters": 11711,
+        "copied_at": "2026-11-17T09:34:03.375Z"
+      }
+    ],
+    "error_description": "semicolon delimiter",
+    "working_origin_spans": [
+      {
+        "start": 0,
+        "end": 155,
+        "source_line": 2
+      },
+      {
+        "start": 155,
+        "end": 256,
+        "source_line": 3
+      },
+      {
+        "start": 256,
+        "end": 357,
+        "source_line": 4
+      },
+      {
+        "start": 357,
+        "end": 480,
+        "source_line": 5
+      },
+      {
+        "start": 480,
+        "end": 603,
+        "source_line": 6
+      },
+      {
+        "start": 603,
+        "end": 750,
+        "source_line": 7
+      },
+      {
+        "start": 750,
+        "end": 861,
+        "source_line": 8
+      },
+      {
+        "start": 861,
+        "end": 965,
+        "source_line": 9
+      },
+      {
+        "start": 965,
+        "end": 1080,
+        "source_line": 10
+      },
+      {
+        "start": 1080,
+        "end": 1206,
+        "source_line": 11
+      },
+      {
+        "start": 1206,
+        "end": 1324,
+        "source_line": 12
+      },
+      {
+        "start": 1324,
+        "end": 1448,
+        "source_line": 13
+      },
+      {
+        "start": 1448,
+        "end": 1583,
+        "source_line": 14
+      },
+      {
+        "start": 1583,
+        "end": 1680,
+        "source_line": 15
+      },
+      {
+        "start": 1680,
+        "end": 1808,
+        "source_line": 16
+      },
+      {
+        "start": 1808,
+        "end": 1907,
+        "source_line": 17
+      },
+      {
+        "start": 1907,
+        "end": 2009,
+        "source_line": 18
+      },
+      {
+        "start": 2009,
+        "end": 2124,
+        "source_line": 19
+      },
+      {
+        "start": 2124,
+        "end": 2241,
+        "source_line": 20
+      },
+      {
+        "start": 2241,
+        "end": 2337,
+        "source_line": 21
+      },
+      {
+        "start": 2337,
+        "end": 2434,
+        "source_line": 22
+      },
+      {
+        "start": 2434,
+        "end": 2560,
+        "source_line": 23
+      },
+      {
+        "start": 2560,
+        "end": 2668,
+        "source_line": 24
+      },
+      {
+        "start": 2668,
+        "end": 2786,
+        "source_line": 25
+      },
+      {
+        "start": 2786,
+        "end": 2900,
+        "source_line": 26
+      },
+      {
+        "start": 2900,
+        "end": 3020,
+        "source_line": 27
+      },
+      {
+        "start": 3020,
+        "end": 3148,
+        "source_line": 28
+      },
+      {
+        "start": 3148,
+        "end": 3285,
+        "source_line": 29
+      },
+      {
+        "start": 3285,
+        "end": 3408,
+        "source_line": 30
+      },
+      {
+        "start": 3408,
+        "end": 3516,
+        "source_line": 31
+      },
+      {
+        "start": 3516,
+        "end": 3624,
+        "source_line": 32
+      },
+      {
+        "start": 3624,
+        "end": 3761,
+        "source_line": 33
+      },
+      {
+        "start": 3761,
+        "end": 3898,
+        "source_line": 34
+      },
+      {
+        "start": 3898,
+        "end": 4035,
+        "source_line": 35
+      },
+      {
+        "start": 4035,
+        "end": 4172,
+        "source_line": 36
+      },
+      {
+        "start": 4172,
+        "end": 4309,
+        "source_line": 37
+      },
+      {
+        "start": 4309,
+        "end": 4446,
+        "source_line": 38
+      },
+      {
+        "start": 4446,
+        "end": 4583,
+        "source_line": 39
+      },
+      {
+        "start": 4583,
+        "end": 4720,
+        "source_line": 40
+      },
+      {
+        "start": 4720,
+        "end": 4861,
+        "source_line": 41
+      },
+      {
+        "start": 4861,
+        "end": 5025,
+        "source_line": 42
+      },
+      {
+        "start": 5025,
+        "end": 5202,
+        "source_line": 43
+      },
+      {
+        "start": 5202,
+        "end": 5366,
+        "source_line": 44
+      },
+      {
+        "start": 5366,
+        "end": 5555,
+        "source_line": 45
+      },
+      {
+        "start": 5555,
+        "end": 5677,
+        "source_line": 46
+      },
+      {
+        "start": 5677,
+        "end": 5807,
+        "source_line": 47
+      },
+      {
+        "start": 5807,
+        "end": 5979,
+        "source_line": 48
+      },
+      {
+        "start": 5979,
+        "end": 6149,
+        "source_line": 49
+      },
+      {
+        "start": 6149,
+        "end": 6321,
+        "source_line": 50
+      },
+      {
+        "start": 6321,
+        "end": 6491,
+        "source_line": 51
+      },
+      {
+        "start": 6491,
+        "end": 6590,
+        "source_line": 52
+      },
+      {
+        "start": 6590,
+        "end": 6666,
+        "source_line": 53
+      },
+      {
+        "start": 6666,
+        "end": 6745,
+        "source_line": 54
+      },
+      {
+        "start": 6745,
+        "end": 6830,
+        "source_line": 55
+      },
+      {
+        "start": 6830,
+        "end": 6923,
+        "source_line": 56
+      },
+      {
+        "start": 6923,
+        "end": 7032,
+        "source_line": 57
+      },
+      {
+        "start": 7032,
+        "end": 7159,
+        "source_line": 58
+      },
+      {
+        "start": 7159,
+        "end": 7279,
+        "source_line": 59
+      },
+      {
+        "start": 7279,
+        "end": 7425,
+        "source_line": 60
+      },
+      {
+        "start": 7425,
+        "end": 7575,
+        "source_line": 61
+      },
+      {
+        "start": 7575,
+        "end": 7699,
+        "source_line": 62
+      },
+      {
+        "start": 7699,
+        "end": 7806,
+        "source_line": 63
+      },
+      {
+        "start": 7806,
+        "end": 7873,
+        "source_line": 64
+      },
+      {
+        "start": 7873,
+        "end": 7952,
+        "source_line": 65
+      },
+      {
+        "start": 7952,
+        "end": 8057,
+        "source_line": 66
+      },
+      {
+        "start": 8057,
+        "end": 8207,
+        "source_line": 67
+      },
+      {
+        "start": 8207,
+        "end": 8308,
+        "source_line": 68
+      },
+      {
+        "start": 8308,
+        "end": 8449,
+        "source_line": 69
+      },
+      {
+        "start": 8449,
+        "end": 8551,
+        "source_line": 70
+      },
+      {
+        "start": 8551,
+        "end": 8639,
+        "source_line": 71
+      },
+      {
+        "start": 8639,
+        "end": 8761,
+        "source_line": 72
+      },
+      {
+        "start": 8761,
+        "end": 8901,
+        "source_line": 73
+      },
+      {
+        "start": 8901,
+        "end": 9010,
+        "source_line": 74
+      },
+      {
+        "start": 9010,
+        "end": 9128,
+        "source_line": 75
+      },
+      {
+        "start": 9128,
+        "end": 9222,
+        "source_line": 76
+      },
+      {
+        "start": 9222,
+        "end": 9334,
+        "source_line": 77
+      },
+      {
+        "start": 9334,
+        "end": 9430,
+        "source_line": 78
+      },
+      {
+        "start": 9430,
+        "end": 9519,
+        "source_line": 79
+      },
+      {
+        "start": 9519,
+        "end": 9607,
+        "source_line": 80
+      },
+      {
+        "start": 9607,
+        "end": 9697,
+        "source_line": 81
+      },
+      {
+        "start": 9697,
+        "end": 9783,
+        "source_line": 82
+      },
+      {
+        "start": 9783,
+        "end": 9895,
+        "source_line": 83
+      },
+      {
+        "start": 9895,
+        "end": 10008,
+        "source_line": 84
+      },
+      {
+        "start": 10008,
+        "end": 10133,
+        "source_line": 85
+      },
+      {
+        "start": 10133,
+        "end": 10253,
+        "source_line": 86
+      },
+      {
+        "start": 10253,
+        "end": 10355,
+        "source_line": 87
+      },
+      {
+        "start": 10355,
+        "end": 10436,
+        "source_line": 88
+      },
+      {
+        "start": 10436,
+        "end": 10516,
+        "source_line": 89
+      },
+      {
+        "start": 10516,
+        "end": 10648,
+        "source_line": 90
+      },
+      {
+        "start": 10648,
+        "end": 10790,
+        "source_line": 91
+      },
+      {
+        "start": 10790,
+        "end": 10893,
+        "source_line": 92
+      },
+      {
+        "start": 10893,
+        "end": 10973,
+        "source_line": 93
+      },
+      {
+        "start": 10973,
+        "end": 11050,
+        "source_line": 94
+      },
+      {
+        "start": 11050,
+        "end": 11136,
+        "source_line": 95
+      },
+      {
+        "start": 11136,
+        "end": 11215,
+        "source_line": 96
+      },
+      {
+        "start": 11215,
+        "end": 11306,
+        "source_line": 97
+      },
+      {
+        "start": 11306,
+        "end": 11379,
+        "source_line": 98
+      },
+      {
+        "start": 11379,
+        "end": 11551,
+        "source_line": 99
+      },
+      {
+        "start": 11551,
+        "end": 11711,
+        "source_line": 100
+      }
+    ],
+    "header": {
+      "present": true,
+      "text": "Vendor;Description;Category;Url;FeedStatus",
+      "source_line": 1
+    },
+    "cleaned_rows": 99,
+    "cleaned_column_count": 5,
+    "cleaned_columns": [
+      "Vendor",
+      "Description",
+      "Category",
+      "Url",
+      "FeedStatus"
+    ],
+    "exported_at": "2026-11-17T09:34:38.011585+00:00"
+  }
+}

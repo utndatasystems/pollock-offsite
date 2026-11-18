@@ -1,0 +1,332 @@
+{
+  "provenance": {
+    "candidate_id": "health_uk_014",
+    "topic": "health",
+    "search_term": "hospital",
+    "repository": "data.gov.uk/united-lincolnshire-hospitals-nhs-trust/financial-transactions-data-united-lincolnshire-hospitals-nhs-trust",
+    "repository_url": "https://www.data.gov.uk/dataset/4d906176-6291-483b-81ff-0af82df1e818/financial-transactions-data-united-lincolnshire-hospitals-nhs-trust",
+    "source_path": "m9-Sep-2017.csv",
+    "source_url": "https://www.ulh.nhs.uk/content/uploads/2016/02/m9-Sep-2017.csv",
+    "commit_ref": "2017-11-01T11:08:35.176573",
+    "license_spdx": "OGL-UK-3.0",
+    "license_url": "https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/",
+    "local_path": "health/health_uk_014__m9-Sep-2017.csv",
+    "encoding": "utf-8",
+    "delimiter": ",",
+    "byte_size": "12484",
+    "physical_lines": "78",
+    "logical_rows": "78",
+    "mode_columns": "8",
+    "anomaly_score": "4",
+    "anomalies": "hierarchical_header",
+    "profile_error": ""
+  },
+  "annotation": {
+    "source": "health/health_uk_014__m9-Sep-2017.csv",
+    "source_encoding": "utf-8",
+    "input_delimiter": ",",
+    "source_line_ranges": [
+      {
+        "start": 1,
+        "end": 52
+      }
+    ],
+    "shown_line_count": 52,
+    "source_total_lines": 78,
+    "issues": [
+      {
+        "label": "hierarchical_header",
+        "reason": "The first two table rows resemble a sparse or hierarchical header.",
+        "lines": "1-2"
+      }
+    ],
+    "copy_events": [
+      {
+        "ranges": [
+          {
+            "start": 2,
+            "end": 52
+          }
+        ],
+        "characters": 8124,
+        "copied_at": "2026-11-17T11:28:50.857Z"
+      }
+    ],
+    "error_description": "superheader that is just an uncommented preamble",
+    "working_origin_spans": [
+      {
+        "start": 0,
+        "end": 1,
+        "source_line": 2
+      },
+      {
+        "start": 1,
+        "end": 146,
+        "source_line": 3
+      },
+      {
+        "start": 146,
+        "end": 333,
+        "source_line": 4
+      },
+      {
+        "start": 333,
+        "end": 488,
+        "source_line": 5
+      },
+      {
+        "start": 488,
+        "end": 643,
+        "source_line": 6
+      },
+      {
+        "start": 643,
+        "end": 819,
+        "source_line": 7
+      },
+      {
+        "start": 819,
+        "end": 961,
+        "source_line": 8
+      },
+      {
+        "start": 961,
+        "end": 1103,
+        "source_line": 9
+      },
+      {
+        "start": 1103,
+        "end": 1288,
+        "source_line": 10
+      },
+      {
+        "start": 1288,
+        "end": 1474,
+        "source_line": 11
+      },
+      {
+        "start": 1474,
+        "end": 1611,
+        "source_line": 12
+      },
+      {
+        "start": 1611,
+        "end": 1747,
+        "source_line": 13
+      },
+      {
+        "start": 1747,
+        "end": 1912,
+        "source_line": 14
+      },
+      {
+        "start": 1912,
+        "end": 2076,
+        "source_line": 15
+      },
+      {
+        "start": 2076,
+        "end": 2241,
+        "source_line": 16
+      },
+      {
+        "start": 2241,
+        "end": 2411,
+        "source_line": 17
+      },
+      {
+        "start": 2411,
+        "end": 2556,
+        "source_line": 18
+      },
+      {
+        "start": 2556,
+        "end": 2699,
+        "source_line": 19
+      },
+      {
+        "start": 2699,
+        "end": 2841,
+        "source_line": 20
+      },
+      {
+        "start": 2841,
+        "end": 2984,
+        "source_line": 21
+      },
+      {
+        "start": 2984,
+        "end": 3127,
+        "source_line": 22
+      },
+      {
+        "start": 3127,
+        "end": 3266,
+        "source_line": 23
+      },
+      {
+        "start": 3266,
+        "end": 3408,
+        "source_line": 24
+      },
+      {
+        "start": 3408,
+        "end": 3550,
+        "source_line": 25
+      },
+      {
+        "start": 3550,
+        "end": 3726,
+        "source_line": 26
+      },
+      {
+        "start": 3726,
+        "end": 3901,
+        "source_line": 27
+      },
+      {
+        "start": 3901,
+        "end": 4076,
+        "source_line": 28
+      },
+      {
+        "start": 4076,
+        "end": 4229,
+        "source_line": 29
+      },
+      {
+        "start": 4229,
+        "end": 4414,
+        "source_line": 30
+      },
+      {
+        "start": 4414,
+        "end": 4599,
+        "source_line": 31
+      },
+      {
+        "start": 4599,
+        "end": 4784,
+        "source_line": 32
+      },
+      {
+        "start": 4784,
+        "end": 4969,
+        "source_line": 33
+      },
+      {
+        "start": 4969,
+        "end": 5154,
+        "source_line": 34
+      },
+      {
+        "start": 5154,
+        "end": 5327,
+        "source_line": 35
+      },
+      {
+        "start": 5327,
+        "end": 5492,
+        "source_line": 36
+      },
+      {
+        "start": 5492,
+        "end": 5641,
+        "source_line": 37
+      },
+      {
+        "start": 5641,
+        "end": 5799,
+        "source_line": 38
+      },
+      {
+        "start": 5799,
+        "end": 5946,
+        "source_line": 39
+      },
+      {
+        "start": 5946,
+        "end": 6100,
+        "source_line": 40
+      },
+      {
+        "start": 6100,
+        "end": 6254,
+        "source_line": 41
+      },
+      {
+        "start": 6254,
+        "end": 6408,
+        "source_line": 42
+      },
+      {
+        "start": 6408,
+        "end": 6562,
+        "source_line": 43
+      },
+      {
+        "start": 6562,
+        "end": 6715,
+        "source_line": 44
+      },
+      {
+        "start": 6715,
+        "end": 6876,
+        "source_line": 45
+      },
+      {
+        "start": 6876,
+        "end": 7037,
+        "source_line": 46
+      },
+      {
+        "start": 7037,
+        "end": 7216,
+        "source_line": 47
+      },
+      {
+        "start": 7216,
+        "end": 7375,
+        "source_line": 48
+      },
+      {
+        "start": 7375,
+        "end": 7536,
+        "source_line": 49
+      },
+      {
+        "start": 7536,
+        "end": 7694,
+        "source_line": 50
+      },
+      {
+        "start": 7694,
+        "end": 7862,
+        "source_line": 51
+      },
+      {
+        "start": 7862,
+        "end": 8031,
+        "source_line": 52
+      }
+    ],
+    "header": {
+      "present": true,
+      "text": "Department Of Health,Entity,Date of Payment,Expense Type,Expense Area,Supplier ,Amount,Month",
+      "source_line": 1
+    },
+    "cleaned_rows": 50,
+    "cleaned_column_count": 8,
+    "cleaned_columns": [
+      "Department Of Health",
+      "Entity",
+      "Date of Payment",
+      "Expense Type",
+      "Expense Area",
+      "Supplier ",
+      "Amount",
+      "Month"
+    ],
+    "exported_at": "2026-11-17T11:29:49.095428+00:00"
+  }
+}

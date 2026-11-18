@@ -1,0 +1,18 @@
+{
+    "delimiter": ",",
+    "quotechar": "\"",
+    "escapechar": "\"",
+    "row_delimiter": "\n",
+    "header_lines": "1",
+    "preamble_lines": "0",
+    "footnote_lines": "0",
+    "column_names": [
+        "CODE",
+        "MIN",
+        "MODE",
+        "MAX",
+        "COMMENTS"
+    ],
+    "encoding": "utf-8",
+    "n_columns": 5
+}

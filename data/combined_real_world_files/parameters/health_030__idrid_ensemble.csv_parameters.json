@@ -1,0 +1,23 @@
+{
+    "delimiter": ",",
+    "quotechar": "\"",
+    "escapechar": "\"",
+    "row_delimiter": "\n",
+    "header_lines": "1",
+    "preamble_lines": "0",
+    "footnote_lines": "0",
+    "column_names": [
+        "run",
+        "version",
+        "n_models",
+        "QWK",
+        "QWK_95CI",
+        "accuracy",
+        "macro_F1",
+        "ref_sens",
+        "ref_spec",
+        "recall_per_grade"
+    ],
+    "encoding": "utf-8",
+    "n_columns": 10
+}

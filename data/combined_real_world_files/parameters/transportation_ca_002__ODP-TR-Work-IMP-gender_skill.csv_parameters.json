@@ -1,0 +1,24 @@
+{
+    "delimiter": ",",
+    "quotechar": "\"",
+    "escapechar": "\"",
+    "row_delimiter": "\r\n",
+    "header_lines": "1",
+    "preamble_lines": "0",
+    "footnote_lines": "0",
+    "column_names": [
+        "EN_YEAR",
+        "EN_QUARTER",
+        "EN_MONTH",
+        "FR_ANNEÉ",
+        "FR_TRIMESTRE",
+        "FR_MOIS",
+        "EN_GENDER",
+        "FR_SEXE",
+        "EN_SKILL_LEVEL",
+        "FR_NIVEAU_DE_COMPÉTENCE",
+        "TOTAL"
+    ],
+    "encoding": "utf-8",
+    "n_columns": 11
+}

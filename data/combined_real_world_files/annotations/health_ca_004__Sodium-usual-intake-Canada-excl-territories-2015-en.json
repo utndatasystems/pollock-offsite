@@ -1,0 +1,218 @@
+{
+  "provenance": {
+    "candidate_id": "health_ca_004",
+    "topic": "health",
+    "search_term": "health",
+    "repository": "open.canada.ca/hc-sc/ddb224d1-15a1-4ac5-b101-94cfeea6a57f",
+    "repository_url": "https://open.canada.ca/data/en/dataset/ddb224d1-15a1-4ac5-b101-94cfeea6a57f",
+    "source_path": "Sodium (mg/d): Usual Intake from Food, Canada excluding Territories, 2015 ",
+    "source_url": "https://health.canada.ca/apps/open-information/sodium-potassium/Sodium-usual-intake-Canada-excl-territories-2015-en.csv",
+    "commit_ref": "2019-02-28T18:51:25.371219",
+    "license_spdx": "OGL-Canada-2.0",
+    "license_url": "https://open.canada.ca/en/open-government-licence-canada",
+    "local_path": "health/health_ca_004__Sodium-usual-intake-Canada-excl-territories-2015-en.csv",
+    "encoding": "cp1252",
+    "delimiter": ",",
+    "byte_size": "3754",
+    "physical_lines": "34",
+    "logical_rows": "34",
+    "mode_columns": "24",
+    "anomaly_score": "8",
+    "anomalies": "hierarchical_header;possible_footer",
+    "profile_error": ""
+  },
+  "annotation": {
+    "source": "health/health_ca_004__Sodium-usual-intake-Canada-excl-territories-2015-en.csv",
+    "source_encoding": "cp1252",
+    "input_delimiter": ",",
+    "source_line_ranges": [
+      {
+        "start": 1,
+        "end": 34
+      }
+    ],
+    "shown_line_count": 34,
+    "source_total_lines": 34,
+    "issues": [
+      {
+        "label": "hierarchical_header",
+        "reason": "The first two table rows resemble a sparse or hierarchical header.",
+        "lines": "1-2"
+      },
+      {
+        "label": "possible_footer",
+        "reason": "Trailing notes or source text appear outside the main table body.",
+        "lines": "33"
+      }
+    ],
+    "copy_events": [
+      {
+        "ranges": [
+          {
+            "start": 2,
+            "end": 34
+          }
+        ],
+        "characters": 3650,
+        "copied_at": "2026-11-17T10:27:37.165Z"
+      }
+    ],
+    "error_description": "hierarchical header and footer with explanations",
+    "working_origin_spans": [
+      {
+        "start": 0,
+        "end": 1,
+        "source_line": 2
+      },
+      {
+        "start": 1,
+        "end": 117,
+        "source_line": 3
+      },
+      {
+        "start": 117,
+        "end": 236,
+        "source_line": 4
+      },
+      {
+        "start": 236,
+        "end": 354,
+        "source_line": 5
+      },
+      {
+        "start": 354,
+        "end": 474,
+        "source_line": 6
+      },
+      {
+        "start": 474,
+        "end": 599,
+        "source_line": 7
+      },
+      {
+        "start": 599,
+        "end": 723,
+        "source_line": 8
+      },
+      {
+        "start": 723,
+        "end": 846,
+        "source_line": 9
+      },
+      {
+        "start": 846,
+        "end": 967,
+        "source_line": 10
+      },
+      {
+        "start": 967,
+        "end": 1085,
+        "source_line": 11
+      },
+      {
+        "start": 1085,
+        "end": 1206,
+        "source_line": 12
+      },
+      {
+        "start": 1206,
+        "end": 1324,
+        "source_line": 13
+      },
+      {
+        "start": 1324,
+        "end": 1442,
+        "source_line": 14
+      },
+      {
+        "start": 1442,
+        "end": 1564,
+        "source_line": 15
+      },
+      {
+        "start": 1564,
+        "end": 1686,
+        "source_line": 16
+      },
+      {
+        "start": 1686,
+        "end": 1802,
+        "source_line": 17
+      },
+      {
+        "start": 1802,
+        "end": 1922,
+        "source_line": 18
+      },
+      {
+        "start": 1922,
+        "end": 2038,
+        "source_line": 19
+      },
+      {
+        "start": 2038,
+        "end": 2155,
+        "source_line": 20
+      },
+      {
+        "start": 2155,
+        "end": 2284,
+        "source_line": 21
+      },
+      {
+        "start": 2284,
+        "end": 2408,
+        "source_line": 22
+      },
+      {
+        "start": 2408,
+        "end": 2527,
+        "source_line": 23
+      },
+      {
+        "start": 2527,
+        "end": 2624,
+        "source_line": 24
+      },
+      {
+        "start": 2624,
+        "end": 2657,
+        "source_line": 34
+      }
+    ],
+    "header": {
+      "present": true,
+      "text": "Country,Age or Life Stage Group,Sex,n,Mean,Mean_SE,p1,p1_SE,p5,p5_SE,p10,p10_SE,p25,p25_SE,p50,p50_SE,p75,p75_SE,p90,p90_ SE,p95,p95_SE,p99,p99_SE",
+      "source_line": 1
+    },
+    "cleaned_rows": 22,
+    "cleaned_column_count": 24,
+    "cleaned_columns": [
+      "Country",
+      "Age or Life Stage Group",
+      "Sex",
+      "n",
+      "Mean",
+      "Mean_SE",
+      "p1",
+      "p1_SE",
+      "p5",
+      "p5_SE",
+      "p10",
+      "p10_SE",
+      "p25",
+      "p25_SE",
+      "p50",
+      "p50_SE",
+      "p75",
+      "p75_SE",
+      "p90",
+      "p90_ SE",
+      "p95",
+      "p95_SE",
+      "p99",
+      "p99_SE"
+    ],
+    "exported_at": "2026-11-17T10:28:42.832993+00:00"
+  }
+}

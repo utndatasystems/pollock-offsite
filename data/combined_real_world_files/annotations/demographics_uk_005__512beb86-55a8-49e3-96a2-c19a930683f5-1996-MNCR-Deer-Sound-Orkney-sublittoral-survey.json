@@ -1,0 +1,246 @@
+{
+  "provenance": {
+    "candidate_id": "demographics_uk_005",
+    "topic": "demographics",
+    "search_term": "survey",
+    "repository": "data.gov.uk/joint-nature-conservation-committee/species-point-records-from-1996-mncr-deer-sound-orkney-sublittoral-survey",
+    "repository_url": "https://www.data.gov.uk/dataset/e9d28c1e-5281-43c2-9638-29315ef509c5/species-point-records-from-1996-mncr-deer-sound-orkney-sublittoral-survey",
+    "source_path": "1996-MNCR-Deer-Sound-Orkney-sublittoral-survey.csv",
+    "source_url": "http://data.jncc.gov.uk/data/512beb86-55a8-49e3-96a2-c19a930683f5-1996-MNCR-Deer-Sound-Orkney-sublittoral-survey.csv",
+    "commit_ref": "2019-02-21T11:59:20.605686",
+    "license_spdx": "OGL-UK-3.0",
+    "license_url": "http://reference.data.gov.uk/id/open-government-licence",
+    "local_path": "demographics/demographics_uk_005__512beb86-55a8-49e3-96a2-c19a930683f5-1996-MNCR-Deer-Sound-Orkney-sublittoral-survey.csv",
+    "encoding": "utf-8",
+    "delimiter": ",",
+    "byte_size": "705609",
+    "physical_lines": "1186",
+    "logical_rows": "1186",
+    "mode_columns": "20",
+    "anomaly_score": "9",
+    "anomalies": "inconsistent_field_counts;possible_preamble",
+    "profile_error": ""
+  },
+  "annotation": {
+    "source": "demographics/demographics_uk_005__512beb86-55a8-49e3-96a2-c19a930683f5-1996-MNCR-Deer-Sound-Orkney-sublittoral-survey.csv",
+    "source_encoding": "utf-8",
+    "input_delimiter": ",",
+    "source_line_ranges": [
+      {
+        "start": 1,
+        "end": 11
+      },
+      {
+        "start": 48,
+        "end": 92
+      },
+      {
+        "start": 138,
+        "end": 163
+      },
+      {
+        "start": 242,
+        "end": 275
+      },
+      {
+        "start": 384,
+        "end": 423
+      },
+      {
+        "start": 450,
+        "end": 507
+      },
+      {
+        "start": 513,
+        "end": 550
+      },
+      {
+        "start": 571,
+        "end": 608
+      },
+      {
+        "start": 618,
+        "end": 627
+      }
+    ],
+    "shown_line_count": 300,
+    "source_total_lines": 1186,
+    "issues": [
+      {
+        "label": "inconsistent_field_counts",
+        "reason": "Logical records do not all contain the modal number of fields.",
+        "lines": "48-92, 138-163, 242-275, 384-423, 450-507, 513-550, 571-608, 618-695, 716-744, 767-858, 919-985, 1003-1084, 1138-1186"
+      },
+      {
+        "label": "possible_preamble",
+        "reason": "Records before the stable table shape resemble title or metadata rows.",
+        "lines": "1"
+      }
+    ],
+    "copy_events": [
+      {
+        "ranges": [
+          {
+            "start": 2,
+            "end": 11
+          },
+          {
+            "start": 48,
+            "end": 92
+          },
+          {
+            "start": 138,
+            "end": 163
+          },
+          {
+            "start": 242,
+            "end": 275
+          },
+          {
+            "start": 384,
+            "end": 423
+          },
+          {
+            "start": 450,
+            "end": 507
+          },
+          {
+            "start": 513,
+            "end": 550
+          },
+          {
+            "start": 571,
+            "end": 608
+          },
+          {
+            "start": 618,
+            "end": 627
+          }
+        ],
+        "characters": 174772,
+        "copied_at": "2026-11-17T11:43:39.504Z"
+      },
+      {
+        "ranges": [
+          {
+            "start": 2,
+            "end": 11
+          },
+          {
+            "start": 48,
+            "end": 92
+          },
+          {
+            "start": 138,
+            "end": 163
+          },
+          {
+            "start": 242,
+            "end": 275
+          },
+          {
+            "start": 384,
+            "end": 423
+          },
+          {
+            "start": 450,
+            "end": 507
+          },
+          {
+            "start": 513,
+            "end": 550
+          },
+          {
+            "start": 571,
+            "end": 608
+          },
+          {
+            "start": 618,
+            "end": 627
+          }
+        ],
+        "characters": 174473,
+        "copied_at": "2026-11-17T11:45:14.771Z"
+      },
+      {
+        "ranges": [
+          {
+            "start": 2,
+            "end": 11
+          },
+          {
+            "start": 48,
+            "end": 92
+          },
+          {
+            "start": 138,
+            "end": 163
+          },
+          {
+            "start": 242,
+            "end": 275
+          },
+          {
+            "start": 384,
+            "end": 423
+          },
+          {
+            "start": 450,
+            "end": 507
+          },
+          {
+            "start": 513,
+            "end": 550
+          },
+          {
+            "start": 571,
+            "end": 608
+          },
+          {
+            "start": 618,
+            "end": 627
+          }
+        ],
+        "characters": 174772,
+        "copied_at": "2026-11-17T12:01:34.951Z"
+      }
+    ],
+    "error_description": "unquoted last string field with commas",
+    "working_origin_spans": [
+      {
+        "start": 175070,
+        "end": 175370,
+        "source_line": 627
+      }
+    ],
+    "header": {
+      "present": true,
+      "text": "RecordKey,SurveyKey,SurveyName,SampleKey,StartDate,EndDate,DateType,LocationName,DataType,Latitude,Longitude,Projection,AphiaId,Species,Uncertain,Abundance_SACFORN,Abundance_Count,IsDead,\"SampleComment\"",
+      "source_line": 1
+    },
+    "cleaned_rows": 299,
+    "cleaned_column_count": 19,
+    "cleaned_columns": [
+      "RecordKey",
+      "SurveyKey",
+      "SurveyName",
+      "SampleKey",
+      "StartDate",
+      "EndDate",
+      "DateType",
+      "LocationName",
+      "DataType",
+      "Latitude",
+      "Longitude",
+      "Projection",
+      "AphiaId",
+      "Species",
+      "Uncertain",
+      "Abundance_SACFORN",
+      "Abundance_Count",
+      "IsDead",
+      "SampleComment"
+    ],
+    "exported_at": "2026-11-17T12:05:05.253517+00:00"
+  }
+}

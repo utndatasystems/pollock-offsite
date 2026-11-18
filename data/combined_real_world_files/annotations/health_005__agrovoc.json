@@ -1,0 +1,633 @@
+{
+  "provenance": {
+    "candidate_id": "health_005",
+    "topic": "health",
+    "search_term": "health",
+    "repository": "soilwise-he/soil-vocabs",
+    "repository_url": "https://github.com/soilwise-he/soil-vocabs",
+    "source_path": "ontovocabs/agrovoc/agrovoc.csv",
+    "source_url": "https://github.com/soilwise-he/soil-vocabs/blob/main/ontovocabs/agrovoc/agrovoc.csv",
+    "commit_ref": "main",
+    "license_spdx": "MIT",
+    "license_url": "https://api.github.com/repos/soilwise-he/soil-vocabs/license?ref=main",
+    "local_path": "health/health_005__agrovoc.csv",
+    "encoding": "utf-8",
+    "delimiter": ",",
+    "byte_size": "2599469",
+    "physical_lines": "41410",
+    "logical_rows": "41410",
+    "mode_columns": "3",
+    "anomaly_score": "5",
+    "anomalies": "inconsistent_field_counts",
+    "profile_error": ""
+  },
+  "annotation": {
+    "source": "health/health_005__agrovoc.csv",
+    "source_encoding": "utf-8",
+    "input_delimiter": ",",
+    "source_line_ranges": [
+      {
+        "start": 1,
+        "end": 10
+      },
+      {
+        "start": 29806,
+        "end": 29906
+      }
+    ],
+    "shown_line_count": 111,
+    "source_total_lines": 41410,
+    "issues": [
+      {
+        "label": "inconsistent_field_counts",
+        "reason": "Logical records do not all contain the modal number of fields.",
+        "lines": "29856"
+      }
+    ],
+    "copy_events": [
+      {
+        "ranges": [
+          {
+            "start": 2,
+            "end": 10
+          },
+          {
+            "start": 29806,
+            "end": 29906
+          }
+        ],
+        "characters": 6684,
+        "copied_at": "2026-11-10T12:41:02.574Z"
+      }
+    ],
+    "error_description": "trailing separator in row  was inside quoted field",
+    "working_origin_spans": [
+      {
+        "start": 0,
+        "end": 58,
+        "source_line": 2
+      },
+      {
+        "start": 58,
+        "end": 123,
+        "source_line": 3
+      },
+      {
+        "start": 123,
+        "end": 180,
+        "source_line": 4
+      },
+      {
+        "start": 180,
+        "end": 243,
+        "source_line": 5
+      },
+      {
+        "start": 243,
+        "end": 298,
+        "source_line": 6
+      },
+      {
+        "start": 298,
+        "end": 360,
+        "source_line": 7
+      },
+      {
+        "start": 360,
+        "end": 418,
+        "source_line": 8
+      },
+      {
+        "start": 418,
+        "end": 477,
+        "source_line": 9
+      },
+      {
+        "start": 477,
+        "end": 534,
+        "source_line": 10
+      },
+      {
+        "start": 534,
+        "end": 589,
+        "source_line": 29806
+      },
+      {
+        "start": 589,
+        "end": 640,
+        "source_line": 29807
+      },
+      {
+        "start": 640,
+        "end": 701,
+        "source_line": 29808
+      },
+      {
+        "start": 701,
+        "end": 770,
+        "source_line": 29809
+      },
+      {
+        "start": 770,
+        "end": 838,
+        "source_line": 29810
+      },
+      {
+        "start": 838,
+        "end": 912,
+        "source_line": 29811
+      },
+      {
+        "start": 912,
+        "end": 977,
+        "source_line": 29812
+      },
+      {
+        "start": 977,
+        "end": 1035,
+        "source_line": 29813
+      },
+      {
+        "start": 1035,
+        "end": 1101,
+        "source_line": 29814
+      },
+      {
+        "start": 1101,
+        "end": 1156,
+        "source_line": 29815
+      },
+      {
+        "start": 1156,
+        "end": 1221,
+        "source_line": 29816
+      },
+      {
+        "start": 1221,
+        "end": 1276,
+        "source_line": 29817
+      },
+      {
+        "start": 1276,
+        "end": 1338,
+        "source_line": 29818
+      },
+      {
+        "start": 1338,
+        "end": 1394,
+        "source_line": 29819
+      },
+      {
+        "start": 1394,
+        "end": 1451,
+        "source_line": 29820
+      },
+      {
+        "start": 1451,
+        "end": 1513,
+        "source_line": 29821
+      },
+      {
+        "start": 1513,
+        "end": 1568,
+        "source_line": 29822
+      },
+      {
+        "start": 1568,
+        "end": 1626,
+        "source_line": 29823
+      },
+      {
+        "start": 1626,
+        "end": 1687,
+        "source_line": 29824
+      },
+      {
+        "start": 1687,
+        "end": 1747,
+        "source_line": 29825
+      },
+      {
+        "start": 1747,
+        "end": 1801,
+        "source_line": 29826
+      },
+      {
+        "start": 1801,
+        "end": 1872,
+        "source_line": 29827
+      },
+      {
+        "start": 1872,
+        "end": 1931,
+        "source_line": 29828
+      },
+      {
+        "start": 1931,
+        "end": 1991,
+        "source_line": 29829
+      },
+      {
+        "start": 1991,
+        "end": 2049,
+        "source_line": 29830
+      },
+      {
+        "start": 2049,
+        "end": 2115,
+        "source_line": 29831
+      },
+      {
+        "start": 2115,
+        "end": 2183,
+        "source_line": 29832
+      },
+      {
+        "start": 2183,
+        "end": 2252,
+        "source_line": 29833
+      },
+      {
+        "start": 2252,
+        "end": 2312,
+        "source_line": 29834
+      },
+      {
+        "start": 2312,
+        "end": 2370,
+        "source_line": 29835
+      },
+      {
+        "start": 2370,
+        "end": 2422,
+        "source_line": 29836
+      },
+      {
+        "start": 2422,
+        "end": 2485,
+        "source_line": 29837
+      },
+      {
+        "start": 2485,
+        "end": 2535,
+        "source_line": 29838
+      },
+      {
+        "start": 2535,
+        "end": 2603,
+        "source_line": 29839
+      },
+      {
+        "start": 2603,
+        "end": 2660,
+        "source_line": 29840
+      },
+      {
+        "start": 2660,
+        "end": 2712,
+        "source_line": 29841
+      },
+      {
+        "start": 2712,
+        "end": 2767,
+        "source_line": 29842
+      },
+      {
+        "start": 2767,
+        "end": 2820,
+        "source_line": 29843
+      },
+      {
+        "start": 2820,
+        "end": 2884,
+        "source_line": 29844
+      },
+      {
+        "start": 2884,
+        "end": 2941,
+        "source_line": 29845
+      },
+      {
+        "start": 2941,
+        "end": 3028,
+        "source_line": 29846
+      },
+      {
+        "start": 3028,
+        "end": 3088,
+        "source_line": 29847
+      },
+      {
+        "start": 3088,
+        "end": 3150,
+        "source_line": 29848
+      },
+      {
+        "start": 3150,
+        "end": 3207,
+        "source_line": 29849
+      },
+      {
+        "start": 3207,
+        "end": 3267,
+        "source_line": 29850
+      },
+      {
+        "start": 3267,
+        "end": 3328,
+        "source_line": 29851
+      },
+      {
+        "start": 3328,
+        "end": 3375,
+        "source_line": 29852
+      },
+      {
+        "start": 3375,
+        "end": 3423,
+        "source_line": 29853
+      },
+      {
+        "start": 3423,
+        "end": 3486,
+        "source_line": 29854
+      },
+      {
+        "start": 3486,
+        "end": 3543,
+        "source_line": 29855
+      },
+      {
+        "start": 3543,
+        "end": 3605,
+        "source_line": 29856
+      },
+      {
+        "start": 3606,
+        "end": 3608,
+        "source_line": 29856
+      },
+      {
+        "start": 3608,
+        "end": 3672,
+        "source_line": 29857
+      },
+      {
+        "start": 3672,
+        "end": 3724,
+        "source_line": 29858
+      },
+      {
+        "start": 3724,
+        "end": 3782,
+        "source_line": 29859
+      },
+      {
+        "start": 3782,
+        "end": 3829,
+        "source_line": 29860
+      },
+      {
+        "start": 3829,
+        "end": 3884,
+        "source_line": 29861
+      },
+      {
+        "start": 3884,
+        "end": 3939,
+        "source_line": 29862
+      },
+      {
+        "start": 3939,
+        "end": 3992,
+        "source_line": 29863
+      },
+      {
+        "start": 3992,
+        "end": 4072,
+        "source_line": 29864
+      },
+      {
+        "start": 4072,
+        "end": 4134,
+        "source_line": 29865
+      },
+      {
+        "start": 4134,
+        "end": 4189,
+        "source_line": 29866
+      },
+      {
+        "start": 4189,
+        "end": 4245,
+        "source_line": 29867
+      },
+      {
+        "start": 4245,
+        "end": 4298,
+        "source_line": 29868
+      },
+      {
+        "start": 4298,
+        "end": 4349,
+        "source_line": 29869
+      },
+      {
+        "start": 4349,
+        "end": 4412,
+        "source_line": 29870
+      },
+      {
+        "start": 4412,
+        "end": 4477,
+        "source_line": 29871
+      },
+      {
+        "start": 4477,
+        "end": 4527,
+        "source_line": 29872
+      },
+      {
+        "start": 4527,
+        "end": 4589,
+        "source_line": 29873
+      },
+      {
+        "start": 4589,
+        "end": 4658,
+        "source_line": 29874
+      },
+      {
+        "start": 4658,
+        "end": 4754,
+        "source_line": 29875
+      },
+      {
+        "start": 4754,
+        "end": 4807,
+        "source_line": 29876
+      },
+      {
+        "start": 4807,
+        "end": 4872,
+        "source_line": 29877
+      },
+      {
+        "start": 4872,
+        "end": 4940,
+        "source_line": 29878
+      },
+      {
+        "start": 4940,
+        "end": 4993,
+        "source_line": 29879
+      },
+      {
+        "start": 4993,
+        "end": 5045,
+        "source_line": 29880
+      },
+      {
+        "start": 5045,
+        "end": 5118,
+        "source_line": 29881
+      },
+      {
+        "start": 5118,
+        "end": 5173,
+        "source_line": 29882
+      },
+      {
+        "start": 5173,
+        "end": 5242,
+        "source_line": 29883
+      },
+      {
+        "start": 5242,
+        "end": 5307,
+        "source_line": 29884
+      },
+      {
+        "start": 5307,
+        "end": 5356,
+        "source_line": 29885
+      },
+      {
+        "start": 5356,
+        "end": 5419,
+        "source_line": 29886
+      },
+      {
+        "start": 5419,
+        "end": 5482,
+        "source_line": 29887
+      },
+      {
+        "start": 5482,
+        "end": 5541,
+        "source_line": 29888
+      },
+      {
+        "start": 5541,
+        "end": 5601,
+        "source_line": 29889
+      },
+      {
+        "start": 5601,
+        "end": 5660,
+        "source_line": 29890
+      },
+      {
+        "start": 5660,
+        "end": 5717,
+        "source_line": 29891
+      },
+      {
+        "start": 5717,
+        "end": 5806,
+        "source_line": 29892
+      },
+      {
+        "start": 5806,
+        "end": 5869,
+        "source_line": 29893
+      },
+      {
+        "start": 5869,
+        "end": 5935,
+        "source_line": 29894
+      },
+      {
+        "start": 5935,
+        "end": 6000,
+        "source_line": 29895
+      },
+      {
+        "start": 6000,
+        "end": 6061,
+        "source_line": 29896
+      },
+      {
+        "start": 6061,
+        "end": 6113,
+        "source_line": 29897
+      },
+      {
+        "start": 6113,
+        "end": 6163,
+        "source_line": 29898
+      },
+      {
+        "start": 6163,
+        "end": 6215,
+        "source_line": 29899
+      },
+      {
+        "start": 6215,
+        "end": 6289,
+        "source_line": 29900
+      },
+      {
+        "start": 6289,
+        "end": 6368,
+        "source_line": 29901
+      },
+      {
+        "start": 6368,
+        "end": 6441,
+        "source_line": 29902
+      },
+      {
+        "start": 6441,
+        "end": 6521,
+        "source_line": 29903
+      },
+      {
+        "start": 6521,
+        "end": 6572,
+        "source_line": 29904
+      },
+      {
+        "start": 6572,
+        "end": 6639,
+        "source_line": 29905
+      },
+      {
+        "start": 6639,
+        "end": 6684,
+        "source_line": 29906
+      }
+    ],
+    "header": {
+      "text": "concept,prefLabel,altLabels",
+      "source_line": 1
+    },
+    "cleaned_rows": 110,
+    "cleaned_columns": [
+      "concept",
+      "prefLabel",
+      "altLabels"
+    ],
+    "exported_at": "2026-11-10T12:42:34.954314+00:00"
+  }
+}

@@ -1,0 +1,105 @@
+{
+  "provenance": {
+    "candidate_id": "demographics_015",
+    "topic": "demographics",
+    "search_term": "census",
+    "repository": "TigreGotico/tugalex",
+    "repository_url": "https://github.com/TigreGotico/tugalex",
+    "source_path": "scripts/noun_gender_overrides.csv",
+    "source_url": "https://github.com/TigreGotico/tugalex/blob/dev/scripts/noun_gender_overrides.csv",
+    "commit_ref": "dev",
+    "license_spdx": "Apache-2.0",
+    "license_url": "https://api.github.com/repos/TigreGotico/tugalex/license?ref=dev",
+    "local_path": "demographics/demographics_015__noun_gender_overrides.csv",
+    "encoding": "utf-8",
+    "delimiter": ";",
+    "byte_size": "578",
+    "physical_lines": "8",
+    "logical_rows": "8",
+    "mode_columns": "2",
+    "anomaly_score": "7",
+    "anomalies": "non_comma_delimiter;possible_preamble",
+    "profile_error": ""
+  },
+  "annotation": {
+    "source": "demographics/demographics_015__noun_gender_overrides.csv",
+    "source_encoding": "utf-8",
+    "input_delimiter": ",",
+    "source_line_ranges": [
+      {
+        "start": 1,
+        "end": 8
+      }
+    ],
+    "shown_line_count": 8,
+    "source_total_lines": 8,
+    "issues": [
+      {
+        "label": "non_comma_delimiter",
+        "reason": "The detected delimiter is not a comma.",
+        "lines": "file-level"
+      }
+    ],
+    "copy_events": [
+      {
+        "characters": 556,
+        "copied_at": "2026-11-10T10:07:02.187Z",
+        "ranges": [
+          {
+            "end": 8,
+            "start": 2
+          }
+        ]
+      }
+    ],
+    "error_description": "not really wrong. Just also has semicolon in string field",
+    "working_origin_spans": [
+      {
+        "end": 88,
+        "source_line": 2,
+        "start": 0
+      },
+      {
+        "end": 162,
+        "source_line": 3,
+        "start": 88
+      },
+      {
+        "end": 230,
+        "source_line": 4,
+        "start": 162
+      },
+      {
+        "end": 313,
+        "source_line": 5,
+        "start": 230
+      },
+      {
+        "end": 393,
+        "source_line": 6,
+        "start": 313
+      },
+      {
+        "end": 463,
+        "source_line": 7,
+        "start": 393
+      },
+      {
+        "end": 556,
+        "source_line": 8,
+        "start": 463
+      }
+    ],
+    "header": {
+      "text": "word,gender,reason",
+      "source_line": 1
+    },
+    "cleaned_rows": 7,
+    "cleaned_columns": [
+      "word",
+      "gender",
+      "reason"
+    ],
+    "exported_at": "2026-11-10T10:15:55.663040+00:00"
+  }
+}
