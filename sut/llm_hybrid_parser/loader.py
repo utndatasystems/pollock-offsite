@@ -33,6 +33,9 @@ Priority order: exactly hit the expected column count; each value fits its colum
 REPAIR_CHARS_PER_TOKEN = 4
 REPAIR_TOKEN_BUDGET = 600_000
 
+# Most physical lines one quoted record may span in the width check.
+MAX_RECORD_LINES = 50
+
 
 
 def _unique_duckdb_columns(count: int) -> Dict[str, str]:
@@ -275,6 +278,45 @@ def rejects_to_malformed(rejects: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
     return malformed
 
 
+def _ends_in_open_quote(text: str, dialect: CSVDialect) -> bool:
+    # Quote state at the end of text, with the same rule as parse_record: a
+    # quote only opens quoting at the start of a field.
+    quote = dialect.quotechar
+    escape = dialect.escapechar
+    delimiter = dialect.delimiter
+    if not quote:
+        return False
+    in_quotes = False
+    field_start = True
+    i = 0
+    while i < len(text):
+        if in_quotes:
+            if escape == quote and text.startswith(quote + quote, i):
+                i += 2 * len(quote)
+            elif escape and escape != quote and text.startswith(escape + quote, i):
+                i += len(escape) + len(quote)
+            elif text.startswith(quote, i):
+                in_quotes = False
+                i += len(quote)
+            else:
+                i += 1
+            continue
+        if delimiter and text.startswith(delimiter, i):
+            field_start = True
+            i += len(delimiter)
+            continue
+        if field_start and text.startswith(quote, i):
+            in_quotes = True
+            i += len(quote)
+            continue
+        if text[i] in "\r\n":
+            field_start = True
+        else:
+            field_start = False
+        i += 1
+    return in_quotes
+
+
 def _scan_rows_by_width(
     csv_input: str, dialect: CSVDialect, expected_columns: int
 ) -> Tuple[List[Tuple[int, List[str]]], List[Dict[str, Any]]]:
@@ -287,34 +329,63 @@ def _scan_rows_by_width(
     rejects: List[Dict[str, Any]] = []
     skip_rows = dialect.preamble_rows + dialect.header_rows
     with open(csv_input, "r", encoding="utf-8-sig", errors="replace", newline="") as f:
-        for line_num, line in enumerate(f, start=1):
-            if line_num <= skip_rows:
+        lines = f.readlines()
+    next_line = skip_rows
+    while next_line < len(lines):
+        line_num = next_line + 1
+        next_line += 1
+        raw, _ = _split_line_ending(lines[line_num - 1], "")
+        if raw == "":
+            continue
+        fields = parse_record(raw, dialect)
+        # Count again honouring every quote, not just one starting a field: a
+        # deleted delimiter otherwise hides behind a delimiter exposed inside the
+        # value that follows it, leaving the width correct. A row only counts as
+        # good when both readings agree on the width.
+        strict = parse_record(raw, dialect, quotes_anywhere=True)
+        line_ok = len(fields) == expected_columns and len(strict) == expected_columns
+        record = lines[line_num - 1]
+        if line_ok and not _ends_in_open_quote(record, dialect):
+            good_rows.append((line_num, fields))
+            continue
+        # A line break inside a quoted field continues the record on the next
+        # line. Join lines while the quote is open, and accept the record only if
+        # both readings then hit the expected width; otherwise judge the line on
+        # its own as before, so a stray quote cannot swallow later lines. This is
+        # tried even when the line alone has the right width, since the open
+        # quote can parse as an empty last field.
+        end = line_num
+        while (
+            _ends_in_open_quote(record, dialect)
+            and end < len(lines)
+            and end - line_num < MAX_RECORD_LINES
+        ):
+            record += lines[end]
+            end += 1
+        if end > line_num and not _ends_in_open_quote(record, dialect):
+            joined, _ = _split_line_ending(record, "")
+            joined_fields = parse_record(joined, dialect)
+            joined_strict = parse_record(joined, dialect, quotes_anywhere=True)
+            if len(joined_fields) == expected_columns and len(joined_strict) == expected_columns:
+                good_rows.append((line_num, joined_fields))
+                next_line = end
                 continue
-            raw, _ = _split_line_ending(line, "")
-            if raw == "":
-                continue
-            fields = parse_record(raw, dialect)
-            # Count again honouring every quote, not just one starting a field: a
-            # deleted delimiter otherwise hides behind a delimiter exposed inside the
-            # value that follows it, leaving the width correct. A row only counts as
-            # good when both readings agree on the width.
-            strict = parse_record(raw, dialect, quotes_anywhere=True)
-            if len(fields) == expected_columns and len(strict) == expected_columns:
-                good_rows.append((line_num, fields))
-                continue
-            found = len(fields) if len(fields) != expected_columns else len(strict)
-            error_type = "TOO MANY COLUMNS" if found > expected_columns else "MISSING COLUMNS"
-            rejects.append({
-                "line": line_num,
-                "line_byte_position": None,
-                "byte_position": None,
-                "column_idx": None,
-                "column_name": None,
-                "error_type": error_type,
-                "csv_line": raw,
-                "error_message": f"Expected Number of Columns: {expected_columns} Found: {found}",
-                "source": "local_width_validation",
-            })
+        if line_ok:
+            good_rows.append((line_num, fields))
+            continue
+        found =len(fields) if len(fields) != expected_columns else len(strict)
+        error_type = "TOO MANY COLUMNS" if found > expected_columns else "MISSING COLUMNS"
+        rejects.append({
+            "line": line_num,
+            "line_byte_position": None,
+            "byte_position": None,
+            "column_idx": None,
+            "column_name": None,
+            "error_type": error_type,
+            "csv_line": raw,
+            "error_message": f"Expected Number of Columns: {expected_columns} Found: {found}",
+            "source": "local_width_validation",
+        })
     return good_rows, rejects
 
 
