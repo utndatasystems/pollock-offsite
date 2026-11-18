@@ -1,3 +1,4 @@
+import csv
 import sys
 import os
 import re
@@ -304,6 +305,11 @@ for idx, file in enumerate(benchmark_files):
                     print("\t  cheat mode: loaded ground truth")
             if df.empty and len(df.columns) == 0:
                 open(out_filepath, "w").close()
+            elif "header_row" in df.attrs:
+                with open(out_filepath, "w", newline="") as out:
+                    writer = csv.writer(out, lineterminator="\n")
+                    writer.writerow(df.attrs["header_row"])
+                    writer.writerows(df.itertuples(index=False))
             else:
                 df.to_csv(out_filepath, index=False)
             write_malformed_report(malformed_path, malformed=malformed)
