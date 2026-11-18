@@ -99,7 +99,7 @@ def main(default_dataset: str = "polluted_files") -> None:
     files = sorted(
         filename
         for filename in os.listdir(f"data/{args.dataset}/csv")
-        if filename.endswith(".csv")
+        if filename.lower().endswith(".csv")
     )
     suffix = result_suffix(origin_csv, args.row_order_invariant)
     weights = load_weights(args.dataset)
