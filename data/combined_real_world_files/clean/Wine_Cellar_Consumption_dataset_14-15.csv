@@ -25,7 +25,7 @@ AUSTRALIA ,2002,Katnook Estate Prodigy Shiraz Coonawarra 2002,1
  BORDEAUX (RED),1990,Château Brane Cantenac 1990,18
  BORDEAUX (RED),1990,Château Calon-Segur 1990,22
  BORDEAUX (RED),1990,Château Canon 1990,7
- BORDEAUX (RED),1990,Château Cos d’Estournel 1990,24
+ BORDEAUX (RED),1990,Château Cos dEstournel 1990,24
  BORDEAUX (RED),1990,Château Grand Puy Lacoste 1990,36
  BORDEAUX (RED),1990,Château Langoa Barton 1990,12
  BORDEAUX (RED),1990,Château Leoville Barton 1990,74
@@ -36,7 +36,7 @@ AUSTRALIA ,2002,Katnook Estate Prodigy Shiraz Coonawarra 2002,1
  BORDEAUX (RED),1990,Château Talbot 1990,19
  BORDEAUX (RED),1990,Château Trotanoy 1990,3
  BORDEAUX (RED),1990,Domaine de Chevalier 1990,21
- BORDEAUX (RED),1994,Château d’Angludet 1994,16
+ BORDEAUX (RED),1994,Château dAngludet 1994,16
  BORDEAUX (RED),1994,Château Grand Puy Lacoste 1994,37
  BORDEAUX (RED),1994,Château La Grave a Pomerol (Trigant de Boisset) 1994,1
  BORDEAUX (RED),1994,Chateau Latour a Pomerol 1994,19
@@ -58,7 +58,7 @@ AUSTRALIA ,2002,Katnook Estate Prodigy Shiraz Coonawarra 2002,1
  BORDEAUX (RED),2001,Château Pontet Canet 2001,1
  BORDEAUX (RED),2003,Château Bahans Haut-Brion 2003,1
  BORDEAUX (RED),2003,Château Beausejour-Duffau- Lagarrosse 2003,1
- BORDEAUX (RED),2003,Château d’Armailhac 2003,1
+ BORDEAUX (RED),2003,Château dArmailhac 2003,1
  BORDEAUX (RED),2003,Château Haut Bailly 2003,1
  BORDEAUX (RED),2003,Château La Lagune 2003,1
  BORDEAUX (RED),2003,Château La Mission Haut-Brion 2003,1
@@ -68,7 +68,7 @@ AUSTRALIA ,2002,Katnook Estate Prodigy Shiraz Coonawarra 2002,1
  BORDEAUX (RED),2003,Château Rauzan-Segla 2003,1
  BORDEAUX (RED),2003,Pavillon Rouge du Château Margaux 2003,1
  BORDEAUX (RED),2004,Château Clos Fourtet 2004,1
- BORDEAUX (RED),2004,Château d’Angludet 2004,1
+ BORDEAUX (RED),2004,Château dAngludet 2004,1
  BORDEAUX (RED),2004,Château Gazin 2004,1
  BORDEAUX (RED),2004,Château Grand Puy Lacoste 2004,1
  BORDEAUX (RED),2004,Château Gruaud-Larose 2004,1
@@ -117,7 +117,7 @@ BURGUNDY ( WHITE),2004,Chassagne-Montrachet La Grande Montagne Dom. Gagnard 2004
 BURGUNDY ( WHITE),2004,Chassagne-Montrachet Les Caillerets 2004,2
 BURGUNDY ( WHITE),2004,Chassagne-Montrachet Morgeot Dom. J.Noel Gagnard 2004,49
 BURGUNDY ( WHITE),2004,Corton Charlemagne Champy Pere & Cie. 2004,12
-BURGUNDY ( WHITE),2004,Pouilly Fuisse La Roche Bret Bro’s 2004,3
+BURGUNDY ( WHITE),2004,Pouilly Fuisse La Roche Bret Bros 2004,3
 BURGUNDY ( WHITE),2004,Puligny-Montrachet Champ Gain Dom. Gagey L.Jadot 2004,34
 BURGUNDY ( WHITE),2004,Puligny-Montrachet Hameau de Blagny 2004,12
 BURGUNDY ( WHITE),2005,Corton Charlemagne Grand Cru Bonneau du Martray 2005,5
@@ -133,7 +133,7 @@ BURGUNDY ( WHITE),2006,Puligny-Montrachet Les Referts Remoissenet 2006,29
 BURGUNDY ( WHITE),2006,Puligny-Montrachet Chateau de Puligny-Montrachet 2006,33
 BURGUNDY ( WHITE),2007,Chassagne-Montrachet Morgeot Vigne Blanche Ch.de la Maltroye 2007,1
 BURGUNDY ( WHITE),2007,Chassagne-Montrachet Morgeot Les Fairendes 2007,15
-BURGUNDY ( WHITE),2007,Meursault Santenots Dom. Marquis d’Angerville 2007,5
+BURGUNDY ( WHITE),2007,Meursault Santenots Dom. Marquis dAngerville 2007,5
 BURGUNDY ( WHITE),2007,Monthelie Blanc Chateau de Puligny-Montrachet 2007,53
 BURGUNDY ( WHITE),2007,Pouilly Fuisse Les Vieilles Vignes Ch. de Fuisse JJ Vincent 2007,1
 BURGUNDY ( WHITE),2007,Puligny-Montrachet La Clavoillon Dom.Leflaive 2007,6
@@ -149,7 +149,7 @@ CHAMPAGNE,NV,Veuve Clicquot NV,4
 CHAMPAGNE,1998,Taittinger Comtes de Champagne 1998,1
 COGNAC,,Frapin FLB Grande Champagne Cognac ,1
 COGNAC,1924,Hine 1924,0.25
-COGNAC,1934,Christopher’s 1934,1
+COGNAC,1934,Christophers 1934,1
 COGNAC,1921,Martell 1921,0.5
 ENGLAND  / WALES,NV,Nyetimber Demi Sec NV,69
 ENGLAND  / WALES,1999,Breaky Bottom 1999,9
@@ -167,7 +167,7 @@ ENGLAND  / WALES,2009,Chapel Down Pinot Blanc 2009,2
 ENGLAND  / WALES,2009,Three Choirs Willow Brook 2009,53
 ENGLAND  / WALES,2010,Camel Valley Atlantic Dry 2010,34
 ENGLAND  / WALES,2011,Three Choirs Annum 2011,144
-ITALY,1994,Masseto Tenuta Del’Ornellaia 1994,3
+ITALY,1994,Masseto Tenuta DelOrnellaia 1994,3
 ITALY,1995,Barolo Claudio Alario 1995,8
 LIQUEURS,,Creme de Menthe ,Three quarters
 LIQUEURS,,Cointreau (½ bottles),4 and three quarters
