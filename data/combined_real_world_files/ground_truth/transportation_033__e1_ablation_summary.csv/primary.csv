@@ -1,4 +1,4 @@
-"variant","FPR_festival\nmean","FPR_festival\nstd","festival_share_of_FP\nmean","festival_share_of_FP\nstd","F\nmean1","F1\nstd","PR_AUC\nmean","PR_AUC\nstd","recall_festival_attacks\nmean","recall_festival_attacks\nstd"
+"variant","FPR_festival\nmean","FPR_festival\nstd","festival_share_of_FP\nmean","festival_share_of_FP\nstd","F1\nmean","F1\nstd","PR_AUC\nmean","PR_AUC\nstd","recall_festival_attacks\nmean","recall_festival_attacks\nstd"
 "FACAD (full)","0.056","0.001","0.359","0.005","0.31","0.015","0.23","0.007","0.232","0.047"
 "No adjustment","0.096","0.001","0.617","0.004","0.156","0.017","0.187","0.005","0.254","0.035"
 "Mean shift only","0.086","0.001","0.552","0.004","0.199","0.02","0.203","0.006","0.304","0.053"
