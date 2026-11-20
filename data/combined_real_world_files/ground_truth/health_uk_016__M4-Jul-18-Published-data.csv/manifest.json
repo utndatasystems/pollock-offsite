@@ -1,19 +1,19 @@
 {
   "schema_version": 1,
-  "canonical": "gt1",
+  "canonical": "canonical",
   "accept_origin": false,
   "tables": {
-    "gt1": {
-      "path": "gt1.csv",
+    "primary": {
+      "path": "primary.csv",
       "role": "primary"
     }
   },
   "alternatives": [
     {
-      "id": "gt1",
+      "id": "canonical",
       "comparison": "single_table",
       "tables": [
-        "gt1"
+        "primary"
       ]
     }
   ]
