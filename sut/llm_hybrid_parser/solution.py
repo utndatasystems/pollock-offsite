@@ -26,6 +26,8 @@ from llm import (
     reset_llm_cost_records,
 )
 from loader import (
+    MAX_RECORD_LINES,
+    _ends_in_open_quote,
     _scan_rows_by_width,
     finalize_dataframe,
     find_width_rejects,
@@ -136,7 +138,19 @@ def parse_csv_with_validation(
     # (e.g. R row names without a header cell, or a trailing delimiter on data rows).
     # Keep the file's own header and load one extra unnamed column, instead of
     # letting the LLM promote a full-width data row to the header.
-    sample_rows = [parse_record(line, dialect) for line in scoring_lines[dialect.preamble_rows:] if line != ""]
+    # Widths are counted per record: lines are joined while a quoted field is open,
+    # with the same rule and limit as _scan_rows_by_width.
+    sample_rows = []
+    body = scoring_lines[dialect.preamble_rows:]
+    i = 0
+    while i < len(body):
+        record, j = body[i], i + 1
+        while _ends_in_open_quote(record, dialect) and j < len(body) and j - i < MAX_RECORD_LINES:
+            record += "\n" + body[j]
+            j += 1
+        if record != "":
+            sample_rows.append(parse_record(record, dialect))
+        i = j
     jagged = len(sample_rows) > 1 and all(len(row) == len(sample_rows[0]) + 1 for row in sample_rows[1:])
     if jagged:
         dialect.header_rows = 1
