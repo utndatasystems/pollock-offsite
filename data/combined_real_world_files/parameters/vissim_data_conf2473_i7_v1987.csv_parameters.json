@@ -1,7 +1,7 @@
 {
     "encoding": "ascii",
     "encoding_confidence": 1.0,
-    "delimiter": ",",
+    "delimiter": ";",
     "quotechar": "",
     "escapechar": "",
     "row_delimiter": "\r\n",

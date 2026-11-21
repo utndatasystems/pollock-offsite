@@ -1,5 +1,5 @@
 {
-    "delimiter": ",",
+    "delimiter": "\t",
     "quotechar": "\"",
     "escapechar": "\"",
     "row_delimiter": "\r\n",
