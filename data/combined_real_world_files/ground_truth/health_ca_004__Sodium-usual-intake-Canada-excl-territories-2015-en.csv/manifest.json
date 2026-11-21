@@ -6,6 +6,10 @@
     "primary": {
       "path": "primary.csv",
       "role": "primary"
+    },
+    "alternative_1": {
+      "path": "alternative_1.csv",
+      "role": "primary"
     }
   },
   "alternatives": [
@@ -14,6 +18,13 @@
       "comparison": "single_table",
       "tables": [
         "primary"
+      ]
+    },
+    {
+      "id": "alternative_1",
+      "comparison": "single_table",
+      "tables": [
+        "alternative_1"
       ]
     }
   ]
