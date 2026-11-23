@@ -20,7 +20,7 @@
 #   OPENAI_ENDPOINT    Remote OpenAI-compatible chat-completions endpoint.
 #   OLLAMA_API_BASE    Local Ollama API base, default http://localhost:11434/v1.
 #   PYTHON             Optional Python interpreter override.
-#   EVAL_NJOBS         Evaluation workers, default 1.
+#   EVAL_NJOBS         Evaluation workers, default 100 (capped at CPU count).
 
 set -euo pipefail
 
@@ -177,7 +177,7 @@ manifest_args=(
     --seed "$dataset_seed" --remote-models "${remote_models[*]}"
     --local-models "${local_models[*]}"
     --suts "${suts[*]}"
-    --repetitions "${N_REPETITIONS:-classical=3,llm=1}" --eval-njobs "${EVAL_NJOBS:-1}"
+    --repetitions "${N_REPETITIONS:-classical=3,llm=1}" --eval-njobs "${EVAL_NJOBS:-100}"
     --cache-policy cold
 )
 if [[ "$resume" == true ]]; then
@@ -219,7 +219,7 @@ evaluate_sut() {
         --dataset "$dataset" \
         --result "$RESULT_ROOT" \
         --sut "$sut" \
-        --njobs "${EVAL_NJOBS:-1}"
+        --njobs "${EVAL_NJOBS:-100}"
     "$python_bin" scripts/experiment_run.py mark-sut --run-id "$run_id" --sut "$sut"
 }
 
