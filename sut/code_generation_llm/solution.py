@@ -24,7 +24,7 @@ OPENAI_API_KEY_ENV = "OPENAI_API_KEY"
 OPENAI_MODEL_ENV = "OPENAI_MODEL"
 OPENAI_ENDPOINT_ENV = "OPENAI_ENDPOINT"
 OPENAI_DEFAULT_MODEL = "gpt-5.4"
-OPENAI_DEFAULT_ENDPOINT = "http://dep-eng-data-s-heimgarten.hosts.utn.de:4000/v1/chat/completions"
+OPENAI_DEFAULT_ENDPOINT = "https://api.openai.com/v1/chat/completions"
 
 # Project rate estimates in USD per million tokens. Override with
 # CODE_GENERATION_LLM_*_USD_PER_1M when running at a different rate.

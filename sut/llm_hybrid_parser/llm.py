@@ -6,7 +6,7 @@ import urllib.request
 from typing import Any, Dict, List, Optional
 
 
-DEFAULT_OPENAI_ENDPOINT = "http://dep-eng-data-s-heimgarten.hosts.utn.de:4000/v1/chat/completions"
+DEFAULT_OPENAI_ENDPOINT = "https://api.openai.com/v1/chat/completions"
 DEFAULT_OPENAI_MODEL = "gpt-5.4"
 DEFAULT_OLLAMA_API_BASE = "http://localhost:11434/v1"
 DEFAULT_OLLAMA_MODEL = "qwen3.5:0.8b"
