@@ -147,7 +147,7 @@ def test_chat_payload_uses_completion_tokens_for_gpt5(monkeypatch):
 
     payload = solution._build_chat_payload("prompt")
 
-    assert payload["max_completion_tokens"] == 4096
+    assert payload["max_completion_tokens"] == 12288
     assert "max_tokens" not in payload
     assert payload["temperature"] == 0
     assert "reasoning_effort" not in payload
@@ -161,7 +161,7 @@ def test_chat_payload_uses_ollama_reasoning_control(monkeypatch):
 
     payload = solution._build_chat_payload("prompt")
 
-    assert payload["max_tokens"] == 4096
+    assert payload["max_tokens"] == 12288
     assert payload["reasoning_effort"] == "none"
 
 
