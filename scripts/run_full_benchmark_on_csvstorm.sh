@@ -172,12 +172,14 @@ for model in "${remote_models[@]}" "${local_models[@]}"; do
     suts+=("full_llm_loader_naive_${slug}")
 done
 
+# Every SUT reads N_REPETITIONS; run each file once unless overridden.
+export N_REPETITIONS="${N_REPETITIONS:-1}"
 manifest_args=(
     init --run-id "$run_id" --script full --dataset "$dataset"
     --seed "$dataset_seed" --remote-models "${remote_models[*]}"
     --local-models "${local_models[*]}"
     --suts "${suts[*]}"
-    --repetitions "${N_REPETITIONS:-classical=3,llm=1}" --eval-njobs "${EVAL_NJOBS:-100}"
+    --repetitions "$N_REPETITIONS" --eval-njobs "${EVAL_NJOBS:-100}"
     --cache-policy cold
 )
 if [[ "$resume" == true ]]; then
