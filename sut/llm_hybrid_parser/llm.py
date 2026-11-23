@@ -160,7 +160,10 @@ def get_llm_cost_summary() -> Dict[str, Any]:
         "local_cache_hits": sum(bool(record.get("local_cache_hit")) for record in records),
     }
     for field in token_fields:
-        summary[field] = sum(_int_or_zero(record.get(field)) for record in records)
+        values = [record.get(field) for record in records]
+        summary[field] = (
+            None if any(value is None for value in values) else sum(values)
+        )
     for field in cost_fields:
         values = [record.get(field) for record in records]
         summary[field] = (
@@ -323,24 +326,36 @@ def call_llm(prompt: str, trace: Any, event_type: str) -> str:
     try:
         with urllib.request.urlopen(
             request,
-            timeout=300 if _llm_backend() == "ollama" else 90,
+            timeout=300,
         ) as response_obj:
             data = json.loads(response_obj.read().decode("utf-8"))
     except urllib.error.HTTPError as exc:
         body = exc.read().decode("utf-8", errors="replace")
+        try:
+            error_usage = json.loads(body).get("usage")
+        except (ValueError, AttributeError):
+            error_usage = None
+        _LLM_COST_RECORDS.append(_build_cost_record(
+            model=model, endpoint=_openai_endpoint(), usage=error_usage,
+            local_cache_hit=False,
+        ))
         raise RuntimeError(f"HTTP Error {exc.code}: {exc.reason}\n{body}") from exc
-    except urllib.error.URLError as exc:
-        raise RuntimeError(
-            f"Could not reach the {_llm_backend()} LLM endpoint "
-            f"{_openai_endpoint()}: {exc.reason}"
-        ) from exc
-    try:
-        response = data["choices"][0]["message"]["content"]
-    except (KeyError, IndexError, TypeError) as exc:
-        raise RuntimeError(f"Unexpected LLM response: {data}") from exc
-    if not isinstance(response, str) or not response.strip():
-        raise RuntimeError(f"Unexpected LLM response: missing assistant content: {data}")
-    usage = data.get("usage") if isinstance(data.get("usage"), dict) else None
+    except Exception as exc:
+        # Timeouts and connection errors return no usage, but the request may
+        # still be billed, so record the call with unknown usage.
+        _LLM_COST_RECORDS.append(_build_cost_record(
+            model=model, endpoint=_openai_endpoint(), usage=None,
+            local_cache_hit=False,
+        ))
+        if isinstance(exc, urllib.error.URLError):
+            raise RuntimeError(
+                f"Could not reach the {_llm_backend()} LLM endpoint "
+                f"{_openai_endpoint()}: {exc.reason}"
+            ) from exc
+        raise
+    # Record usage before validating the answer: empty or malformed replies
+    # can still be billed by the provider.
+    usage = data.get("usage") if isinstance(data, dict) and isinstance(data.get("usage"), dict) else None
     cost_record = _build_cost_record(
         model=model,
         endpoint=_openai_endpoint(),
@@ -348,6 +363,12 @@ def call_llm(prompt: str, trace: Any, event_type: str) -> str:
         local_cache_hit=False,
     )
     _LLM_COST_RECORDS.append(cost_record)
+    try:
+        response = data["choices"][0]["message"]["content"]
+    except (KeyError, IndexError, TypeError) as exc:
+        raise RuntimeError(f"Unexpected LLM response: {data}") from exc
+    if not isinstance(response, str) or not response.strip():
+        raise RuntimeError(f"Unexpected LLM response: missing assistant content: {data}")
 
     if _LLM_CACHE_ENABLED:
         _LLM_RESPONSE_CACHE[prompt_sha] = {
@@ -379,7 +400,19 @@ def _build_cost_record(
     usage: Optional[Dict[str, Any]],
     local_cache_hit: bool,
 ) -> Dict[str, Any]:
-    usage = usage if isinstance(usage, dict) else {}
+    if not isinstance(usage, dict):
+        # Unknown, not zero: a failed or timed-out call may still be billed.
+        return {
+            "model": model,
+            "endpoint": endpoint,
+            "local_cache_hit": local_cache_hit,
+            **dict.fromkeys((
+                "prompt_tokens", "cached_input_tokens", "uncached_input_tokens",
+                "completion_tokens", "total_tokens", "input_cost_usd",
+                "cached_input_cost_usd", "output_cost_usd", "estimated_api_cost_usd",
+            )),
+            "billable_cost_usd": 0.0 if local_cache_hit else None,
+        }
     prompt_tokens = _int_or_zero(usage.get("prompt_tokens"))
     completion_tokens = _int_or_zero(usage.get("completion_tokens"))
     total_tokens = _int_or_zero(usage.get("total_tokens"))
