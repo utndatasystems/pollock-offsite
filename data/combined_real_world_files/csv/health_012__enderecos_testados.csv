@@ -295,7 +295,3 @@ SSL certificate OpenSSL verify result: unabl"
 Caused by error in `curl::curl_fetch_memory()`:
 ! SSL peer certificate or SSH remote key was not OK [download.inep.gov.br]:
 SSL certificate OpenSSL verify result: unabl"
-"https://download.inep.gov.br/ideb/resultados/divulgacao_anos_iniciais_municipios_2019.zip","Ideb (resultados)",2019,NA,NA,NA,"Failed to perform HTTP request.
-Caused by error in `curl::curl_fetch_memory()`:
-! SSL peer certificate or SSH remote key was not OK [download.inep.gov.br]:
-SSL certificate OpenSSL verify result: unabl"
