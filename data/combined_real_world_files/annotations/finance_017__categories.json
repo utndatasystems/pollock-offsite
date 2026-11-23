@@ -1,0 +1,214 @@
+{
+  "provenance": {
+    "candidate_id": "finance_017",
+    "topic": "finance",
+    "search_term": "finance",
+    "repository": "rahulx2001/TraceX",
+    "repository_url": "https://github.com/rahulx2001/TraceX",
+    "source_path": "domains/automotive_nhtsa/gazetteers/categories.csv",
+    "source_url": "https://github.com/rahulx2001/TraceX/blob/main/domains/automotive_nhtsa/gazetteers/categories.csv",
+    "commit_ref": "main",
+    "license_spdx": "MIT",
+    "license_url": "https://api.github.com/repos/rahulx2001/TraceX/license?ref=main",
+    "local_path": "finance/finance_017__categories.csv",
+    "encoding": "utf-8",
+    "delimiter": ",",
+    "byte_size": "593",
+    "physical_lines": "30",
+    "logical_rows": "30",
+    "mode_columns": "2",
+    "anomaly_score": "10",
+    "anomalies": "inconsistent_field_counts;possible_unescaped_multiline",
+    "profile_error": ""
+  },
+  "annotation": {
+    "source": "finance/finance_017__categories.csv",
+    "source_encoding": "utf-8",
+    "input_delimiter": ",",
+    "source_line_ranges": [
+      {
+        "start": 1,
+        "end": 30
+      }
+    ],
+    "shown_line_count": 30,
+    "source_total_lines": 30,
+    "issues": [
+      {
+        "label": "inconsistent_field_counts",
+        "reason": "Logical records do not all contain the modal number of fields.",
+        "lines": "8, 12, 15, 29"
+      }
+    ],
+    "copy_events": [
+      {
+        "ranges": [
+          {
+            "start": 2,
+            "end": 30
+          }
+        ],
+        "characters": 576,
+        "copied_at": "2026-11-10T12:02:04.416Z"
+      }
+    ],
+    "error_description": "inconsistent field counts",
+    "working_origin_spans": [
+      {
+        "start": 0,
+        "end": 15,
+        "source_line": 2
+      },
+      {
+        "start": 15,
+        "end": 40,
+        "source_line": 3
+      },
+      {
+        "start": 40,
+        "end": 56,
+        "source_line": 4
+      },
+      {
+        "start": 56,
+        "end": 80,
+        "source_line": 5
+      },
+      {
+        "start": 80,
+        "end": 114,
+        "source_line": 6
+      },
+      {
+        "start": 114,
+        "end": 127,
+        "source_line": 7
+      },
+      {
+        "start": 127,
+        "end": 139,
+        "source_line": 8
+      },
+      {
+        "start": 139,
+        "end": 162,
+        "source_line": 9
+      },
+      {
+        "start": 162,
+        "end": 195,
+        "source_line": 10
+      },
+      {
+        "start": 195,
+        "end": 213,
+        "source_line": 11
+      },
+      {
+        "start": 213,
+        "end": 238,
+        "source_line": 12
+      },
+      {
+        "start": 238,
+        "end": 268,
+        "source_line": 13
+      },
+      {
+        "start": 268,
+        "end": 288,
+        "source_line": 14
+      },
+      {
+        "start": 288,
+        "end": 313,
+        "source_line": 15
+      },
+      {
+        "start": 313,
+        "end": 332,
+        "source_line": 16
+      },
+      {
+        "start": 332,
+        "end": 350,
+        "source_line": 17
+      },
+      {
+        "start": 350,
+        "end": 366,
+        "source_line": 18
+      },
+      {
+        "start": 366,
+        "end": 377,
+        "source_line": 19
+      },
+      {
+        "start": 377,
+        "end": 398,
+        "source_line": 20
+      },
+      {
+        "start": 398,
+        "end": 413,
+        "source_line": 21
+      },
+      {
+        "start": 413,
+        "end": 428,
+        "source_line": 22
+      },
+      {
+        "start": 428,
+        "end": 444,
+        "source_line": 23
+      },
+      {
+        "start": 444,
+        "end": 455,
+        "source_line": 24
+      },
+      {
+        "start": 455,
+        "end": 484,
+        "source_line": 25
+      },
+      {
+        "start": 484,
+        "end": 506,
+        "source_line": 26
+      },
+      {
+        "start": 506,
+        "end": 533,
+        "source_line": 27
+      },
+      {
+        "start": 533,
+        "end": 550,
+        "source_line": 28
+      },
+      {
+        "start": 550,
+        "end": 568,
+        "source_line": 29
+      },
+      {
+        "start": 568,
+        "end": 580,
+        "source_line": 30
+      }
+    ],
+    "header": {
+      "text": "value,frequency",
+      "source_line": 1
+    },
+    "cleaned_rows": 29,
+    "cleaned_columns": [
+      "value",
+      "frequency"
+    ],
+    "exported_at": "2026-11-10T12:02:30.209392+00:00"
+  }
+}

@@ -26,6 +26,8 @@ from llm import (
     reset_llm_cost_records,
 )
 from loader import (
+    MAX_RECORD_LINES,
+    _ends_in_open_quote,
     _scan_rows_by_width,
     finalize_dataframe,
     find_width_rejects,
@@ -132,7 +134,29 @@ def parse_csv_with_validation(
     scoring_lines = _read_sample_lines(csv_input, SCORING_LINE_LIMIT)
     dialect = dialect_from_mappings(sniff_mapping, llm_mapping, scoring_lines, trace, sniffer_name)
 
-    llm_columns = llm_mapping.get("column_names") if llm_mapping else None
+    # Jagged file: every data row has exactly one field more than the first line
+    # (e.g. R row names without a header cell, or a trailing delimiter on data rows).
+    # Keep the file's own header and load one extra unnamed column, instead of
+    # letting the LLM promote a full-width data row to the header.
+    # Widths are counted per record: lines are joined while a quoted field is open,
+    # with the same rule and limit as _scan_rows_by_width.
+    sample_rows = []
+    body = scoring_lines[dialect.preamble_rows:]
+    i = 0
+    while i < len(body):
+        record, j = body[i], i + 1
+        while _ends_in_open_quote(record, dialect) and j < len(body) and j - i < MAX_RECORD_LINES:
+            record += "\n" + body[j]
+            j += 1
+        if record != "":
+            sample_rows.append(parse_record(record, dialect))
+        i = j
+    jagged = len(sample_rows) > 1 and all(len(row) == len(sample_rows[0]) + 1 for row in sample_rows[1:])
+    if jagged:
+        dialect.header_rows = 1
+        trace.write("jagged_header_detected", header_width=len(sample_rows[0]), data_width=len(sample_rows[0]) + 1)
+
+    llm_columns = llm_mapping.get("column_names") if llm_mapping and not jagged else None
     normalized_header_file = None
     if (
         dialect.header_rows == 1
@@ -199,7 +223,7 @@ def parse_csv_with_validation(
         has_header = True
         trace.write("llm_column_names_applied", columns=header)
 
-    expected_columns = len(header) if has_header else infer_expected_columns(scoring_lines, dialect)
+    expected_columns = len(header) + (1 if jagged else 0) if has_header else infer_expected_columns(scoring_lines, dialect)
     if expected_columns == 0:
         trace.write("empty_or_unreadable_file")
         if cheat and clean_csv:
@@ -259,7 +283,7 @@ def parse_csv_with_validation(
 
     if llm_repair and rejects:
         repairs = infer_repairs_with_llm(
-            header,
+            header + [""] if jagged else header,
             dialect,
             csv_input,
             rejects,
@@ -312,6 +336,10 @@ def parse_csv_with_validation(
         duckdb_skipped_indices = {line - skip_rows - 1 for line in duckdb_skipped_lines}
         result = splice_clean_rows(result, clean_df, malformed_indices, duckdb_skipped_indices)
         trace.write("cheat_result", clean_csv=clean_csv, malformed_count=len(malformed))
+
+    if jagged:
+        # Written by the bench as a header one field shorter than the data rows.
+        result.attrs["header_row"] = header
 
     trace.write(
         "file_result",

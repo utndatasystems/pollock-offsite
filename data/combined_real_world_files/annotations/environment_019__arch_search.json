@@ -1,0 +1,395 @@
+{
+  "provenance": {
+    "candidate_id": "environment_019",
+    "topic": "environment",
+    "search_term": "environment",
+    "repository": "josefberman/IGNITE-grokbot",
+    "repository_url": "https://github.com/josefberman/IGNITE-grokbot",
+    "source_path": "ml/checkpoints/arch_search/arch_search.csv",
+    "source_url": "https://github.com/josefberman/IGNITE-grokbot/blob/main/ml/checkpoints/arch_search/arch_search.csv",
+    "commit_ref": "main",
+    "license_spdx": "Apache-2.0",
+    "license_url": "https://api.github.com/repos/josefberman/IGNITE-grokbot/license?ref=main",
+    "local_path": "environment/environment_019__arch_search.csv",
+    "encoding": "utf-8-sig",
+    "delimiter": ",",
+    "byte_size": "16463",
+    "physical_lines": "97",
+    "logical_rows": "97",
+    "mode_columns": "15",
+    "anomaly_score": "5",
+    "anomalies": "inconsistent_field_counts",
+    "profile_error": ""
+  },
+  "annotation": {
+    "source": "environment/environment_019__arch_search.csv",
+    "source_encoding": "utf-8-sig",
+    "input_delimiter": ",",
+    "source_line_ranges": [
+      {
+        "start": 1,
+        "end": 10
+      },
+      {
+        "start": 47,
+        "end": 97
+      }
+    ],
+    "shown_line_count": 61,
+    "source_total_lines": 97,
+    "issues": [
+      {
+        "label": "inconsistent_field_counts",
+        "reason": "Logical records do not all contain the modal number of fields.",
+        "lines": "97"
+      }
+    ],
+    "copy_events": [
+      {
+        "ranges": [
+          {
+            "start": 2,
+            "end": 10
+          },
+          {
+            "start": 47,
+            "end": 97
+          }
+        ],
+        "characters": 10175,
+        "copied_at": "2026-11-13T10:22:50.730Z"
+      }
+    ],
+    "error_description": "last entry misses a comma",
+    "working_origin_spans": [
+      {
+        "start": 0,
+        "end": 172,
+        "source_line": 2
+      },
+      {
+        "start": 172,
+        "end": 344,
+        "source_line": 3
+      },
+      {
+        "start": 344,
+        "end": 515,
+        "source_line": 4
+      },
+      {
+        "start": 515,
+        "end": 684,
+        "source_line": 5
+      },
+      {
+        "start": 684,
+        "end": 852,
+        "source_line": 6
+      },
+      {
+        "start": 852,
+        "end": 1021,
+        "source_line": 7
+      },
+      {
+        "start": 1021,
+        "end": 1192,
+        "source_line": 8
+      },
+      {
+        "start": 1192,
+        "end": 1360,
+        "source_line": 9
+      },
+      {
+        "start": 1360,
+        "end": 1530,
+        "source_line": 10
+      },
+      {
+        "start": 1530,
+        "end": 1699,
+        "source_line": 47
+      },
+      {
+        "start": 1699,
+        "end": 1869,
+        "source_line": 48
+      },
+      {
+        "start": 1869,
+        "end": 2038,
+        "source_line": 49
+      },
+      {
+        "start": 2038,
+        "end": 2208,
+        "source_line": 50
+      },
+      {
+        "start": 2208,
+        "end": 2379,
+        "source_line": 51
+      },
+      {
+        "start": 2379,
+        "end": 2549,
+        "source_line": 52
+      },
+      {
+        "start": 2549,
+        "end": 2721,
+        "source_line": 53
+      },
+      {
+        "start": 2721,
+        "end": 2890,
+        "source_line": 54
+      },
+      {
+        "start": 2890,
+        "end": 3061,
+        "source_line": 55
+      },
+      {
+        "start": 3061,
+        "end": 3230,
+        "source_line": 56
+      },
+      {
+        "start": 3230,
+        "end": 3401,
+        "source_line": 57
+      },
+      {
+        "start": 3401,
+        "end": 3567,
+        "source_line": 58
+      },
+      {
+        "start": 3567,
+        "end": 3739,
+        "source_line": 59
+      },
+      {
+        "start": 3739,
+        "end": 3908,
+        "source_line": 60
+      },
+      {
+        "start": 3908,
+        "end": 4079,
+        "source_line": 61
+      },
+      {
+        "start": 4079,
+        "end": 4250,
+        "source_line": 62
+      },
+      {
+        "start": 4250,
+        "end": 4420,
+        "source_line": 63
+      },
+      {
+        "start": 4420,
+        "end": 4590,
+        "source_line": 64
+      },
+      {
+        "start": 4590,
+        "end": 4758,
+        "source_line": 65
+      },
+      {
+        "start": 4758,
+        "end": 4929,
+        "source_line": 66
+      },
+      {
+        "start": 4929,
+        "end": 5096,
+        "source_line": 67
+      },
+      {
+        "start": 5096,
+        "end": 5262,
+        "source_line": 68
+      },
+      {
+        "start": 5262,
+        "end": 5432,
+        "source_line": 69
+      },
+      {
+        "start": 5432,
+        "end": 5602,
+        "source_line": 70
+      },
+      {
+        "start": 5602,
+        "end": 5775,
+        "source_line": 71
+      },
+      {
+        "start": 5775,
+        "end": 5945,
+        "source_line": 72
+      },
+      {
+        "start": 5945,
+        "end": 6112,
+        "source_line": 73
+      },
+      {
+        "start": 6112,
+        "end": 6283,
+        "source_line": 74
+      },
+      {
+        "start": 6283,
+        "end": 6452,
+        "source_line": 75
+      },
+      {
+        "start": 6452,
+        "end": 6620,
+        "source_line": 76
+      },
+      {
+        "start": 6620,
+        "end": 6791,
+        "source_line": 77
+      },
+      {
+        "start": 6791,
+        "end": 6959,
+        "source_line": 78
+      },
+      {
+        "start": 6959,
+        "end": 7128,
+        "source_line": 79
+      },
+      {
+        "start": 7128,
+        "end": 7299,
+        "source_line": 80
+      },
+      {
+        "start": 7299,
+        "end": 7469,
+        "source_line": 81
+      },
+      {
+        "start": 7469,
+        "end": 7641,
+        "source_line": 82
+      },
+      {
+        "start": 7641,
+        "end": 7811,
+        "source_line": 83
+      },
+      {
+        "start": 7811,
+        "end": 7981,
+        "source_line": 84
+      },
+      {
+        "start": 7981,
+        "end": 8151,
+        "source_line": 85
+      },
+      {
+        "start": 8151,
+        "end": 8318,
+        "source_line": 86
+      },
+      {
+        "start": 8318,
+        "end": 8488,
+        "source_line": 87
+      },
+      {
+        "start": 8488,
+        "end": 8659,
+        "source_line": 88
+      },
+      {
+        "start": 8659,
+        "end": 8828,
+        "source_line": 89
+      },
+      {
+        "start": 8828,
+        "end": 8997,
+        "source_line": 90
+      },
+      {
+        "start": 8997,
+        "end": 9167,
+        "source_line": 91
+      },
+      {
+        "start": 9167,
+        "end": 9337,
+        "source_line": 92
+      },
+      {
+        "start": 9337,
+        "end": 9505,
+        "source_line": 93
+      },
+      {
+        "start": 9505,
+        "end": 9675,
+        "source_line": 94
+      },
+      {
+        "start": 9675,
+        "end": 9842,
+        "source_line": 95
+      },
+      {
+        "start": 9842,
+        "end": 10009,
+        "source_line": 96
+      },
+      {
+        "start": 10009,
+        "end": 10174,
+        "source_line": 97
+      },
+      {
+        "start": 10175,
+        "end": 10176,
+        "source_line": 97
+      }
+    ],
+    "header": {
+      "text": "layers,hidden,family_layers,reagent_layers,site_layers,score,best_epoch,val_family_top1,val_site_top1,val_reagent_oracle_top1,val_plan_top1,n_train,n_val,checkpoint,error",
+      "source_line": 1
+    },
+    "cleaned_rows": 60,
+    "cleaned_columns": [
+      "layers",
+      "hidden",
+      "family_layers",
+      "reagent_layers",
+      "site_layers",
+      "score",
+      "best_epoch",
+      "val_family_top1",
+      "val_site_top1",
+      "val_reagent_oracle_top1",
+      "val_plan_top1",
+      "n_train",
+      "n_val",
+      "checkpoint",
+      "error"
+    ],
+    "exported_at": "2026-11-13T10:23:17.598259+00:00"
+  }
+}

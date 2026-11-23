@@ -1,0 +1,23 @@
+{
+    "delimiter": ",",
+    "quotechar": "\"",
+    "escapechar": "\"",
+    "row_delimiter": "\n",
+    "header_lines": "1",
+    "preamble_lines": "0",
+    "footnote_lines": "0",
+    "column_names": [
+        "error_id",
+        "uid",
+        "at",
+        "message",
+        "trial_index",
+        "stack",
+        "context",
+        "url",
+        "user_agent",
+        "client_time"
+    ],
+    "encoding": "utf-8",
+    "n_columns": 10
+}

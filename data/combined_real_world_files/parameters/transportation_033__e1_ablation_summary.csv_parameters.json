@@ -1,0 +1,24 @@
+{
+    "delimiter": ",",
+    "quotechar": "\"",
+    "escapechar": "\"",
+    "row_delimiter": "\n",
+    "header_lines": "1",
+    "preamble_lines": "0",
+    "footnote_lines": "0",
+    "column_names": [
+        "variant",
+        "FPR_festival\\nmean",
+        "FPR_festival\\nstd",
+        "festival_share_of_FP\\nmean",
+        "festival_share_of_FP\\nstd",
+        "F\\nmean1",
+        "F1\\nstd",
+        "PR_AUC\\nmean",
+        "PR_AUC\\nstd",
+        "recall_festival_attacks\\nmean",
+        "recall_festival_attacks\\nstd"
+    ],
+    "encoding": "utf-8",
+    "n_columns": 11
+}

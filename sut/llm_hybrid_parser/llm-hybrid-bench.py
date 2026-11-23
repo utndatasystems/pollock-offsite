@@ -1,3 +1,4 @@
+import csv
 import sys
 import os
 import re
@@ -264,6 +265,7 @@ if args.file:
     if target not in benchmark_files:
         parser.error(f"--file {target!r} not found in {IN_DIR}")
     benchmark_files = [target]
+timed_out = {}  # file -> where an LLM request timed out
 for idx, file in enumerate(benchmark_files):
     f = os.path.basename(file)
     in_filepath = join(IN_DIR, f)
@@ -305,6 +307,11 @@ for idx, file in enumerate(benchmark_files):
                     print("\t  cheat mode: loaded ground truth")
             if df.empty and len(df.columns) == 0:
                 open(out_filepath, "w").close()
+            elif "header_row" in df.attrs:
+                with open(out_filepath, "w", newline="") as out:
+                    writer = csv.writer(out, lineterminator="\n")
+                    writer.writerow(df.attrs["header_row"])
+                    writer.writerows(df.itertuples(index=False))
             else:
                 df.to_csv(out_filepath, index=False)
             write_malformed_report(malformed_path, malformed=malformed)
@@ -312,6 +319,8 @@ for idx, file in enumerate(benchmark_files):
         except Exception as e:
             end = time.perf_counter()
             error_message = f"{type(e).__name__}: {e}"
+            if "timed out" in str(e):
+                timed_out[f] = "file failed"
             print("\t", e)
             with open(out_filepath, "w") as text_file:
                 text_file.write("Application Error\n")
@@ -329,6 +338,16 @@ for idx, file in enumerate(benchmark_files):
         except:
             pass
 
+    # A timed-out dialect call does not fail the file; it falls back to the sniffer
+    # and only shows up in the trace.
+    if f not in timed_out and os.path.exists(llm_sidecar):
+        with open(llm_sidecar, encoding="utf-8") as trace_file:
+            for line in trace_file:
+                event = json.loads(line)
+                if event.get("type") == "llm_dialect_error" and "timed out" in str(event.get("error")):
+                    timed_out[f] = "dialect call, parsed without LLM dialect"
+                    break
+
     # Checkpoint after each file so interrupted paid runs retain valid timings.
     save_run_df(TIME_DIR, sut, {f: run_dict[f]})
 
@@ -336,3 +355,8 @@ if LLM_REPAIR or LLM_DIALECT:
     stats = get_llm_cache_stats()
     if stats["total"] > 0:
         print(f"LLM calls: {stats['cached']}/{stats['total']} served from cache")
+
+if timed_out:
+    print(f"\n{len(timed_out)} file(s) had an LLM request time out:")
+    for name, where in timed_out.items():
+        print(f"  {name} ({where})")

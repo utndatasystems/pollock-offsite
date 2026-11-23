@@ -1,0 +1,412 @@
+{
+  "provenance": {
+    "candidate_id": "environment_020",
+    "topic": "environment",
+    "search_term": "environment",
+    "repository": "ClippyFirst/Lao-Ukrainian-Phonetic-System",
+    "repository_url": "https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System",
+    "source_path": "data/lao/ukrainian_correspondences.csv",
+    "source_url": "https://github.com/ClippyFirst/Lao-Ukrainian-Phonetic-System/blob/main/data/lao/ukrainian_correspondences.csv",
+    "commit_ref": "main",
+    "license_spdx": "MIT",
+    "license_url": "https://api.github.com/repos/ClippyFirst/Lao-Ukrainian-Phonetic-System/license?ref=main",
+    "local_path": "environment/environment_020__ukrainian_correspondences.csv",
+    "encoding": "utf-8",
+    "delimiter": ",",
+    "byte_size": "4638",
+    "physical_lines": "71",
+    "logical_rows": "71",
+    "mode_columns": "5",
+    "anomaly_score": "5",
+    "anomalies": "inconsistent_field_counts",
+    "profile_error": ""
+  },
+  "annotation": {
+    "source": "environment/environment_020__ukrainian_correspondences.csv",
+    "source_encoding": "utf-8",
+    "input_delimiter": ",",
+    "source_line_ranges": [
+      {
+        "start": 1,
+        "end": 67
+      }
+    ],
+    "shown_line_count": 67,
+    "source_total_lines": 71,
+    "issues": [
+      {
+        "label": "inconsistent_field_counts",
+        "reason": "Logical records do not all contain the modal number of fields.",
+        "lines": "17"
+      }
+    ],
+    "copy_events": [
+      {
+        "ranges": [
+          {
+            "start": 2,
+            "end": 67
+          }
+        ],
+        "characters": 3999,
+        "copied_at": "2026-11-13T10:24:00.573Z"
+      }
+    ],
+    "error_description": "unquoted comma in field",
+    "working_origin_spans": [
+      {
+        "start": 0,
+        "end": 49,
+        "source_line": 2
+      },
+      {
+        "start": 49,
+        "end": 145,
+        "source_line": 3
+      },
+      {
+        "start": 145,
+        "end": 200,
+        "source_line": 4
+      },
+      {
+        "start": 200,
+        "end": 261,
+        "source_line": 5
+      },
+      {
+        "start": 261,
+        "end": 317,
+        "source_line": 6
+      },
+      {
+        "start": 317,
+        "end": 365,
+        "source_line": 7
+      },
+      {
+        "start": 365,
+        "end": 406,
+        "source_line": 8
+      },
+      {
+        "start": 406,
+        "end": 502,
+        "source_line": 9
+      },
+      {
+        "start": 502,
+        "end": 534,
+        "source_line": 10
+      },
+      {
+        "start": 534,
+        "end": 630,
+        "source_line": 11
+      },
+      {
+        "start": 630,
+        "end": 669,
+        "source_line": 12
+      },
+      {
+        "start": 669,
+        "end": 702,
+        "source_line": 13
+      },
+      {
+        "start": 702,
+        "end": 735,
+        "source_line": 14
+      },
+      {
+        "start": 735,
+        "end": 772,
+        "source_line": 15
+      },
+      {
+        "start": 772,
+        "end": 809,
+        "source_line": 16
+      },
+      {
+        "start": 809,
+        "end": 818,
+        "source_line": 17
+      },
+      {
+        "start": 819,
+        "end": 931,
+        "source_line": 17
+      },
+      {
+        "start": 932,
+        "end": 948,
+        "source_line": 17
+      },
+      {
+        "start": 948,
+        "end": 985,
+        "source_line": 18
+      },
+      {
+        "start": 985,
+        "end": 1058,
+        "source_line": 19
+      },
+      {
+        "start": 1058,
+        "end": 1106,
+        "source_line": 20
+      },
+      {
+        "start": 1106,
+        "end": 1178,
+        "source_line": 21
+      },
+      {
+        "start": 1178,
+        "end": 1217,
+        "source_line": 22
+      },
+      {
+        "start": 1217,
+        "end": 1287,
+        "source_line": 23
+      },
+      {
+        "start": 1287,
+        "end": 1328,
+        "source_line": 24
+      },
+      {
+        "start": 1328,
+        "end": 1396,
+        "source_line": 25
+      },
+      {
+        "start": 1396,
+        "end": 1440,
+        "source_line": 26
+      },
+      {
+        "start": 1440,
+        "end": 1489,
+        "source_line": 27
+      },
+      {
+        "start": 1489,
+        "end": 1554,
+        "source_line": 28
+      },
+      {
+        "start": 1554,
+        "end": 1603,
+        "source_line": 29
+      },
+      {
+        "start": 1603,
+        "end": 1654,
+        "source_line": 30
+      },
+      {
+        "start": 1654,
+        "end": 1703,
+        "source_line": 31
+      },
+      {
+        "start": 1703,
+        "end": 1746,
+        "source_line": 32
+      },
+      {
+        "start": 1746,
+        "end": 1795,
+        "source_line": 33
+      },
+      {
+        "start": 1795,
+        "end": 1842,
+        "source_line": 34
+      },
+      {
+        "start": 1842,
+        "end": 1890,
+        "source_line": 35
+      },
+      {
+        "start": 1890,
+        "end": 1940,
+        "source_line": 36
+      },
+      {
+        "start": 1940,
+        "end": 1989,
+        "source_line": 37
+      },
+      {
+        "start": 1989,
+        "end": 2036,
+        "source_line": 38
+      },
+      {
+        "start": 2036,
+        "end": 2084,
+        "source_line": 39
+      },
+      {
+        "start": 2084,
+        "end": 2134,
+        "source_line": 40
+      },
+      {
+        "start": 2134,
+        "end": 2185,
+        "source_line": 41
+      },
+      {
+        "start": 2185,
+        "end": 2242,
+        "source_line": 42
+      },
+      {
+        "start": 2242,
+        "end": 2300,
+        "source_line": 43
+      },
+      {
+        "start": 2300,
+        "end": 2363,
+        "source_line": 44
+      },
+      {
+        "start": 2363,
+        "end": 2427,
+        "source_line": 45
+      },
+      {
+        "start": 2427,
+        "end": 2480,
+        "source_line": 46
+      },
+      {
+        "start": 2480,
+        "end": 2534,
+        "source_line": 47
+      },
+      {
+        "start": 2534,
+        "end": 2587,
+        "source_line": 48
+      },
+      {
+        "start": 2587,
+        "end": 2638,
+        "source_line": 49
+      },
+      {
+        "start": 2638,
+        "end": 2725,
+        "source_line": 50
+      },
+      {
+        "start": 2725,
+        "end": 2791,
+        "source_line": 51
+      },
+      {
+        "start": 2791,
+        "end": 2863,
+        "source_line": 52
+      },
+      {
+        "start": 2863,
+        "end": 2938,
+        "source_line": 53
+      },
+      {
+        "start": 2938,
+        "end": 3005,
+        "source_line": 54
+      },
+      {
+        "start": 3005,
+        "end": 3078,
+        "source_line": 55
+      },
+      {
+        "start": 3078,
+        "end": 3138,
+        "source_line": 56
+      },
+      {
+        "start": 3138,
+        "end": 3206,
+        "source_line": 57
+      },
+      {
+        "start": 3206,
+        "end": 3279,
+        "source_line": 58
+      },
+      {
+        "start": 3279,
+        "end": 3360,
+        "source_line": 59
+      },
+      {
+        "start": 3360,
+        "end": 3431,
+        "source_line": 60
+      },
+      {
+        "start": 3431,
+        "end": 3509,
+        "source_line": 61
+      },
+      {
+        "start": 3509,
+        "end": 3589,
+        "source_line": 62
+      },
+      {
+        "start": 3589,
+        "end": 3669,
+        "source_line": 63
+      },
+      {
+        "start": 3669,
+        "end": 3745,
+        "source_line": 64
+      },
+      {
+        "start": 3745,
+        "end": 3821,
+        "source_line": 65
+      },
+      {
+        "start": 3821,
+        "end": 3918,
+        "source_line": 66
+      },
+      {
+        "start": 3918,
+        "end": 4001,
+        "source_line": 67
+      }
+    ],
+    "header": {
+      "text": "ipa,candidates,preferred_score,rationale,status",
+      "source_line": 1
+    },
+    "cleaned_rows": 66,
+    "cleaned_columns": [
+      "ipa",
+      "candidates",
+      "preferred_score",
+      "rationale",
+      "status"
+    ],
+    "exported_at": "2026-11-13T10:25:07.679872+00:00"
+  }
+}

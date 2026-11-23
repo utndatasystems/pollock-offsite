@@ -1,0 +1,326 @@
+{
+  "provenance": {
+    "candidate_id": "environment_017",
+    "topic": "environment",
+    "search_term": "climate",
+    "repository": "moosarazauaf/earthsift",
+    "repository_url": "https://github.com/moosarazauaf/earthsift",
+    "source_path": "frontend/public/data/analyses/EP-2026-INDUSATLAYYAH-A6624/export.csv",
+    "source_url": "https://github.com/moosarazauaf/earthsift/blob/main/frontend/public/data/analyses/EP-2026-INDUSATLAYYAH-A6624/export.csv",
+    "commit_ref": "main",
+    "license_spdx": "MIT",
+    "license_url": "https://api.github.com/repos/moosarazauaf/earthsift/license?ref=main",
+    "local_path": "environment/environment_017__export.csv",
+    "encoding": "utf-8",
+    "delimiter": ",",
+    "byte_size": "22454",
+    "physical_lines": "202",
+    "logical_rows": "202",
+    "mode_columns": "9",
+    "anomaly_score": "7",
+    "anomalies": "leading_comment;possible_preamble",
+    "profile_error": ""
+  },
+  "annotation": {
+    "source": "environment/environment_017__export.csv",
+    "source_encoding": "utf-8",
+    "input_delimiter": ",",
+    "source_line_ranges": [
+      {
+        "start": 1,
+        "end": 51
+      }
+    ],
+    "shown_line_count": 51,
+    "source_total_lines": 202,
+    "issues": [
+      {
+        "label": "leading_comment",
+        "reason": "The file begins with a possible comment row.",
+        "lines": "1"
+      },
+      {
+        "label": "possible_preamble",
+        "reason": "Records before the stable table shape resemble title or metadata rows.",
+        "lines": "1"
+      }
+    ],
+    "copy_events": [
+      {
+        "ranges": [
+          {
+            "start": 2,
+            "end": 51
+          }
+        ],
+        "characters": 5555,
+        "copied_at": "2026-11-13T10:21:03.268Z"
+      }
+    ],
+    "error_description": "preamble with comma",
+    "working_origin_spans": [
+      {
+        "start": 0,
+        "end": 112,
+        "source_line": 3
+      },
+      {
+        "start": 112,
+        "end": 225,
+        "source_line": 4
+      },
+      {
+        "start": 225,
+        "end": 338,
+        "source_line": 5
+      },
+      {
+        "start": 338,
+        "end": 448,
+        "source_line": 6
+      },
+      {
+        "start": 448,
+        "end": 559,
+        "source_line": 7
+      },
+      {
+        "start": 559,
+        "end": 668,
+        "source_line": 8
+      },
+      {
+        "start": 668,
+        "end": 778,
+        "source_line": 9
+      },
+      {
+        "start": 778,
+        "end": 891,
+        "source_line": 10
+      },
+      {
+        "start": 891,
+        "end": 1002,
+        "source_line": 11
+      },
+      {
+        "start": 1002,
+        "end": 1113,
+        "source_line": 12
+      },
+      {
+        "start": 1113,
+        "end": 1226,
+        "source_line": 13
+      },
+      {
+        "start": 1226,
+        "end": 1339,
+        "source_line": 14
+      },
+      {
+        "start": 1339,
+        "end": 1451,
+        "source_line": 15
+      },
+      {
+        "start": 1451,
+        "end": 1564,
+        "source_line": 16
+      },
+      {
+        "start": 1564,
+        "end": 1676,
+        "source_line": 17
+      },
+      {
+        "start": 1676,
+        "end": 1788,
+        "source_line": 18
+      },
+      {
+        "start": 1788,
+        "end": 1895,
+        "source_line": 19
+      },
+      {
+        "start": 1895,
+        "end": 2008,
+        "source_line": 20
+      },
+      {
+        "start": 2008,
+        "end": 2117,
+        "source_line": 21
+      },
+      {
+        "start": 2117,
+        "end": 2227,
+        "source_line": 22
+      },
+      {
+        "start": 2227,
+        "end": 2337,
+        "source_line": 23
+      },
+      {
+        "start": 2337,
+        "end": 2448,
+        "source_line": 24
+      },
+      {
+        "start": 2448,
+        "end": 2560,
+        "source_line": 25
+      },
+      {
+        "start": 2560,
+        "end": 2673,
+        "source_line": 26
+      },
+      {
+        "start": 2673,
+        "end": 2785,
+        "source_line": 27
+      },
+      {
+        "start": 2785,
+        "end": 2894,
+        "source_line": 28
+      },
+      {
+        "start": 2894,
+        "end": 3007,
+        "source_line": 29
+      },
+      {
+        "start": 3007,
+        "end": 3117,
+        "source_line": 30
+      },
+      {
+        "start": 3117,
+        "end": 3229,
+        "source_line": 31
+      },
+      {
+        "start": 3229,
+        "end": 3341,
+        "source_line": 32
+      },
+      {
+        "start": 3341,
+        "end": 3452,
+        "source_line": 33
+      },
+      {
+        "start": 3452,
+        "end": 3565,
+        "source_line": 34
+      },
+      {
+        "start": 3565,
+        "end": 3676,
+        "source_line": 35
+      },
+      {
+        "start": 3676,
+        "end": 3785,
+        "source_line": 36
+      },
+      {
+        "start": 3785,
+        "end": 3890,
+        "source_line": 37
+      },
+      {
+        "start": 3890,
+        "end": 4001,
+        "source_line": 38
+      },
+      {
+        "start": 4001,
+        "end": 4112,
+        "source_line": 39
+      },
+      {
+        "start": 4112,
+        "end": 4223,
+        "source_line": 40
+      },
+      {
+        "start": 4223,
+        "end": 4336,
+        "source_line": 41
+      },
+      {
+        "start": 4336,
+        "end": 4447,
+        "source_line": 42
+      },
+      {
+        "start": 4447,
+        "end": 4558,
+        "source_line": 43
+      },
+      {
+        "start": 4558,
+        "end": 4669,
+        "source_line": 44
+      },
+      {
+        "start": 4669,
+        "end": 4782,
+        "source_line": 45
+      },
+      {
+        "start": 4782,
+        "end": 4893,
+        "source_line": 46
+      },
+      {
+        "start": 4893,
+        "end": 5004,
+        "source_line": 47
+      },
+      {
+        "start": 5004,
+        "end": 5116,
+        "source_line": 48
+      },
+      {
+        "start": 5116,
+        "end": 5229,
+        "source_line": 49
+      },
+      {
+        "start": 5229,
+        "end": 5342,
+        "source_line": 50
+      },
+      {
+        "start": 5342,
+        "end": 5453,
+        "source_line": 51
+      }
+    ],
+    "header": {
+      "text": "id,area_ha,vv_before_db,vv_flood_db,vv_change_db,centroid_lon,centroid_lat,passes_before,passes_flood",
+      "source_line": 1
+    },
+    "cleaned_rows": 49,
+    "cleaned_columns": [
+      "id",
+      "area_ha",
+      "vv_before_db",
+      "vv_flood_db",
+      "vv_change_db",
+      "centroid_lon",
+      "centroid_lat",
+      "passes_before",
+      "passes_flood"
+    ],
+    "exported_at": "2026-11-13T10:21:36.548082+00:00"
+  }
+}

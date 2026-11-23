@@ -1,0 +1,118 @@
+{
+  "provenance": {
+    "candidate_id": "health_044",
+    "topic": "health",
+    "search_term": "disease",
+    "repository": "Qwuantabee/single-cell-de",
+    "repository_url": "https://github.com/Qwuantabee/single-cell-de",
+    "source_path": "results/nbglm_real_log2fc_before_fix.csv",
+    "source_url": "https://github.com/Qwuantabee/single-cell-de/blob/main/results/nbglm_real_log2fc_before_fix.csv",
+    "commit_ref": "main",
+    "license_spdx": "MIT",
+    "license_url": "https://api.github.com/repos/Qwuantabee/single-cell-de/license?ref=main",
+    "local_path": "health/health_044__nbglm_real_log2fc_before_fix.csv",
+    "encoding": "utf-8",
+    "delimiter": ",",
+    "byte_size": "900",
+    "physical_lines": "13",
+    "logical_rows": "13",
+    "mode_columns": "4",
+    "anomaly_score": "9",
+    "anomalies": "comment_rows;leading_comment;possible_preamble",
+    "profile_error": ""
+  },
+  "annotation": {
+    "source": "health/health_044__nbglm_real_log2fc_before_fix.csv",
+    "source_encoding": "utf-8",
+    "input_delimiter": ",",
+    "source_line_ranges": [
+      {
+        "start": 1,
+        "end": 13
+      }
+    ],
+    "shown_line_count": 13,
+    "source_total_lines": 13,
+    "issues": [
+      {
+        "label": "comment_rows",
+        "reason": "Rows beginning with '#' may be comments rather than table records.",
+        "lines": "1-5"
+      },
+      {
+        "label": "leading_comment",
+        "reason": "The file begins with a possible comment row.",
+        "lines": "1"
+      },
+      {
+        "label": "possible_preamble",
+        "reason": "Records before the stable table shape resemble title or metadata rows.",
+        "lines": "1-5"
+      }
+    ],
+    "copy_events": [
+      {
+        "ranges": [
+          {
+            "start": 2,
+            "end": 13
+          }
+        ],
+        "characters": 829,
+        "copied_at": "2026-11-17T10:17:45.460Z"
+      }
+    ],
+    "error_description": "preamble",
+    "working_origin_spans": [
+      {
+        "start": 0,
+        "end": 70,
+        "source_line": 7
+      },
+      {
+        "start": 70,
+        "end": 144,
+        "source_line": 8
+      },
+      {
+        "start": 144,
+        "end": 209,
+        "source_line": 9
+      },
+      {
+        "start": 209,
+        "end": 275,
+        "source_line": 10
+      },
+      {
+        "start": 275,
+        "end": 344,
+        "source_line": 11
+      },
+      {
+        "start": 344,
+        "end": 420,
+        "source_line": 12
+      },
+      {
+        "start": 420,
+        "end": 492,
+        "source_line": 13
+      }
+    ],
+    "header": {
+      "present": true,
+      "text": "cell_type,pearson,spearman,mean_abs_diff",
+      "source_line": 1
+    },
+    "cleaned_rows": 7,
+    "cleaned_column_count": 4,
+    "cleaned_columns": [
+      "cell_type",
+      "pearson",
+      "spearman",
+      "mean_abs_diff"
+    ],
+    "exported_at": "2026-11-17T10:18:23.908054+00:00"
+  }
+}

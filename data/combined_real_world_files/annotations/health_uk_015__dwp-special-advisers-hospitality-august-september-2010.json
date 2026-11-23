@@ -1,0 +1,93 @@
+{
+  "provenance": {
+    "candidate_id": "health_uk_015",
+    "topic": "health",
+    "search_term": "hospital",
+    "repository": "data.gov.uk/department-for-work-and-pensions/special-advisers-dwp",
+    "repository_url": "https://www.data.gov.uk/dataset/0f895d7c-aa8f-459e-9a36-94004bd82d7a/special-advisers-dwp",
+    "source_path": "dwp-special-advisers-hospitality-august-september-2010.csv",
+    "source_url": "https://www.gov.uk/government/uploads/system/uploads/attachment_data/file/186546/dwp-special-advisers-hospitality-august-september-2010.csv",
+    "commit_ref": "2013-02-08T09:52:37.050177",
+    "license_spdx": "OGL-UK-3.0",
+    "license_url": "https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/",
+    "local_path": "health/health_uk_015__dwp-special-advisers-hospitality-august-september-2010.csv",
+    "encoding": "utf-8",
+    "delimiter": ",",
+    "byte_size": "612",
+    "physical_lines": "5",
+    "logical_rows": "5",
+    "mode_columns": "4",
+    "anomaly_score": "4",
+    "anomalies": "possible_footer",
+    "profile_error": ""
+  },
+  "annotation": {
+    "source": "health/health_uk_015__dwp-special-advisers-hospitality-august-september-2010.csv",
+    "source_encoding": "utf-8",
+    "input_delimiter": ",",
+    "source_line_ranges": [
+      {
+        "start": 1,
+        "end": 5
+      }
+    ],
+    "shown_line_count": 5,
+    "source_total_lines": 5,
+    "issues": [
+      {
+        "label": "possible_footer",
+        "reason": "Trailing notes or source text appear outside the main table body.",
+        "lines": "5"
+      }
+    ],
+    "copy_events": [
+      {
+        "ranges": [
+          {
+            "start": 2,
+            "end": 5
+          }
+        ],
+        "characters": 517,
+        "copied_at": "2026-11-17T11:30:09.349Z"
+      }
+    ],
+    "error_description": "footnote",
+    "working_origin_spans": [
+      {
+        "start": 0,
+        "end": 30,
+        "source_line": 2
+      },
+      {
+        "start": 30,
+        "end": 83,
+        "source_line": 3
+      },
+      {
+        "start": 83,
+        "end": 125,
+        "source_line": 4
+      },
+      {
+        "start": 126,
+        "end": 130,
+        "source_line": 5
+      }
+    ],
+    "header": {
+      "present": true,
+      "text": "Name of Special Adviser,Date of hospitality,Name of organisation,Type of hospitality received",
+      "source_line": 1
+    },
+    "cleaned_rows": 3,
+    "cleaned_column_count": 4,
+    "cleaned_columns": [
+      "Name of Special Adviser",
+      "Date of hospitality",
+      "Name of organisation",
+      "Type of hospitality received"
+    ],
+    "exported_at": "2026-11-17T11:30:29.882567+00:00"
+  }
+}

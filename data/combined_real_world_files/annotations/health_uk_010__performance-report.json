@@ -1,0 +1,257 @@
+{
+  "provenance": {
+    "candidate_id": "health_uk_010",
+    "topic": "health",
+    "search_term": "health",
+    "repository": "data.gov.uk/health-and-safety-executive/health-and-safety-executive-prompt-payment-policy-and-reporting-of-performance",
+    "repository_url": "https://www.data.gov.uk/dataset/8539ad39-eb5b-4a3f-975a-3fc52142a5d3/health-and-safety-executive-prompt-payment-policy-and-reporting-of-performance",
+    "source_path": "Latest available figures from 2017 to 2026",
+    "source_url": "https://www.hse.gov.uk/data/prompt-payment-policy/performance-report.csv",
+    "commit_ref": "2022-08-04T12:19:28.093924",
+    "license_spdx": "OGL-UK-3.0",
+    "license_url": "https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/",
+    "local_path": "health/health_uk_010__performance-report.csv",
+    "encoding": "utf-8",
+    "delimiter": ",",
+    "byte_size": "1055",
+    "physical_lines": "39",
+    "logical_rows": "39",
+    "mode_columns": "3",
+    "anomaly_score": "4",
+    "anomalies": "hierarchical_header",
+    "profile_error": ""
+  },
+  "annotation": {
+    "source": "health/health_uk_010__performance-report.csv",
+    "source_encoding": "utf-8",
+    "input_delimiter": ",",
+    "source_line_ranges": [
+      {
+        "start": 1,
+        "end": 39
+      }
+    ],
+    "shown_line_count": 39,
+    "source_total_lines": 39,
+    "issues": [
+      {
+        "label": "hierarchical_header",
+        "reason": "The first two table rows resemble a sparse or hierarchical header.",
+        "lines": "1-2"
+      }
+    ],
+    "copy_events": [
+      {
+        "ranges": [
+          {
+            "start": 2,
+            "end": 39
+          }
+        ],
+        "characters": 963,
+        "copied_at": "2026-11-17T11:21:40.918Z"
+      }
+    ],
+    "error_description": "hierarchical header",
+    "working_origin_spans": [
+      {
+        "start": 0,
+        "end": 23,
+        "source_line": 3
+      },
+      {
+        "start": 23,
+        "end": 46,
+        "source_line": 4
+      },
+      {
+        "start": 46,
+        "end": 69,
+        "source_line": 5
+      },
+      {
+        "start": 69,
+        "end": 92,
+        "source_line": 6
+      },
+      {
+        "start": 92,
+        "end": 115,
+        "source_line": 7
+      },
+      {
+        "start": 115,
+        "end": 138,
+        "source_line": 8
+      },
+      {
+        "start": 138,
+        "end": 161,
+        "source_line": 9
+      },
+      {
+        "start": 161,
+        "end": 184,
+        "source_line": 10
+      },
+      {
+        "start": 184,
+        "end": 207,
+        "source_line": 11
+      },
+      {
+        "start": 207,
+        "end": 230,
+        "source_line": 12
+      },
+      {
+        "start": 230,
+        "end": 253,
+        "source_line": 13
+      },
+      {
+        "start": 253,
+        "end": 276,
+        "source_line": 14
+      },
+      {
+        "start": 276,
+        "end": 299,
+        "source_line": 15
+      },
+      {
+        "start": 299,
+        "end": 322,
+        "source_line": 16
+      },
+      {
+        "start": 322,
+        "end": 345,
+        "source_line": 17
+      },
+      {
+        "start": 345,
+        "end": 368,
+        "source_line": 18
+      },
+      {
+        "start": 368,
+        "end": 391,
+        "source_line": 19
+      },
+      {
+        "start": 391,
+        "end": 414,
+        "source_line": 20
+      },
+      {
+        "start": 414,
+        "end": 437,
+        "source_line": 21
+      },
+      {
+        "start": 437,
+        "end": 460,
+        "source_line": 22
+      },
+      {
+        "start": 460,
+        "end": 483,
+        "source_line": 23
+      },
+      {
+        "start": 483,
+        "end": 506,
+        "source_line": 24
+      },
+      {
+        "start": 506,
+        "end": 529,
+        "source_line": 25
+      },
+      {
+        "start": 529,
+        "end": 552,
+        "source_line": 26
+      },
+      {
+        "start": 552,
+        "end": 575,
+        "source_line": 27
+      },
+      {
+        "start": 575,
+        "end": 598,
+        "source_line": 28
+      },
+      {
+        "start": 598,
+        "end": 621,
+        "source_line": 29
+      },
+      {
+        "start": 621,
+        "end": 644,
+        "source_line": 30
+      },
+      {
+        "start": 644,
+        "end": 667,
+        "source_line": 31
+      },
+      {
+        "start": 667,
+        "end": 690,
+        "source_line": 32
+      },
+      {
+        "start": 690,
+        "end": 713,
+        "source_line": 33
+      },
+      {
+        "start": 713,
+        "end": 736,
+        "source_line": 34
+      },
+      {
+        "start": 736,
+        "end": 759,
+        "source_line": 35
+      },
+      {
+        "start": 759,
+        "end": 782,
+        "source_line": 36
+      },
+      {
+        "start": 782,
+        "end": 805,
+        "source_line": 37
+      },
+      {
+        "start": 805,
+        "end": 828,
+        "source_line": 38
+      },
+      {
+        "start": 828,
+        "end": 851,
+        "source_line": 39
+      }
+    ],
+    "header": {
+      "present": true,
+      "text": "Financial Year and quarter,Percentage of invoices paid within 5 days,Percentage of invoices paid within 30 days",
+      "source_line": 1
+    },
+    "cleaned_rows": 37,
+    "cleaned_column_count": 3,
+    "cleaned_columns": [
+      "Financial Year and quarter",
+      "Percentage of invoices paid within 5 days",
+      "Percentage of invoices paid within 30 days"
+    ],
+    "exported_at": "2026-11-17T11:22:28.469827+00:00"
+  }
+}

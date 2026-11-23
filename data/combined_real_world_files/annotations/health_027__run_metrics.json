@@ -1,0 +1,221 @@
+{
+  "provenance": {
+    "candidate_id": "health_027",
+    "topic": "health",
+    "search_term": "hospital",
+    "repository": "adrianoggm/Onion-FL",
+    "repository_url": "https://github.com/adrianoggm/Onion-FL",
+    "source_path": "results/continuum_distributed/run_metrics.csv",
+    "source_url": "https://github.com/adrianoggm/Onion-FL/blob/main/results/continuum_distributed/run_metrics.csv",
+    "commit_ref": "main",
+    "license_spdx": "Apache-2.0",
+    "license_url": "https://api.github.com/repos/adrianoggm/Onion-FL/license?ref=main",
+    "local_path": "health/health_027__run_metrics.csv",
+    "encoding": "utf-8",
+    "delimiter": ",",
+    "byte_size": "9509",
+    "physical_lines": "25",
+    "logical_rows": "25",
+    "mode_columns": "32",
+    "anomaly_score": "0",
+    "anomalies": "",
+    "profile_error": ""
+  },
+  "annotation": {
+    "source": "health/health_027__run_metrics.csv",
+    "source_encoding": "utf-8",
+    "input_delimiter": ",",
+    "source_line_ranges": [
+      {
+        "start": 1,
+        "end": 25
+      }
+    ],
+    "shown_line_count": 25,
+    "source_total_lines": 25,
+    "issues": [
+      {
+        "label": "embedded_structured_values",
+        "reason": "Cells contain JSON or XML-like payloads that require value-level interpretation.",
+        "lines": "2-25"
+      }
+    ],
+    "copy_events": [
+      {
+        "ranges": [
+          {
+            "start": 2,
+            "end": 25
+          }
+        ],
+        "characters": 9085,
+        "copied_at": "2026-11-17T09:39:04.498Z"
+      }
+    ],
+    "error_description": "row with python list",
+    "working_origin_spans": [
+      {
+        "start": 0,
+        "end": 383,
+        "source_line": 2
+      },
+      {
+        "start": 383,
+        "end": 758,
+        "source_line": 3
+      },
+      {
+        "start": 758,
+        "end": 1145,
+        "source_line": 4
+      },
+      {
+        "start": 1145,
+        "end": 1519,
+        "source_line": 5
+      },
+      {
+        "start": 1519,
+        "end": 1903,
+        "source_line": 6
+      },
+      {
+        "start": 1903,
+        "end": 2272,
+        "source_line": 7
+      },
+      {
+        "start": 2272,
+        "end": 2656,
+        "source_line": 8
+      },
+      {
+        "start": 2656,
+        "end": 3031,
+        "source_line": 9
+      },
+      {
+        "start": 3031,
+        "end": 3418,
+        "source_line": 10
+      },
+      {
+        "start": 3418,
+        "end": 3792,
+        "source_line": 11
+      },
+      {
+        "start": 3792,
+        "end": 4176,
+        "source_line": 12
+      },
+      {
+        "start": 4176,
+        "end": 4545,
+        "source_line": 13
+      },
+      {
+        "start": 4545,
+        "end": 4929,
+        "source_line": 14
+      },
+      {
+        "start": 4929,
+        "end": 5304,
+        "source_line": 15
+      },
+      {
+        "start": 5304,
+        "end": 5688,
+        "source_line": 16
+      },
+      {
+        "start": 5688,
+        "end": 6059,
+        "source_line": 17
+      },
+      {
+        "start": 6059,
+        "end": 6442,
+        "source_line": 18
+      },
+      {
+        "start": 6442,
+        "end": 6811,
+        "source_line": 19
+      },
+      {
+        "start": 6811,
+        "end": 7195,
+        "source_line": 20
+      },
+      {
+        "start": 7195,
+        "end": 7570,
+        "source_line": 21
+      },
+      {
+        "start": 7570,
+        "end": 7956,
+        "source_line": 22
+      },
+      {
+        "start": 7956,
+        "end": 8330,
+        "source_line": 23
+      },
+      {
+        "start": 8330,
+        "end": 8715,
+        "source_line": 24
+      },
+      {
+        "start": 8715,
+        "end": 9085,
+        "source_line": 25
+      }
+    ],
+    "header": {
+      "present": true,
+      "text": "run_id,scenario,seed,config_id,topology_id,run_hash,rounds,trained_rounds,bytes,trainings,sample_epochs,promoted,rejected,rollbacks,dataset,subjects,prequential_macro_f1,prequential_samples,prequential_labelled_macro_f1,prequential_labelled_samples,heldout_pooled_macro_f1,heldout_pooled_samples,final_macro_f1,final_loss,final_confusion,auc,forgetting,last_eval_round,drift_round,recovered,recovery_rounds,recovery_minutes",
+      "source_line": 1
+    },
+    "cleaned_rows": 24,
+    "cleaned_column_count": 32,
+    "cleaned_columns": [
+      "run_id",
+      "scenario",
+      "seed",
+      "config_id",
+      "topology_id",
+      "run_hash",
+      "rounds",
+      "trained_rounds",
+      "bytes",
+      "trainings",
+      "sample_epochs",
+      "promoted",
+      "rejected",
+      "rollbacks",
+      "dataset",
+      "subjects",
+      "prequential_macro_f1",
+      "prequential_samples",
+      "prequential_labelled_macro_f1",
+      "prequential_labelled_samples",
+      "heldout_pooled_macro_f1",
+      "heldout_pooled_samples",
+      "final_macro_f1",
+      "final_loss",
+      "final_confusion",
+      "auc",
+      "forgetting",
+      "last_eval_round",
+      "drift_round",
+      "recovered",
+      "recovery_rounds",
+      "recovery_minutes"
+    ],
+    "exported_at": "2026-11-17T09:40:13.475073+00:00"
+  }
+}

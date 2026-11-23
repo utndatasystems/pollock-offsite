@@ -1,0 +1,133 @@
+{
+  "provenance": {
+    "candidate_id": "environment_010",
+    "topic": "environment",
+    "search_term": "climate",
+    "repository": "justindbilyeu/eMSSC-squared",
+    "repository_url": "https://github.com/justindbilyeu/eMSSC-squared",
+    "source_path": "05-technical-resources/boms/trisource_poc_bom.csv",
+    "source_url": "https://github.com/justindbilyeu/eMSSC-squared/blob/main/05-technical-resources/boms/trisource_poc_bom.csv",
+    "commit_ref": "main",
+    "license_spdx": "Apache-2.0",
+    "license_url": "https://api.github.com/repos/justindbilyeu/eMSSC-squared/license?ref=main",
+    "local_path": "environment/environment_010__trisource_poc_bom.csv",
+    "encoding": "utf-8",
+    "delimiter": ",",
+    "byte_size": "653",
+    "physical_lines": "10",
+    "logical_rows": "10",
+    "mode_columns": "6",
+    "anomaly_score": "5",
+    "anomalies": "unbalanced_double_quotes",
+    "profile_error": ""
+  },
+  "annotation": {
+    "source": "environment/environment_010__trisource_poc_bom.csv",
+    "source_encoding": "utf-8",
+    "input_delimiter": ",",
+    "source_line_ranges": [
+      {
+        "start": 1,
+        "end": 10
+      }
+    ],
+    "shown_line_count": 10,
+    "source_total_lines": 10,
+    "issues": [
+      {
+        "label": "unbalanced_double_quotes",
+        "reason": "The file contains an odd total number of double-quote characters.",
+        "lines": "5"
+      }
+    ],
+    "copy_events": [
+      {
+        "ranges": [
+          {
+            "start": 2,
+            "end": 10
+          }
+        ],
+        "characters": 593,
+        "copied_at": "2026-11-10T11:33:38.128Z"
+      }
+    ],
+    "error_description": "",
+    "working_origin_spans": [
+      {
+        "start": 0,
+        "end": 64,
+        "source_line": 2
+      },
+      {
+        "start": 64,
+        "end": 128,
+        "source_line": 3
+      },
+      {
+        "start": 128,
+        "end": 195,
+        "source_line": 4
+      },
+      {
+        "start": 195,
+        "end": 202,
+        "source_line": 5
+      },
+      {
+        "start": 203,
+        "end": 223,
+        "source_line": 5
+      },
+      {
+        "start": 224,
+        "end": 225,
+        "source_line": 5
+      },
+      {
+        "start": 226,
+        "end": 261,
+        "source_line": 5
+      },
+      {
+        "start": 261,
+        "end": 334,
+        "source_line": 6
+      },
+      {
+        "start": 334,
+        "end": 404,
+        "source_line": 7
+      },
+      {
+        "start": 404,
+        "end": 466,
+        "source_line": 8
+      },
+      {
+        "start": 466,
+        "end": 534,
+        "source_line": 9
+      },
+      {
+        "start": 534,
+        "end": 596,
+        "source_line": 10
+      }
+    ],
+    "header": {
+      "text": "component,description,quantity,unit_cost_usd,source,notes",
+      "source_line": 1
+    },
+    "cleaned_rows": 9,
+    "cleaned_columns": [
+      "component",
+      "description",
+      "quantity",
+      "unit_cost_usd",
+      "source",
+      "notes"
+    ],
+    "exported_at": "2026-11-10T11:34:18.908721+00:00"
+  }
+}

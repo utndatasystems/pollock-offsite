@@ -1,0 +1,154 @@
+{
+  "provenance": {
+    "candidate_id": "health_034",
+    "topic": "health",
+    "search_term": "health",
+    "repository": "vehicle-platform/vehicle-connectivity-node",
+    "repository_url": "https://github.com/vehicle-platform/vehicle-connectivity-node",
+    "source_path": "partitions.csv",
+    "source_url": "https://github.com/vehicle-platform/vehicle-connectivity-node/blob/main/partitions.csv",
+    "commit_ref": "main",
+    "license_spdx": "MIT",
+    "license_url": "https://api.github.com/repos/vehicle-platform/vehicle-connectivity-node/license?ref=main",
+    "local_path": "health/health_034__partitions.csv",
+    "encoding": "utf-8",
+    "delimiter": ",",
+    "byte_size": "177",
+    "physical_lines": "4",
+    "logical_rows": "4",
+    "mode_columns": "6",
+    "anomaly_score": "3",
+    "anomalies": "leading_comment",
+    "profile_error": ""
+  },
+  "annotation": {
+    "source": "health/health_034__partitions.csv",
+    "source_file": "original_inspected.csv",
+    "source_encoding": "utf-8",
+    "source_line_ranges": [
+      {
+        "start": 1,
+        "end": 4
+      }
+    ],
+    "shown_line_count": 4,
+    "source_total_lines": 4,
+    "issues": [
+      {
+        "label": "leading_comment",
+        "reason": "The file begins with a possible comment row.",
+        "lines": "1"
+      }
+    ],
+    "ground_truth": {
+      "mode": "multiple",
+      "count": 2,
+      "relationship": "alternative_valid_reconstructions_of_same_source",
+      "files": [
+        {
+          "id": "gt1",
+          "file": "cleaned_gt1.csv",
+          "relationship": "alternative_valid_reconstruction",
+          "input_delimiter": ",",
+          "copy_events": [
+            {
+              "characters": 128,
+              "copied_at": "2026-11-17T09:46:33.550Z",
+              "ranges": [
+                {
+                  "end": 4,
+                  "start": 2
+                }
+              ]
+            }
+          ],
+          "error_description": "header row starts with hashtag\ndata rows are padded with whitespaces\n",
+          "working_origin_spans": [
+            {
+              "end": 28,
+              "source_line": 2,
+              "start": 0
+            },
+            {
+              "end": 61,
+              "source_line": 3,
+              "start": 28
+            },
+            {
+              "end": 99,
+              "source_line": 4,
+              "start": 61
+            }
+          ],
+          "header": {
+            "present": true,
+            "text": "Name,Type,SubType,Offset,Size,Flags",
+            "source_line": 1
+          },
+          "cleaned_rows": 3,
+          "cleaned_column_count": 6,
+          "cleaned_columns": [
+            "Name",
+            "Type",
+            "SubType",
+            "Offset",
+            "Size",
+            "Flags"
+          ]
+        },
+        {
+          "id": "gt2",
+          "file": "cleaned_gt2.csv",
+          "relationship": "alternative_valid_reconstruction",
+          "input_delimiter": ",",
+          "copy_events": [
+            {
+              "characters": 128,
+              "copied_at": "2026-11-17T09:46:33.550Z",
+              "ranges": [
+                {
+                  "end": 4,
+                  "start": 2
+                }
+              ]
+            }
+          ],
+          "error_description": "header row starts with hashtag\ndata rows are padded with whitespaces\n",
+          "working_origin_spans": [
+            {
+              "end": 28,
+              "source_line": 2,
+              "start": 0
+            },
+            {
+              "end": 61,
+              "source_line": 3,
+              "start": 28
+            },
+            {
+              "end": 99,
+              "source_line": 4,
+              "start": 61
+            }
+          ],
+          "header": {
+            "present": true,
+            "text": "# Name,Type,SubType,Offset,Size,Flags",
+            "source_line": 1
+          },
+          "cleaned_rows": 3,
+          "cleaned_column_count": 6,
+          "cleaned_columns": [
+            "# Name",
+            "Type",
+            "SubType",
+            "Offset",
+            "Size",
+            "Flags"
+          ]
+        }
+      ]
+    },
+    "exported_at": "2026-11-17T10:09:08.466026+00:00"
+  }
+}

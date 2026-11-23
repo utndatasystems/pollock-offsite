@@ -1,0 +1,337 @@
+{
+  "provenance": {
+    "candidate_id": "health_010",
+    "topic": "health",
+    "search_term": "medical",
+    "repository": "Firasmaraby/80-Meal-Planner",
+    "repository_url": "https://github.com/Firasmaraby/80-Meal-Planner",
+    "source_path": "templates/AI_Food_List.csv",
+    "source_url": "https://github.com/Firasmaraby/80-Meal-Planner/blob/main/templates/AI_Food_List.csv",
+    "commit_ref": "main",
+    "license_spdx": "MIT",
+    "license_url": "https://api.github.com/repos/Firasmaraby/80-Meal-Planner/license?ref=main",
+    "local_path": "health/health_010__AI_Food_List.csv",
+    "encoding": "utf-8",
+    "delimiter": ",",
+    "byte_size": "445355",
+    "physical_lines": "3020",
+    "logical_rows": "3020",
+    "mode_columns": "25",
+    "anomaly_score": "7",
+    "anomalies": "leading_comment;possible_preamble",
+    "profile_error": ""
+  },
+  "annotation": {
+    "source": "health/health_010__AI_Food_List.csv",
+    "source_encoding": "utf-8",
+    "input_delimiter": ",",
+    "source_line_ranges": [
+      {
+        "start": 1,
+        "end": 51
+      }
+    ],
+    "shown_line_count": 51,
+    "source_total_lines": 3020,
+    "issues": [
+      {
+        "label": "leading_comment",
+        "reason": "The file begins with a possible comment row.",
+        "lines": "1"
+      }
+    ],
+    "copy_events": [
+      {
+        "ranges": [
+          {
+            "start": 2,
+            "end": 51
+          }
+        ],
+        "characters": 6843,
+        "copied_at": "2026-11-10T12:47:42.562Z"
+      }
+    ],
+    "error_description": "preamble comment",
+    "working_origin_spans": [
+      {
+        "start": 0,
+        "end": 194,
+        "source_line": 3
+      },
+      {
+        "start": 194,
+        "end": 374,
+        "source_line": 4
+      },
+      {
+        "start": 374,
+        "end": 524,
+        "source_line": 5
+      },
+      {
+        "start": 524,
+        "end": 685,
+        "source_line": 6
+      },
+      {
+        "start": 685,
+        "end": 828,
+        "source_line": 7
+      },
+      {
+        "start": 828,
+        "end": 943,
+        "source_line": 8
+      },
+      {
+        "start": 943,
+        "end": 1104,
+        "source_line": 9
+      },
+      {
+        "start": 1104,
+        "end": 1187,
+        "source_line": 10
+      },
+      {
+        "start": 1187,
+        "end": 1330,
+        "source_line": 11
+      },
+      {
+        "start": 1330,
+        "end": 1473,
+        "source_line": 12
+      },
+      {
+        "start": 1473,
+        "end": 1643,
+        "source_line": 13
+      },
+      {
+        "start": 1643,
+        "end": 1768,
+        "source_line": 14
+      },
+      {
+        "start": 1768,
+        "end": 1879,
+        "source_line": 15
+      },
+      {
+        "start": 1879,
+        "end": 2001,
+        "source_line": 16
+      },
+      {
+        "start": 2001,
+        "end": 2113,
+        "source_line": 17
+      },
+      {
+        "start": 2113,
+        "end": 2279,
+        "source_line": 18
+      },
+      {
+        "start": 2279,
+        "end": 2420,
+        "source_line": 19
+      },
+      {
+        "start": 2420,
+        "end": 2550,
+        "source_line": 20
+      },
+      {
+        "start": 2550,
+        "end": 2691,
+        "source_line": 21
+      },
+      {
+        "start": 2691,
+        "end": 2816,
+        "source_line": 22
+      },
+      {
+        "start": 2816,
+        "end": 2929,
+        "source_line": 23
+      },
+      {
+        "start": 2929,
+        "end": 3077,
+        "source_line": 24
+      },
+      {
+        "start": 3077,
+        "end": 3249,
+        "source_line": 25
+      },
+      {
+        "start": 3249,
+        "end": 3375,
+        "source_line": 26
+      },
+      {
+        "start": 3375,
+        "end": 3464,
+        "source_line": 27
+      },
+      {
+        "start": 3464,
+        "end": 3554,
+        "source_line": 28
+      },
+      {
+        "start": 3554,
+        "end": 3666,
+        "source_line": 29
+      },
+      {
+        "start": 3666,
+        "end": 3851,
+        "source_line": 30
+      },
+      {
+        "start": 3851,
+        "end": 3931,
+        "source_line": 31
+      },
+      {
+        "start": 3931,
+        "end": 4049,
+        "source_line": 32
+      },
+      {
+        "start": 4049,
+        "end": 4162,
+        "source_line": 33
+      },
+      {
+        "start": 4162,
+        "end": 4276,
+        "source_line": 34
+      },
+      {
+        "start": 4276,
+        "end": 4422,
+        "source_line": 35
+      },
+      {
+        "start": 4422,
+        "end": 4537,
+        "source_line": 36
+      },
+      {
+        "start": 4537,
+        "end": 4644,
+        "source_line": 37
+      },
+      {
+        "start": 4644,
+        "end": 4811,
+        "source_line": 38
+      },
+      {
+        "start": 4811,
+        "end": 4994,
+        "source_line": 39
+      },
+      {
+        "start": 4994,
+        "end": 5150,
+        "source_line": 40
+      },
+      {
+        "start": 5150,
+        "end": 5244,
+        "source_line": 41
+      },
+      {
+        "start": 5244,
+        "end": 5367,
+        "source_line": 42
+      },
+      {
+        "start": 5367,
+        "end": 5496,
+        "source_line": 43
+      },
+      {
+        "start": 5496,
+        "end": 5586,
+        "source_line": 44
+      },
+      {
+        "start": 5586,
+        "end": 5699,
+        "source_line": 45
+      },
+      {
+        "start": 5699,
+        "end": 5879,
+        "source_line": 46
+      },
+      {
+        "start": 5879,
+        "end": 6006,
+        "source_line": 47
+      },
+      {
+        "start": 6006,
+        "end": 6115,
+        "source_line": 48
+      },
+      {
+        "start": 6115,
+        "end": 6291,
+        "source_line": 49
+      },
+      {
+        "start": 6291,
+        "end": 6455,
+        "source_line": 50
+      },
+      {
+        "start": 6455,
+        "end": 6619,
+        "source_line": 51
+      }
+    ],
+    "header": {
+      "text": "food_id,name,category,serving,kcal,protein_g,carbs_g,fat_g,sat_fat_g,fiber_g,vit_a_ug,vit_c_mg,vit_d_ug,vit_e_mg,vit_k_ug,folate_ug,b12_ug,choline_mg,calcium_mg,iron_mg,magnesium_mg,potassium_mg,zinc_mg,selenium_ug,omega3_g",
+      "source_line": 1
+    },
+    "cleaned_rows": 49,
+    "cleaned_columns": [
+      "food_id",
+      "name",
+      "category",
+      "serving",
+      "kcal",
+      "protein_g",
+      "carbs_g",
+      "fat_g",
+      "sat_fat_g",
+      "fiber_g",
+      "vit_a_ug",
+      "vit_c_mg",
+      "vit_d_ug",
+      "vit_e_mg",
+      "vit_k_ug",
+      "folate_ug",
+      "b12_ug",
+      "choline_mg",
+      "calcium_mg",
+      "iron_mg",
+      "magnesium_mg",
+      "potassium_mg",
+      "zinc_mg",
+      "selenium_ug",
+      "omega3_g"
+    ],
+    "exported_at": "2026-11-10T12:48:08.857905+00:00"
+  }
+}

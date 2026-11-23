@@ -1,0 +1,579 @@
+{
+  "provenance": {
+    "candidate_id": "environment_013",
+    "topic": "environment",
+    "search_term": "weather",
+    "repository": "dominikafryc/athlete_analytics_project",
+    "repository_url": "https://github.com/dominikafryc/athlete_analytics_project",
+    "source_path": "seeds/daily_metrics.csv",
+    "source_url": "https://github.com/dominikafryc/athlete_analytics_project/blob/main/seeds/daily_metrics.csv",
+    "commit_ref": "main",
+    "license_spdx": "MIT",
+    "license_url": "https://api.github.com/repos/dominikafryc/athlete_analytics_project/license?ref=main",
+    "local_path": "environment/environment_013__daily_metrics.csv",
+    "encoding": "utf-8-sig",
+    "delimiter": ";",
+    "byte_size": "48240",
+    "physical_lines": "721",
+    "logical_rows": "721",
+    "mode_columns": "17",
+    "anomaly_score": "3",
+    "anomalies": "non_comma_delimiter",
+    "profile_error": ""
+  },
+  "annotation": {
+    "source": "environment/environment_013__daily_metrics.csv",
+    "source_encoding": "utf-8-sig",
+    "input_delimiter": ";",
+    "source_line_ranges": [
+      {
+        "start": 1,
+        "end": 100
+      }
+    ],
+    "shown_line_count": 100,
+    "source_total_lines": 721,
+    "issues": [
+      {
+        "label": "non_comma_delimiter",
+        "reason": "The detected delimiter is not a comma.",
+        "lines": "file-level"
+      }
+    ],
+    "copy_events": [
+      {
+        "ranges": [
+          {
+            "start": 2,
+            "end": 100
+          }
+        ],
+        "characters": 7171,
+        "copied_at": "2026-11-10T11:36:19.880Z"
+      }
+    ],
+    "error_description": "Semicolon delimiter",
+    "working_origin_spans": [
+      {
+        "start": 0,
+        "end": 76,
+        "source_line": 2
+      },
+      {
+        "start": 76,
+        "end": 156,
+        "source_line": 3
+      },
+      {
+        "start": 156,
+        "end": 235,
+        "source_line": 4
+      },
+      {
+        "start": 235,
+        "end": 310,
+        "source_line": 5
+      },
+      {
+        "start": 310,
+        "end": 397,
+        "source_line": 6
+      },
+      {
+        "start": 397,
+        "end": 479,
+        "source_line": 7
+      },
+      {
+        "start": 479,
+        "end": 548,
+        "source_line": 8
+      },
+      {
+        "start": 548,
+        "end": 624,
+        "source_line": 9
+      },
+      {
+        "start": 624,
+        "end": 704,
+        "source_line": 10
+      },
+      {
+        "start": 704,
+        "end": 775,
+        "source_line": 11
+      },
+      {
+        "start": 775,
+        "end": 851,
+        "source_line": 12
+      },
+      {
+        "start": 851,
+        "end": 924,
+        "source_line": 13
+      },
+      {
+        "start": 924,
+        "end": 992,
+        "source_line": 14
+      },
+      {
+        "start": 992,
+        "end": 1069,
+        "source_line": 15
+      },
+      {
+        "start": 1069,
+        "end": 1145,
+        "source_line": 16
+      },
+      {
+        "start": 1145,
+        "end": 1225,
+        "source_line": 17
+      },
+      {
+        "start": 1225,
+        "end": 1304,
+        "source_line": 18
+      },
+      {
+        "start": 1304,
+        "end": 1375,
+        "source_line": 19
+      },
+      {
+        "start": 1375,
+        "end": 1453,
+        "source_line": 20
+      },
+      {
+        "start": 1453,
+        "end": 1518,
+        "source_line": 21
+      },
+      {
+        "start": 1518,
+        "end": 1596,
+        "source_line": 22
+      },
+      {
+        "start": 1596,
+        "end": 1672,
+        "source_line": 23
+      },
+      {
+        "start": 1672,
+        "end": 1760,
+        "source_line": 24
+      },
+      {
+        "start": 1760,
+        "end": 1840,
+        "source_line": 25
+      },
+      {
+        "start": 1840,
+        "end": 1908,
+        "source_line": 26
+      },
+      {
+        "start": 1908,
+        "end": 1977,
+        "source_line": 27
+      },
+      {
+        "start": 1977,
+        "end": 2043,
+        "source_line": 28
+      },
+      {
+        "start": 2043,
+        "end": 2129,
+        "source_line": 29
+      },
+      {
+        "start": 2129,
+        "end": 2206,
+        "source_line": 30
+      },
+      {
+        "start": 2206,
+        "end": 2286,
+        "source_line": 31
+      },
+      {
+        "start": 2286,
+        "end": 2365,
+        "source_line": 32
+      },
+      {
+        "start": 2365,
+        "end": 2450,
+        "source_line": 33
+      },
+      {
+        "start": 2450,
+        "end": 2520,
+        "source_line": 34
+      },
+      {
+        "start": 2520,
+        "end": 2588,
+        "source_line": 35
+      },
+      {
+        "start": 2588,
+        "end": 2653,
+        "source_line": 36
+      },
+      {
+        "start": 2653,
+        "end": 2728,
+        "source_line": 37
+      },
+      {
+        "start": 2728,
+        "end": 2802,
+        "source_line": 38
+      },
+      {
+        "start": 2802,
+        "end": 2879,
+        "source_line": 39
+      },
+      {
+        "start": 2879,
+        "end": 2964,
+        "source_line": 40
+      },
+      {
+        "start": 2964,
+        "end": 3042,
+        "source_line": 41
+      },
+      {
+        "start": 3042,
+        "end": 3118,
+        "source_line": 42
+      },
+      {
+        "start": 3118,
+        "end": 3188,
+        "source_line": 43
+      },
+      {
+        "start": 3188,
+        "end": 3273,
+        "source_line": 44
+      },
+      {
+        "start": 3273,
+        "end": 3353,
+        "source_line": 45
+      },
+      {
+        "start": 3353,
+        "end": 3435,
+        "source_line": 46
+      },
+      {
+        "start": 3435,
+        "end": 3520,
+        "source_line": 47
+      },
+      {
+        "start": 3520,
+        "end": 3592,
+        "source_line": 48
+      },
+      {
+        "start": 3592,
+        "end": 3665,
+        "source_line": 49
+      },
+      {
+        "start": 3665,
+        "end": 3744,
+        "source_line": 50
+      },
+      {
+        "start": 3744,
+        "end": 3825,
+        "source_line": 51
+      },
+      {
+        "start": 3825,
+        "end": 3912,
+        "source_line": 52
+      },
+      {
+        "start": 3912,
+        "end": 3990,
+        "source_line": 53
+      },
+      {
+        "start": 3990,
+        "end": 4072,
+        "source_line": 54
+      },
+      {
+        "start": 4072,
+        "end": 4150,
+        "source_line": 55
+      },
+      {
+        "start": 4150,
+        "end": 4226,
+        "source_line": 56
+      },
+      {
+        "start": 4226,
+        "end": 4300,
+        "source_line": 57
+      },
+      {
+        "start": 4300,
+        "end": 4374,
+        "source_line": 58
+      },
+      {
+        "start": 4374,
+        "end": 4454,
+        "source_line": 59
+      },
+      {
+        "start": 4454,
+        "end": 4528,
+        "source_line": 60
+      },
+      {
+        "start": 4528,
+        "end": 4605,
+        "source_line": 61
+      },
+      {
+        "start": 4605,
+        "end": 4669,
+        "source_line": 62
+      },
+      {
+        "start": 4669,
+        "end": 4737,
+        "source_line": 63
+      },
+      {
+        "start": 4737,
+        "end": 4815,
+        "source_line": 64
+      },
+      {
+        "start": 4815,
+        "end": 4897,
+        "source_line": 65
+      },
+      {
+        "start": 4897,
+        "end": 4985,
+        "source_line": 66
+      },
+      {
+        "start": 4985,
+        "end": 5055,
+        "source_line": 67
+      },
+      {
+        "start": 5055,
+        "end": 5131,
+        "source_line": 68
+      },
+      {
+        "start": 5131,
+        "end": 5195,
+        "source_line": 69
+      },
+      {
+        "start": 5195,
+        "end": 5262,
+        "source_line": 70
+      },
+      {
+        "start": 5262,
+        "end": 5349,
+        "source_line": 71
+      },
+      {
+        "start": 5349,
+        "end": 5413,
+        "source_line": 72
+      },
+      {
+        "start": 5413,
+        "end": 5493,
+        "source_line": 73
+      },
+      {
+        "start": 5493,
+        "end": 5572,
+        "source_line": 74
+      },
+      {
+        "start": 5572,
+        "end": 5648,
+        "source_line": 75
+      },
+      {
+        "start": 5648,
+        "end": 5721,
+        "source_line": 76
+      },
+      {
+        "start": 5721,
+        "end": 5788,
+        "source_line": 77
+      },
+      {
+        "start": 5788,
+        "end": 5867,
+        "source_line": 78
+      },
+      {
+        "start": 5867,
+        "end": 5932,
+        "source_line": 79
+      },
+      {
+        "start": 5932,
+        "end": 6006,
+        "source_line": 80
+      },
+      {
+        "start": 6006,
+        "end": 6093,
+        "source_line": 81
+      },
+      {
+        "start": 6093,
+        "end": 6161,
+        "source_line": 82
+      },
+      {
+        "start": 6161,
+        "end": 6235,
+        "source_line": 83
+      },
+      {
+        "start": 6235,
+        "end": 6309,
+        "source_line": 84
+      },
+      {
+        "start": 6309,
+        "end": 6374,
+        "source_line": 85
+      },
+      {
+        "start": 6374,
+        "end": 6456,
+        "source_line": 86
+      },
+      {
+        "start": 6456,
+        "end": 6520,
+        "source_line": 87
+      },
+      {
+        "start": 6520,
+        "end": 6594,
+        "source_line": 88
+      },
+      {
+        "start": 6594,
+        "end": 6659,
+        "source_line": 89
+      },
+      {
+        "start": 6659,
+        "end": 6729,
+        "source_line": 90
+      },
+      {
+        "start": 6729,
+        "end": 6805,
+        "source_line": 91
+      },
+      {
+        "start": 6805,
+        "end": 6843,
+        "source_line": 92
+      },
+      {
+        "start": 6843,
+        "end": 6886,
+        "source_line": 93
+      },
+      {
+        "start": 6886,
+        "end": 6930,
+        "source_line": 94
+      },
+      {
+        "start": 6930,
+        "end": 6971,
+        "source_line": 95
+      },
+      {
+        "start": 6971,
+        "end": 7014,
+        "source_line": 96
+      },
+      {
+        "start": 7014,
+        "end": 7052,
+        "source_line": 97
+      },
+      {
+        "start": 7052,
+        "end": 7090,
+        "source_line": 98
+      },
+      {
+        "start": 7090,
+        "end": 7128,
+        "source_line": 99
+      },
+      {
+        "start": 7128,
+        "end": 7171,
+        "source_line": 100
+      }
+    ],
+    "header": {
+      "text": "User_ID;Date;Daily_HRV;Daily_RHR;HR_Max;HR_Rest;Sleep_Duration;Deep_Sleep_h;REM_Sleep_h;Sleep_Efficiency_pct;Wake_Episodes_Count;Grip_Strength_kg;CMJ_Jump_cm;Subjective_Mood;DOMS_Scale;Motivation_Level;sRPE",
+      "source_line": 1
+    },
+    "cleaned_rows": 99,
+    "cleaned_columns": [
+      "User_ID",
+      "Date",
+      "Daily_HRV",
+      "Daily_RHR",
+      "HR_Max",
+      "HR_Rest",
+      "Sleep_Duration",
+      "Deep_Sleep_h",
+      "REM_Sleep_h",
+      "Sleep_Efficiency_pct",
+      "Wake_Episodes_Count",
+      "Grip_Strength_kg",
+      "CMJ_Jump_cm",
+      "Subjective_Mood",
+      "DOMS_Scale",
+      "Motivation_Level",
+      "sRPE"
+    ],
+    "exported_at": "2026-11-10T11:36:33.103368+00:00"
+  }
+}

@@ -102,7 +102,7 @@ def main(default_dataset: str = "polluted_files") -> None:
     selected_systems = systems if args.sut is None else [args.sut]
     available_files = {
         filename for filename in os.listdir(f"data/{args.dataset}/csv")
-        if filename.endswith(".csv")
+        if filename.lower().endswith(".csv")
     }
     if args.file:
         missing = set(args.file) - available_files

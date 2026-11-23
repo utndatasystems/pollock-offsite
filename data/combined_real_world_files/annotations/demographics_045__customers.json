@@ -1,0 +1,83 @@
+{
+  "provenance": {
+    "candidate_id": "demographics_045",
+    "topic": "demographics",
+    "search_term": "census",
+    "repository": "viveksingh98/tiffinbox-java",
+    "repository_url": "https://github.com/viveksingh98/tiffinbox-java",
+    "source_path": "c6-unit31/exercise/customers.csv",
+    "source_url": "https://github.com/viveksingh98/tiffinbox-java/blob/main/c6-unit31/exercise/customers.csv",
+    "commit_ref": "main",
+    "license_spdx": "MIT",
+    "license_url": "https://api.github.com/repos/viveksingh98/tiffinbox-java/license?ref=main",
+    "local_path": "demographics/demographics_045__customers.csv",
+    "encoding": "utf-8",
+    "delimiter": ";",
+    "byte_size": "74",
+    "physical_lines": "3",
+    "logical_rows": "3",
+    "mode_columns": "4",
+    "anomaly_score": "3",
+    "anomalies": "non_comma_delimiter",
+    "profile_error": ""
+  },
+  "annotation": {
+    "source": "demographics/demographics_045__customers.csv",
+    "source_encoding": "utf-8",
+    "input_delimiter": ";",
+    "source_line_ranges": [
+      {
+        "start": 1,
+        "end": 3
+      }
+    ],
+    "shown_line_count": 3,
+    "source_total_lines": 3,
+    "issues": [
+      {
+        "label": "non_comma_delimiter",
+        "reason": "The detected delimiter is not a comma.",
+        "lines": "file-level"
+      }
+    ],
+    "copy_events": [
+      {
+        "ranges": [
+          {
+            "start": 2,
+            "end": 3
+          }
+        ],
+        "characters": 35,
+        "copied_at": "2026-11-17T11:38:17.314Z"
+      }
+    ],
+    "error_description": "Semicolon delimiter",
+    "working_origin_spans": [
+      {
+        "start": 0,
+        "end": 15,
+        "source_line": 2
+      },
+      {
+        "start": 15,
+        "end": 35,
+        "source_line": 3
+      }
+    ],
+    "header": {
+      "present": true,
+      "text": "name;mealsPerDay;pricePerMeal;mealType",
+      "source_line": 1
+    },
+    "cleaned_rows": 2,
+    "cleaned_column_count": 4,
+    "cleaned_columns": [
+      "name",
+      "mealsPerDay",
+      "pricePerMeal",
+      "mealType"
+    ],
+    "exported_at": "2026-11-17T11:39:29.732571+00:00"
+  }
+}

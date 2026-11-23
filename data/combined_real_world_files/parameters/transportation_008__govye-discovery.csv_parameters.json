@@ -1,0 +1,21 @@
+{
+    "delimiter": ",",
+    "quotechar": "\"",
+    "escapechar": "\"",
+    "row_delimiter": "\r\n",
+    "header_lines": "1",
+    "preamble_lines": "0",
+    "footnote_lines": "0",
+    "column_names": [
+        "checked_at",
+        "host",
+        "selected_url",
+        "final_url",
+        "http_status",
+        "content_type",
+        "sources",
+        "error"
+    ],
+    "encoding": "utf-8",
+    "n_columns": 8
+}

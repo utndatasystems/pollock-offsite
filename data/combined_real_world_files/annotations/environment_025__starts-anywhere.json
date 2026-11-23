@@ -1,0 +1,193 @@
+{
+  "provenance": {
+    "candidate_id": "environment_025",
+    "topic": "environment",
+    "search_term": "climate",
+    "repository": "malvika123/genesis",
+    "repository_url": "https://github.com/malvika123/genesis",
+    "source_path": "data/findings/08-where-the-band-starts/starts-anywhere.csv",
+    "source_url": "https://github.com/malvika123/genesis/blob/develop/data/findings/08-where-the-band-starts/starts-anywhere.csv",
+    "commit_ref": "develop",
+    "license_spdx": "MIT",
+    "license_url": "https://api.github.com/repos/malvika123/genesis/license?ref=develop",
+    "local_path": "environment/environment_025__starts-anywhere.csv",
+    "encoding": "utf-8",
+    "delimiter": ",",
+    "byte_size": "2843",
+    "physical_lines": "18",
+    "logical_rows": "18",
+    "mode_columns": "54",
+    "anomaly_score": "9",
+    "anomalies": "comment_rows;leading_comment;possible_preamble",
+    "profile_error": ""
+  },
+  "annotation": {
+    "source": "environment/environment_025__starts-anywhere.csv",
+    "source_encoding": "utf-8",
+    "input_delimiter": ",",
+    "source_line_ranges": [
+      {
+        "start": 1,
+        "end": 18
+      }
+    ],
+    "shown_line_count": 18,
+    "source_total_lines": 18,
+    "issues": [
+      {
+        "label": "comment_rows",
+        "reason": "Rows beginning with '#' may be comments rather than table records.",
+        "lines": "1-5"
+      },
+      {
+        "label": "leading_comment",
+        "reason": "The file begins with a possible comment row.",
+        "lines": "1"
+      },
+      {
+        "label": "possible_preamble",
+        "reason": "Records before the stable table shape resemble title or metadata rows.",
+        "lines": "1-5"
+      }
+    ],
+    "copy_events": [
+      {
+        "ranges": [
+          {
+            "start": 2,
+            "end": 18
+          }
+        ],
+        "characters": 2822,
+        "copied_at": "2026-11-17T13:06:09.549Z"
+      }
+    ],
+    "error_description": "preamble",
+    "working_origin_spans": [
+      {
+        "start": 0,
+        "end": 162,
+        "source_line": 7
+      },
+      {
+        "start": 162,
+        "end": 321,
+        "source_line": 8
+      },
+      {
+        "start": 321,
+        "end": 473,
+        "source_line": 9
+      },
+      {
+        "start": 473,
+        "end": 627,
+        "source_line": 10
+      },
+      {
+        "start": 627,
+        "end": 774,
+        "source_line": 11
+      },
+      {
+        "start": 774,
+        "end": 928,
+        "source_line": 12
+      },
+      {
+        "start": 928,
+        "end": 1088,
+        "source_line": 13
+      },
+      {
+        "start": 1088,
+        "end": 1242,
+        "source_line": 14
+      },
+      {
+        "start": 1242,
+        "end": 1397,
+        "source_line": 15
+      },
+      {
+        "start": 1397,
+        "end": 1560,
+        "source_line": 16
+      },
+      {
+        "start": 1560,
+        "end": 1713,
+        "source_line": 17
+      },
+      {
+        "start": 1713,
+        "end": 1809,
+        "source_line": 18
+      }
+    ],
+    "header": {
+      "present": true,
+      "text": "seed,days_run,people_alive,generations,plant_eaters,hunters,fish,best_fire_skill,learns_from_others,copies_successful,follows_crowd,loners_pct,full_sibling_pct,vocal_control,point_urge,share_joy,words_said,words_shared,brain_general,brain_fear,brain_memory,brain_words,brain_regions,died_hunger,died_thirst,died_killed_by_a_predator,died_drowned,died_burned,died_its_wounds,died_old_age,died_struck_by_lightning,died_giving_birth,day_take,day_nut,day_flake,day_root,day_dig,day_meat,day_butcher,day_hunt,day_cooked,day_brand,day_setfire,day_fed,day_kept,day_madefire,day_rubfire,day_share,day_vicar,day_swim,day_point,day_joint,day_speak,day_shared",
+      "source_line": 1
+    },
+    "cleaned_rows": 12,
+    "cleaned_column_count": 54,
+    "cleaned_columns": [
+      "seed",
+      "days_run",
+      "people_alive",
+      "generations",
+      "plant_eaters",
+      "hunters",
+      "fish",
+      "best_fire_skill",
+      "learns_from_others",
+      "copies_successful",
+      "follows_crowd",
+      "loners_pct",
+      "full_sibling_pct",
+      "vocal_control",
+      "point_urge",
+      "share_joy",
+      "words_said",
+      "words_shared",
+      "brain_general",
+      "brain_fear",
+      "brain_memory",
+      "brain_words",
+      "brain_regions",
+      "died_hunger",
+      "died_thirst",
+      "died_killed_by_a_predator",
+      "died_drowned",
+      "died_burned",
+      "died_its_wounds",
+      "died_old_age",
+      "died_struck_by_lightning",
+      "died_giving_birth",
+      "day_take",
+      "day_nut",
+      "day_flake",
+      "day_root",
+      "day_dig",
+      "day_meat",
+      "day_butcher",
+      "day_hunt",
+      "day_cooked",
+      "day_brand",
+      "day_setfire",
+      "day_fed",
+      "day_kept",
+      "day_madefire",
+      "day_rubfire",
+      "day_share",
+      "day_vicar",
+      "day_swim",
+      "day_point",
+      "day_joint",
+      "day_speak",
+      "day_shared"
+    ],
+    "exported_at": "2026-11-17T13:06:48.943017+00:00"
+  }
+}

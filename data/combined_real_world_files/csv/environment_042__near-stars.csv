@@ -1,0 +1,17 @@
+# Twelve bright or well-known stars within 8 pc. J2000 RA and Dec in degrees, parallax in milliarcseconds.
+# Values are measured facts rounded from the Hipparcos new reduction (van Leeuwen 2007) and Gaia DR3 (ESA), as listed in SIMBAD (CDS, Strasbourg).
+# Credit: ESA Hipparcos and Gaia missions; SIMBAD database, CDS, Strasbourg. Not copied from HYG (CC BY-SA).
+# Typed from published values and not yet re-checked against SIMBAD in a live session (unverified 2026-11-15); distance = 1000 / parallax pc.
+name,ra_deg,dec_deg,parallax_mas,spectral
+Proxima Centauri,217.42895,-62.67949,768.07,M5.5 V
+Alpha Centauri A,219.90206,-60.83399,747.17,G2 V
+Barnard's Star,269.45208,4.69339,546.98,M4 V
+Wolf 359,164.12027,7.01470,415.18,M6 V
+Lalande 21185,165.83414,35.96988,392.75,M2 V
+Sirius,101.28716,-16.71612,379.21,A1 V
+Epsilon Eridani,53.23269,-9.45826,310.58,K2 V
+61 Cygni A,316.72475,38.74942,286.00,K5 V
+Procyon,114.82549,5.22499,284.56,F5 IV-V
+Epsilon Indi,330.84022,-56.78598,274.84,K5 V
+Tau Ceti,26.01701,-15.93748,273.96,G8 V
+Altair,297.69583,8.86832,194.95,A7 V

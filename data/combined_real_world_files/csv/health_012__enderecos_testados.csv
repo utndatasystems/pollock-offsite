@@ -1,0 +1,301 @@
+"url","base","ano","status","tamanho_bytes","modificado_em","erro"
+"https://download.inep.gov.br/dados_abertos/microdados_censo_escolar_2015.zip","Microdados do Censo Escolar da Educacao Basica",2015,NA,NA,NA,"Failed to perform HTTP request.
+Caused by error in `curl::curl_fetch_memory()`:
+! SSL connect error [download.inep.gov.br]:
+Recv failure: Connection reset by peer"
+"https://download.inep.gov.br/dados_abertos/microdados_censo_escolar_2016.zip","Microdados do Censo Escolar da Educacao Basica",2016,NA,NA,NA,"Failed to perform HTTP request.
+Caused by error in `curl::curl_fetch_memory()`:
+! SSL peer certificate or SSH remote key was not OK [download.inep.gov.br]:
+SSL certificate OpenSSL verify result: unabl"
+"https://download.inep.gov.br/dados_abertos/microdados_censo_escolar_2017.zip","Microdados do Censo Escolar da Educacao Basica",2017,NA,NA,NA,"Failed to perform HTTP request.
+Caused by error in `curl::curl_fetch_memory()`:
+! SSL peer certificate or SSH remote key was not OK [download.inep.gov.br]:
+SSL certificate OpenSSL verify result: unabl"
+"https://download.inep.gov.br/dados_abertos/microdados_censo_escolar_2018.zip","Microdados do Censo Escolar da Educacao Basica",2018,NA,NA,NA,"Failed to perform HTTP request.
+Caused by error in `curl::curl_fetch_memory()`:
+! SSL peer certificate or SSH remote key was not OK [download.inep.gov.br]:
+SSL certificate OpenSSL verify result: unabl"
+"https://download.inep.gov.br/dados_abertos/microdados_censo_escolar_2019.zip","Microdados do Censo Escolar da Educacao Basica",2019,NA,NA,NA,"Failed to perform HTTP request.
+Caused by error in `curl::curl_fetch_memory()`:
+! SSL peer certificate or SSH remote key was not OK [download.inep.gov.br]:
+SSL certificate OpenSSL verify result: unabl"
+"https://download.inep.gov.br/dados_abertos/microdados_censo_escolar_2020.zip","Microdados do Censo Escolar da Educacao Basica",2020,NA,NA,NA,"Failed to perform HTTP request.
+Caused by error in `curl::curl_fetch_memory()`:
+! SSL peer certificate or SSH remote key was not OK [download.inep.gov.br]:
+SSL certificate OpenSSL verify result: unabl"
+"https://download.inep.gov.br/dados_abertos/microdados_censo_escolar_2021.zip","Microdados do Censo Escolar da Educacao Basica",2021,NA,NA,NA,"Failed to perform HTTP request.
+Caused by error in `curl::curl_fetch_memory()`:
+! SSL peer certificate or SSH remote key was not OK [download.inep.gov.br]:
+SSL certificate OpenSSL verify result: unabl"
+"https://download.inep.gov.br/dados_abertos/microdados_censo_escolar_2022.zip","Microdados do Censo Escolar da Educacao Basica",2022,NA,NA,NA,"Failed to perform HTTP request.
+Caused by error in `curl::curl_fetch_memory()`:
+! SSL peer certificate or SSH remote key was not OK [download.inep.gov.br]:
+SSL certificate OpenSSL verify result: unabl"
+"https://download.inep.gov.br/dados_abertos/microdados_censo_escolar_2023.zip","Microdados do Censo Escolar da Educacao Basica",2023,NA,NA,NA,"Failed to perform HTTP request.
+Caused by error in `curl::curl_fetch_memory()`:
+! SSL peer certificate or SSH remote key was not OK [download.inep.gov.br]:
+SSL certificate OpenSSL verify result: unabl"
+"https://download.inep.gov.br/dados_abertos/microdados_censo_escolar_2024.zip","Microdados do Censo Escolar da Educacao Basica",2024,NA,NA,NA,"Failed to perform HTTP request.
+Caused by error in `curl::curl_fetch_memory()`:
+! SSL peer certificate or SSH remote key was not OK [download.inep.gov.br]:
+SSL certificate OpenSSL verify result: unabl"
+"https://download.inep.gov.br/dados_abertos/microdados_censo_escolar_2025.zip","Microdados do Censo Escolar da Educacao Basica",2025,NA,NA,NA,"Failed to perform HTTP request.
+Caused by error in `curl::curl_fetch_memory()`:
+! SSL peer certificate or SSH remote key was not OK [download.inep.gov.br]:
+SSL certificate OpenSSL verify result: unabl"
+"https://download.inep.gov.br/dados_abertos/microdados_censo_escolar_2026.zip","Microdados do Censo Escolar da Educacao Basica",2026,NA,NA,NA,"Failed to perform HTTP request.
+Caused by error in `curl::curl_fetch_memory()`:
+! SSL peer certificate or SSH remote key was not OK [download.inep.gov.br]:
+SSL certificate OpenSSL verify result: unabl"
+"https://download.inep.gov.br/microdados/microdados_censo_da_educacao_superior_2015.zip","Microdados do Censo da Educacao Superior",2015,NA,NA,NA,"Failed to perform HTTP request.
+Caused by error in `curl::curl_fetch_memory()`:
+! SSL peer certificate or SSH remote key was not OK [download.inep.gov.br]:
+SSL certificate OpenSSL verify result: unabl"
+"https://download.inep.gov.br/microdados/microdados_censo_da_educacao_superior_2016.zip","Microdados do Censo da Educacao Superior",2016,NA,NA,NA,"Failed to perform HTTP request.
+Caused by error in `curl::curl_fetch_memory()`:
+! SSL peer certificate or SSH remote key was not OK [download.inep.gov.br]:
+SSL certificate OpenSSL verify result: unabl"
+"https://download.inep.gov.br/microdados/microdados_censo_da_educacao_superior_2017.zip","Microdados do Censo da Educacao Superior",2017,NA,NA,NA,"Failed to perform HTTP request.
+Caused by error in `curl::curl_fetch_memory()`:
+! SSL peer certificate or SSH remote key was not OK [download.inep.gov.br]:
+SSL certificate OpenSSL verify result: unabl"
+"https://download.inep.gov.br/microdados/microdados_censo_da_educacao_superior_2018.zip","Microdados do Censo da Educacao Superior",2018,NA,NA,NA,"Failed to perform HTTP request.
+Caused by error in `curl::curl_fetch_memory()`:
+! SSL peer certificate or SSH remote key was not OK [download.inep.gov.br]:
+SSL certificate OpenSSL verify result: unabl"
+"https://download.inep.gov.br/microdados/microdados_censo_da_educacao_superior_2019.zip","Microdados do Censo da Educacao Superior",2019,NA,NA,NA,"Failed to perform HTTP request.
+Caused by error in `curl::curl_fetch_memory()`:
+! SSL peer certificate or SSH remote key was not OK [download.inep.gov.br]:
+SSL certificate OpenSSL verify result: unabl"
+"https://download.inep.gov.br/microdados/microdados_censo_da_educacao_superior_2020.zip","Microdados do Censo da Educacao Superior",2020,NA,NA,NA,"Failed to perform HTTP request.
+Caused by error in `curl::curl_fetch_memory()`:
+! SSL peer certificate or SSH remote key was not OK [download.inep.gov.br]:
+SSL certificate OpenSSL verify result: unabl"
+"https://download.inep.gov.br/microdados/microdados_censo_da_educacao_superior_2021.zip","Microdados do Censo da Educacao Superior",2021,NA,NA,NA,"Failed to perform HTTP request.
+Caused by error in `curl::curl_fetch_memory()`:
+! SSL peer certificate or SSH remote key was not OK [download.inep.gov.br]:
+SSL certificate OpenSSL verify result: unabl"
+"https://download.inep.gov.br/microdados/microdados_censo_da_educacao_superior_2022.zip","Microdados do Censo da Educacao Superior",2022,NA,NA,NA,"Failed to perform HTTP request.
+Caused by error in `curl::curl_fetch_memory()`:
+! SSL peer certificate or SSH remote key was not OK [download.inep.gov.br]:
+SSL certificate OpenSSL verify result: unabl"
+"https://download.inep.gov.br/microdados/microdados_censo_da_educacao_superior_2023.zip","Microdados do Censo da Educacao Superior",2023,NA,NA,NA,"Failed to perform HTTP request.
+Caused by error in `curl::curl_fetch_memory()`:
+! SSL peer certificate or SSH remote key was not OK [download.inep.gov.br]:
+SSL certificate OpenSSL verify result: unabl"
+"https://download.inep.gov.br/microdados/microdados_censo_da_educacao_superior_2024.zip","Microdados do Censo da Educacao Superior",2024,NA,NA,NA,"Failed to perform HTTP request.
+Caused by error in `curl::curl_fetch_memory()`:
+! SSL peer certificate or SSH remote key was not OK [download.inep.gov.br]:
+SSL certificate OpenSSL verify result: unabl"
+"https://download.inep.gov.br/microdados/microdados_censo_da_educacao_superior_2025.zip","Microdados do Censo da Educacao Superior",2025,NA,NA,NA,"Failed to perform HTTP request.
+Caused by error in `curl::curl_fetch_memory()`:
+! SSL peer certificate or SSH remote key was not OK [download.inep.gov.br]:
+SSL certificate OpenSSL verify result: unabl"
+"https://download.inep.gov.br/microdados/microdados_censo_da_educacao_superior_2026.zip","Microdados do Censo da Educacao Superior",2026,NA,NA,NA,"Failed to perform HTTP request.
+Caused by error in `curl::curl_fetch_memory()`:
+! SSL peer certificate or SSH remote key was not OK [download.inep.gov.br]:
+SSL certificate OpenSSL verify result: unabl"
+"https://download.inep.gov.br/microdados/microdados_enade_2015.zip","Microdados do Enade",2015,NA,NA,NA,"Failed to perform HTTP request.
+Caused by error in `curl::curl_fetch_memory()`:
+! SSL peer certificate or SSH remote key was not OK [download.inep.gov.br]:
+SSL certificate OpenSSL verify result: unabl"
+"https://download.inep.gov.br/microdados/microdados_enade_2016.zip","Microdados do Enade",2016,NA,NA,NA,"Failed to perform HTTP request.
+Caused by error in `curl::curl_fetch_memory()`:
+! SSL peer certificate or SSH remote key was not OK [download.inep.gov.br]:
+SSL certificate OpenSSL verify result: unabl"
+"https://download.inep.gov.br/microdados/microdados_enade_2017.zip","Microdados do Enade",2017,NA,NA,NA,"Failed to perform HTTP request.
+Caused by error in `curl::curl_fetch_memory()`:
+! SSL peer certificate or SSH remote key was not OK [download.inep.gov.br]:
+SSL certificate OpenSSL verify result: unabl"
+"https://download.inep.gov.br/microdados/microdados_enade_2018.zip","Microdados do Enade",2018,NA,NA,NA,"Failed to perform HTTP request.
+Caused by error in `curl::curl_fetch_memory()`:
+! SSL peer certificate or SSH remote key was not OK [download.inep.gov.br]:
+SSL certificate OpenSSL verify result: unabl"
+"https://download.inep.gov.br/microdados/microdados_enade_2019.zip","Microdados do Enade",2019,NA,NA,NA,"Failed to perform HTTP request.
+Caused by error in `curl::curl_fetch_memory()`:
+! SSL peer certificate or SSH remote key was not OK [download.inep.gov.br]:
+SSL certificate OpenSSL verify result: unabl"
+"https://download.inep.gov.br/microdados/microdados_enade_2020.zip","Microdados do Enade",2020,NA,NA,NA,"Failed to perform HTTP request.
+Caused by error in `curl::curl_fetch_memory()`:
+! SSL peer certificate or SSH remote key was not OK [download.inep.gov.br]:
+SSL certificate OpenSSL verify result: unabl"
+"https://download.inep.gov.br/microdados/microdados_enade_2021.zip","Microdados do Enade",2021,NA,NA,NA,"Failed to perform HTTP request.
+Caused by error in `curl::curl_fetch_memory()`:
+! SSL peer certificate or SSH remote key was not OK [download.inep.gov.br]:
+SSL certificate OpenSSL verify result: unabl"
+"https://download.inep.gov.br/microdados/microdados_enade_2022.zip","Microdados do Enade",2022,NA,NA,NA,"Failed to perform HTTP request.
+Caused by error in `curl::curl_fetch_memory()`:
+! SSL peer certificate or SSH remote key was not OK [download.inep.gov.br]:
+SSL certificate OpenSSL verify result: unabl"
+"https://download.inep.gov.br/microdados/microdados_enade_2023.zip","Microdados do Enade",2023,NA,NA,NA,"Failed to perform HTTP request.
+Caused by error in `curl::curl_fetch_memory()`:
+! SSL peer certificate or SSH remote key was not OK [download.inep.gov.br]:
+SSL certificate OpenSSL verify result: unabl"
+"https://download.inep.gov.br/microdados/microdados_enade_2024.zip","Microdados do Enade",2024,NA,NA,NA,"Failed to perform HTTP request.
+Caused by error in `curl::curl_fetch_memory()`:
+! SSL peer certificate or SSH remote key was not OK [download.inep.gov.br]:
+SSL certificate OpenSSL verify result: unabl"
+"https://download.inep.gov.br/microdados/microdados_enade_2025.zip","Microdados do Enade",2025,NA,NA,NA,"Failed to perform HTTP request.
+Caused by error in `curl::curl_fetch_memory()`:
+! SSL peer certificate or SSH remote key was not OK [download.inep.gov.br]:
+SSL certificate OpenSSL verify result: unabl"
+"https://download.inep.gov.br/microdados/microdados_enade_2026.zip","Microdados do Enade",2026,NA,NA,NA,"Failed to perform HTTP request.
+Caused by error in `curl::curl_fetch_memory()`:
+! SSL peer certificate or SSH remote key was not OK [download.inep.gov.br]:
+SSL certificate OpenSSL verify result: unabl"
+"https://download.inep.gov.br/microdados/microdados_encceja_2015.zip","Microdados do Encceja",2015,NA,NA,NA,"Failed to perform HTTP request.
+Caused by error in `curl::curl_fetch_memory()`:
+! SSL peer certificate or SSH remote key was not OK [download.inep.gov.br]:
+SSL certificate OpenSSL verify result: unabl"
+"https://download.inep.gov.br/microdados/microdados_encceja_2016.zip","Microdados do Encceja",2016,NA,NA,NA,"Failed to perform HTTP request.
+Caused by error in `curl::curl_fetch_memory()`:
+! SSL peer certificate or SSH remote key was not OK [download.inep.gov.br]:
+SSL certificate OpenSSL verify result: unabl"
+"https://download.inep.gov.br/microdados/microdados_encceja_2017.zip","Microdados do Encceja",2017,NA,NA,NA,"Failed to perform HTTP request.
+Caused by error in `curl::curl_fetch_memory()`:
+! SSL peer certificate or SSH remote key was not OK [download.inep.gov.br]:
+SSL certificate OpenSSL verify result: unabl"
+"https://download.inep.gov.br/microdados/microdados_encceja_2018.zip","Microdados do Encceja",2018,NA,NA,NA,"Failed to perform HTTP request.
+Caused by error in `curl::curl_fetch_memory()`:
+! SSL peer certificate or SSH remote key was not OK [download.inep.gov.br]:
+SSL certificate OpenSSL verify result: unabl"
+"https://download.inep.gov.br/microdados/microdados_encceja_2019.zip","Microdados do Encceja",2019,NA,NA,NA,"Failed to perform HTTP request.
+Caused by error in `curl::curl_fetch_memory()`:
+! SSL peer certificate or SSH remote key was not OK [download.inep.gov.br]:
+SSL certificate OpenSSL verify result: unabl"
+"https://download.inep.gov.br/microdados/microdados_encceja_2020.zip","Microdados do Encceja",2020,NA,NA,NA,"Failed to perform HTTP request.
+Caused by error in `curl::curl_fetch_memory()`:
+! SSL peer certificate or SSH remote key was not OK [download.inep.gov.br]:
+SSL certificate OpenSSL verify result: unabl"
+"https://download.inep.gov.br/microdados/microdados_encceja_2021.zip","Microdados do Encceja",2021,NA,NA,NA,"Failed to perform HTTP request.
+Caused by error in `curl::curl_fetch_memory()`:
+! SSL peer certificate or SSH remote key was not OK [download.inep.gov.br]:
+SSL certificate OpenSSL verify result: unabl"
+"https://download.inep.gov.br/microdados/microdados_encceja_2022.zip","Microdados do Encceja",2022,NA,NA,NA,"Failed to perform HTTP request.
+Caused by error in `curl::curl_fetch_memory()`:
+! SSL peer certificate or SSH remote key was not OK [download.inep.gov.br]:
+SSL certificate OpenSSL verify result: unabl"
+"https://download.inep.gov.br/microdados/microdados_encceja_2023.zip","Microdados do Encceja",2023,NA,NA,NA,"Failed to perform HTTP request.
+Caused by error in `curl::curl_fetch_memory()`:
+! SSL peer certificate or SSH remote key was not OK [download.inep.gov.br]:
+SSL certificate OpenSSL verify result: unabl"
+"https://download.inep.gov.br/microdados/microdados_encceja_2024.zip","Microdados do Encceja",2024,NA,NA,NA,"Failed to perform HTTP request.
+Caused by error in `curl::curl_fetch_memory()`:
+! SSL peer certificate or SSH remote key was not OK [download.inep.gov.br]:
+SSL certificate OpenSSL verify result: unabl"
+"https://download.inep.gov.br/microdados/microdados_encceja_2025.zip","Microdados do Encceja",2025,NA,NA,NA,"Failed to perform HTTP request.
+Caused by error in `curl::curl_fetch_memory()`:
+! SSL peer certificate or SSH remote key was not OK [download.inep.gov.br]:
+SSL certificate OpenSSL verify result: unabl"
+"https://download.inep.gov.br/microdados/microdados_encceja_2026.zip","Microdados do Encceja",2026,NA,NA,NA,"Failed to perform HTTP request.
+Caused by error in `curl::curl_fetch_memory()`:
+! SSL peer certificate or SSH remote key was not OK [download.inep.gov.br]:
+SSL certificate OpenSSL verify result: unabl"
+"https://download.inep.gov.br/microdados/microdados_enem_2015.zip","Microdados do Enem",2015,NA,NA,NA,"Failed to perform HTTP request.
+Caused by error in `curl::curl_fetch_memory()`:
+! SSL peer certificate or SSH remote key was not OK [download.inep.gov.br]:
+SSL certificate OpenSSL verify result: unabl"
+"https://download.inep.gov.br/microdados/microdados_enem_2016.zip","Microdados do Enem",2016,NA,NA,NA,"Failed to perform HTTP request.
+Caused by error in `curl::curl_fetch_memory()`:
+! SSL peer certificate or SSH remote key was not OK [download.inep.gov.br]:
+SSL certificate OpenSSL verify result: unabl"
+"https://download.inep.gov.br/microdados/microdados_enem_2017.zip","Microdados do Enem",2017,NA,NA,NA,"Failed to perform HTTP request.
+Caused by error in `curl::curl_fetch_memory()`:
+! SSL peer certificate or SSH remote key was not OK [download.inep.gov.br]:
+SSL certificate OpenSSL verify result: unabl"
+"https://download.inep.gov.br/microdados/microdados_enem_2018.zip","Microdados do Enem",2018,NA,NA,NA,"Failed to perform HTTP request.
+Caused by error in `curl::curl_fetch_memory()`:
+! SSL peer certificate or SSH remote key was not OK [download.inep.gov.br]:
+SSL certificate OpenSSL verify result: unabl"
+"https://download.inep.gov.br/microdados/microdados_enem_2019.zip","Microdados do Enem",2019,NA,NA,NA,"Failed to perform HTTP request.
+Caused by error in `curl::curl_fetch_memory()`:
+! SSL peer certificate or SSH remote key was not OK [download.inep.gov.br]:
+SSL certificate OpenSSL verify result: unabl"
+"https://download.inep.gov.br/microdados/microdados_enem_2020.zip","Microdados do Enem",2020,NA,NA,NA,"Failed to perform HTTP request.
+Caused by error in `curl::curl_fetch_memory()`:
+! SSL peer certificate or SSH remote key was not OK [download.inep.gov.br]:
+SSL certificate OpenSSL verify result: unabl"
+"https://download.inep.gov.br/microdados/microdados_enem_2021.zip","Microdados do Enem",2021,NA,NA,NA,"Failed to perform HTTP request.
+Caused by error in `curl::curl_fetch_memory()`:
+! SSL peer certificate or SSH remote key was not OK [download.inep.gov.br]:
+SSL certificate OpenSSL verify result: unabl"
+"https://download.inep.gov.br/microdados/microdados_enem_2022.zip","Microdados do Enem",2022,NA,NA,NA,"Failed to perform HTTP request.
+Caused by error in `curl::curl_fetch_memory()`:
+! SSL peer certificate or SSH remote key was not OK [download.inep.gov.br]:
+SSL certificate OpenSSL verify result: unabl"
+"https://download.inep.gov.br/microdados/microdados_enem_2023.zip","Microdados do Enem",2023,NA,NA,NA,"Failed to perform HTTP request.
+Caused by error in `curl::curl_fetch_memory()`:
+! SSL peer certificate or SSH remote key was not OK [download.inep.gov.br]:
+SSL certificate OpenSSL verify result: unabl"
+"https://download.inep.gov.br/microdados/microdados_enem_2024.zip","Microdados do Enem",2024,NA,NA,NA,"Failed to perform HTTP request.
+Caused by error in `curl::curl_fetch_memory()`:
+! SSL peer certificate or SSH remote key was not OK [download.inep.gov.br]:
+SSL certificate OpenSSL verify result: unabl"
+"https://download.inep.gov.br/microdados/microdados_enem_2025.zip","Microdados do Enem",2025,NA,NA,NA,"Failed to perform HTTP request.
+Caused by error in `curl::curl_fetch_memory()`:
+! SSL peer certificate or SSH remote key was not OK [download.inep.gov.br]:
+SSL certificate OpenSSL verify result: unabl"
+"https://download.inep.gov.br/microdados/microdados_enem_2026.zip","Microdados do Enem",2026,NA,NA,NA,"Failed to perform HTTP request.
+Caused by error in `curl::curl_fetch_memory()`:
+! SSL peer certificate or SSH remote key was not OK [download.inep.gov.br]:
+SSL certificate OpenSSL verify result: unabl"
+"https://download.inep.gov.br/microdados/microdados_saeb_2015.zip","Microdados do Saeb",2015,NA,NA,NA,"Failed to perform HTTP request.
+Caused by error in `curl::curl_fetch_memory()`:
+! SSL peer certificate or SSH remote key was not OK [download.inep.gov.br]:
+SSL certificate OpenSSL verify result: unabl"
+"https://download.inep.gov.br/microdados/microdados_saeb_2016.zip","Microdados do Saeb",2016,NA,NA,NA,"Failed to perform HTTP request.
+Caused by error in `curl::curl_fetch_memory()`:
+! SSL peer certificate or SSH remote key was not OK [download.inep.gov.br]:
+SSL certificate OpenSSL verify result: unabl"
+"https://download.inep.gov.br/microdados/microdados_saeb_2017.zip","Microdados do Saeb",2017,NA,NA,NA,"Failed to perform HTTP request.
+Caused by error in `curl::curl_fetch_memory()`:
+! SSL peer certificate or SSH remote key was not OK [download.inep.gov.br]:
+SSL certificate OpenSSL verify result: unabl"
+"https://download.inep.gov.br/microdados/microdados_saeb_2018.zip","Microdados do Saeb",2018,NA,NA,NA,"Failed to perform HTTP request.
+Caused by error in `curl::curl_fetch_memory()`:
+! SSL peer certificate or SSH remote key was not OK [download.inep.gov.br]:
+SSL certificate OpenSSL verify result: unabl"
+"https://download.inep.gov.br/microdados/microdados_saeb_2019.zip","Microdados do Saeb",2019,NA,NA,NA,"Failed to perform HTTP request.
+Caused by error in `curl::curl_fetch_memory()`:
+! SSL peer certificate or SSH remote key was not OK [download.inep.gov.br]:
+SSL certificate OpenSSL verify result: unabl"
+"https://download.inep.gov.br/microdados/microdados_saeb_2020.zip","Microdados do Saeb",2020,NA,NA,NA,"Failed to perform HTTP request.
+Caused by error in `curl::curl_fetch_memory()`:
+! SSL peer certificate or SSH remote key was not OK [download.inep.gov.br]:
+SSL certificate OpenSSL verify result: unabl"
+"https://download.inep.gov.br/microdados/microdados_saeb_2021.zip","Microdados do Saeb",2021,NA,NA,NA,"Failed to perform HTTP request.
+Caused by error in `curl::curl_fetch_memory()`:
+! SSL peer certificate or SSH remote key was not OK [download.inep.gov.br]:
+SSL certificate OpenSSL verify result: unabl"
+"https://download.inep.gov.br/microdados/microdados_saeb_2022.zip","Microdados do Saeb",2022,NA,NA,NA,"Failed to perform HTTP request.
+Caused by error in `curl::curl_fetch_memory()`:
+! SSL peer certificate or SSH remote key was not OK [download.inep.gov.br]:
+SSL certificate OpenSSL verify result: unabl"
+"https://download.inep.gov.br/microdados/microdados_saeb_2023.zip","Microdados do Saeb",2023,NA,NA,NA,"Failed to perform HTTP request.
+Caused by error in `curl::curl_fetch_memory()`:
+! SSL peer certificate or SSH remote key was not OK [download.inep.gov.br]:
+SSL certificate OpenSSL verify result: unabl"
+"https://download.inep.gov.br/microdados/microdados_saeb_2024.zip","Microdados do Saeb",2024,NA,NA,NA,"Failed to perform HTTP request.
+Caused by error in `curl::curl_fetch_memory()`:
+! SSL peer certificate or SSH remote key was not OK [download.inep.gov.br]:
+SSL certificate OpenSSL verify result: unabl"
+"https://download.inep.gov.br/microdados/microdados_saeb_2025.zip","Microdados do Saeb",2025,NA,NA,NA,"Failed to perform HTTP request.
+Caused by error in `curl::curl_fetch_memory()`:
+! SSL peer certificate or SSH remote key was not OK [download.inep.gov.br]:
+SSL certificate OpenSSL verify result: unabl"
+"https://download.inep.gov.br/microdados/microdados_saeb_2026.zip","Microdados do Saeb",2026,NA,NA,NA,"Failed to perform HTTP request.
+Caused by error in `curl::curl_fetch_memory()`:
+! SSL peer certificate or SSH remote key was not OK [download.inep.gov.br]:
+SSL certificate OpenSSL verify result: unabl"
+"https://download.inep.gov.br/ideb/resultados/divulgacao_anos_iniciais_municipios_2015.zip","Ideb (resultados)",2015,NA,NA,NA,"Failed to perform HTTP request.
+Caused by error in `curl::curl_fetch_memory()`:
+! SSL peer certificate or SSH remote key was not OK [download.inep.gov.br]:
+SSL certificate OpenSSL verify result: unabl"
+"https://download.inep.gov.br/ideb/resultados/divulgacao_anos_iniciais_municipios_2017.zip","Ideb (resultados)",2017,NA,NA,NA,"Failed to perform HTTP request.
+Caused by error in `curl::curl_fetch_memory()`:
+! SSL peer certificate or SSH remote key was not OK [download.inep.gov.br]:
+SSL certificate OpenSSL verify result: unabl"
+"https://download.inep.gov.br/ideb/resultados/divulgacao_anos_iniciais_municipios_2019.zip","Ideb (resultados)",2019,NA,NA,NA,"Failed to perform HTTP request.
+Caused by error in `curl::curl_fetch_memory()`:
+! SSL peer certificate or SSH remote key was not OK [download.inep.gov.br]:
+SSL certificate OpenSSL verify result: unabl"

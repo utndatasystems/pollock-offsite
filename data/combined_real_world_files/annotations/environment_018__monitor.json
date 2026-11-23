@@ -1,0 +1,230 @@
+{
+  "provenance": {
+    "candidate_id": "environment_018",
+    "topic": "environment",
+    "search_term": "environment",
+    "repository": "OYzhongyan/plasma-control-private",
+    "repository_url": "https://github.com/OYzhongyan/plasma-control-private",
+    "source_path": "experiments/20261109_f2b_history_baseline_10m_seed0/remote_snapshot/training/monitor.csv",
+    "source_url": "https://github.com/OYzhongyan/plasma-control-private/blob/main/experiments/20261109_f2b_history_baseline_10m_seed0/remote_snapshot/training/monitor.csv",
+    "commit_ref": "main",
+    "license_spdx": "Apache-2.0",
+    "license_url": "https://api.github.com/repos/OYzhongyan/plasma-control-private/license?ref=main",
+    "local_path": "environment/environment_018__monitor.csv",
+    "encoding": "utf-8",
+    "delimiter": ",",
+    "byte_size": "821",
+    "physical_lines": "33",
+    "logical_rows": "33",
+    "mode_columns": "3",
+    "anomaly_score": "7",
+    "anomalies": "leading_comment;possible_preamble",
+    "profile_error": ""
+  },
+  "annotation": {
+    "source": "environment/environment_018__monitor.csv",
+    "source_encoding": "utf-8",
+    "input_delimiter": ",",
+    "source_line_ranges": [
+      {
+        "start": 1,
+        "end": 33
+      }
+    ],
+    "shown_line_count": 33,
+    "source_total_lines": 33,
+    "issues": [
+      {
+        "label": "leading_comment",
+        "reason": "The file begins with a possible comment row.",
+        "lines": "1"
+      },
+      {
+        "label": "possible_preamble",
+        "reason": "Records before the stable table shape resemble title or metadata rows.",
+        "lines": "1"
+      }
+    ],
+    "copy_events": [
+      {
+        "ranges": [
+          {
+            "start": 2,
+            "end": 33
+          }
+        ],
+        "characters": 771,
+        "copied_at": "2026-11-13T10:21:46.965Z"
+      }
+    ],
+    "error_description": "preamble with json",
+    "working_origin_spans": [
+      {
+        "start": 0,
+        "end": 24,
+        "source_line": 3
+      },
+      {
+        "start": 24,
+        "end": 48,
+        "source_line": 4
+      },
+      {
+        "start": 48,
+        "end": 73,
+        "source_line": 5
+      },
+      {
+        "start": 73,
+        "end": 98,
+        "source_line": 6
+      },
+      {
+        "start": 98,
+        "end": 123,
+        "source_line": 7
+      },
+      {
+        "start": 123,
+        "end": 148,
+        "source_line": 8
+      },
+      {
+        "start": 148,
+        "end": 172,
+        "source_line": 9
+      },
+      {
+        "start": 172,
+        "end": 197,
+        "source_line": 10
+      },
+      {
+        "start": 197,
+        "end": 221,
+        "source_line": 11
+      },
+      {
+        "start": 221,
+        "end": 246,
+        "source_line": 12
+      },
+      {
+        "start": 246,
+        "end": 271,
+        "source_line": 13
+      },
+      {
+        "start": 271,
+        "end": 296,
+        "source_line": 14
+      },
+      {
+        "start": 296,
+        "end": 321,
+        "source_line": 15
+      },
+      {
+        "start": 321,
+        "end": 346,
+        "source_line": 16
+      },
+      {
+        "start": 346,
+        "end": 371,
+        "source_line": 17
+      },
+      {
+        "start": 371,
+        "end": 396,
+        "source_line": 18
+      },
+      {
+        "start": 396,
+        "end": 421,
+        "source_line": 19
+      },
+      {
+        "start": 421,
+        "end": 446,
+        "source_line": 20
+      },
+      {
+        "start": 446,
+        "end": 472,
+        "source_line": 21
+      },
+      {
+        "start": 472,
+        "end": 496,
+        "source_line": 22
+      },
+      {
+        "start": 496,
+        "end": 520,
+        "source_line": 23
+      },
+      {
+        "start": 520,
+        "end": 545,
+        "source_line": 24
+      },
+      {
+        "start": 545,
+        "end": 569,
+        "source_line": 25
+      },
+      {
+        "start": 569,
+        "end": 594,
+        "source_line": 26
+      },
+      {
+        "start": 594,
+        "end": 619,
+        "source_line": 27
+      },
+      {
+        "start": 619,
+        "end": 644,
+        "source_line": 28
+      },
+      {
+        "start": 644,
+        "end": 669,
+        "source_line": 29
+      },
+      {
+        "start": 669,
+        "end": 693,
+        "source_line": 30
+      },
+      {
+        "start": 693,
+        "end": 718,
+        "source_line": 31
+      },
+      {
+        "start": 718,
+        "end": 742,
+        "source_line": 32
+      },
+      {
+        "start": 742,
+        "end": 765,
+        "source_line": 33
+      }
+    ],
+    "header": {
+      "text": "r,l,t",
+      "source_line": 1
+    },
+    "cleaned_rows": 31,
+    "cleaned_columns": [
+      "r",
+      "l",
+      "t"
+    ],
+    "exported_at": "2026-11-13T10:22:19.720619+00:00"
+  }
+}

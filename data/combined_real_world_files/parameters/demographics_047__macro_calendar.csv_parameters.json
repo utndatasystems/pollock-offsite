@@ -1,0 +1,18 @@
+{
+    "delimiter": ",",
+    "quotechar": "\"",
+    "escapechar": "\"",
+    "row_delimiter": "\n",
+    "header_lines": "1",
+    "preamble_lines": "0",
+    "footnote_lines": "0",
+    "column_names": [
+        "date",
+        "time_new_york",
+        "event",
+        "covers",
+        "source"
+    ],
+    "encoding": "utf-8",
+    "n_columns": 5
+}

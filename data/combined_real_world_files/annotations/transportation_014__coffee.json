@@ -1,0 +1,435 @@
+{
+  "provenance": {
+    "candidate_id": "transportation_014",
+    "topic": "transportation",
+    "search_term": "transit",
+    "repository": "rohit9mehta/personal-site",
+    "repository_url": "https://github.com/rohit9mehta/personal-site",
+    "source_path": "data/coffee.csv",
+    "source_url": "https://github.com/rohit9mehta/personal-site/blob/main/data/coffee.csv",
+    "commit_ref": "main",
+    "license_spdx": "MIT",
+    "license_url": "https://api.github.com/repos/rohit9mehta/personal-site/license?ref=main",
+    "local_path": "transportation/transportation_014__coffee.csv",
+    "encoding": "utf-8",
+    "delimiter": ",",
+    "byte_size": "10175",
+    "physical_lines": "269",
+    "logical_rows": "269",
+    "mode_columns": "3",
+    "anomaly_score": "9",
+    "anomalies": "inconsistent_field_counts;possible_preamble",
+    "profile_error": ""
+  },
+  "annotation": {
+    "source": "transportation/transportation_014__coffee.csv",
+    "source_encoding": "utf-8",
+    "input_delimiter": ",",
+    "source_line_ranges": [
+      {
+        "start": 1,
+        "end": 11
+      },
+      {
+        "start": 209,
+        "end": 269
+      }
+    ],
+    "shown_line_count": 72,
+    "source_total_lines": 269,
+    "issues": [
+      {
+        "label": "inconsistent_field_counts",
+        "reason": "Logical records do not all contain the modal number of fields.",
+        "lines": "259-269"
+      }
+    ],
+    "copy_events": [
+      {
+        "ranges": [
+          {
+            "start": 2,
+            "end": 11
+          },
+          {
+            "start": 209,
+            "end": 269
+          }
+        ],
+        "characters": 2711,
+        "copied_at": "2026-11-10T13:44:23.570Z"
+      }
+    ],
+    "error_description": "",
+    "working_origin_spans": [
+      {
+        "start": 0,
+        "end": 36,
+        "source_line": 2
+      },
+      {
+        "start": 36,
+        "end": 71,
+        "source_line": 3
+      },
+      {
+        "start": 71,
+        "end": 111,
+        "source_line": 4
+      },
+      {
+        "start": 111,
+        "end": 145,
+        "source_line": 5
+      },
+      {
+        "start": 145,
+        "end": 182,
+        "source_line": 6
+      },
+      {
+        "start": 182,
+        "end": 213,
+        "source_line": 7
+      },
+      {
+        "start": 213,
+        "end": 256,
+        "source_line": 8
+      },
+      {
+        "start": 256,
+        "end": 294,
+        "source_line": 9
+      },
+      {
+        "start": 294,
+        "end": 329,
+        "source_line": 10
+      },
+      {
+        "start": 329,
+        "end": 364,
+        "source_line": 11
+      },
+      {
+        "start": 364,
+        "end": 396,
+        "source_line": 209
+      },
+      {
+        "start": 396,
+        "end": 430,
+        "source_line": 210
+      },
+      {
+        "start": 430,
+        "end": 483,
+        "source_line": 211
+      },
+      {
+        "start": 483,
+        "end": 522,
+        "source_line": 212
+      },
+      {
+        "start": 522,
+        "end": 563,
+        "source_line": 213
+      },
+      {
+        "start": 563,
+        "end": 603,
+        "source_line": 214
+      },
+      {
+        "start": 603,
+        "end": 648,
+        "source_line": 215
+      },
+      {
+        "start": 648,
+        "end": 689,
+        "source_line": 216
+      },
+      {
+        "start": 689,
+        "end": 723,
+        "source_line": 217
+      },
+      {
+        "start": 723,
+        "end": 760,
+        "source_line": 218
+      },
+      {
+        "start": 760,
+        "end": 800,
+        "source_line": 219
+      },
+      {
+        "start": 800,
+        "end": 838,
+        "source_line": 220
+      },
+      {
+        "start": 838,
+        "end": 874,
+        "source_line": 221
+      },
+      {
+        "start": 874,
+        "end": 912,
+        "source_line": 222
+      },
+      {
+        "start": 912,
+        "end": 954,
+        "source_line": 223
+      },
+      {
+        "start": 954,
+        "end": 997,
+        "source_line": 224
+      },
+      {
+        "start": 997,
+        "end": 1035,
+        "source_line": 225
+      },
+      {
+        "start": 1035,
+        "end": 1075,
+        "source_line": 226
+      },
+      {
+        "start": 1075,
+        "end": 1115,
+        "source_line": 227
+      },
+      {
+        "start": 1115,
+        "end": 1157,
+        "source_line": 228
+      },
+      {
+        "start": 1157,
+        "end": 1195,
+        "source_line": 229
+      },
+      {
+        "start": 1195,
+        "end": 1235,
+        "source_line": 230
+      },
+      {
+        "start": 1235,
+        "end": 1274,
+        "source_line": 231
+      },
+      {
+        "start": 1274,
+        "end": 1311,
+        "source_line": 232
+      },
+      {
+        "start": 1311,
+        "end": 1349,
+        "source_line": 233
+      },
+      {
+        "start": 1349,
+        "end": 1385,
+        "source_line": 234
+      },
+      {
+        "start": 1385,
+        "end": 1431,
+        "source_line": 235
+      },
+      {
+        "start": 1431,
+        "end": 1472,
+        "source_line": 236
+      },
+      {
+        "start": 1472,
+        "end": 1510,
+        "source_line": 237
+      },
+      {
+        "start": 1510,
+        "end": 1554,
+        "source_line": 238
+      },
+      {
+        "start": 1554,
+        "end": 1585,
+        "source_line": 239
+      },
+      {
+        "start": 1585,
+        "end": 1623,
+        "source_line": 240
+      },
+      {
+        "start": 1623,
+        "end": 1653,
+        "source_line": 241
+      },
+      {
+        "start": 1653,
+        "end": 1694,
+        "source_line": 242
+      },
+      {
+        "start": 1694,
+        "end": 1731,
+        "source_line": 243
+      },
+      {
+        "start": 1731,
+        "end": 1767,
+        "source_line": 244
+      },
+      {
+        "start": 1767,
+        "end": 1804,
+        "source_line": 245
+      },
+      {
+        "start": 1804,
+        "end": 1850,
+        "source_line": 246
+      },
+      {
+        "start": 1850,
+        "end": 1890,
+        "source_line": 247
+      },
+      {
+        "start": 1890,
+        "end": 1930,
+        "source_line": 248
+      },
+      {
+        "start": 1930,
+        "end": 1980,
+        "source_line": 249
+      },
+      {
+        "start": 1980,
+        "end": 2017,
+        "source_line": 250
+      },
+      {
+        "start": 2017,
+        "end": 2064,
+        "source_line": 251
+      },
+      {
+        "start": 2064,
+        "end": 2098,
+        "source_line": 252
+      },
+      {
+        "start": 2098,
+        "end": 2142,
+        "source_line": 253
+      },
+      {
+        "start": 2142,
+        "end": 2190,
+        "source_line": 254
+      },
+      {
+        "start": 2190,
+        "end": 2221,
+        "source_line": 255
+      },
+      {
+        "start": 2221,
+        "end": 2260,
+        "source_line": 256
+      },
+      {
+        "start": 2260,
+        "end": 2307,
+        "source_line": 257
+      },
+      {
+        "start": 2307,
+        "end": 2350,
+        "source_line": 258
+      },
+      {
+        "start": 2350,
+        "end": 2392,
+        "source_line": 259
+      },
+      {
+        "start": 2392,
+        "end": 2442,
+        "source_line": 260
+      },
+      {
+        "start": 2442,
+        "end": 2477,
+        "source_line": 261
+      },
+      {
+        "start": 2477,
+        "end": 2519,
+        "source_line": 262
+      },
+      {
+        "start": 2519,
+        "end": 2560,
+        "source_line": 263
+      },
+      {
+        "start": 2560,
+        "end": 2611,
+        "source_line": 264
+      },
+      {
+        "start": 2611,
+        "end": 2656,
+        "source_line": 265
+      },
+      {
+        "start": 2656,
+        "end": 2702,
+        "source_line": 266
+      },
+      {
+        "start": 2702,
+        "end": 2753,
+        "source_line": 267
+      },
+      {
+        "start": 2753,
+        "end": 2797,
+        "source_line": 268
+      },
+      {
+        "start": 2797,
+        "end": 2842,
+        "source_line": 269
+      }
+    ],
+    "header": {
+      "text": "name,city,score,date,note",
+      "source_line": 1
+    },
+    "cleaned_rows": 71,
+    "cleaned_columns": [
+      "name",
+      "city",
+      "score",
+      "date",
+      "note"
+    ],
+    "exported_at": "2026-11-10T13:44:51.768881+00:00"
+  }
+}

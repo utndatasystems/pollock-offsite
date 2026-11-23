@@ -1,0 +1,21 @@
+{
+    "delimiter": ",",
+    "quotechar": "\"",
+    "escapechar": "\"",
+    "row_delimiter": "\n",
+    "header_lines": "1",
+    "preamble_lines": "0",
+    "footnote_lines": "0",
+    "column_names": [
+        "ion_z",
+        "ion_mass_amu",
+        "target",
+        "energy_ev",
+        "s_e_ev_1e15_cm2",
+        "sigma_ev_1e15_cm2",
+        "method",
+        "citation"
+    ],
+    "encoding": "utf-8",
+    "n_columns": 8
+}

@@ -1,0 +1,11 @@
+dataset,sut,pollution_group,total_files,failed_files,poor_files,error_files,failure_rate,poor_rate,error_rate,avg_header_f1,avg_record_f1,avg_cell_f1,min_cell_f1,worst_file
+survey_sample,clevercs,ALL,97,0,19,19,0.000000,0.195876,0.195876,0.706067,0.960988,0.951484,0.104849,epcs-dwp-cmg-spend-july-2017.csv
+survey_sample,clevercs,Unknown,97,0,19,19,0.000000,0.195876,0.195876,0.706067,0.960988,0.951484,0.104849,epcs-dwp-cmg-spend-july-2017.csv
+survey_sample,llm_hybrid_parser_gpt_5_4,ALL,96,4,36,40,0.041667,0.375000,0.416667,0.727908,0.785922,0.857824,0.000000,LOS_1050CFit.csv
+survey_sample,llm_hybrid_parser_gpt_5_4,Unknown,96,4,36,40,0.041667,0.375000,0.416667,0.727908,0.785922,0.857824,0.000000,LOS_1050CFit.csv
+survey_sample,llm_hybrid_parser_gpt_5_4_clevercsv,ALL,97,3,36,39,0.030928,0.371134,0.402062,0.749977,0.798438,0.870066,0.000000,LOS_1050CFit.csv
+survey_sample,llm_hybrid_parser_gpt_5_4_clevercsv,Unknown,97,3,36,39,0.030928,0.371134,0.402062,0.749977,0.798438,0.870066,0.000000,LOS_1050CFit.csv
+survey_sample,llm_hybrid_parser_gpt_5_6_sol,ALL,96,93,1,94,0.968750,0.010417,0.979167,0.015642,0.020833,0.020856,0.000000,1% SiO2_003.csv
+survey_sample,llm_hybrid_parser_gpt_5_6_sol,Unknown,96,93,1,94,0.968750,0.010417,0.979167,0.015642,0.020833,0.020856,0.000000,1% SiO2_003.csv
+survey_sample,pycsv,ALL,97,2,20,22,0.020619,0.206186,0.226804,0.700912,0.940718,0.925697,0.000000,dd_Wickenburg_nobmp_623.csv
+survey_sample,pycsv,Unknown,97,2,20,22,0.020619,0.206186,0.226804,0.700912,0.940718,0.925697,0.000000,dd_Wickenburg_nobmp_623.csv

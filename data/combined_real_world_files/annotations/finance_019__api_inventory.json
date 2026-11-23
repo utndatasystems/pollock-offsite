@@ -1,0 +1,153 @@
+{
+  "provenance": {
+    "candidate_id": "finance_019",
+    "topic": "finance",
+    "search_term": "finance",
+    "repository": "Vishvesh-Trivedi/LLM-Portfolio-Manager",
+    "repository_url": "https://github.com/Vishvesh-Trivedi/LLM-Portfolio-Manager",
+    "source_path": "docs/reference/api_inventory.csv",
+    "source_url": "https://github.com/Vishvesh-Trivedi/LLM-Portfolio-Manager/blob/main/docs/reference/api_inventory.csv",
+    "commit_ref": "main",
+    "license_spdx": "MIT",
+    "license_url": "https://api.github.com/repos/Vishvesh-Trivedi/LLM-Portfolio-Manager/license?ref=main",
+    "local_path": "finance/finance_019__api_inventory.csv",
+    "encoding": "utf-8",
+    "delimiter": ",",
+    "byte_size": "2452",
+    "physical_lines": "17",
+    "logical_rows": "17",
+    "mode_columns": "6",
+    "anomaly_score": "3",
+    "anomalies": "leading_comment",
+    "profile_error": ""
+  },
+  "annotation": {
+    "source": "finance/finance_019__api_inventory.csv",
+    "source_encoding": "utf-8",
+    "input_delimiter": ",",
+    "source_line_ranges": [
+      {
+        "start": 1,
+        "end": 17
+      }
+    ],
+    "shown_line_count": 17,
+    "source_total_lines": 17,
+    "issues": [
+      {
+        "label": "leading_comment",
+        "reason": "The file begins with a possible comment row.",
+        "lines": "1"
+      }
+    ],
+    "copy_events": [
+      {
+        "ranges": [
+          {
+            "start": 2,
+            "end": 17
+          }
+        ],
+        "characters": 2382,
+        "copied_at": "2026-11-13T11:00:11.443Z"
+      }
+    ],
+    "error_description": "first header column is just a hashtag, might trip up automated preamble detectors",
+    "working_origin_spans": [
+      {
+        "start": 0,
+        "end": 262,
+        "source_line": 2
+      },
+      {
+        "start": 262,
+        "end": 439,
+        "source_line": 3
+      },
+      {
+        "start": 439,
+        "end": 578,
+        "source_line": 4
+      },
+      {
+        "start": 578,
+        "end": 669,
+        "source_line": 5
+      },
+      {
+        "start": 669,
+        "end": 787,
+        "source_line": 6
+      },
+      {
+        "start": 787,
+        "end": 882,
+        "source_line": 7
+      },
+      {
+        "start": 882,
+        "end": 985,
+        "source_line": 8
+      },
+      {
+        "start": 985,
+        "end": 1093,
+        "source_line": 9
+      },
+      {
+        "start": 1093,
+        "end": 1181,
+        "source_line": 10
+      },
+      {
+        "start": 1181,
+        "end": 1315,
+        "source_line": 11
+      },
+      {
+        "start": 1315,
+        "end": 1574,
+        "source_line": 12
+      },
+      {
+        "start": 1574,
+        "end": 1742,
+        "source_line": 13
+      },
+      {
+        "start": 1742,
+        "end": 1886,
+        "source_line": 14
+      },
+      {
+        "start": 1886,
+        "end": 2073,
+        "source_line": 15
+      },
+      {
+        "start": 2073,
+        "end": 2216,
+        "source_line": 16
+      },
+      {
+        "start": 2216,
+        "end": 2382,
+        "source_line": 17
+      }
+    ],
+    "header": {
+      "text": "#,API / Service,Endpoint / Access,Purpose,Auth Required,How to Access",
+      "source_line": 1
+    },
+    "cleaned_rows": 16,
+    "cleaned_columns": [
+      "#",
+      "API / Service",
+      "Endpoint / Access",
+      "Purpose",
+      "Auth Required",
+      "How to Access"
+    ],
+    "exported_at": "2026-11-13T11:01:20.189347+00:00"
+  }
+}

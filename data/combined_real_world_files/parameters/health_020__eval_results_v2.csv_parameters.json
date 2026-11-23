@@ -1,0 +1,22 @@
+{
+    "delimiter": ",",
+    "quotechar": "\"",
+    "escapechar": "\"",
+    "row_delimiter": "\n",
+    "header_lines": "1",
+    "preamble_lines": "0",
+    "footnote_lines": "0",
+    "column_names": [
+        "file",
+        "truth",
+        "pred",
+        "confidence",
+        "correct",
+        "crop_correct",
+        "leaf_pct",
+        "inference_ms",
+        "preprocess_ms"
+    ],
+    "encoding": "utf-8",
+    "n_columns": 9
+}

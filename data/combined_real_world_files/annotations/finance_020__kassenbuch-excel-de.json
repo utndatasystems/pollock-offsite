@@ -1,0 +1,105 @@
+{
+  "provenance": {
+    "candidate_id": "finance_020",
+    "topic": "finance",
+    "search_term": "finance",
+    "repository": "DanielUtsch85/vermieter-cockpit",
+    "repository_url": "https://github.com/DanielUtsch85/vermieter-cockpit",
+    "source_path": "services/de-backend/src/export-golden/kassenbuch-excel-de.csv",
+    "source_url": "https://github.com/DanielUtsch85/vermieter-cockpit/blob/main/services/de-backend/src/export-golden/kassenbuch-excel-de.csv",
+    "commit_ref": "main",
+    "license_spdx": "MIT",
+    "license_url": "https://api.github.com/repos/DanielUtsch85/vermieter-cockpit/license?ref=main",
+    "local_path": "finance/finance_020__kassenbuch-excel-de.csv",
+    "encoding": "utf-8-sig",
+    "delimiter": ";",
+    "byte_size": "1103",
+    "physical_lines": "4",
+    "logical_rows": "4",
+    "mode_columns": "23",
+    "anomaly_score": "3",
+    "anomalies": "non_comma_delimiter",
+    "profile_error": ""
+  },
+  "annotation": {
+    "source": "finance/finance_020__kassenbuch-excel-de.csv",
+    "source_encoding": "utf-8-sig",
+    "input_delimiter": ";",
+    "source_line_ranges": [
+      {
+        "start": 1,
+        "end": 4
+      }
+    ],
+    "shown_line_count": 4,
+    "source_total_lines": 4,
+    "issues": [
+      {
+        "label": "non_comma_delimiter",
+        "reason": "The detected delimiter is not a comma.",
+        "lines": "file-level"
+      }
+    ],
+    "copy_events": [
+      {
+        "ranges": [
+          {
+            "start": 2,
+            "end": 4
+          }
+        ],
+        "characters": 774,
+        "copied_at": "2026-11-13T11:01:35.966Z"
+      }
+    ],
+    "error_description": "Semicolon delimiter",
+    "working_origin_spans": [
+      {
+        "start": 0,
+        "end": 301,
+        "source_line": 2
+      },
+      {
+        "start": 301,
+        "end": 532,
+        "source_line": 3
+      },
+      {
+        "start": 532,
+        "end": 774,
+        "source_line": 4
+      }
+    ],
+    "header": {
+      "text": "transactionId;bookingDate;valueDate;financialAccountId;direction;amount;signedAmount;currency;status;provenance;description;counterpartyNameRaw;counterpartyIbanRaw;propertyReferenceId;splitCount;correctionOfTransactionId;correctionRole;reversalTransactionId;replacementTransactionId;confirmedAt;confirmedBy;createdAt;version",
+      "source_line": 1
+    },
+    "cleaned_rows": 3,
+    "cleaned_columns": [
+      "transactionId",
+      "bookingDate",
+      "valueDate",
+      "financialAccountId",
+      "direction",
+      "amount",
+      "signedAmount",
+      "currency",
+      "status",
+      "provenance",
+      "description",
+      "counterpartyNameRaw",
+      "counterpartyIbanRaw",
+      "propertyReferenceId",
+      "splitCount",
+      "correctionOfTransactionId",
+      "correctionRole",
+      "reversalTransactionId",
+      "replacementTransactionId",
+      "confirmedAt",
+      "confirmedBy",
+      "createdAt",
+      "version"
+    ],
+    "exported_at": "2026-11-13T11:01:52.867476+00:00"
+  }
+}

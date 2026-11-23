@@ -1,0 +1,20 @@
+{
+    "delimiter": ";",
+    "quotechar": "\"",
+    "escapechar": "\"",
+    "row_delimiter": "\n",
+    "header_lines": "1",
+    "preamble_lines": "0",
+    "footnote_lines": "0",
+    "column_names": [
+        "Started At",
+        "Ended At",
+        "Distance (km)",
+        "Starting Battery",
+        "Ending Battery",
+        "Top Speed (km/h)",
+        "Energy Used (kWh)"
+    ],
+    "encoding": "utf-8",
+    "n_columns": 7
+}

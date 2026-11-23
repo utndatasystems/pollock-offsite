@@ -1,0 +1,95 @@
+{
+  "provenance": {
+    "candidate_id": "finance_011",
+    "topic": "finance",
+    "search_term": "budget",
+    "repository": "BensonJT/requirements-fit-analyzer",
+    "repository_url": "https://github.com/BensonJT/requirements-fit-analyzer",
+    "source_path": "docs/gold_manifest.example.csv",
+    "source_url": "https://github.com/BensonJT/requirements-fit-analyzer/blob/main/docs/gold_manifest.example.csv",
+    "commit_ref": "main",
+    "license_spdx": "MIT",
+    "license_url": "https://api.github.com/repos/BensonJT/requirements-fit-analyzer/license?ref=main",
+    "local_path": "finance/finance_011__gold_manifest.example.csv",
+    "encoding": "utf-8",
+    "delimiter": ",",
+    "byte_size": "314",
+    "physical_lines": "4",
+    "logical_rows": "4",
+    "mode_columns": "3",
+    "anomaly_score": "5",
+    "anomalies": "inconsistent_field_counts",
+    "profile_error": ""
+  },
+  "annotation": {
+    "source": "finance/finance_011__gold_manifest.example.csv",
+    "source_encoding": "utf-8",
+    "input_delimiter": ",",
+    "source_line_ranges": [
+      {
+        "start": 1,
+        "end": 4
+      }
+    ],
+    "shown_line_count": 4,
+    "source_total_lines": 4,
+    "issues": [
+      {
+        "label": "inconsistent_field_counts",
+        "reason": "Logical records do not all contain the modal number of fields.",
+        "lines": "2"
+      }
+    ],
+    "copy_events": [
+      {
+        "ranges": [
+          {
+            "start": 2,
+            "end": 4
+          }
+        ],
+        "characters": 297,
+        "copied_at": "2026-11-10T11:48:52.929Z"
+      }
+    ],
+    "error_description": "comma in unquoted string field",
+    "working_origin_spans": [
+      {
+        "start": 0,
+        "end": 35,
+        "source_line": 2
+      },
+      {
+        "start": 36,
+        "end": 112,
+        "source_line": 2
+      },
+      {
+        "start": 113,
+        "end": 114,
+        "source_line": 2
+      },
+      {
+        "start": 114,
+        "end": 195,
+        "source_line": 3
+      },
+      {
+        "start": 195,
+        "end": 299,
+        "source_line": 4
+      }
+    ],
+    "header": {
+      "text": "path,basis,notes",
+      "source_line": 1
+    },
+    "cleaned_rows": 3,
+    "cleaned_columns": [
+      "path",
+      "basis",
+      "notes"
+    ],
+    "exported_at": "2026-11-10T11:49:36.807889+00:00"
+  }
+}

@@ -1,0 +1,198 @@
+{
+  "provenance": {
+    "candidate_id": "demographics_011",
+    "topic": "demographics",
+    "search_term": "population",
+    "repository": "petres/gen-vis",
+    "repository_url": "https://github.com/petres/gen-vis",
+    "source_path": "data/wifo-radar/indicators.csv",
+    "source_url": "https://github.com/petres/gen-vis/blob/main/data/wifo-radar/indicators.csv",
+    "commit_ref": "main",
+    "license_spdx": "MIT",
+    "license_url": "https://api.github.com/repos/petres/gen-vis/license?ref=main",
+    "local_path": "demographics/demographics_011__indicators.csv",
+    "encoding": "utf-8",
+    "delimiter": ",",
+    "byte_size": "3338",
+    "physical_lines": "26",
+    "logical_rows": "25",
+    "mode_columns": "6",
+    "anomaly_score": "2",
+    "anomalies": "mixed_line_endings",
+    "profile_error": ""
+  },
+  "annotation": {
+    "source": "demographics/demographics_011__indicators.csv",
+    "source_encoding": "utf-8",
+    "input_delimiter": ",",
+    "source_line_ranges": [
+      {
+        "start": 1,
+        "end": 26
+      }
+    ],
+    "shown_line_count": 26,
+    "source_total_lines": 26,
+    "issues": [
+      {
+        "label": "multiline_records",
+        "reason": "Quoted logical CSV records span multiple physical lines.",
+        "lines": "9-10"
+      }
+    ],
+    "copy_events": [
+      {
+        "characters": 3272,
+        "copied_at": "2026-11-10T09:54:32.707Z",
+        "ranges": [
+          {
+            "end": 26,
+            "start": 1
+          }
+        ]
+      }
+    ],
+    "error_description": "one line split across two lines within a string",
+    "working_origin_spans": [
+      {
+        "end": 104,
+        "source_line": 2,
+        "start": 0
+      },
+      {
+        "end": 188,
+        "source_line": 3,
+        "start": 104
+      },
+      {
+        "end": 327,
+        "source_line": 4,
+        "start": 188
+      },
+      {
+        "end": 474,
+        "source_line": 5,
+        "start": 327
+      },
+      {
+        "end": 622,
+        "source_line": 6,
+        "start": 474
+      },
+      {
+        "end": 741,
+        "source_line": 7,
+        "start": 622
+      },
+      {
+        "end": 876,
+        "source_line": 8,
+        "start": 741
+      },
+      {
+        "end": 944,
+        "source_line": 9,
+        "start": 876
+      },
+      {
+        "end": 984,
+        "source_line": 9,
+        "start": 983
+      },
+      {
+        "end": 1079,
+        "source_line": 11,
+        "start": 984
+      },
+      {
+        "end": 1223,
+        "source_line": 12,
+        "start": 1079
+      },
+      {
+        "end": 1392,
+        "source_line": 13,
+        "start": 1223
+      },
+      {
+        "end": 1465,
+        "source_line": 14,
+        "start": 1392
+      },
+      {
+        "end": 1590,
+        "source_line": 15,
+        "start": 1465
+      },
+      {
+        "end": 1750,
+        "source_line": 16,
+        "start": 1590
+      },
+      {
+        "end": 1925,
+        "source_line": 17,
+        "start": 1750
+      },
+      {
+        "end": 2109,
+        "source_line": 18,
+        "start": 1925
+      },
+      {
+        "end": 2310,
+        "source_line": 19,
+        "start": 2109
+      },
+      {
+        "end": 2453,
+        "source_line": 20,
+        "start": 2310
+      },
+      {
+        "end": 2586,
+        "source_line": 21,
+        "start": 2453
+      },
+      {
+        "end": 2701,
+        "source_line": 22,
+        "start": 2586
+      },
+      {
+        "end": 2818,
+        "source_line": 23,
+        "start": 2701
+      },
+      {
+        "end": 2969,
+        "source_line": 24,
+        "start": 2818
+      },
+      {
+        "end": 3072,
+        "source_line": 25,
+        "start": 2969
+      },
+      {
+        "end": 3233,
+        "source_line": 26,
+        "start": 3072
+      }
+    ],
+    "header": {
+      "text": "id,group,order,name,definition,source",
+      "source_line": 1
+    },
+    "cleaned_rows": 24,
+    "cleaned_columns": [
+      "id",
+      "group",
+      "order",
+      "name",
+      "definition",
+      "source"
+    ],
+    "exported_at": "2026-11-10T10:06:09.972610+00:00"
+  }
+}

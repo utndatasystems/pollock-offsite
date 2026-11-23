@@ -1,0 +1,80 @@
+{
+  "provenance": {
+    "candidate_id": "finance_026",
+    "topic": "finance",
+    "search_term": "budget",
+    "repository": "joaoregis/cpuzeez",
+    "repository_url": "https://github.com/joaoregis/cpuzeez",
+    "source_path": "fuzz/corpus/hw_csv/midnight.csv",
+    "source_url": "https://github.com/joaoregis/cpuzeez/blob/main/fuzz/corpus/hw_csv/midnight.csv",
+    "commit_ref": "main",
+    "license_spdx": "Apache-2.0",
+    "license_url": "https://api.github.com/repos/joaoregis/cpuzeez/license?ref=main",
+    "local_path": "finance/finance_026__midnight.csv",
+    "encoding": "utf-8",
+    "delimiter": ",",
+    "byte_size": "107",
+    "physical_lines": "4",
+    "logical_rows": "4",
+    "mode_columns": "3",
+    "anomaly_score": "2",
+    "anomalies": "comment_rows",
+    "profile_error": ""
+  },
+  "annotation": {
+    "source": "finance/finance_026__midnight.csv",
+    "source_encoding": "utf-8",
+    "input_delimiter": ",",
+    "source_line_ranges": [
+      {
+        "start": 1,
+        "end": 4
+      }
+    ],
+    "shown_line_count": 4,
+    "source_total_lines": 4,
+    "issues": [
+      {
+        "label": "comment_rows",
+        "reason": "Rows beginning with '#' may be comments rather than table records.",
+        "lines": "2"
+      }
+    ],
+    "copy_events": [
+      {
+        "ranges": [
+          {
+            "start": 2,
+            "end": 4
+          }
+        ],
+        "characters": 72,
+        "copied_at": "2026-11-13T11:22:09.351Z"
+      }
+    ],
+    "error_description": "double header / comment row below header,\n(the second row shows units)",
+    "working_origin_spans": [
+      {
+        "start": 0,
+        "end": 31,
+        "source_line": 3
+      },
+      {
+        "start": 31,
+        "end": 60,
+        "source_line": 4
+      }
+    ],
+    "header": {
+      "text": "time,cpu/load/total,gpu0/load/core",
+      "source_line": 1
+    },
+    "cleaned_rows": 2,
+    "cleaned_columns": [
+      "time",
+      "cpu/load/total",
+      "gpu0/load/core"
+    ],
+    "exported_at": "2026-11-13T11:24:56.404233+00:00"
+  }
+}

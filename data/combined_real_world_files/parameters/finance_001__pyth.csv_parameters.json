@@ -1,0 +1,27 @@
+{
+    "delimiter": ",",
+    "quotechar": "\"",
+    "escapechar": "\"",
+    "row_delimiter": "\r\n",
+    "header_lines": "1",
+    "preamble_lines": "0",
+    "footnote_lines": "0",
+    "column_names": [
+        "timestamp_utc",
+        "ticker",
+        "jupiter_price_usd",
+        "market_open",
+        "equity_feed",
+        "equity_price",
+        "equity_conf",
+        "equity_publish_utc",
+        "equity_status",
+        "xstock_feed",
+        "xstock_price",
+        "xstock_conf",
+        "xstock_publish_utc",
+        "xstock_status"
+    ],
+    "encoding": "utf-8",
+    "n_columns": 14
+}

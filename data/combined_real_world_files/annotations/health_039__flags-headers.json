@@ -1,0 +1,68 @@
+{
+  "provenance": {
+    "candidate_id": "health_039",
+    "topic": "health",
+    "search_term": "hospital",
+    "repository": "unifyWeb3/shifthub",
+    "repository_url": "https://github.com/unifyWeb3/shifthub",
+    "source_path": "sheets/flags-headers.csv",
+    "source_url": "https://github.com/unifyWeb3/shifthub/blob/main/sheets/flags-headers.csv",
+    "commit_ref": "main",
+    "license_spdx": "MIT",
+    "license_url": "https://api.github.com/repos/unifyWeb3/shifthub/license?ref=main",
+    "local_path": "health/health_039__flags-headers.csv",
+    "encoding": "utf-8",
+    "delimiter": ",",
+    "byte_size": "101",
+    "physical_lines": "1",
+    "logical_rows": "1",
+    "mode_columns": "11",
+    "anomaly_score": "3",
+    "anomalies": "single_record_table",
+    "profile_error": ""
+  },
+  "annotation": {
+    "source": "health/health_039__flags-headers.csv",
+    "source_encoding": "utf-8",
+    "input_delimiter": ",",
+    "source_line_ranges": [
+      {
+        "start": 1,
+        "end": 1
+      }
+    ],
+    "shown_line_count": 1,
+    "source_total_lines": 1,
+    "issues": [
+      {
+        "label": "single_record_table",
+        "reason": "The file contains only one non-empty logical record.",
+        "lines": "file-level"
+      }
+    ],
+    "copy_events": [],
+    "error_description": "only header row",
+    "working_origin_spans": [],
+    "header": {
+      "present": true,
+      "text": "flaggedAt,shiftId,date,startTime,ward,role,requiredCount,confirmedCount,missingCount,message,flagKey",
+      "source_line": 1
+    },
+    "cleaned_rows": 0,
+    "cleaned_column_count": 11,
+    "cleaned_columns": [
+      "flaggedAt",
+      "shiftId",
+      "date",
+      "startTime",
+      "ward",
+      "role",
+      "requiredCount",
+      "confirmedCount",
+      "missingCount",
+      "message",
+      "flagKey"
+    ],
+    "exported_at": "2026-11-17T10:13:38.800712+00:00"
+  }
+}

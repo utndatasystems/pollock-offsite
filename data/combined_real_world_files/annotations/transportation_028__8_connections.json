@@ -1,0 +1,61 @@
+{
+  "provenance": {
+    "candidate_id": "transportation_028",
+    "topic": "transportation",
+    "search_term": "transportation",
+    "repository": "TrainLCD/StationAPI",
+    "repository_url": "https://github.com/TrainLCD/StationAPI",
+    "source_path": "data/8!connections.csv",
+    "source_url": "https://github.com/TrainLCD/StationAPI/blob/dev/data/8%21connections.csv",
+    "commit_ref": "dev",
+    "license_spdx": "MIT",
+    "license_url": "https://api.github.com/repos/TrainLCD/StationAPI/license?ref=dev",
+    "local_path": "transportation/transportation_028__8_connections.csv",
+    "encoding": "utf-8",
+    "delimiter": ",",
+    "byte_size": "35",
+    "physical_lines": "1",
+    "logical_rows": "1",
+    "mode_columns": "4",
+    "anomaly_score": "3",
+    "anomalies": "single_record_table",
+    "profile_error": ""
+  },
+  "annotation": {
+    "source": "transportation/transportation_028__8_connections.csv",
+    "source_encoding": "utf-8",
+    "input_delimiter": ",",
+    "source_line_ranges": [
+      {
+        "start": 1,
+        "end": 1
+      }
+    ],
+    "shown_line_count": 1,
+    "source_total_lines": 1,
+    "issues": [
+      {
+        "label": "single_record_table",
+        "reason": "The file contains only one non-empty logical record.",
+        "lines": "file-level"
+      }
+    ],
+    "copy_events": [],
+    "error_description": "only header table",
+    "working_origin_spans": [],
+    "header": {
+      "present": true,
+      "text": "id,station_cd1,station_cd2,distance",
+      "source_line": 1
+    },
+    "cleaned_rows": 0,
+    "cleaned_column_count": 4,
+    "cleaned_columns": [
+      "id",
+      "station_cd1",
+      "station_cd2",
+      "distance"
+    ],
+    "exported_at": "2026-11-17T12:15:34.339355+00:00"
+  }
+}

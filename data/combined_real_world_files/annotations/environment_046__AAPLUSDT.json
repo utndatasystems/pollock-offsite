@@ -1,0 +1,323 @@
+{
+  "provenance": {
+    "candidate_id": "environment_046",
+    "topic": "environment",
+    "search_term": "environment",
+    "repository": "joezzy-web3/off-hours",
+    "repository_url": "https://github.com/joezzy-web3/off-hours",
+    "source_path": "data/funding/AAPLUSDT.csv",
+    "source_url": "https://github.com/joezzy-web3/off-hours/blob/main/data/funding/AAPLUSDT.csv",
+    "commit_ref": "main",
+    "license_spdx": "MIT",
+    "license_url": "https://api.github.com/repos/joezzy-web3/off-hours/license?ref=main",
+    "local_path": "environment/environment_046__AAPLUSDT.csv",
+    "encoding": "utf-8",
+    "delimiter": ",",
+    "byte_size": "4663",
+    "physical_lines": "270",
+    "logical_rows": "270",
+    "mode_columns": "2",
+    "anomaly_score": "4",
+    "anomalies": "possible_missing_header",
+    "profile_error": ""
+  },
+  "annotation": {
+    "source": "environment/environment_046__AAPLUSDT.csv",
+    "source_encoding": "utf-8",
+    "input_delimiter": ",",
+    "source_line_ranges": [
+      {
+        "start": 1,
+        "end": 51
+      }
+    ],
+    "shown_line_count": 51,
+    "source_total_lines": 270,
+    "issues": [
+      {
+        "label": "possible_missing_header",
+        "reason": "The first record has the same type pattern as later data records.",
+        "lines": "1"
+      }
+    ],
+    "copy_events": [
+      {
+        "ranges": [
+          {
+            "start": 2,
+            "end": 51
+          }
+        ],
+        "characters": 832,
+        "copied_at": "2026-11-17T13:14:31.230Z"
+      }
+    ],
+    "error_description": "no header",
+    "working_origin_spans": [
+      {
+        "start": 0,
+        "end": 4,
+        "source_line": 2
+      },
+      {
+        "start": 20,
+        "end": 32,
+        "source_line": 2
+      },
+      {
+        "start": 32,
+        "end": 48,
+        "source_line": 3
+      },
+      {
+        "start": 48,
+        "end": 64,
+        "source_line": 4
+      },
+      {
+        "start": 64,
+        "end": 80,
+        "source_line": 5
+      },
+      {
+        "start": 80,
+        "end": 96,
+        "source_line": 6
+      },
+      {
+        "start": 96,
+        "end": 112,
+        "source_line": 7
+      },
+      {
+        "start": 112,
+        "end": 128,
+        "source_line": 8
+      },
+      {
+        "start": 128,
+        "end": 144,
+        "source_line": 9
+      },
+      {
+        "start": 144,
+        "end": 160,
+        "source_line": 10
+      },
+      {
+        "start": 160,
+        "end": 184,
+        "source_line": 11
+      },
+      {
+        "start": 184,
+        "end": 200,
+        "source_line": 12
+      },
+      {
+        "start": 200,
+        "end": 224,
+        "source_line": 13
+      },
+      {
+        "start": 224,
+        "end": 248,
+        "source_line": 14
+      },
+      {
+        "start": 248,
+        "end": 264,
+        "source_line": 15
+      },
+      {
+        "start": 264,
+        "end": 280,
+        "source_line": 16
+      },
+      {
+        "start": 280,
+        "end": 296,
+        "source_line": 17
+      },
+      {
+        "start": 296,
+        "end": 312,
+        "source_line": 18
+      },
+      {
+        "start": 312,
+        "end": 328,
+        "source_line": 19
+      },
+      {
+        "start": 328,
+        "end": 344,
+        "source_line": 20
+      },
+      {
+        "start": 344,
+        "end": 360,
+        "source_line": 21
+      },
+      {
+        "start": 360,
+        "end": 376,
+        "source_line": 22
+      },
+      {
+        "start": 376,
+        "end": 392,
+        "source_line": 23
+      },
+      {
+        "start": 392,
+        "end": 408,
+        "source_line": 24
+      },
+      {
+        "start": 408,
+        "end": 424,
+        "source_line": 25
+      },
+      {
+        "start": 424,
+        "end": 440,
+        "source_line": 26
+      },
+      {
+        "start": 440,
+        "end": 456,
+        "source_line": 27
+      },
+      {
+        "start": 456,
+        "end": 472,
+        "source_line": 28
+      },
+      {
+        "start": 472,
+        "end": 488,
+        "source_line": 29
+      },
+      {
+        "start": 488,
+        "end": 504,
+        "source_line": 30
+      },
+      {
+        "start": 504,
+        "end": 520,
+        "source_line": 31
+      },
+      {
+        "start": 520,
+        "end": 536,
+        "source_line": 32
+      },
+      {
+        "start": 536,
+        "end": 552,
+        "source_line": 33
+      },
+      {
+        "start": 552,
+        "end": 568,
+        "source_line": 34
+      },
+      {
+        "start": 568,
+        "end": 584,
+        "source_line": 35
+      },
+      {
+        "start": 584,
+        "end": 600,
+        "source_line": 36
+      },
+      {
+        "start": 600,
+        "end": 616,
+        "source_line": 37
+      },
+      {
+        "start": 616,
+        "end": 640,
+        "source_line": 38
+      },
+      {
+        "start": 640,
+        "end": 656,
+        "source_line": 39
+      },
+      {
+        "start": 656,
+        "end": 672,
+        "source_line": 40
+      },
+      {
+        "start": 672,
+        "end": 688,
+        "source_line": 41
+      },
+      {
+        "start": 688,
+        "end": 704,
+        "source_line": 42
+      },
+      {
+        "start": 704,
+        "end": 720,
+        "source_line": 43
+      },
+      {
+        "start": 720,
+        "end": 736,
+        "source_line": 44
+      },
+      {
+        "start": 736,
+        "end": 752,
+        "source_line": 45
+      },
+      {
+        "start": 752,
+        "end": 768,
+        "source_line": 46
+      },
+      {
+        "start": 768,
+        "end": 784,
+        "source_line": 47
+      },
+      {
+        "start": 784,
+        "end": 800,
+        "source_line": 48
+      },
+      {
+        "start": 800,
+        "end": 816,
+        "source_line": 49
+      },
+      {
+        "start": 816,
+        "end": 832,
+        "source_line": 50
+      },
+      {
+        "start": 832,
+        "end": 848,
+        "source_line": 51
+      }
+    ],
+    "header": {
+      "present": false,
+      "text": "",
+      "source_line": null
+    },
+    "cleaned_rows": 51,
+    "cleaned_column_count": 2,
+    "cleaned_columns": [],
+    "exported_at": "2026-11-17T13:14:51.214010+00:00"
+  }
+}

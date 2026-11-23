@@ -1,0 +1,322 @@
+{
+  "provenance": {
+    "candidate_id": "demographics_024",
+    "topic": "demographics",
+    "search_term": "census",
+    "repository": "unxmaal/SoHoT",
+    "repository_url": "https://github.com/unxmaal/SoHoT",
+    "source_path": "evals/blame/key.csv",
+    "source_url": "https://github.com/unxmaal/SoHoT/blob/main/evals/blame/key.csv",
+    "commit_ref": "main",
+    "license_spdx": "MIT",
+    "license_url": "https://api.github.com/repos/unxmaal/SoHoT/license?ref=main",
+    "local_path": "demographics/demographics_024__key.csv",
+    "encoding": "utf-8",
+    "delimiter": ",",
+    "byte_size": "3116",
+    "physical_lines": "91",
+    "logical_rows": "91",
+    "mode_columns": "5",
+    "anomaly_score": "7",
+    "anomalies": "leading_comment;possible_preamble",
+    "profile_error": ""
+  },
+  "annotation": {
+    "source": "demographics/demographics_024__key.csv",
+    "source_encoding": "utf-8",
+    "input_delimiter": ",",
+    "source_line_ranges": [
+      {
+        "start": 1,
+        "end": 51
+      }
+    ],
+    "shown_line_count": 51,
+    "source_total_lines": 91,
+    "issues": [
+      {
+        "label": "leading_comment",
+        "reason": "The file begins with a possible comment row.",
+        "lines": "1"
+      },
+      {
+        "label": "possible_preamble",
+        "reason": "Records before the stable table shape resemble title or metadata rows.",
+        "lines": "1"
+      }
+    ],
+    "copy_events": [
+      {
+        "ranges": [
+          {
+            "start": 2,
+            "end": 51
+          }
+        ],
+        "characters": 1573,
+        "copied_at": "2026-11-13T09:51:46.587Z"
+      }
+    ],
+    "error_description": "preamble that consists of a nested json object (contains commas), which might trip parsers up",
+    "working_origin_spans": [
+      {
+        "start": 0,
+        "end": 32,
+        "source_line": 3
+      },
+      {
+        "start": 32,
+        "end": 64,
+        "source_line": 4
+      },
+      {
+        "start": 64,
+        "end": 96,
+        "source_line": 5
+      },
+      {
+        "start": 96,
+        "end": 128,
+        "source_line": 6
+      },
+      {
+        "start": 128,
+        "end": 156,
+        "source_line": 7
+      },
+      {
+        "start": 156,
+        "end": 184,
+        "source_line": 8
+      },
+      {
+        "start": 184,
+        "end": 212,
+        "source_line": 9
+      },
+      {
+        "start": 212,
+        "end": 243,
+        "source_line": 10
+      },
+      {
+        "start": 243,
+        "end": 274,
+        "source_line": 11
+      },
+      {
+        "start": 274,
+        "end": 305,
+        "source_line": 12
+      },
+      {
+        "start": 305,
+        "end": 336,
+        "source_line": 13
+      },
+      {
+        "start": 336,
+        "end": 367,
+        "source_line": 14
+      },
+      {
+        "start": 367,
+        "end": 398,
+        "source_line": 15
+      },
+      {
+        "start": 398,
+        "end": 430,
+        "source_line": 16
+      },
+      {
+        "start": 430,
+        "end": 462,
+        "source_line": 17
+      },
+      {
+        "start": 462,
+        "end": 494,
+        "source_line": 18
+      },
+      {
+        "start": 494,
+        "end": 521,
+        "source_line": 19
+      },
+      {
+        "start": 521,
+        "end": 550,
+        "source_line": 20
+      },
+      {
+        "start": 550,
+        "end": 579,
+        "source_line": 21
+      },
+      {
+        "start": 579,
+        "end": 608,
+        "source_line": 22
+      },
+      {
+        "start": 608,
+        "end": 638,
+        "source_line": 23
+      },
+      {
+        "start": 638,
+        "end": 668,
+        "source_line": 24
+      },
+      {
+        "start": 668,
+        "end": 700,
+        "source_line": 25
+      },
+      {
+        "start": 700,
+        "end": 732,
+        "source_line": 26
+      },
+      {
+        "start": 732,
+        "end": 764,
+        "source_line": 27
+      },
+      {
+        "start": 764,
+        "end": 796,
+        "source_line": 28
+      },
+      {
+        "start": 796,
+        "end": 830,
+        "source_line": 29
+      },
+      {
+        "start": 830,
+        "end": 864,
+        "source_line": 30
+      },
+      {
+        "start": 864,
+        "end": 894,
+        "source_line": 31
+      },
+      {
+        "start": 894,
+        "end": 926,
+        "source_line": 32
+      },
+      {
+        "start": 926,
+        "end": 958,
+        "source_line": 33
+      },
+      {
+        "start": 958,
+        "end": 990,
+        "source_line": 34
+      },
+      {
+        "start": 990,
+        "end": 1022,
+        "source_line": 35
+      },
+      {
+        "start": 1022,
+        "end": 1054,
+        "source_line": 36
+      },
+      {
+        "start": 1054,
+        "end": 1086,
+        "source_line": 37
+      },
+      {
+        "start": 1086,
+        "end": 1118,
+        "source_line": 38
+      },
+      {
+        "start": 1118,
+        "end": 1150,
+        "source_line": 39
+      },
+      {
+        "start": 1150,
+        "end": 1182,
+        "source_line": 40
+      },
+      {
+        "start": 1182,
+        "end": 1214,
+        "source_line": 41
+      },
+      {
+        "start": 1214,
+        "end": 1246,
+        "source_line": 42
+      },
+      {
+        "start": 1246,
+        "end": 1278,
+        "source_line": 43
+      },
+      {
+        "start": 1278,
+        "end": 1309,
+        "source_line": 44
+      },
+      {
+        "start": 1309,
+        "end": 1341,
+        "source_line": 45
+      },
+      {
+        "start": 1341,
+        "end": 1373,
+        "source_line": 46
+      },
+      {
+        "start": 1373,
+        "end": 1405,
+        "source_line": 47
+      },
+      {
+        "start": 1405,
+        "end": 1437,
+        "source_line": 48
+      },
+      {
+        "start": 1437,
+        "end": 1470,
+        "source_line": 49
+      },
+      {
+        "start": 1470,
+        "end": 1503,
+        "source_line": 50
+      },
+      {
+        "start": 1503,
+        "end": 1536,
+        "source_line": 51
+      }
+    ],
+    "header": {
+      "text": "verdict_id,role,stratum,census,plant",
+      "source_line": 1
+    },
+    "cleaned_rows": 49,
+    "cleaned_columns": [
+      "verdict_id",
+      "role",
+      "stratum",
+      "census",
+      "plant"
+    ],
+    "exported_at": "2026-11-13T09:52:30.123781+00:00"
+  }
+}

@@ -1,0 +1,212 @@
+{
+  "provenance": {
+    "candidate_id": "transportation_020",
+    "topic": "transportation",
+    "search_term": "transportation",
+    "repository": "smauricioj/brazil-gasoline-demand-panel",
+    "repository_url": "https://github.com/smauricioj/brazil-gasoline-demand-panel",
+    "source_path": "data/input/estados.csv",
+    "source_url": "https://github.com/smauricioj/brazil-gasoline-demand-panel/blob/main/data/input/estados.csv",
+    "commit_ref": "main",
+    "license_spdx": "MIT",
+    "license_url": "https://api.github.com/repos/smauricioj/brazil-gasoline-demand-panel/license?ref=main",
+    "local_path": "transportation/transportation_020__estados.csv",
+    "encoding": "utf-8",
+    "delimiter": ";",
+    "byte_size": "1290",
+    "physical_lines": "28",
+    "logical_rows": "28",
+    "mode_columns": "8",
+    "anomaly_score": "3",
+    "anomalies": "non_comma_delimiter",
+    "profile_error": ""
+  },
+  "annotation": {
+    "source": "transportation/transportation_020__estados.csv",
+    "source_encoding": "utf-8",
+    "input_delimiter": ";",
+    "source_line_ranges": [
+      {
+        "start": 1,
+        "end": 28
+      }
+    ],
+    "shown_line_count": 28,
+    "source_total_lines": 28,
+    "issues": [
+      {
+        "label": "non_comma_delimiter",
+        "reason": "The detected delimiter is not a comma.",
+        "lines": "file-level"
+      }
+    ],
+    "copy_events": [
+      {
+        "ranges": [
+          {
+            "start": 2,
+            "end": 28
+          }
+        ],
+        "characters": 1225,
+        "copied_at": "2026-11-17T12:11:41.965Z"
+      }
+    ],
+    "error_description": "semicolon delimiter",
+    "working_origin_spans": [
+      {
+        "start": 0,
+        "end": 38,
+        "source_line": 2
+      },
+      {
+        "start": 38,
+        "end": 75,
+        "source_line": 3
+      },
+      {
+        "start": 75,
+        "end": 114,
+        "source_line": 4
+      },
+      {
+        "start": 114,
+        "end": 154,
+        "source_line": 5
+      },
+      {
+        "start": 154,
+        "end": 189,
+        "source_line": 6
+      },
+      {
+        "start": 189,
+        "end": 227,
+        "source_line": 7
+      },
+      {
+        "start": 227,
+        "end": 269,
+        "source_line": 8
+      },
+      {
+        "start": 269,
+        "end": 316,
+        "source_line": 9
+      },
+      {
+        "start": 316,
+        "end": 360,
+        "source_line": 10
+      },
+      {
+        "start": 360,
+        "end": 404,
+        "source_line": 11
+      },
+      {
+        "start": 404,
+        "end": 458,
+        "source_line": 12
+      },
+      {
+        "start": 458,
+        "end": 503,
+        "source_line": 13
+      },
+      {
+        "start": 503,
+        "end": 552,
+        "source_line": 14
+      },
+      {
+        "start": 552,
+        "end": 597,
+        "source_line": 15
+      },
+      {
+        "start": 597,
+        "end": 642,
+        "source_line": 16
+      },
+      {
+        "start": 642,
+        "end": 681,
+        "source_line": 17
+      },
+      {
+        "start": 681,
+        "end": 726,
+        "source_line": 18
+      },
+      {
+        "start": 726,
+        "end": 777,
+        "source_line": 19
+      },
+      {
+        "start": 777,
+        "end": 827,
+        "source_line": 20
+      },
+      {
+        "start": 827,
+        "end": 875,
+        "source_line": 21
+      },
+      {
+        "start": 875,
+        "end": 916,
+        "source_line": 22
+      },
+      {
+        "start": 916,
+        "end": 961,
+        "source_line": 23
+      },
+      {
+        "start": 961,
+        "end": 1007,
+        "source_line": 24
+      },
+      {
+        "start": 1007,
+        "end": 1069,
+        "source_line": 25
+      },
+      {
+        "start": 1069,
+        "end": 1118,
+        "source_line": 26
+      },
+      {
+        "start": 1118,
+        "end": 1167,
+        "source_line": 27
+      },
+      {
+        "start": 1167,
+        "end": 1225,
+        "source_line": 28
+      }
+    ],
+    "header": {
+      "present": true,
+      "text": ";CD_UF;NM_UF;SIGLA;NM_REGIAO;AREA;X_TXT_OFF;Y_TXT_OFF",
+      "source_line": 1
+    },
+    "cleaned_rows": 27,
+    "cleaned_column_count": 8,
+    "cleaned_columns": [
+      "Unnamed: 0",
+      "CD_UF",
+      "NM_UF",
+      "SIGLA",
+      "NM_REGIAO",
+      "AREA",
+      "X_TXT_OFF",
+      "Y_TXT_OFF"
+    ],
+    "exported_at": "2026-11-17T12:12:01.336180+00:00"
+  }
+}

@@ -1,0 +1,220 @@
+{
+  "provenance": {
+    "candidate_id": "environment_uk_004",
+    "topic": "environment",
+    "search_term": "climate",
+    "repository": "data.gov.uk/department-for-business-energy-and-industrial-strategy/beis-exceptions-to-spending-controls-for-july-september-2016",
+    "repository_url": "https://www.data.gov.uk/dataset/21f02be2-5464-4146-897b-cb05eef1bb3b/beis-exceptions-to-spending-controls-for-july-september-2016",
+    "source_path": "BEIS_exemption_2016-17_Q2_ICT.csv",
+    "source_url": "https://www.gov.uk/government/uploads/system/uploads/attachment_data/file/595614/BEIS_exemption_2016-17_Q2_ICT.csv",
+    "commit_ref": "2017-03-03T14:47:39.745095",
+    "license_spdx": "OGL-UK-3.0",
+    "license_url": "http://reference.data.gov.uk/id/open-government-licence",
+    "local_path": "environment/environment_uk_004__BEIS_exemption_2016-17_Q2_ICT.csv",
+    "encoding": "cp1252",
+    "delimiter": ",",
+    "byte_size": "2892",
+    "physical_lines": "21",
+    "logical_rows": "18",
+    "mode_columns": "8",
+    "anomaly_score": "2",
+    "anomalies": "mixed_line_endings",
+    "profile_error": ""
+  },
+  "annotation": {
+    "source": "environment/environment_uk_004__BEIS_exemption_2016-17_Q2_ICT.csv",
+    "source_encoding": "cp1252",
+    "input_delimiter": ",",
+    "source_line_ranges": [
+      {
+        "start": 1,
+        "end": 21
+      }
+    ],
+    "shown_line_count": 21,
+    "source_total_lines": 21,
+    "issues": [
+      {
+        "label": "mixed_line_endings",
+        "reason": "The file mixes CRLF, LF, or CR line endings.",
+        "lines": "file-level"
+      }
+    ],
+    "copy_events": [
+      {
+        "ranges": [
+          {
+            "start": 2,
+            "end": 21
+          }
+        ],
+        "characters": 2883,
+        "copied_at": "2026-11-13T10:33:46.071Z"
+      },
+      {
+        "ranges": [
+          {
+            "start": 2,
+            "end": 21
+          }
+        ],
+        "characters": 2883,
+        "copied_at": "2026-11-13T10:43:07.896Z"
+      },
+      {
+        "ranges": [
+          {
+            "start": 21,
+            "end": 21
+          }
+        ],
+        "characters": 8,
+        "copied_at": "2026-11-13T10:43:31.900Z"
+      },
+      {
+        "ranges": [
+          {
+            "start": 2,
+            "end": 21
+          }
+        ],
+        "characters": 2883,
+        "copied_at": "2026-11-13T10:43:45.023Z"
+      },
+      {
+        "ranges": [
+          {
+            "start": 2,
+            "end": 21
+          }
+        ],
+        "characters": 2883,
+        "copied_at": "2026-11-13T10:43:53.275Z"
+      }
+    ],
+    "error_description": "first two rows are headers but with valid enough commas -> parses but the real header is only in 3rd line and thus data.\n\nAlso: a few empty rows in the end. ",
+    "working_origin_spans": [
+      {
+        "start": 0,
+        "end": 1,
+        "source_line": 2
+      },
+      {
+        "start": 0,
+        "end": 8,
+        "source_line": 21
+      },
+      {
+        "start": 1,
+        "end": 154,
+        "source_line": 3
+      },
+      {
+        "start": 154,
+        "end": 669,
+        "source_line": 4
+      },
+      {
+        "start": 669,
+        "end": 701,
+        "source_line": 5
+      },
+      {
+        "start": 701,
+        "end": 983,
+        "source_line": 6
+      },
+      {
+        "start": 983,
+        "end": 1442,
+        "source_line": 7
+      },
+      {
+        "start": 1442,
+        "end": 1666,
+        "source_line": 8
+      },
+      {
+        "start": 1666,
+        "end": 1948,
+        "source_line": 9
+      },
+      {
+        "start": 1948,
+        "end": 2254,
+        "source_line": 10
+      },
+      {
+        "start": 2254,
+        "end": 2291,
+        "source_line": 11
+      },
+      {
+        "start": 2291,
+        "end": 2477,
+        "source_line": 12
+      },
+      {
+        "start": 2477,
+        "end": 2525,
+        "source_line": 13
+      },
+      {
+        "start": 2525,
+        "end": 2812,
+        "source_line": 14
+      },
+      {
+        "start": 2812,
+        "end": 2821,
+        "source_line": 15
+      },
+      {
+        "start": 2821,
+        "end": 2830,
+        "source_line": 16
+      },
+      {
+        "start": 2830,
+        "end": 2839,
+        "source_line": 17
+      },
+      {
+        "start": 2839,
+        "end": 2848,
+        "source_line": 18
+      },
+      {
+        "start": 2848,
+        "end": 2857,
+        "source_line": 19
+      },
+      {
+        "start": 2857,
+        "end": 2866,
+        "source_line": 20
+      },
+      {
+        "start": 2866,
+        "end": 2875,
+        "source_line": 21
+      }
+    ],
+    "header": {
+      "text": "Department,Organisation Name,HNG Ref No,Project name,Basis for expenditure approval,Total Value Requested (£),Total Value Approved (£),Date of approval",
+      "source_line": 1
+    },
+    "cleaned_rows": 16,
+    "cleaned_columns": [
+      "Department",
+      "Organisation Name",
+      "HNG Ref No",
+      "Project name",
+      "Basis for expenditure approval",
+      "Total Value Requested (£)",
+      "Total Value Approved (£)",
+      "Date of approval"
+    ],
+    "exported_at": "2026-11-13T10:44:08.634868+00:00"
+  }
+}

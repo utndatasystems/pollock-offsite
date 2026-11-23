@@ -1,0 +1,25 @@
+{
+    "delimiter": ",",
+    "quotechar": "\"",
+    "escapechar": "\"",
+    "row_delimiter": "\n",
+    "header_lines": "1",
+    "preamble_lines": "0",
+    "footnote_lines": "0",
+    "column_names": [
+        "need_id",
+        "crisis_type",
+        "setting",
+        "metric",
+        "value",
+        "unit",
+        "denominator",
+        "low",
+        "high",
+        "n",
+        "source_id",
+        "note"
+    ],
+    "encoding": "utf-8",
+    "n_columns": 12
+}

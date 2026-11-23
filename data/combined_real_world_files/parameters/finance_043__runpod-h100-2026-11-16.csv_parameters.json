@@ -1,0 +1,26 @@
+{
+    "delimiter": ",",
+    "quotechar": "\"",
+    "escapechar": "\"",
+    "row_delimiter": "\n",
+    "header_lines": "1",
+    "preamble_lines": "0",
+    "footnote_lines": "0",
+    "column_names": [
+        "repeat",
+        "rows",
+        "vocab",
+        "tiles",
+        "single_cta_ms",
+        "hierarchical_ms",
+        "speedup_single_over_hierarchical",
+        "top1_id",
+        "top2_id",
+        "tie_probe_pass",
+        "margin",
+        "flagged",
+        "correct"
+    ],
+    "encoding": "utf-8",
+    "n_columns": 13
+}

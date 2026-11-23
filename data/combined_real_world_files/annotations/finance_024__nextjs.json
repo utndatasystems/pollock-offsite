@@ -1,0 +1,385 @@
+{
+  "provenance": {
+    "candidate_id": "finance_024",
+    "topic": "finance",
+    "search_term": "budget",
+    "repository": "Leostruka/devin-bundle",
+    "repository_url": "https://github.com/Leostruka/devin-bundle",
+    "source_path": "extensions/design-intelligence/data/stacks/nextjs.csv",
+    "source_url": "https://github.com/Leostruka/devin-bundle/blob/main/extensions/design-intelligence/data/stacks/nextjs.csv",
+    "commit_ref": "main",
+    "license_spdx": "MIT",
+    "license_url": "https://api.github.com/repos/Leostruka/devin-bundle/license?ref=main",
+    "local_path": "finance/finance_024__nextjs.csv",
+    "encoding": "utf-8",
+    "delimiter": ",",
+    "byte_size": "18687",
+    "physical_lines": "62",
+    "logical_rows": "61",
+    "mode_columns": "13",
+    "anomaly_score": "0",
+    "anomalies": "",
+    "profile_error": ""
+  },
+  "annotation": {
+    "source": "finance/finance_024__nextjs.csv",
+    "source_encoding": "utf-8",
+    "input_delimiter": ",",
+    "source_line_ranges": [
+      {
+        "start": 1,
+        "end": 62
+      }
+    ],
+    "shown_line_count": 62,
+    "source_total_lines": 62,
+    "issues": [
+      {
+        "label": "embedded_structured_values",
+        "reason": "Cells contain JSON or XML-like payloads that require value-level interpretation.",
+        "lines": "11, 28, 43"
+      }
+    ],
+    "copy_events": [
+      {
+        "ranges": [
+          {
+            "start": 2,
+            "end": 62
+          }
+        ],
+        "characters": 18577,
+        "copied_at": "2026-11-13T11:08:26.459Z"
+      }
+    ],
+    "error_description": "html and json in column",
+    "working_origin_spans": [
+      {
+        "start": 0,
+        "end": 257,
+        "source_line": 2
+      },
+      {
+        "start": 257,
+        "end": 551,
+        "source_line": 3
+      },
+      {
+        "start": 551,
+        "end": 777,
+        "source_line": 4
+      },
+      {
+        "start": 777,
+        "end": 1075,
+        "source_line": 5
+      },
+      {
+        "start": 1075,
+        "end": 1386,
+        "source_line": 6
+      },
+      {
+        "start": 1386,
+        "end": 1676,
+        "source_line": 7
+      },
+      {
+        "start": 1676,
+        "end": 2010,
+        "source_line": 8
+      },
+      {
+        "start": 2010,
+        "end": 2345,
+        "source_line": 9
+      },
+      {
+        "start": 2345,
+        "end": 2674,
+        "source_line": 10
+      },
+      {
+        "start": 2674,
+        "end": 3006,
+        "source_line": 11
+      },
+      {
+        "start": 3006,
+        "end": 3260,
+        "source_line": 12
+      },
+      {
+        "start": 3260,
+        "end": 3591,
+        "source_line": 13
+      },
+      {
+        "start": 3591,
+        "end": 4031,
+        "source_line": 14
+      },
+      {
+        "start": 4031,
+        "end": 4270,
+        "source_line": 15
+      },
+      {
+        "start": 4270,
+        "end": 4607,
+        "source_line": 16
+      },
+      {
+        "start": 4607,
+        "end": 5043,
+        "source_line": 17
+      },
+      {
+        "start": 5043,
+        "end": 5346,
+        "source_line": 18
+      },
+      {
+        "start": 5346,
+        "end": 5615,
+        "source_line": 19
+      },
+      {
+        "start": 5615,
+        "end": 5861,
+        "source_line": 20
+      },
+      {
+        "start": 5861,
+        "end": 6160,
+        "source_line": 21
+      },
+      {
+        "start": 6160,
+        "end": 6387,
+        "source_line": 22
+      },
+      {
+        "start": 6387,
+        "end": 6706,
+        "source_line": 23
+      },
+      {
+        "start": 6706,
+        "end": 6926,
+        "source_line": 24
+      },
+      {
+        "start": 6926,
+        "end": 7140,
+        "source_line": 25
+      },
+      {
+        "start": 7140,
+        "end": 7457,
+        "source_line": 26
+      },
+      {
+        "start": 7457,
+        "end": 7685,
+        "source_line": 27
+      },
+      {
+        "start": 7685,
+        "end": 7914,
+        "source_line": 28
+      },
+      {
+        "start": 7914,
+        "end": 8213,
+        "source_line": 29
+      },
+      {
+        "start": 8213,
+        "end": 8432,
+        "source_line": 30
+      },
+      {
+        "start": 8432,
+        "end": 8646,
+        "source_line": 31
+      },
+      {
+        "start": 8646,
+        "end": 8915,
+        "source_line": 32
+      },
+      {
+        "start": 8915,
+        "end": 9310,
+        "source_line": 33
+      },
+      {
+        "start": 9310,
+        "end": 9574,
+        "source_line": 34
+      },
+      {
+        "start": 9574,
+        "end": 9941,
+        "source_line": 35
+      },
+      {
+        "start": 9941,
+        "end": 10246,
+        "source_line": 36
+      },
+      {
+        "start": 10246,
+        "end": 10521,
+        "source_line": 37
+      },
+      {
+        "start": 10521,
+        "end": 10786,
+        "source_line": 38
+      },
+      {
+        "start": 10786,
+        "end": 11061,
+        "source_line": 39
+      },
+      {
+        "start": 11061,
+        "end": 11375,
+        "source_line": 40
+      },
+      {
+        "start": 11375,
+        "end": 11654,
+        "source_line": 41
+      },
+      {
+        "start": 11654,
+        "end": 11963,
+        "source_line": 42
+      },
+      {
+        "start": 11963,
+        "end": 12267,
+        "source_line": 43
+      },
+      {
+        "start": 12267,
+        "end": 12470,
+        "source_line": 44
+      },
+      {
+        "start": 12470,
+        "end": 12686,
+        "source_line": 45
+      },
+      {
+        "start": 12686,
+        "end": 13011,
+        "source_line": 46
+      },
+      {
+        "start": 13011,
+        "end": 13195,
+        "source_line": 47
+      },
+      {
+        "start": 13195,
+        "end": 13481,
+        "source_line": 48
+      },
+      {
+        "start": 13481,
+        "end": 13747,
+        "source_line": 49
+      },
+      {
+        "start": 13747,
+        "end": 14060,
+        "source_line": 50
+      },
+      {
+        "start": 14060,
+        "end": 14400,
+        "source_line": 51
+      },
+      {
+        "start": 14400,
+        "end": 14688,
+        "source_line": 52
+      },
+      {
+        "start": 14688,
+        "end": 15030,
+        "source_line": 53
+      },
+      {
+        "start": 15030,
+        "end": 15517,
+        "source_line": 54
+      },
+      {
+        "start": 15517,
+        "end": 15846,
+        "source_line": 55
+      },
+      {
+        "start": 15846,
+        "end": 16054,
+        "source_line": 56
+      },
+      {
+        "start": 16054,
+        "end": 16445,
+        "source_line": 57
+      },
+      {
+        "start": 16445,
+        "end": 16803,
+        "source_line": 58
+      },
+      {
+        "start": 16803,
+        "end": 17210,
+        "source_line": 59
+      },
+      {
+        "start": 17210,
+        "end": 17674,
+        "source_line": 60
+      },
+      {
+        "start": 17674,
+        "end": 18181,
+        "source_line": 61
+      },
+      {
+        "start": 18181,
+        "end": 18578,
+        "source_line": 62
+      }
+    ],
+    "header": {
+      "text": "No,Category,Guideline,Description,Do,Don't,Code Good,Code Bad,Severity,Docs URL,Applies To,Status,Verified At",
+      "source_line": 1
+    },
+    "cleaned_rows": 60,
+    "cleaned_columns": [
+      "No",
+      "Category",
+      "Guideline",
+      "Description",
+      "Do",
+      "Don't",
+      "Code Good",
+      "Code Bad",
+      "Severity",
+      "Docs URL",
+      "Applies To",
+      "Status",
+      "Verified At"
+    ],
+    "exported_at": "2026-11-13T11:18:58.135614+00:00"
+  }
+}

@@ -1,0 +1,108 @@
+{
+  "provenance": {
+    "candidate_id": "demographics_039",
+    "topic": "demographics",
+    "search_term": "census",
+    "repository": "BharathHKrishna/dengue-risk-mapping",
+    "repository_url": "https://github.com/BharathHKrishna/dengue-risk-mapping",
+    "source_path": "results/shap_lag_importance_lgbm_ar.csv",
+    "source_url": "https://github.com/BharathHKrishna/dengue-risk-mapping/blob/main/results/shap_lag_importance_lgbm_ar.csv",
+    "commit_ref": "main",
+    "license_spdx": "MIT",
+    "license_url": "https://api.github.com/repos/BharathHKrishna/dengue-risk-mapping/license?ref=main",
+    "local_path": "demographics/demographics_039__shap_lag_importance_lgbm_ar.csv",
+    "encoding": "utf-8",
+    "delimiter": ",",
+    "byte_size": "515",
+    "physical_lines": "8",
+    "logical_rows": "8",
+    "mode_columns": "4",
+    "anomaly_score": "4",
+    "anomalies": "possible_missing_header",
+    "profile_error": ""
+  },
+  "annotation": {
+    "source": "demographics/demographics_039__shap_lag_importance_lgbm_ar.csv",
+    "source_encoding": "utf-8",
+    "input_delimiter": ",",
+    "source_line_ranges": [
+      {
+        "start": 1,
+        "end": 8
+      }
+    ],
+    "shown_line_count": 8,
+    "source_total_lines": 8,
+    "issues": [
+      {
+        "label": "possible_missing_header",
+        "reason": "The first record has the same type pattern as later data records.",
+        "lines": "1"
+      }
+    ],
+    "copy_events": [
+      {
+        "ranges": [
+          {
+            "start": 2,
+            "end": 8
+          }
+        ],
+        "characters": 500,
+        "copied_at": "2026-11-17T11:36:53.386Z"
+      }
+    ],
+    "error_description": "header datatypes look the same as the content -> might trip auto-header-detection up",
+    "working_origin_spans": [
+      {
+        "start": 0,
+        "end": 70,
+        "source_line": 2
+      },
+      {
+        "start": 70,
+        "end": 145,
+        "source_line": 3
+      },
+      {
+        "start": 145,
+        "end": 219,
+        "source_line": 4
+      },
+      {
+        "start": 219,
+        "end": 287,
+        "source_line": 5
+      },
+      {
+        "start": 287,
+        "end": 358,
+        "source_line": 6
+      },
+      {
+        "start": 358,
+        "end": 429,
+        "source_line": 7
+      },
+      {
+        "start": 429,
+        "end": 500,
+        "source_line": 8
+      }
+    ],
+    "header": {
+      "present": true,
+      "text": "variable,1,2,3",
+      "source_line": 1
+    },
+    "cleaned_rows": 7,
+    "cleaned_column_count": 4,
+    "cleaned_columns": [
+      "variable",
+      "1",
+      "2",
+      "3"
+    ],
+    "exported_at": "2026-11-17T11:37:38.309200+00:00"
+  }
+}

@@ -1,0 +1,19 @@
+{
+    "delimiter": ";",
+    "quotechar": "\"",
+    "escapechar": "\"",
+    "row_delimiter": "\n",
+    "header_lines": "1",
+    "preamble_lines": "0",
+    "footnote_lines": "0",
+    "column_names": [
+        "pedido",
+        "data",
+        "hora",
+        "distancia_km",
+        "chuva_mm",
+        "tempo_entrega_min"
+    ],
+    "encoding": "utf-8",
+    "n_columns": 6
+}

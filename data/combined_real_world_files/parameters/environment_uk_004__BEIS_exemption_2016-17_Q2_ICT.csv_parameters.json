@@ -1,0 +1,21 @@
+{
+    "delimiter": ",",
+    "quotechar": "\"",
+    "escapechar": "\"",
+    "row_delimiter": "\r\n",
+    "header_lines": "1",
+    "preamble_lines": "0",
+    "footnote_lines": "0",
+    "column_names": [
+        "Department",
+        "Organisation Name",
+        "HNG Ref No",
+        "Project name",
+        "Basis for expenditure approval",
+        "Total Value Requested (£)",
+        "Total Value Approved (£)",
+        "Date of approval"
+    ],
+    "encoding": "cp1252",
+    "n_columns": 8
+}

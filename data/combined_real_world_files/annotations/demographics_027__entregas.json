@@ -1,0 +1,568 @@
+{
+  "provenance": {
+    "candidate_id": "demographics_027",
+    "topic": "demographics",
+    "search_term": "survey",
+    "repository": "FrancyJGLisboa/honestlab",
+    "repository_url": "https://github.com/FrancyJGLisboa/honestlab",
+    "source_path": "stress/runs/planilha_br/entregas.csv",
+    "source_url": "https://github.com/FrancyJGLisboa/honestlab/blob/main/stress/runs/planilha_br/entregas.csv",
+    "commit_ref": "main",
+    "license_spdx": "MIT",
+    "license_url": "https://api.github.com/repos/FrancyJGLisboa/honestlab/license?ref=main",
+    "local_path": "demographics/demographics_027__entregas.csv",
+    "encoding": "utf-8",
+    "delimiter": ";",
+    "byte_size": "119800",
+    "physical_lines": "4001",
+    "logical_rows": "4001",
+    "mode_columns": "6",
+    "anomaly_score": "3",
+    "anomalies": "non_comma_delimiter",
+    "profile_error": ""
+  },
+  "annotation": {
+    "source": "demographics/demographics_027__entregas.csv",
+    "source_encoding": "utf-8",
+    "input_delimiter": ";",
+    "source_line_ranges": [
+      {
+        "start": 1,
+        "end": 100
+      }
+    ],
+    "shown_line_count": 100,
+    "source_total_lines": 4001,
+    "issues": [
+      {
+        "label": "non_comma_delimiter",
+        "reason": "The detected delimiter is not a comma.",
+        "lines": "file-level"
+      }
+    ],
+    "copy_events": [
+      {
+        "ranges": [
+          {
+            "start": 2,
+            "end": 100
+          }
+        ],
+        "characters": 2782,
+        "copied_at": "2026-11-13T09:58:46.241Z"
+      }
+    ],
+    "error_description": "semicolon elimiter",
+    "working_origin_spans": [
+      {
+        "start": 0,
+        "end": 28,
+        "source_line": 2
+      },
+      {
+        "start": 28,
+        "end": 55,
+        "source_line": 3
+      },
+      {
+        "start": 55,
+        "end": 82,
+        "source_line": 4
+      },
+      {
+        "start": 82,
+        "end": 109,
+        "source_line": 5
+      },
+      {
+        "start": 109,
+        "end": 136,
+        "source_line": 6
+      },
+      {
+        "start": 136,
+        "end": 163,
+        "source_line": 7
+      },
+      {
+        "start": 163,
+        "end": 190,
+        "source_line": 8
+      },
+      {
+        "start": 190,
+        "end": 217,
+        "source_line": 9
+      },
+      {
+        "start": 217,
+        "end": 244,
+        "source_line": 10
+      },
+      {
+        "start": 244,
+        "end": 272,
+        "source_line": 11
+      },
+      {
+        "start": 272,
+        "end": 300,
+        "source_line": 12
+      },
+      {
+        "start": 300,
+        "end": 329,
+        "source_line": 13
+      },
+      {
+        "start": 329,
+        "end": 358,
+        "source_line": 14
+      },
+      {
+        "start": 358,
+        "end": 386,
+        "source_line": 15
+      },
+      {
+        "start": 386,
+        "end": 414,
+        "source_line": 16
+      },
+      {
+        "start": 414,
+        "end": 442,
+        "source_line": 17
+      },
+      {
+        "start": 442,
+        "end": 471,
+        "source_line": 18
+      },
+      {
+        "start": 471,
+        "end": 499,
+        "source_line": 19
+      },
+      {
+        "start": 499,
+        "end": 527,
+        "source_line": 20
+      },
+      {
+        "start": 527,
+        "end": 556,
+        "source_line": 21
+      },
+      {
+        "start": 556,
+        "end": 584,
+        "source_line": 22
+      },
+      {
+        "start": 584,
+        "end": 612,
+        "source_line": 23
+      },
+      {
+        "start": 612,
+        "end": 640,
+        "source_line": 24
+      },
+      {
+        "start": 640,
+        "end": 668,
+        "source_line": 25
+      },
+      {
+        "start": 668,
+        "end": 696,
+        "source_line": 26
+      },
+      {
+        "start": 696,
+        "end": 724,
+        "source_line": 27
+      },
+      {
+        "start": 724,
+        "end": 752,
+        "source_line": 28
+      },
+      {
+        "start": 752,
+        "end": 781,
+        "source_line": 29
+      },
+      {
+        "start": 781,
+        "end": 809,
+        "source_line": 30
+      },
+      {
+        "start": 809,
+        "end": 837,
+        "source_line": 31
+      },
+      {
+        "start": 837,
+        "end": 865,
+        "source_line": 32
+      },
+      {
+        "start": 865,
+        "end": 893,
+        "source_line": 33
+      },
+      {
+        "start": 893,
+        "end": 921,
+        "source_line": 34
+      },
+      {
+        "start": 921,
+        "end": 949,
+        "source_line": 35
+      },
+      {
+        "start": 949,
+        "end": 977,
+        "source_line": 36
+      },
+      {
+        "start": 977,
+        "end": 1005,
+        "source_line": 37
+      },
+      {
+        "start": 1005,
+        "end": 1033,
+        "source_line": 38
+      },
+      {
+        "start": 1033,
+        "end": 1061,
+        "source_line": 39
+      },
+      {
+        "start": 1061,
+        "end": 1090,
+        "source_line": 40
+      },
+      {
+        "start": 1090,
+        "end": 1118,
+        "source_line": 41
+      },
+      {
+        "start": 1118,
+        "end": 1145,
+        "source_line": 42
+      },
+      {
+        "start": 1145,
+        "end": 1173,
+        "source_line": 43
+      },
+      {
+        "start": 1173,
+        "end": 1201,
+        "source_line": 44
+      },
+      {
+        "start": 1201,
+        "end": 1229,
+        "source_line": 45
+      },
+      {
+        "start": 1229,
+        "end": 1257,
+        "source_line": 46
+      },
+      {
+        "start": 1257,
+        "end": 1285,
+        "source_line": 47
+      },
+      {
+        "start": 1285,
+        "end": 1313,
+        "source_line": 48
+      },
+      {
+        "start": 1313,
+        "end": 1341,
+        "source_line": 49
+      },
+      {
+        "start": 1341,
+        "end": 1370,
+        "source_line": 50
+      },
+      {
+        "start": 1370,
+        "end": 1399,
+        "source_line": 51
+      },
+      {
+        "start": 1399,
+        "end": 1427,
+        "source_line": 52
+      },
+      {
+        "start": 1427,
+        "end": 1456,
+        "source_line": 53
+      },
+      {
+        "start": 1456,
+        "end": 1484,
+        "source_line": 54
+      },
+      {
+        "start": 1484,
+        "end": 1513,
+        "source_line": 55
+      },
+      {
+        "start": 1513,
+        "end": 1541,
+        "source_line": 56
+      },
+      {
+        "start": 1541,
+        "end": 1570,
+        "source_line": 57
+      },
+      {
+        "start": 1570,
+        "end": 1598,
+        "source_line": 58
+      },
+      {
+        "start": 1598,
+        "end": 1626,
+        "source_line": 59
+      },
+      {
+        "start": 1626,
+        "end": 1655,
+        "source_line": 60
+      },
+      {
+        "start": 1655,
+        "end": 1684,
+        "source_line": 61
+      },
+      {
+        "start": 1684,
+        "end": 1713,
+        "source_line": 62
+      },
+      {
+        "start": 1713,
+        "end": 1741,
+        "source_line": 63
+      },
+      {
+        "start": 1741,
+        "end": 1769,
+        "source_line": 64
+      },
+      {
+        "start": 1769,
+        "end": 1797,
+        "source_line": 65
+      },
+      {
+        "start": 1797,
+        "end": 1825,
+        "source_line": 66
+      },
+      {
+        "start": 1825,
+        "end": 1853,
+        "source_line": 67
+      },
+      {
+        "start": 1853,
+        "end": 1881,
+        "source_line": 68
+      },
+      {
+        "start": 1881,
+        "end": 1909,
+        "source_line": 69
+      },
+      {
+        "start": 1909,
+        "end": 1937,
+        "source_line": 70
+      },
+      {
+        "start": 1937,
+        "end": 1965,
+        "source_line": 71
+      },
+      {
+        "start": 1965,
+        "end": 1993,
+        "source_line": 72
+      },
+      {
+        "start": 1993,
+        "end": 2021,
+        "source_line": 73
+      },
+      {
+        "start": 2021,
+        "end": 2050,
+        "source_line": 74
+      },
+      {
+        "start": 2050,
+        "end": 2078,
+        "source_line": 75
+      },
+      {
+        "start": 2078,
+        "end": 2106,
+        "source_line": 76
+      },
+      {
+        "start": 2106,
+        "end": 2134,
+        "source_line": 77
+      },
+      {
+        "start": 2134,
+        "end": 2163,
+        "source_line": 78
+      },
+      {
+        "start": 2163,
+        "end": 2191,
+        "source_line": 79
+      },
+      {
+        "start": 2191,
+        "end": 2219,
+        "source_line": 80
+      },
+      {
+        "start": 2219,
+        "end": 2247,
+        "source_line": 81
+      },
+      {
+        "start": 2247,
+        "end": 2275,
+        "source_line": 82
+      },
+      {
+        "start": 2275,
+        "end": 2303,
+        "source_line": 83
+      },
+      {
+        "start": 2303,
+        "end": 2331,
+        "source_line": 84
+      },
+      {
+        "start": 2331,
+        "end": 2360,
+        "source_line": 85
+      },
+      {
+        "start": 2360,
+        "end": 2388,
+        "source_line": 86
+      },
+      {
+        "start": 2388,
+        "end": 2416,
+        "source_line": 87
+      },
+      {
+        "start": 2416,
+        "end": 2444,
+        "source_line": 88
+      },
+      {
+        "start": 2444,
+        "end": 2472,
+        "source_line": 89
+      },
+      {
+        "start": 2472,
+        "end": 2500,
+        "source_line": 90
+      },
+      {
+        "start": 2500,
+        "end": 2529,
+        "source_line": 91
+      },
+      {
+        "start": 2529,
+        "end": 2556,
+        "source_line": 92
+      },
+      {
+        "start": 2556,
+        "end": 2584,
+        "source_line": 93
+      },
+      {
+        "start": 2584,
+        "end": 2612,
+        "source_line": 94
+      },
+      {
+        "start": 2612,
+        "end": 2640,
+        "source_line": 95
+      },
+      {
+        "start": 2640,
+        "end": 2668,
+        "source_line": 96
+      },
+      {
+        "start": 2668,
+        "end": 2696,
+        "source_line": 97
+      },
+      {
+        "start": 2696,
+        "end": 2724,
+        "source_line": 98
+      },
+      {
+        "start": 2724,
+        "end": 2754,
+        "source_line": 99
+      },
+      {
+        "start": 2754,
+        "end": 2782,
+        "source_line": 100
+      }
+    ],
+    "header": {
+      "text": "pedido;data;hora;distancia_km;chuva_mm;tempo_entrega_min",
+      "source_line": 1
+    },
+    "cleaned_rows": 99,
+    "cleaned_columns": [
+      "pedido",
+      "data",
+      "hora",
+      "distancia_km",
+      "chuva_mm",
+      "tempo_entrega_min"
+    ],
+    "exported_at": "2026-11-13T09:58:57.980062+00:00"
+  }
+}

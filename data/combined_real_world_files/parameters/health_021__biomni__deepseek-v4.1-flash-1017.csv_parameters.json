@@ -1,0 +1,25 @@
+{
+    "delimiter": ",",
+    "quotechar": "\"",
+    "escapechar": "\"",
+    "row_delimiter": "\r\n",
+    "header_lines": "1",
+    "preamble_lines": "0",
+    "footnote_lines": "0",
+    "column_names": [
+        "task",
+        "domain",
+        "run_dir",
+        "status",
+        "score",
+        "raw",
+        "metric",
+        "runtime_sec",
+        "input_tokens_total",
+        "output_tokens_total",
+        "served_models",
+        "note"
+    ],
+    "encoding": "utf-8",
+    "n_columns": 12
+}

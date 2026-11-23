@@ -1,0 +1,15 @@
+{
+    "delimiter": ",",
+    "quotechar": "\"",
+    "escapechar": "\"",
+    "row_delimiter": "\r\n",
+    "header_lines": "1",
+    "preamble_lines": "0",
+    "footnote_lines": "0",
+    "column_names": [
+        "Prompt",
+        "Gst launch pipeline"
+    ],
+    "encoding": "utf-8",
+    "n_columns": 2
+}

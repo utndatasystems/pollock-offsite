@@ -1,0 +1,75 @@
+{
+  "schema_version": 1,
+  "canonical": "canonical",
+  "accept_origin": false,
+  "tables": {
+    "primary": {
+      "path": "primary.csv",
+      "role": "primary"
+    },
+    "alternative_1": {
+      "path": "alternative_1.csv",
+      "role": "primary"
+    },
+    "alternative_2": {
+      "path": "alternative_2.csv",
+      "role": "primary"
+    },
+    "alternative_3": {
+      "path": "alternative_3.csv",
+      "role": "primary"
+    },
+    "alternative_4": {
+      "path": "alternative_4.csv",
+      "role": "primary"
+    },
+    "alternative_5": {
+      "path": "alternative_5.csv",
+      "role": "primary"
+    }
+  },
+  "alternatives": [
+    {
+      "id": "canonical",
+      "comparison": "single_table",
+      "tables": [
+        "primary"
+      ]
+    },
+    {
+      "id": "alternative_1",
+      "comparison": "single_table",
+      "tables": [
+        "alternative_1"
+      ]
+    },
+    {
+      "id": "alternative_2",
+      "comparison": "single_table",
+      "tables": [
+        "alternative_2"
+      ]
+    },
+    {
+      "id": "alternative_3",
+      "comparison": "single_table",
+      "tables": [
+        "alternative_3"
+      ]
+    },
+    {
+      "id": "alternative_4",
+      "comparison": "single_table",
+      "tables": [
+        "alternative_4"
+      ]
+    },
+    {
+      "id": "alternative_5",
+      "comparison": "single_table",
+      "tables": [
+        "alternative_5"
+      ]
+    }
+  ]
+}

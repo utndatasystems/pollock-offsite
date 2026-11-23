@@ -1,0 +1,402 @@
+{
+  "provenance": {
+    "candidate_id": "demographics_022",
+    "topic": "demographics",
+    "search_term": "population",
+    "repository": "scorvec/midterms-2026",
+    "repository_url": "https://github.com/scorvec/midterms-2026",
+    "source_path": "data/manual/race_polls.csv",
+    "source_url": "https://github.com/scorvec/midterms-2026/blob/main/data/manual/race_polls.csv",
+    "commit_ref": "main",
+    "license_spdx": "MIT",
+    "license_url": "https://api.github.com/repos/scorvec/midterms-2026/license?ref=main",
+    "local_path": "demographics/demographics_022__race_polls.csv",
+    "encoding": "utf-8",
+    "delimiter": ",",
+    "byte_size": "19009",
+    "physical_lines": "63",
+    "logical_rows": "63",
+    "mode_columns": "15",
+    "anomaly_score": "11",
+    "anomalies": "inconsistent_field_counts;mixed_line_endings;possible_preamble",
+    "profile_error": ""
+  },
+  "annotation": {
+    "source": "demographics/demographics_022__race_polls.csv",
+    "source_encoding": "utf-8",
+    "input_delimiter": ",",
+    "source_line_ranges": [
+      {
+        "start": 1,
+        "end": 63
+      }
+    ],
+    "shown_line_count": 63,
+    "source_total_lines": 63,
+    "issues": [
+      {
+        "label": "inconsistent_field_counts",
+        "reason": "Logical records do not all contain the modal number of fields.",
+        "lines": "21-22"
+      },
+      {
+        "label": "mixed_line_endings",
+        "reason": "The file mixes CRLF, LF, or CR line endings.",
+        "lines": "file-level"
+      },
+      {
+        "label": "possible_preamble",
+        "reason": "Records before the stable table shape resemble title or metadata rows.",
+        "lines": "1-5"
+      }
+    ],
+    "copy_events": [
+      {
+        "ranges": [
+          {
+            "start": 2,
+            "end": 63
+          }
+        ],
+        "characters": 18905,
+        "copied_at": "2026-11-13T09:45:30.539Z"
+      }
+    ],
+    "error_description": "inconsistent field counts on the first 4 data rows",
+    "working_origin_spans": [
+      {
+        "start": 0,
+        "end": 193,
+        "source_line": 2
+      },
+      {
+        "start": 193,
+        "end": 388,
+        "source_line": 3
+      },
+      {
+        "start": 388,
+        "end": 568,
+        "source_line": 4
+      },
+      {
+        "start": 568,
+        "end": 763,
+        "source_line": 5
+      },
+      {
+        "start": 763,
+        "end": 958,
+        "source_line": 6
+      },
+      {
+        "start": 958,
+        "end": 1114,
+        "source_line": 7
+      },
+      {
+        "start": 1114,
+        "end": 1272,
+        "source_line": 8
+      },
+      {
+        "start": 1272,
+        "end": 1427,
+        "source_line": 9
+      },
+      {
+        "start": 1427,
+        "end": 1585,
+        "source_line": 10
+      },
+      {
+        "start": 1585,
+        "end": 1744,
+        "source_line": 11
+      },
+      {
+        "start": 1744,
+        "end": 1904,
+        "source_line": 12
+      },
+      {
+        "start": 1904,
+        "end": 2061,
+        "source_line": 13
+      },
+      {
+        "start": 2061,
+        "end": 2219,
+        "source_line": 14
+      },
+      {
+        "start": 2219,
+        "end": 2374,
+        "source_line": 15
+      },
+      {
+        "start": 2374,
+        "end": 2529,
+        "source_line": 16
+      },
+      {
+        "start": 2529,
+        "end": 2687,
+        "source_line": 17
+      },
+      {
+        "start": 2687,
+        "end": 2850,
+        "source_line": 18
+      },
+      {
+        "start": 2850,
+        "end": 3005,
+        "source_line": 19
+      },
+      {
+        "start": 3005,
+        "end": 3163,
+        "source_line": 20
+      },
+      {
+        "start": 3163,
+        "end": 3370,
+        "source_line": 21
+      },
+      {
+        "start": 3370,
+        "end": 3564,
+        "source_line": 22
+      },
+      {
+        "start": 3564,
+        "end": 3833,
+        "source_line": 23
+      },
+      {
+        "start": 3833,
+        "end": 4105,
+        "source_line": 24
+      },
+      {
+        "start": 4105,
+        "end": 4375,
+        "source_line": 25
+      },
+      {
+        "start": 4375,
+        "end": 4629,
+        "source_line": 26
+      },
+      {
+        "start": 4629,
+        "end": 4893,
+        "source_line": 27
+      },
+      {
+        "start": 4893,
+        "end": 5046,
+        "source_line": 28
+      },
+      {
+        "start": 5046,
+        "end": 5201,
+        "source_line": 29
+      },
+      {
+        "start": 5201,
+        "end": 5456,
+        "source_line": 30
+      },
+      {
+        "start": 5456,
+        "end": 5659,
+        "source_line": 31
+      },
+      {
+        "start": 5659,
+        "end": 5915,
+        "source_line": 32
+      },
+      {
+        "start": 5915,
+        "end": 6119,
+        "source_line": 33
+      },
+      {
+        "start": 6119,
+        "end": 6265,
+        "source_line": 34
+      },
+      {
+        "start": 6265,
+        "end": 6481,
+        "source_line": 35
+      },
+      {
+        "start": 6481,
+        "end": 6696,
+        "source_line": 36
+      },
+      {
+        "start": 6696,
+        "end": 7052,
+        "source_line": 37
+      },
+      {
+        "start": 7052,
+        "end": 7386,
+        "source_line": 38
+      },
+      {
+        "start": 7386,
+        "end": 7704,
+        "source_line": 39
+      },
+      {
+        "start": 7704,
+        "end": 8009,
+        "source_line": 40
+      },
+      {
+        "start": 8009,
+        "end": 8366,
+        "source_line": 41
+      },
+      {
+        "start": 8366,
+        "end": 8882,
+        "source_line": 42
+      },
+      {
+        "start": 8882,
+        "end": 9324,
+        "source_line": 43
+      },
+      {
+        "start": 9324,
+        "end": 9747,
+        "source_line": 44
+      },
+      {
+        "start": 9747,
+        "end": 10152,
+        "source_line": 45
+      },
+      {
+        "start": 10152,
+        "end": 10626,
+        "source_line": 46
+      },
+      {
+        "start": 10626,
+        "end": 11088,
+        "source_line": 47
+      },
+      {
+        "start": 11088,
+        "end": 11552,
+        "source_line": 48
+      },
+      {
+        "start": 11552,
+        "end": 12019,
+        "source_line": 49
+      },
+      {
+        "start": 12019,
+        "end": 12481,
+        "source_line": 50
+      },
+      {
+        "start": 12481,
+        "end": 12944,
+        "source_line": 51
+      },
+      {
+        "start": 12944,
+        "end": 13409,
+        "source_line": 52
+      },
+      {
+        "start": 13409,
+        "end": 13876,
+        "source_line": 53
+      },
+      {
+        "start": 13876,
+        "end": 14342,
+        "source_line": 54
+      },
+      {
+        "start": 14342,
+        "end": 14812,
+        "source_line": 55
+      },
+      {
+        "start": 14812,
+        "end": 15352,
+        "source_line": 56
+      },
+      {
+        "start": 15352,
+        "end": 15894,
+        "source_line": 57
+      },
+      {
+        "start": 15894,
+        "end": 16367,
+        "source_line": 58
+      },
+      {
+        "start": 16367,
+        "end": 16887,
+        "source_line": 59
+      },
+      {
+        "start": 16887,
+        "end": 17398,
+        "source_line": 60
+      },
+      {
+        "start": 17398,
+        "end": 17902,
+        "source_line": 61
+      },
+      {
+        "start": 17902,
+        "end": 18388,
+        "source_line": 62
+      },
+      {
+        "start": 18388,
+        "end": 18911,
+        "source_line": 63
+      }
+    ],
+    "header": {
+      "text": "state,office,pollster,start_date,end_date,n,population,dem_name,rep_name,dem,rep,other,und,source,exact",
+      "source_line": 1
+    },
+    "cleaned_rows": 62,
+    "cleaned_columns": [
+      "state",
+      "office",
+      "pollster",
+      "start_date",
+      "end_date",
+      "n",
+      "population",
+      "dem_name",
+      "rep_name",
+      "dem",
+      "rep",
+      "other",
+      "und",
+      "source",
+      "exact"
+    ],
+    "exported_at": "2026-11-13T09:46:07.243583+00:00"
+  }
+}

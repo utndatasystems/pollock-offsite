@@ -1,0 +1,95 @@
+{
+  "provenance": {
+    "candidate_id": "transportation_ca_002",
+    "topic": "transportation",
+    "search_term": "mobility",
+    "repository": "open.canada.ca/cic/360024f2-17e9-4558-bfc1-3616485d65b9",
+    "repository_url": "https://open.canada.ca/data/en/dataset/360024f2-17e9-4558-bfc1-3616485d65b9",
+    "source_path": "Canada - International Mobility Program work permit holders by gender, occupational skill level and year in which permit(s) became effective",
+    "source_url": "https://www.ircc.canada.ca/opendata-donneesouvertes/data/ODP-TR-Work-IMP-gender_skill.csv",
+    "commit_ref": "2021-02-12T13:42:23.658275",
+    "license_spdx": "OGL-Canada-2.0",
+    "license_url": "https://open.canada.ca/en/open-government-licence-canada",
+    "local_path": "transportation/transportation_ca_002__ODP-TR-Work-IMP-gender_skill.csv",
+    "encoding": "utf-8",
+    "delimiter": "TAB",
+    "byte_size": "62559",
+    "physical_lines": "675",
+    "logical_rows": "675",
+    "mode_columns": "11",
+    "anomaly_score": "3",
+    "anomalies": "non_comma_delimiter",
+    "profile_error": ""
+  },
+  "annotation": {
+    "source": "transportation/transportation_ca_002__ODP-TR-Work-IMP-gender_skill.csv",
+    "source_encoding": "utf-8",
+    "input_delimiter": ",",
+    "source_line_ranges": [
+      {
+        "start": 1,
+        "end": 100
+      }
+    ],
+    "shown_line_count": 100,
+    "source_total_lines": 675,
+    "issues": [
+      {
+        "label": "non_comma_delimiter",
+        "reason": "The detected delimiter is not a comma.",
+        "lines": "file-level"
+      }
+    ],
+    "copy_events": [
+      {
+        "ranges": [
+          {
+            "start": 2,
+            "end": 100
+          }
+        ],
+        "characters": 9111,
+        "copied_at": "2026-11-17T12:29:17.019Z"
+      }
+    ],
+    "error_description": "tab delimiter",
+    "working_origin_spans": [
+      {
+        "start": 0,
+        "end": 4,
+        "source_line": 2
+      },
+      {
+        "start": 9006,
+        "end": 9028,
+        "source_line": 99
+      },
+      {
+        "start": 9028,
+        "end": 9111,
+        "source_line": 100
+      }
+    ],
+    "header": {
+      "present": true,
+      "text": "EN_YEAR,EN_QUARTER,EN_MONTH,FR_ANNEÉ,FR_TRIMESTRE,FR_MOIS,EN_GENDER,FR_SEXE,EN_SKILL_LEVEL,FR_NIVEAU_DE_COMPÉTENCE,TOTAL",
+      "source_line": 1
+    },
+    "cleaned_rows": 99,
+    "cleaned_column_count": 11,
+    "cleaned_columns": [
+      "EN_YEAR",
+      "EN_QUARTER",
+      "EN_MONTH",
+      "FR_ANNEÉ",
+      "FR_TRIMESTRE",
+      "FR_MOIS",
+      "EN_GENDER",
+      "FR_SEXE",
+      "EN_SKILL_LEVEL",
+      "FR_NIVEAU_DE_COMPÉTENCE",
+      "TOTAL"
+    ],
+    "exported_at": "2026-11-17T12:30:02.555570+00:00"
+  }
+}

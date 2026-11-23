@@ -1,0 +1,28 @@
+{
+    "delimiter": ",",
+    "quotechar": "\"",
+    "escapechar": "\"",
+    "row_delimiter": "\n",
+    "header_lines": "1",
+    "preamble_lines": "0",
+    "footnote_lines": "0",
+    "column_names": [
+        "layers",
+        "hidden",
+        "family_layers",
+        "reagent_layers",
+        "site_layers",
+        "score",
+        "best_epoch",
+        "val_family_top1",
+        "val_site_top1",
+        "val_reagent_oracle_top1",
+        "val_plan_top1",
+        "n_train",
+        "n_val",
+        "checkpoint",
+        "error"
+    ],
+    "encoding": "utf-8-sig",
+    "n_columns": 15
+}

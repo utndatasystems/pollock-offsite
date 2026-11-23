@@ -1,0 +1,548 @@
+{
+  "provenance": {
+    "candidate_id": "transportation_uk_003",
+    "topic": "transportation",
+    "search_term": "transportation",
+    "repository": "data.gov.uk/transport-for-greater-manchester/speed-camera-locations-in-greater-manchester",
+    "repository_url": "https://www.data.gov.uk/dataset/c428ea7f-af17-451c-8657-8e15621490ab/speed-camera-locations-in-greater-manchester",
+    "source_path": "Mobile Camera Locations",
+    "source_url": "https://odata.tfgm.com/opendata/downloads/Speed_Camera_Locations_GM_Mobile.csv",
+    "commit_ref": "2014-09-02T11:35:52.148669",
+    "license_spdx": "OGL-UK-3.0",
+    "license_url": "http://reference.data.gov.uk/id/open-government-licence",
+    "local_path": "transportation/transportation_uk_003__Speed_Camera_Locations_GM_Mobile.csv",
+    "encoding": "utf-8",
+    "delimiter": ",",
+    "byte_size": "19556",
+    "physical_lines": "244",
+    "logical_rows": "242",
+    "mode_columns": "4",
+    "anomaly_score": "2",
+    "anomalies": "mixed_line_endings",
+    "profile_error": ""
+  },
+  "annotation": {
+    "source": "transportation/transportation_uk_003__Speed_Camera_Locations_GM_Mobile.csv",
+    "source_encoding": "utf-8",
+    "input_delimiter": ",",
+    "source_line_ranges": [
+      {
+        "start": 1,
+        "end": 100
+      }
+    ],
+    "shown_line_count": 100,
+    "source_total_lines": 244,
+    "issues": [
+      {
+        "label": "mixed_line_endings",
+        "reason": "The file mixes CRLF, LF, or CR line endings.",
+        "lines": "file-level"
+      }
+    ],
+    "copy_events": [
+      {
+        "ranges": [
+          {
+            "start": 2,
+            "end": 100
+          }
+        ],
+        "characters": 8048,
+        "copied_at": "2026-11-17T12:38:18.196Z"
+      }
+    ],
+    "error_description": "preamble but with fitting padded commas",
+    "working_origin_spans": [
+      {
+        "start": 0,
+        "end": 4,
+        "source_line": 6
+      },
+      {
+        "start": 4,
+        "end": 111,
+        "source_line": 7
+      },
+      {
+        "start": 111,
+        "end": 187,
+        "source_line": 8
+      },
+      {
+        "start": 187,
+        "end": 266,
+        "source_line": 9
+      },
+      {
+        "start": 266,
+        "end": 344,
+        "source_line": 10
+      },
+      {
+        "start": 344,
+        "end": 420,
+        "source_line": 11
+      },
+      {
+        "start": 420,
+        "end": 491,
+        "source_line": 12
+      },
+      {
+        "start": 491,
+        "end": 563,
+        "source_line": 13
+      },
+      {
+        "start": 563,
+        "end": 643,
+        "source_line": 14
+      },
+      {
+        "start": 643,
+        "end": 716,
+        "source_line": 15
+      },
+      {
+        "start": 716,
+        "end": 797,
+        "source_line": 16
+      },
+      {
+        "start": 797,
+        "end": 866,
+        "source_line": 17
+      },
+      {
+        "start": 866,
+        "end": 946,
+        "source_line": 18
+      },
+      {
+        "start": 946,
+        "end": 1028,
+        "source_line": 19
+      },
+      {
+        "start": 1028,
+        "end": 1105,
+        "source_line": 20
+      },
+      {
+        "start": 1105,
+        "end": 1171,
+        "source_line": 21
+      },
+      {
+        "start": 1171,
+        "end": 1237,
+        "source_line": 22
+      },
+      {
+        "start": 1237,
+        "end": 1327,
+        "source_line": 23
+      },
+      {
+        "start": 1327,
+        "end": 1366,
+        "source_line": 24
+      },
+      {
+        "start": 1366,
+        "end": 1449,
+        "source_line": 25
+      },
+      {
+        "start": 1449,
+        "end": 1533,
+        "source_line": 26
+      },
+      {
+        "start": 1533,
+        "end": 1629,
+        "source_line": 27
+      },
+      {
+        "start": 1629,
+        "end": 1716,
+        "source_line": 28
+      },
+      {
+        "start": 1716,
+        "end": 1800,
+        "source_line": 29
+      },
+      {
+        "start": 1800,
+        "end": 1865,
+        "source_line": 30
+      },
+      {
+        "start": 1865,
+        "end": 1962,
+        "source_line": 31
+      },
+      {
+        "start": 1962,
+        "end": 2058,
+        "source_line": 32
+      },
+      {
+        "start": 2058,
+        "end": 2115,
+        "source_line": 33
+      },
+      {
+        "start": 2115,
+        "end": 2211,
+        "source_line": 34
+      },
+      {
+        "start": 2211,
+        "end": 2286,
+        "source_line": 35
+      },
+      {
+        "start": 2286,
+        "end": 2362,
+        "source_line": 36
+      },
+      {
+        "start": 2362,
+        "end": 2439,
+        "source_line": 37
+      },
+      {
+        "start": 2439,
+        "end": 2510,
+        "source_line": 38
+      },
+      {
+        "start": 2510,
+        "end": 2610,
+        "source_line": 39
+      },
+      {
+        "start": 2610,
+        "end": 2689,
+        "source_line": 40
+      },
+      {
+        "start": 2689,
+        "end": 2753,
+        "source_line": 41
+      },
+      {
+        "start": 2753,
+        "end": 2836,
+        "source_line": 42
+      },
+      {
+        "start": 2836,
+        "end": 2942,
+        "source_line": 43
+      },
+      {
+        "start": 2942,
+        "end": 3032,
+        "source_line": 44
+      },
+      {
+        "start": 3032,
+        "end": 3084,
+        "source_line": 45
+      },
+      {
+        "start": 3084,
+        "end": 3145,
+        "source_line": 46
+      },
+      {
+        "start": 3145,
+        "end": 3207,
+        "source_line": 47
+      },
+      {
+        "start": 3207,
+        "end": 3273,
+        "source_line": 48
+      },
+      {
+        "start": 3273,
+        "end": 3342,
+        "source_line": 49
+      },
+      {
+        "start": 3342,
+        "end": 3431,
+        "source_line": 50
+      },
+      {
+        "start": 3431,
+        "end": 3539,
+        "source_line": 51
+      },
+      {
+        "start": 3539,
+        "end": 3614,
+        "source_line": 52
+      },
+      {
+        "start": 3614,
+        "end": 3689,
+        "source_line": 53
+      },
+      {
+        "start": 3689,
+        "end": 3766,
+        "source_line": 54
+      },
+      {
+        "start": 3766,
+        "end": 3850,
+        "source_line": 55
+      },
+      {
+        "start": 3850,
+        "end": 3927,
+        "source_line": 56
+      },
+      {
+        "start": 3927,
+        "end": 4001,
+        "source_line": 57
+      },
+      {
+        "start": 4001,
+        "end": 4072,
+        "source_line": 58
+      },
+      {
+        "start": 4072,
+        "end": 4141,
+        "source_line": 59
+      },
+      {
+        "start": 4141,
+        "end": 4231,
+        "source_line": 60
+      },
+      {
+        "start": 4231,
+        "end": 4305,
+        "source_line": 61
+      },
+      {
+        "start": 4305,
+        "end": 4392,
+        "source_line": 62
+      },
+      {
+        "start": 4392,
+        "end": 4467,
+        "source_line": 63
+      },
+      {
+        "start": 4467,
+        "end": 4589,
+        "source_line": 64
+      },
+      {
+        "start": 4589,
+        "end": 4702,
+        "source_line": 65
+      },
+      {
+        "start": 4702,
+        "end": 4812,
+        "source_line": 66
+      },
+      {
+        "start": 4812,
+        "end": 4922,
+        "source_line": 67
+      },
+      {
+        "start": 4922,
+        "end": 5002,
+        "source_line": 68
+      },
+      {
+        "start": 5002,
+        "end": 5082,
+        "source_line": 69
+      },
+      {
+        "start": 5082,
+        "end": 5173,
+        "source_line": 70
+      },
+      {
+        "start": 5173,
+        "end": 5262,
+        "source_line": 71
+      },
+      {
+        "start": 5262,
+        "end": 5329,
+        "source_line": 72
+      },
+      {
+        "start": 5329,
+        "end": 5438,
+        "source_line": 73
+      },
+      {
+        "start": 5438,
+        "end": 5535,
+        "source_line": 74
+      },
+      {
+        "start": 5535,
+        "end": 5632,
+        "source_line": 75
+      },
+      {
+        "start": 5632,
+        "end": 5714,
+        "source_line": 76
+      },
+      {
+        "start": 5714,
+        "end": 5791,
+        "source_line": 77
+      },
+      {
+        "start": 5791,
+        "end": 5872,
+        "source_line": 78
+      },
+      {
+        "start": 5872,
+        "end": 5957,
+        "source_line": 79
+      },
+      {
+        "start": 5957,
+        "end": 6061,
+        "source_line": 80
+      },
+      {
+        "start": 6061,
+        "end": 6145,
+        "source_line": 81
+      },
+      {
+        "start": 6145,
+        "end": 6230,
+        "source_line": 82
+      },
+      {
+        "start": 6230,
+        "end": 6312,
+        "source_line": 83
+      },
+      {
+        "start": 6312,
+        "end": 6402,
+        "source_line": 84
+      },
+      {
+        "start": 6402,
+        "end": 6487,
+        "source_line": 85
+      },
+      {
+        "start": 6487,
+        "end": 6556,
+        "source_line": 86
+      },
+      {
+        "start": 6556,
+        "end": 6642,
+        "source_line": 87
+      },
+      {
+        "start": 6642,
+        "end": 6725,
+        "source_line": 88
+      },
+      {
+        "start": 6725,
+        "end": 6808,
+        "source_line": 89
+      },
+      {
+        "start": 6808,
+        "end": 6875,
+        "source_line": 90
+      },
+      {
+        "start": 6875,
+        "end": 6944,
+        "source_line": 91
+      },
+      {
+        "start": 6944,
+        "end": 7026,
+        "source_line": 92
+      },
+      {
+        "start": 7026,
+        "end": 7116,
+        "source_line": 93
+      },
+      {
+        "start": 7116,
+        "end": 7183,
+        "source_line": 94
+      },
+      {
+        "start": 7183,
+        "end": 7270,
+        "source_line": 95
+      },
+      {
+        "start": 7270,
+        "end": 7332,
+        "source_line": 96
+      },
+      {
+        "start": 7332,
+        "end": 7366,
+        "source_line": 97
+      },
+      {
+        "start": 7366,
+        "end": 7394,
+        "source_line": 98
+      },
+      {
+        "start": 7394,
+        "end": 7484,
+        "source_line": 99
+      },
+      {
+        "start": 7484,
+        "end": 7551,
+        "source_line": 100
+      }
+    ],
+    "header": {
+      "present": true,
+      "text": "District,Buffer Extent Description,Speed Limit MPH,",
+      "source_line": 1
+    },
+    "cleaned_rows": 94,
+    "cleaned_column_count": 4,
+    "cleaned_columns": [
+      "District",
+      "Buffer Extent Description",
+      "Speed Limit MPH",
+      "Unnamed: 3"
+    ],
+    "exported_at": "2026-11-17T12:38:49.041679+00:00"
+  }
+}

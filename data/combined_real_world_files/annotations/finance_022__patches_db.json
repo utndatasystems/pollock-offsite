@@ -1,0 +1,115 @@
+{
+  "provenance": {
+    "candidate_id": "finance_022",
+    "topic": "finance",
+    "search_term": "accounting",
+    "repository": "gpipperr/IHateWeblogic",
+    "repository_url": "https://github.com/gpipperr/IHateWeblogic",
+    "source_path": "09-Install/download/patches_db.csv",
+    "source_url": "https://github.com/gpipperr/IHateWeblogic/blob/main/09-Install/download/patches_db.csv",
+    "commit_ref": "main",
+    "license_spdx": "Apache-2.0",
+    "license_url": "https://api.github.com/repos/gpipperr/IHateWeblogic/license?ref=main",
+    "local_path": "finance/finance_022__patches_db.csv",
+    "encoding": "utf-8",
+    "delimiter": ";",
+    "byte_size": "2301",
+    "physical_lines": "21",
+    "logical_rows": "21",
+    "mode_columns": "1",
+    "anomaly_score": "13",
+    "anomalies": "comment_rows;inconsistent_field_counts;leading_comment;non_comma_delimiter",
+    "profile_error": ""
+  },
+  "annotation": {
+    "source": "finance/finance_022__patches_db.csv",
+    "source_encoding": "utf-8",
+    "input_delimiter": ";",
+    "source_line_ranges": [
+      {
+        "start": 1,
+        "end": 21
+      }
+    ],
+    "shown_line_count": 21,
+    "source_total_lines": 21,
+    "issues": [
+      {
+        "label": "comment_rows",
+        "reason": "Rows beginning with '#' may be comments rather than table records.",
+        "lines": "1-15"
+      },
+      {
+        "label": "inconsistent_field_counts",
+        "reason": "Logical records do not all contain the modal number of fields.",
+        "lines": "6, 10, 15-21"
+      },
+      {
+        "label": "leading_comment",
+        "reason": "The file begins with a possible comment row.",
+        "lines": "1"
+      },
+      {
+        "label": "non_comma_delimiter",
+        "reason": "The detected delimiter is not a comma.",
+        "lines": "file-level"
+      }
+    ],
+    "copy_events": [
+      {
+        "ranges": [
+          {
+            "start": 2,
+            "end": 21
+          }
+        ],
+        "characters": 2197,
+        "copied_at": "2026-11-13T11:04:20.700Z"
+      }
+    ],
+    "error_description": "semicolon and preamble",
+    "working_origin_spans": [
+      {
+        "start": 0,
+        "end": 212,
+        "source_line": 17
+      },
+      {
+        "start": 212,
+        "end": 452,
+        "source_line": 18
+      },
+      {
+        "start": 452,
+        "end": 633,
+        "source_line": 19
+      },
+      {
+        "start": 633,
+        "end": 823,
+        "source_line": 20
+      },
+      {
+        "start": 823,
+        "end": 1027,
+        "source_line": 21
+      }
+    ],
+    "header": {
+      "text": "patch;platform;file_regexp;required;step;description;dir;sha256",
+      "source_line": 1
+    },
+    "cleaned_rows": 5,
+    "cleaned_columns": [
+      "patch",
+      "platform",
+      "file_regexp",
+      "required",
+      "step",
+      "description",
+      "dir",
+      "sha256"
+    ],
+    "exported_at": "2026-11-13T11:05:25.376010+00:00"
+  }
+}

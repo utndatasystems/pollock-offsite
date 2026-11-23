@@ -1,0 +1,245 @@
+{
+  "provenance": {
+    "candidate_id": "demographics_034",
+    "topic": "demographics",
+    "search_term": "population",
+    "repository": "briandeegan82/open-cam",
+    "repository_url": "https://github.com/briandeegan82/open-cam",
+    "source_path": "config/road_rtables/placeholder_dry_model.csv",
+    "source_url": "https://github.com/briandeegan82/open-cam/blob/main/config/road_rtables/placeholder_dry_model.csv",
+    "commit_ref": "main",
+    "license_spdx": "MIT",
+    "license_url": "https://api.github.com/repos/briandeegan82/open-cam/license?ref=main",
+    "local_path": "demographics/demographics_034__placeholder_dry_model.csv",
+    "encoding": "utf-8",
+    "delimiter": ",",
+    "byte_size": "3962",
+    "physical_lines": "35",
+    "logical_rows": "35",
+    "mode_columns": "21",
+    "anomaly_score": "9",
+    "anomalies": "comment_rows;leading_comment;possible_preamble",
+    "profile_error": ""
+  },
+  "annotation": {
+    "source": "demographics/demographics_034__placeholder_dry_model.csv",
+    "source_encoding": "utf-8",
+    "input_delimiter": ",",
+    "source_line_ranges": [
+      {
+        "start": 1,
+        "end": 35
+      }
+    ],
+    "shown_line_count": 35,
+    "source_total_lines": 35,
+    "issues": [
+      {
+        "label": "comment_rows",
+        "reason": "Rows beginning with '#' may be comments rather than table records.",
+        "lines": "1-5"
+      },
+      {
+        "label": "leading_comment",
+        "reason": "The file begins with a possible comment row.",
+        "lines": "1"
+      },
+      {
+        "label": "possible_preamble",
+        "reason": "Records before the stable table shape resemble title or metadata rows.",
+        "lines": "1-5"
+      }
+    ],
+    "copy_events": [
+      {
+        "ranges": [
+          {
+            "start": 2,
+            "end": 35
+          }
+        ],
+        "characters": 3932,
+        "copied_at": "2026-11-17T11:34:53.282Z"
+      }
+    ],
+    "error_description": "preamble",
+    "working_origin_spans": [
+      {
+        "start": 0,
+        "end": 122,
+        "source_line": 7
+      },
+      {
+        "start": 122,
+        "end": 243,
+        "source_line": 8
+      },
+      {
+        "start": 243,
+        "end": 367,
+        "source_line": 9
+      },
+      {
+        "start": 367,
+        "end": 487,
+        "source_line": 10
+      },
+      {
+        "start": 487,
+        "end": 603,
+        "source_line": 11
+      },
+      {
+        "start": 603,
+        "end": 728,
+        "source_line": 12
+      },
+      {
+        "start": 728,
+        "end": 849,
+        "source_line": 13
+      },
+      {
+        "start": 849,
+        "end": 971,
+        "source_line": 14
+      },
+      {
+        "start": 971,
+        "end": 1089,
+        "source_line": 15
+      },
+      {
+        "start": 1089,
+        "end": 1212,
+        "source_line": 16
+      },
+      {
+        "start": 1212,
+        "end": 1334,
+        "source_line": 17
+      },
+      {
+        "start": 1334,
+        "end": 1454,
+        "source_line": 18
+      },
+      {
+        "start": 1454,
+        "end": 1575,
+        "source_line": 19
+      },
+      {
+        "start": 1575,
+        "end": 1696,
+        "source_line": 20
+      },
+      {
+        "start": 1696,
+        "end": 1818,
+        "source_line": 21
+      },
+      {
+        "start": 1818,
+        "end": 1940,
+        "source_line": 22
+      },
+      {
+        "start": 1940,
+        "end": 2065,
+        "source_line": 23
+      },
+      {
+        "start": 2065,
+        "end": 2193,
+        "source_line": 24
+      },
+      {
+        "start": 2193,
+        "end": 2319,
+        "source_line": 25
+      },
+      {
+        "start": 2319,
+        "end": 2450,
+        "source_line": 26
+      },
+      {
+        "start": 2450,
+        "end": 2578,
+        "source_line": 27
+      },
+      {
+        "start": 2578,
+        "end": 2707,
+        "source_line": 28
+      },
+      {
+        "start": 2707,
+        "end": 2837,
+        "source_line": 29
+      },
+      {
+        "start": 2837,
+        "end": 2964,
+        "source_line": 30
+      },
+      {
+        "start": 2964,
+        "end": 3094,
+        "source_line": 31
+      },
+      {
+        "start": 3094,
+        "end": 3228,
+        "source_line": 32
+      },
+      {
+        "start": 3228,
+        "end": 3359,
+        "source_line": 33
+      },
+      {
+        "start": 3359,
+        "end": 3494,
+        "source_line": 34
+      },
+      {
+        "start": 3494,
+        "end": 3626,
+        "source_line": 35
+      }
+    ],
+    "header": {
+      "present": true,
+      "text": "tan_gamma\\beta_deg,0,2,5,10,15,20,25,30,35,40,45,60,75,90,105,120,135,150,165,180",
+      "source_line": 1
+    },
+    "cleaned_rows": 29,
+    "cleaned_column_count": 21,
+    "cleaned_columns": [
+      "tan_gamma\\beta_deg",
+      "0",
+      "2",
+      "5",
+      "10",
+      "15",
+      "20",
+      "25",
+      "30",
+      "35",
+      "40",
+      "45",
+      "60",
+      "75",
+      "90",
+      "105",
+      "120",
+      "135",
+      "150",
+      "165",
+      "180"
+    ],
+    "exported_at": "2026-11-17T11:35:55.578203+00:00"
+  }
+}

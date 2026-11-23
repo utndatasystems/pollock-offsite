@@ -1,0 +1,231 @@
+{
+  "provenance": {
+    "candidate_id": "demographics_021",
+    "topic": "demographics",
+    "search_term": "election",
+    "repository": "kiliankoe/opendata-dresden",
+    "repository_url": "https://github.com/kiliankoe/opendata-dresden",
+    "source_path": "data/statistics/aerzte_-_allgemein_1993ff_dresden_nach_geschlecht.csv",
+    "source_url": "https://github.com/kiliankoe/opendata-dresden/blob/main/data/statistics/aerzte_-_allgemein_1993ff_dresden_nach_geschlecht.csv",
+    "commit_ref": "main",
+    "license_spdx": "MIT",
+    "license_url": "https://api.github.com/repos/kiliankoe/opendata-dresden/license?ref=main",
+    "local_path": "demographics/demographics_021__aerzte_-_allgemein_1993ff_dresden_nach_geschlecht.csv",
+    "encoding": "utf-8",
+    "delimiter": ";",
+    "byte_size": "617",
+    "physical_lines": "33",
+    "logical_rows": "33",
+    "mode_columns": "4",
+    "anomaly_score": "3",
+    "anomalies": "non_comma_delimiter",
+    "profile_error": ""
+  },
+  "annotation": {
+    "source": "demographics/demographics_021__aerzte_-_allgemein_1993ff_dresden_nach_geschlecht.csv",
+    "source_encoding": "utf-8",
+    "input_delimiter": ";",
+    "source_line_ranges": [
+      {
+        "start": 1,
+        "end": 33
+      }
+    ],
+    "shown_line_count": 33,
+    "source_total_lines": 33,
+    "issues": [
+      {
+        "label": "non_comma_delimiter",
+        "reason": "The detected delimiter is not a comma.",
+        "lines": "file-level"
+      }
+    ],
+    "copy_events": [
+      {
+        "characters": 582,
+        "copied_at": "2026-11-11T12:30:48.958Z",
+        "ranges": [
+          {
+            "end": 33,
+            "start": 2
+          }
+        ]
+      }
+    ],
+    "error_description": "semicolon delimiter ",
+    "working_origin_spans": [
+      {
+        "end": 15,
+        "source_line": 2,
+        "start": 0
+      },
+      {
+        "end": 30,
+        "source_line": 3,
+        "start": 15
+      },
+      {
+        "end": 45,
+        "source_line": 4,
+        "start": 30
+      },
+      {
+        "end": 60,
+        "source_line": 5,
+        "start": 45
+      },
+      {
+        "end": 75,
+        "source_line": 6,
+        "start": 60
+      },
+      {
+        "end": 90,
+        "source_line": 7,
+        "start": 75
+      },
+      {
+        "end": 105,
+        "source_line": 8,
+        "start": 90
+      },
+      {
+        "end": 120,
+        "source_line": 9,
+        "start": 105
+      },
+      {
+        "end": 135,
+        "source_line": 10,
+        "start": 120
+      },
+      {
+        "end": 150,
+        "source_line": 11,
+        "start": 135
+      },
+      {
+        "end": 165,
+        "source_line": 12,
+        "start": 150
+      },
+      {
+        "end": 180,
+        "source_line": 13,
+        "start": 165
+      },
+      {
+        "end": 195,
+        "source_line": 14,
+        "start": 180
+      },
+      {
+        "end": 210,
+        "source_line": 15,
+        "start": 195
+      },
+      {
+        "end": 225,
+        "source_line": 16,
+        "start": 210
+      },
+      {
+        "end": 246,
+        "source_line": 17,
+        "start": 225
+      },
+      {
+        "end": 267,
+        "source_line": 18,
+        "start": 246
+      },
+      {
+        "end": 288,
+        "source_line": 19,
+        "start": 267
+      },
+      {
+        "end": 309,
+        "source_line": 20,
+        "start": 288
+      },
+      {
+        "end": 330,
+        "source_line": 21,
+        "start": 309
+      },
+      {
+        "end": 351,
+        "source_line": 22,
+        "start": 330
+      },
+      {
+        "end": 372,
+        "source_line": 23,
+        "start": 351
+      },
+      {
+        "end": 393,
+        "source_line": 24,
+        "start": 372
+      },
+      {
+        "end": 414,
+        "source_line": 25,
+        "start": 393
+      },
+      {
+        "end": 435,
+        "source_line": 26,
+        "start": 414
+      },
+      {
+        "end": 456,
+        "source_line": 27,
+        "start": 435
+      },
+      {
+        "end": 477,
+        "source_line": 28,
+        "start": 456
+      },
+      {
+        "end": 498,
+        "source_line": 29,
+        "start": 477
+      },
+      {
+        "end": 519,
+        "source_line": 30,
+        "start": 498
+      },
+      {
+        "end": 540,
+        "source_line": 31,
+        "start": 519
+      },
+      {
+        "end": 561,
+        "source_line": 32,
+        "start": 540
+      },
+      {
+        "end": 582,
+        "source_line": 33,
+        "start": 561
+      }
+    ],
+    "header": {
+      "text": "Jahr;Insgesamt;männlich;weiblich",
+      "source_line": 1
+    },
+    "cleaned_rows": 32,
+    "cleaned_columns": [
+      "Jahr",
+      "Insgesamt",
+      "männlich",
+      "weiblich"
+    ],
+    "exported_at": "2026-11-13T09:44:50.723482+00:00"
+  }
+}

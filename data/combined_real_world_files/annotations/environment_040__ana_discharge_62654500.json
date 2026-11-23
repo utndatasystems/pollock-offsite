@@ -1,0 +1,60 @@
+{
+  "provenance": {
+    "candidate_id": "environment_040",
+    "topic": "environment",
+    "search_term": "climate",
+    "repository": "Hasindu-IWMI/dt-brazil",
+    "repository_url": "https://github.com/Hasindu-IWMI/dt-brazil",
+    "source_path": "data/processed/ana_discharge_62654500.csv",
+    "source_url": "https://github.com/Hasindu-IWMI/dt-brazil/blob/main/data/processed/ana_discharge_62654500.csv",
+    "commit_ref": "main",
+    "license_spdx": "Apache-2.0",
+    "license_url": "https://api.github.com/repos/Hasindu-IWMI/dt-brazil/license?ref=main",
+    "local_path": "environment/environment_040__ana_discharge_62654500.csv",
+    "encoding": "utf-8",
+    "delimiter": ",",
+    "byte_size": "37",
+    "physical_lines": "1",
+    "logical_rows": "1",
+    "mode_columns": "3",
+    "anomaly_score": "3",
+    "anomalies": "single_record_table",
+    "profile_error": ""
+  },
+  "annotation": {
+    "source": "environment/environment_040__ana_discharge_62654500.csv",
+    "source_encoding": "utf-8",
+    "input_delimiter": ",",
+    "source_line_ranges": [
+      {
+        "start": 1,
+        "end": 1
+      }
+    ],
+    "shown_line_count": 1,
+    "source_total_lines": 1,
+    "issues": [
+      {
+        "label": "single_record_table",
+        "reason": "The file contains only one non-empty logical record.",
+        "lines": "file-level"
+      }
+    ],
+    "copy_events": [],
+    "error_description": "only header, empty body",
+    "working_origin_spans": [],
+    "header": {
+      "present": true,
+      "text": "date,discharge_m3s,consistency_level",
+      "source_line": 1
+    },
+    "cleaned_rows": 0,
+    "cleaned_column_count": 3,
+    "cleaned_columns": [
+      "date",
+      "discharge_m3s",
+      "consistency_level"
+    ],
+    "exported_at": "2026-11-17T13:13:13.318037+00:00"
+  }
+}

@@ -1,0 +1,28 @@
+{
+    "delimiter": "\t",
+    "quotechar": "\"",
+    "escapechar": "\"",
+    "row_delimiter": "\r\n",
+    "header_lines": "1",
+    "preamble_lines": "0",
+    "footnote_lines": "0",
+    "column_names": [
+        "EN_YEAR",
+        "EN_QUARTER",
+        "EN_MONTH",
+        "FR_ANNEÉ",
+        "FR_TRIMESTRE",
+        "FR_MOIS",
+        "EN_PROVINCE_TERRITORY",
+        "FR_PROVINCE_TERRITOIRE",
+        "EN_IMMIGRATION_CATEGORY-MAIN_CATEGORY",
+        "FR_CATÉGORIE_D'IMMIGRATION-CATÉGORIE_PRINCIPALE",
+        "EN_IMMIGRATION_CATEGORY-GROUP",
+        "FR_CATÉGORIE_D'IMMIGRATION-GROUPE",
+        "EN_IMMIGRATION_CATEGORY-COMPONENT",
+        "FR_CATÉGORIE_D'IMMIGRATION-COMPOSANTE",
+        "TOTAL"
+    ],
+    "encoding": "utf-8",
+    "n_columns": 15
+}

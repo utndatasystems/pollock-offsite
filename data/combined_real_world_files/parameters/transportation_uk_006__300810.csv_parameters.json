@@ -1,0 +1,16 @@
+{
+    "delimiter": ",",
+    "quotechar": "\"",
+    "escapechar": "\"",
+    "row_delimiter": "\r\n",
+    "header_lines": "1",
+    "preamble_lines": "0",
+    "footnote_lines": "0",
+    "column_names": [
+        "#",
+        "Search Term",
+        "Visits from this term"
+    ],
+    "encoding": "cp1252",
+    "n_columns": 3
+}

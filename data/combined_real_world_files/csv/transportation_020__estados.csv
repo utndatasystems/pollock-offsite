@@ -1,0 +1,28 @@
+;CD_UF;NM_UF;SIGLA;NM_REGIAO;AREA;X_TXT_OFF;Y_TXT_OFF
+0;11;Rondônia;RO;Norte;237765.24;-1;0
+1;12;Acre;AC;Norte;164123.964;-0.5;0
+2;13;Amazonas;AM;Norte;1559167.889;0;0
+3;14;Roraima;RR;Norte;223644.527;-0.5;0
+4;15;Pará;PA;Norte;1245870.798;0;0
+5;16;Amapá;AP;Norte;142470.762;-0.5;0
+6;17;Tocantins;TO;Norte;277466.763;-0.5;0
+7;21;Maranhão;MA;Nordeste;329642.182;-0.4;-0.4
+8;22;Piauí;PI;Nordeste;251756.515;-0.3;-0.6
+9;23;Ceará;CE;Nordeste;148894.441;-0.2;-0.4
+10;24;Rio Grande do Norte;RN;Nordeste;52809.602;1.6;0
+11;25;Paraíba;PB;Nordeste;56467.242;2.2;-0.2
+12;26;Pernambuco;PE;Nordeste;98067.881;3.25;-0.6
+13;27;Alagoas;AL;Nordeste;27848.140;0.9;-1.1
+14;28;Sergipe;SE;Nordeste;21925.424;0.4;-1.4
+15;29;Bahia;BA;Nordeste;564760.427;0;0
+16;31;Minas Gerais;MG;Sudeste;586521.123;0;0
+17;32;Espírito Santo;ES;Sudeste;46074.447;0.6;-1.4
+18;33;Rio de Janeiro;RJ;Sudeste;43750.427;-0.2;-2
+19;35;São Paulo;SP;Sudeste;248219.481;-0.6;-0.4
+20;41;Paraná;PR;Sul;199298.979;-0.6;-0.4
+21;42;Santa Catarina;SC;Sul;95730.684;0;-0.4
+22;43;Rio Grande do Sul;RS;Sul;281707.156;0;0
+23;50;Mato Grosso do Sul;MS;Centro-oeste;357145.534;-0.4;-0.4
+24;51;Mato Grosso;MT;Centro-oeste;903207.019;0;0
+25;52;Goiás;GO;Centro-oeste;340203.329;-1.4;-1.4
+26;53;Distrito Federal;DF;Centro-oeste;5760.783;-1.2;0.55

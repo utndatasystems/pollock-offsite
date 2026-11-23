@@ -1,0 +1,182 @@
+{
+  "provenance": {
+    "candidate_id": "finance_043",
+    "topic": "finance",
+    "search_term": "accounting",
+    "repository": "manishklach/kv-cache-foundry",
+    "repository_url": "https://github.com/manishklach/kv-cache-foundry",
+    "source_path": "experiments/output-stability/gpu-margin-gate/results/runpod-h100-2026-11-16.csv",
+    "source_url": "https://github.com/manishklach/kv-cache-foundry/blob/main/experiments/output-stability/gpu-margin-gate/results/runpod-h100-2026-11-16.csv",
+    "commit_ref": "main",
+    "license_spdx": "Apache-2.0",
+    "license_url": "https://api.github.com/repos/manishklach/kv-cache-foundry/license?ref=main",
+    "local_path": "finance/finance_043__runpod-h100-2026-11-16.csv",
+    "encoding": "utf-8",
+    "delimiter": ",",
+    "byte_size": "1907",
+    "physical_lines": "25",
+    "logical_rows": "25",
+    "mode_columns": "13",
+    "anomaly_score": "9",
+    "anomalies": "comment_rows;leading_comment;possible_preamble",
+    "profile_error": ""
+  },
+  "annotation": {
+    "source": "finance/finance_043__runpod-h100-2026-11-16.csv",
+    "source_encoding": "utf-8",
+    "input_delimiter": ",",
+    "source_line_ranges": [
+      {
+        "start": 1,
+        "end": 25
+      }
+    ],
+    "shown_line_count": 25,
+    "source_total_lines": 25,
+    "issues": [
+      {
+        "label": "comment_rows",
+        "reason": "Rows beginning with '#' may be comments rather than table records.",
+        "lines": "1-6"
+      },
+      {
+        "label": "leading_comment",
+        "reason": "The file begins with a possible comment row.",
+        "lines": "1"
+      },
+      {
+        "label": "possible_preamble",
+        "reason": "Records before the stable table shape resemble title or metadata rows.",
+        "lines": "1-6"
+      }
+    ],
+    "copy_events": [
+      {
+        "ranges": [
+          {
+            "start": 2,
+            "end": 25
+          }
+        ],
+        "characters": 1813,
+        "copied_at": "2026-11-17T12:47:14.775Z"
+      }
+    ],
+    "error_description": "preamble",
+    "working_origin_spans": [
+      {
+        "start": 0,
+        "end": 64,
+        "source_line": 8
+      },
+      {
+        "start": 64,
+        "end": 128,
+        "source_line": 9
+      },
+      {
+        "start": 128,
+        "end": 192,
+        "source_line": 10
+      },
+      {
+        "start": 192,
+        "end": 256,
+        "source_line": 11
+      },
+      {
+        "start": 256,
+        "end": 320,
+        "source_line": 12
+      },
+      {
+        "start": 320,
+        "end": 384,
+        "source_line": 13
+      },
+      {
+        "start": 384,
+        "end": 448,
+        "source_line": 14
+      },
+      {
+        "start": 448,
+        "end": 512,
+        "source_line": 15
+      },
+      {
+        "start": 512,
+        "end": 576,
+        "source_line": 16
+      },
+      {
+        "start": 576,
+        "end": 640,
+        "source_line": 17
+      },
+      {
+        "start": 640,
+        "end": 704,
+        "source_line": 18
+      },
+      {
+        "start": 704,
+        "end": 768,
+        "source_line": 19
+      },
+      {
+        "start": 768,
+        "end": 832,
+        "source_line": 20
+      },
+      {
+        "start": 832,
+        "end": 896,
+        "source_line": 21
+      },
+      {
+        "start": 896,
+        "end": 960,
+        "source_line": 22
+      },
+      {
+        "start": 960,
+        "end": 1024,
+        "source_line": 23
+      },
+      {
+        "start": 1024,
+        "end": 1088,
+        "source_line": 24
+      },
+      {
+        "start": 1088,
+        "end": 1152,
+        "source_line": 25
+      }
+    ],
+    "header": {
+      "present": true,
+      "text": "repeat,rows,vocab,tiles,single_cta_ms,hierarchical_ms,speedup_single_over_hierarchical,top1_id,top2_id,tie_probe_pass,margin,flagged,correct",
+      "source_line": 1
+    },
+    "cleaned_rows": 18,
+    "cleaned_column_count": 13,
+    "cleaned_columns": [
+      "repeat",
+      "rows",
+      "vocab",
+      "tiles",
+      "single_cta_ms",
+      "hierarchical_ms",
+      "speedup_single_over_hierarchical",
+      "top1_id",
+      "top2_id",
+      "tie_probe_pass",
+      "margin",
+      "flagged",
+      "correct"
+    ],
+    "exported_at": "2026-11-17T12:47:35.316768+00:00"
+  }
+}
