@@ -702,7 +702,7 @@ def _build_chat_payload(prompt: str) -> Dict[str, Any]:
             {"role": "user", "content": prompt},
         ],
     }
-    payload[_completion_token_limit_param(model)] = 4096
+    payload[_completion_token_limit_param(model)] = 12288
     if _supports_temperature(model):
         payload["temperature"] = 0
     if _uses_ollama():
