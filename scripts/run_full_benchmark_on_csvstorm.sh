@@ -8,7 +8,7 @@
 #   --regenerate       Recreate data/csv_storm with CSV Storm polluters first.
 #   --run-id ID        Name this isolated run (default: UTC timestamp + commit).
 #   --resume ID        Continue an interrupted run with matching inputs/settings.
-#   --verbose          Print hybrid-parser LLM prompts and responses.
+#   --verbose          Print hybrid- and full-agentic-parser LLM prompts/responses.
 #   --confirm-cost     Confirm the potentially large paid LLM matrix.
 #   -h, --help         Show this help.
 #
@@ -103,6 +103,13 @@ dataset_seed=1337
 remote_models=("gpt-5.4-mini" "gpt-5.6-sol" "gpt-5.6-luna")
 local_models=("qwen3.5:0.8b")
 remote_openai_endpoint="${OPENAI_ENDPOINT:-https://api.openai.com/v1/chat/completions}"
+# full_llm_loader takes an API base and appends /chat/completions itself.
+remote_openai_api_base="${remote_openai_endpoint%/}"
+remote_openai_api_base="${remote_openai_api_base%/chat/completions}"
+if [[ "$remote_openai_api_base" == "${remote_openai_endpoint%/}" ]]; then
+    echo "Error: OPENAI_ENDPOINT must end with /chat/completions: $remote_openai_endpoint"
+    exit 1
+fi
 ollama_api_base="${OLLAMA_API_BASE:-http://localhost:11434/v1}"
 
 if [[ -z "$run_id" ]]; then
@@ -141,6 +148,7 @@ suts=(duckdbauto_strict duckdbparse pandas clevercs pycsv)
 for model in "${remote_models[@]}" "${local_models[@]}"; do
     slug="$(model_slug "$model")"
     suts+=("llm_hybrid_parser_${slug}" "llm_hybrid_parser_${slug}_duckdb" "code_generation_llm_${slug}")
+    suts+=("full_llm_loader_naive_${slug}")
 done
 
 manifest_args=(
@@ -234,18 +242,23 @@ run_llm_model() {
     local llm_hybrid_sut
     local duckdb_hybrid_sut
     local code_generation_sut
+    local full_agentic_sut
+    local full_agentic_api_base
 
     slug="$(model_slug "$model")"
     llm_hybrid_sut="llm_hybrid_parser_${slug}"
     duckdb_hybrid_sut="llm_hybrid_parser_${slug}_duckdb"
     code_generation_sut="code_generation_llm_${slug}"
+    full_agentic_sut="full_llm_loader_naive_${slug}"
 
     if [[ "$backend" == "ollama" ]]; then
         configure_local_model "$model"
         backend_args=(--backend ollama --api-base "$ollama_api_base")
+        full_agentic_api_base="$ollama_api_base"
     else
         configure_remote_model "$model"
         backend_args=(--backend openai)
+        full_agentic_api_base="$remote_openai_api_base"
     fi
 
     echo
@@ -273,6 +286,17 @@ run_llm_model() {
         --model "$model" \
         --no-llm-cache
     evaluate_sut "$code_generation_sut"
+
+    echo
+    echo "=== Full-agentic parser: $model via $backend on $dataset ==="
+    # Bypass the response cache for cold calls without --overwrite, so --resume
+    # still skips files that already have output.
+    FULL_LLM_LOADER_BYPASS_CACHE=1 "$python_bin" sut/full_llm_loader/custom-bench.py \
+        --model "$model" \
+        --backend "$backend" \
+        --api-base "$full_agentic_api_base" \
+        "${hybrid_verbose_args[@]}"
+    evaluate_sut "$full_agentic_sut"
 }
 
 echo "=== Configuration ==="
@@ -281,7 +305,7 @@ echo "Result root:   $RESULT_ROOT"
 echo "Dataset:       $dataset"
 echo "Remote models: ${remote_models[*]}"
 echo "Local models:  ${local_models[*]} (Ollama: $ollama_api_base)"
-echo "LLM methods:   hybrid/LLM-sniffer hybrid/DuckDB-sniffer code-generation"
+echo "LLM methods:   hybrid/LLM-sniffer hybrid/DuckDB-sniffer code-generation full-agentic"
 echo "Other SUTs:    duckdbauto_strict duckdbparse pandas clevercs pycsv"
 echo "Python:        $python_bin"
 echo "Remote API:    $remote_openai_endpoint"
