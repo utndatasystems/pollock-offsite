@@ -145,12 +145,14 @@ def get_llm_cost_summary() -> Dict[str, Any]:
         "prompt_tokens",
         "cached_input_tokens",
         "uncached_input_tokens",
+        "cache_write_tokens",
         "completion_tokens",
         "total_tokens",
     )
     cost_fields = (
         "input_cost_usd",
         "cached_input_cost_usd",
+        "cache_write_cost_usd",
         "output_cost_usd",
         "estimated_api_cost_usd",
         "billable_cost_usd",
@@ -408,8 +410,9 @@ def _build_cost_record(
             "local_cache_hit": local_cache_hit,
             **dict.fromkeys((
                 "prompt_tokens", "cached_input_tokens", "uncached_input_tokens",
-                "completion_tokens", "total_tokens", "input_cost_usd",
-                "cached_input_cost_usd", "output_cost_usd", "estimated_api_cost_usd",
+                "cache_write_tokens", "completion_tokens", "total_tokens",
+                "input_cost_usd", "cached_input_cost_usd", "cache_write_cost_usd",
+                "output_cost_usd", "estimated_api_cost_usd",
             )),
             "billable_cost_usd": 0.0 if local_cache_hit else None,
         }
@@ -418,18 +421,29 @@ def _build_cost_record(
     total_tokens = _int_or_zero(usage.get("total_tokens"))
     prompt_details = usage.get("prompt_tokens_details")
     cached_input_tokens = 0
+    cache_write_tokens = 0
     if isinstance(prompt_details, dict):
         cached_input_tokens = _int_or_zero(prompt_details.get("cached_tokens"))
+        cache_write_tokens = _int_or_zero(prompt_details.get("cache_write_tokens"))
     uncached_input_tokens = max(prompt_tokens - cached_input_tokens, 0)
+    cache_write_tokens = min(cache_write_tokens, uncached_input_tokens)
+    ordinary_input_tokens = uncached_input_tokens - cache_write_tokens
     prices = _model_prices_usd_per_1m(model)
+    # GPT-5.6+ bills cache writes (default 30-minute lifetime) at 1.25x input.
+    cache_write_rate = (
+        prices.get("input") * 1.25
+        if model.lower().startswith(("gpt-5.6", "gpt-6"))
+        and prices.get("input") is not None else prices.get("input")
+    )
 
-    input_cost = _token_cost(uncached_input_tokens, prices.get("input"))
+    input_cost = _token_cost(ordinary_input_tokens, prices.get("input"))
     cached_input_cost = _token_cost(
         cached_input_tokens, prices.get("cached_input")
     )
+    cache_write_cost = _token_cost(cache_write_tokens, cache_write_rate)
     output_cost = _token_cost(completion_tokens, prices.get("output"))
     estimated_api_cost = _sum_costs(
-        input_cost, cached_input_cost, output_cost
+        input_cost, cached_input_cost, cache_write_cost, output_cost
     )
 
     return {
@@ -439,13 +453,16 @@ def _build_cost_record(
         "prompt_tokens": prompt_tokens,
         "cached_input_tokens": cached_input_tokens,
         "uncached_input_tokens": uncached_input_tokens,
+        "cache_write_tokens": cache_write_tokens,
         "completion_tokens": completion_tokens,
         "total_tokens": total_tokens,
         "input_usd_per_1m": prices.get("input"),
         "cached_input_usd_per_1m": prices.get("cached_input"),
+        "cache_write_usd_per_1m": cache_write_rate,
         "output_usd_per_1m": prices.get("output"),
         "input_cost_usd": input_cost,
         "cached_input_cost_usd": cached_input_cost,
+        "cache_write_cost_usd": cache_write_cost,
         "output_cost_usd": output_cost,
         "estimated_api_cost_usd": estimated_api_cost,
         "billable_cost_usd": 0.0 if local_cache_hit else estimated_api_cost,
