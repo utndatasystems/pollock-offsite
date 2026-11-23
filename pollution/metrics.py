@@ -129,11 +129,11 @@ def header_record_cell_measures_csv(source_csv, loaded_csv, n_jobs=1, nrows=None
         rec_r = np.sum([v for k, v in rec_i.items()]) / len(loaded_records)
         rec_f1 = (rec_p * rec_r) / (rec_p + rec_r) * 2
 
-    source_cells = [c for r in source_rows for c in r]
-    loaded_cells = [c for r in loaded_rows for c in r]
+    source_cells = [c for r in normalized_source_cells for c in r]
+    loaded_cells = [c for r in normalized_loaded_cells for c in r]
 
     # Cell comparison ignores both row and column position. It only checks that
-    # the same raw cell values appear the same number of times.
+    # the same normalized cell values appear the same number of times.
     cell_s = Multiset(source_cells)
     cell_l = Multiset(loaded_cells)
     cell_i = cell_s.intersection(cell_l)
