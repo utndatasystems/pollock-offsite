@@ -6,6 +6,9 @@
 #
 # Options:
 #   --regenerate       Recreate data/csv_storm with CSV Storm polluters first.
+#   --real-world       Run on data/combined_real_world_files instead of csv_storm
+#                      (skips DuckDB Explicit; not combinable with --regenerate).
+#   --skip-local       Skip the local Ollama models; run only the remote models.
 #   --run-id ID        Name this isolated run (default: UTC timestamp + commit).
 #   --resume ID        Continue an interrupted run with matching inputs/settings.
 #   --verbose          Print hybrid- and full-agentic-parser LLM prompts/responses.
@@ -31,6 +34,8 @@ if [[ -f ".env" ]]; then
 fi
 
 regenerate=false
+dataset="csv_storm"
+skip_local=false
 verbose=false
 confirm_cost=false
 run_id=""
@@ -44,6 +49,12 @@ while [[ $# -gt 0 ]]; do
     case "$1" in
         --regenerate)
             regenerate=true
+            ;;
+        --real-world)
+            dataset="combined_real_world_files"
+            ;;
+        --skip-local)
+            skip_local=true
             ;;
         --run-id)
             run_id="${2:?--run-id requires an ID}"
@@ -82,6 +93,10 @@ if [[ "$resume" == true && "$regenerate" == true ]]; then
     echo "Error: --regenerate cannot be used with --resume."
     exit 2
 fi
+if [[ "$regenerate" == true && "$dataset" != "csv_storm" ]]; then
+    echo "Error: --regenerate is only available for the default csv_storm dataset."
+    exit 2
+fi
 
 python_bin="${PYTHON:-}"
 if [[ -z "$python_bin" ]]; then
@@ -98,10 +113,12 @@ if [[ -z "${OPENAI_API_KEY:-}" || "$OPENAI_API_KEY" == "YOUR_OPENAI_API_KEY" ]];
     exit 1
 fi
 
-dataset="csv_storm"
 dataset_seed=1337
-remote_models=("gpt-5.4-mini" "gpt-5.6-sol" "gpt-5.6-luna")
+remote_models=("gpt-6.2-sol" "gpt-6.1-terra" "gpt-6-luna")
 local_models=("qwen3.5:0.8b")
+if [[ "$skip_local" == true ]]; then
+    local_models=()
+fi
 remote_openai_endpoint="${OPENAI_ENDPOINT:-https://api.openai.com/v1/chat/completions}"
 # full_llm_loader takes an API base and appends /chat/completions itself.
 remote_openai_api_base="${remote_openai_endpoint%/}"
@@ -144,10 +161,14 @@ model_slug() {
         | sed -E "s/[^a-z0-9]+/_/g; s/^_+|_+$//g"
 }
 
-suts=(duckdbauto_strict duckdbparse pandas clevercs pycsv)
+classical_suts=(duckdbauto_strict duckdbparse pandas clevercs pycsv)
+if [[ "$dataset" != "csv_storm" ]]; then
+    classical_suts=(duckdbauto_strict pandas clevercs pycsv)
+fi
+suts=("${classical_suts[@]}")
 for model in "${remote_models[@]}" "${local_models[@]}"; do
     slug="$(model_slug "$model")"
-    suts+=("llm_hybrid_parser_${slug}" "llm_hybrid_parser_${slug}_duckdb" "code_generation_llm_${slug}")
+    suts+=("llm_hybrid_parser_${slug}_duckdb" "code_generation_llm_${slug}")
     suts+=("full_llm_loader_naive_${slug}")
 done
 
@@ -239,14 +260,12 @@ run_llm_model() {
     local model="$2"
     local slug
     local backend_args=()
-    local llm_hybrid_sut
     local duckdb_hybrid_sut
     local code_generation_sut
     local full_agentic_sut
     local full_agentic_api_base
 
     slug="$(model_slug "$model")"
-    llm_hybrid_sut="llm_hybrid_parser_${slug}"
     duckdb_hybrid_sut="llm_hybrid_parser_${slug}_duckdb"
     code_generation_sut="code_generation_llm_${slug}"
     full_agentic_sut="full_llm_loader_naive_${slug}"
@@ -260,15 +279,6 @@ run_llm_model() {
         backend_args=(--backend openai)
         full_agentic_api_base="$remote_openai_api_base"
     fi
-
-    echo
-    echo "=== Hybrid parser (LLM sniffer): $model via $backend on $dataset ==="
-    "$python_bin" sut/llm_hybrid_parser/llm-hybrid-bench.py \
-        --model "$model" \
-        --no-llm-cache \
-        "${backend_args[@]}" \
-        "${hybrid_verbose_args[@]}"
-    evaluate_sut "$llm_hybrid_sut"
 
     echo
     echo "=== Hybrid parser (DuckDB + LLM sniffer): $model via $backend on $dataset ==="
@@ -305,13 +315,15 @@ echo "Result root:   $RESULT_ROOT"
 echo "Dataset:       $dataset"
 echo "Remote models: ${remote_models[*]}"
 echo "Local models:  ${local_models[*]} (Ollama: $ollama_api_base)"
-echo "LLM methods:   hybrid/LLM-sniffer hybrid/DuckDB-sniffer code-generation full-agentic"
-echo "Other SUTs:    duckdbauto_strict duckdbparse pandas clevercs pycsv"
+echo "LLM methods:   hybrid/DuckDB-sniffer code-generation full-agentic"
+echo "Other SUTs:    ${classical_suts[*]}"
 echo "Python:        $python_bin"
 echo "Remote API:    $remote_openai_endpoint"
 
 run_classical_sut "DuckDB Auto" "duckdbauto_strict" "sut/duckdbauto/duck-bench.py" --strict
-run_classical_sut "DuckDB Explicit" "duckdbparse" "sut/duckdbparse/duck-bench.py"
+if [[ "$dataset" == "csv_storm" ]]; then
+    run_classical_sut "DuckDB Explicit" "duckdbparse" "sut/duckdbparse/duck-bench.py"
+fi
 run_classical_sut "pandas" "pandas" "sut/pandas/panda.py"
 run_classical_sut "CleverCSV" "clevercs" "sut/clevercs/clevercs.py"
 run_classical_sut "Python CSV" "pycsv" "sut/pycsv/pycsv.py"
