@@ -15,7 +15,11 @@ from tqdm import tqdm
 
 from utils import print
 from solution import parse_csv
-from llm_utils import get_last_llm_cost_record
+from llm_utils import MAX_OUTPUT_TOKENS, get_last_llm_cost_record
+
+# A full rewrite of a longer input cannot fit in MAX_OUTPUT_TOKENS: CSV text
+# tokenizes at well under 8 characters per token (CSV Storm: ~2.3-3.8).
+MAX_INPUT_CHARS = MAX_OUTPUT_TOKENS * 8
 from llm_config import get_openai_model
 
 
@@ -209,10 +213,19 @@ for idx, file in enumerate(tqdm(benchmark_files, total=len(benchmark_files), des
         continue
     print(f"({idx + 1}/{len(benchmark_files)}) {f}")
 
+    with open(in_filepath, encoding=args.encoding, errors='replace') as input_file:
+        n_input_chars = len(input_file.read())
+    too_long_for_output = n_input_chars > MAX_INPUT_CHARS
+
     for time_rep in range(N_REPETITIONS):
         start = time.time()
         rejected_before_generation = False
         try:
+            if too_long_for_output:
+                raise ValueError(
+                    f"Input has {n_input_chars} characters; a full rewrite cannot fit "
+                    f"the {MAX_OUTPUT_TOKENS}-token output limit. Request not sent."
+                )
             # This is where the full_llm_parser is being called
             df = parse_csv(
                 in_filepath,
@@ -240,8 +253,9 @@ for idx, file in enumerate(tqdm(benchmark_files, total=len(benchmark_files), des
                 text_file.write(str(e))
 
         elapsed = end - start
-        cost_record = get_last_llm_cost_record() or {}
-        if rejected_before_generation and not cost_record:
+        # No request was made, so the last cost record belongs to another file.
+        cost_record = {} if too_long_for_output else (get_last_llm_cost_record() or {})
+        if (rejected_before_generation or too_long_for_output) and not cost_record:
             cost_record = {'billable_cost_usd': 0.0}
         run_dict.setdefault(f, []).append({
             "time": elapsed,

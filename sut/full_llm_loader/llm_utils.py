@@ -19,6 +19,7 @@ def _default_llm_cache_dir() -> Path:
 
 DEFAULT_LLM_CACHE_DIR = _default_llm_cache_dir()
 LLM_CACHE_VERSION = 1
+MAX_OUTPUT_TOKENS = 16000
 _LAST_LLM_COST_RECORD: dict | None = None
 
 DEFAULT_MODEL_PRICES_USD_PER_1M = {
@@ -167,7 +168,7 @@ def _query_llm(
         "messages": messages,
         "stream": False,
     }
-    payload[_completion_token_limit_param(model)] = 16000
+    payload[_completion_token_limit_param(model)] = MAX_OUTPUT_TOKENS
     if _supports_temperature(model):
         payload["temperature"] = 0.0
 
