@@ -14,6 +14,18 @@
     "alternative_2": {
       "path": "alternative_2.csv",
       "role": "primary"
+    },
+    "alternative_3": {
+      "path": "alternative_3.csv",
+      "role": "primary"
+    },
+    "alternative_4": {
+      "path": "alternative_4.csv",
+      "role": "primary"
+    },
+    "alternative_5": {
+      "path": "alternative_5.csv",
+      "role": "primary"
     }
   },
   "alternatives": [
@@ -36,6 +48,27 @@
       "comparison": "single_table",
       "tables": [
         "alternative_2"
+      ]
+    },
+    {
+      "id": "alternative_3",
+      "comparison": "single_table",
+      "tables": [
+        "alternative_3"
+      ]
+    },
+    {
+      "id": "alternative_4",
+      "comparison": "single_table",
+      "tables": [
+        "alternative_4"
+      ]
+    },
+    {
+      "id": "alternative_5",
+      "comparison": "single_table",
+      "tables": [
+        "alternative_5"
       ]
     }
   ]
