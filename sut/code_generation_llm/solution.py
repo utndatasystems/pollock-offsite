@@ -38,6 +38,12 @@ MODEL_PRICES_USD_PER_1M = {
     "gpt-5.6-sol": {"input": 4.00, "cached_input": 0.40, "output": 20.00},
     "gpt-6-luna": {"input": 0.10, "cached_input": 0.01, "output": 0.50},
     "gpt-6.1-sol": {"input": 2.00, "cached_input": 0.10, "output": 10.00},
+    "gpt-5.6-terra": {"input": 2.00, "cached_input": 0.20, "output": 12.00},
+    "gpt-6-sol": {"input": 2.00, "cached_input": 0.20, "output": 10.00},
+    "gpt-6-astra": {"input": 10.00, "cached_input": 1.00, "output": 50.00},
+    "gpt-6.1-terra": {"input": 1.00, "cached_input": 0.05, "output": 5.00},
+    "gpt-6.2-sol": {"input": 2.00, "cached_input": 0.10, "output": 10.00},
+    "gpt-6.2-astra": {"input": 8.00, "cached_input": 0.40, "output": 40.00},
 }
 
 
