@@ -9,6 +9,9 @@
 #   --real-world       Run on data/combined_real_world_files instead of csv_storm
 #                      (skips DuckDB Explicit; not combinable with --regenerate).
 #   --skip-local       Skip the local Ollama models; run only the remote models.
+#   --local-only       Skip the remote models; run only the local Ollama models
+#                      (no paid calls, so neither --confirm-cost nor an API key
+#                      is required).
 #   --run-id ID        Name this isolated run (default: UTC timestamp + commit).
 #   --resume ID        Continue an interrupted run with matching inputs/settings.
 #   --verbose          Print hybrid- and full-agentic-parser LLM prompts/responses.
@@ -16,7 +19,7 @@
 #   -h, --help         Show this help.
 #
 # Environment:
-#   OPENAI_API_KEY     Required for the three remote GPT models.
+#   OPENAI_API_KEY     Required for the three remote GPT models (not with --local-only).
 #   OPENAI_ENDPOINT    Remote OpenAI-compatible chat-completions endpoint.
 #   OLLAMA_API_BASE    Local Ollama API base, default http://localhost:11434/v1.
 #   PYTHON             Optional Python interpreter override.
@@ -36,6 +39,7 @@ fi
 regenerate=false
 dataset="csv_storm"
 skip_local=false
+local_only=false
 verbose=false
 confirm_cost=false
 run_id=""
@@ -55,6 +59,9 @@ while [[ $# -gt 0 ]]; do
             ;;
         --skip-local)
             skip_local=true
+            ;;
+        --local-only)
+            local_only=true
             ;;
         --run-id)
             run_id="${2:?--run-id requires an ID}"
@@ -84,7 +91,11 @@ while [[ $# -gt 0 ]]; do
     shift
 done
 
-if [[ "$confirm_cost" != true ]]; then
+if [[ "$skip_local" == true && "$local_only" == true ]]; then
+    echo "Error: --skip-local and --local-only cannot be combined."
+    exit 2
+fi
+if [[ "$confirm_cost" != true && "$local_only" != true ]]; then
     echo "Error: this matrix can make thousands of paid LLM calls."
     echo "Rerun with --confirm-cost after reviewing the configured models."
     exit 1
@@ -107,7 +118,7 @@ if [[ -z "$python_bin" ]]; then
     fi
 fi
 
-if [[ -z "${OPENAI_API_KEY:-}" || "$OPENAI_API_KEY" == "YOUR_OPENAI_API_KEY" ]]; then
+if [[ "$local_only" != true ]] && [[ -z "${OPENAI_API_KEY:-}" || "$OPENAI_API_KEY" == "YOUR_OPENAI_API_KEY" ]]; then
     echo "Error: export a real OPENAI_API_KEY for the remote GPT model runs."
     echo "Example: export OPENAI_API_KEY=\"sk-...\""
     exit 1
@@ -118,6 +129,9 @@ remote_models=("gpt-6.2-sol" "gpt-6.1-terra" "gpt-6-luna")
 local_models=("qwen3.5:0.8b")
 if [[ "$skip_local" == true ]]; then
     local_models=()
+fi
+if [[ "$local_only" == true ]]; then
+    remote_models=()
 fi
 remote_openai_endpoint="${OPENAI_ENDPOINT:-https://api.openai.com/v1/chat/completions}"
 # full_llm_loader takes an API base and appends /chat/completions itself.
