@@ -1,0 +1,2 @@
+Malformed rows: 1
+{"line_num": 1, "reason": "header row normalized", "raw": ["time[s]", "posx[m]", "posy[m]", "pospathx[m]", "pospathy[m]", "vel[km/h]", "accx[m/ss]", "yaw[rad]", ""], "repaired": true}

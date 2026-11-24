@@ -1,0 +1,2 @@
+Malformed rows: 1
+{"line_num": 1, "reason": "header row normalized", "raw": ["Location", "ABCCOD", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18"], "repaired": true}

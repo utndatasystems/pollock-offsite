@@ -1,0 +1,4 @@
+Malformed rows: 3
+{"line_num": 3, "reason": "TOO MANY COLUMNS: Expected Number of Columns: 1 Found: 2", "raw": "# row. The sweep checks each ~weekly against our own data and, if we have no", "repaired": true}
+{"line_num": 4, "reason": "TOO MANY COLUMNS: Expected Number of Columns: 1 Found: 2", "raw": "# current-year entry, searches our news net for a layoff and adds the verified", "repaired": true}
+{"line_num": 5, "reason": "TOO MANY COLUMNS: Expected Number of Columns: 1 Found: 2", "raw": "# one. Grow this list freely \u2014 every added name is monitored forever, for free.", "repaired": true}

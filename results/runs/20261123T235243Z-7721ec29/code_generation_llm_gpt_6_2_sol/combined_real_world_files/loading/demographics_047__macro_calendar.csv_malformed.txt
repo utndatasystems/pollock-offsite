@@ -1,0 +1,11 @@
+Malformed rows: 10
+{"line_num": 1, "reason": "header row normalized", "raw": ["# The US macro news that moves the Nasdaq: FOMC statements", " CPI", " the jobs report (NFP) and"], "repaired": true}
+{"line_num": 2, "reason": "header row normalized", "raw": ["# the PCE price index (Personal Income and Outlays) since 2024; from late 2026", " producer prices"], "repaired": true}
+{"line_num": 3, "reason": "header row normalized", "raw": ["# (PPI)", " retail sales (RETAIL", " Census's advance report)", " the GDP's advance estimate (GDP) and job"], "repaired": true}
+{"line_num": 4, "reason": "header row normalized", "raw": ["# openings (JOLTS). Times are New York's. Every date was read from the source named on its row:"], "repaired": true}
+{"line_num": 5, "reason": "header row normalized", "raw": ["# the first four kinds on 2026-10-20 (PCE's 2027 dates on 2026-10-26)", " the others on 2026-10-26."], "repaired": true}
+{"line_num": 6, "reason": "header row normalized", "raw": ["# The releases of October 2025 that the shutdown cancelled are absent", " the delayed ones are at the"], "repaired": true}
+{"line_num": 7, "reason": "header row normalized", "raw": ["# day they came out; dates after the day they were read are those scheduled then. BLS had not given"], "repaired": true}
+{"line_num": 8, "reason": "header row normalized", "raw": ["# the 2027 dates of JOLTS on 2026-10-26. ISM's manufacturing index is not kept: only its rule is"], "repaired": true}
+{"line_num": 9, "reason": "header row normalized", "raw": ["# public (the first business day", " 10:00)", " which it broke in January 2026", " and its dated calendar is"], "repaired": true}
+{"line_num": 10, "reason": "header row normalized", "raw": ["# for its members. Keep it up to date: python -m lab calendar check."], "repaired": true}

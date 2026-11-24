@@ -1,0 +1,5 @@
+Malformed rows: 4
+{"line_num": 1, "reason": "header row normalized", "raw": ["# Twelve bright or well-known stars within 8 pc. J2000 RA and Dec in degrees", " parallax in milliarcseconds."], "repaired": true}
+{"line_num": 2, "reason": "header row normalized", "raw": ["# Values are measured facts rounded from the Hipparcos new reduction (van Leeuwen 2007) and Gaia DR3 (ESA)", " as listed in SIMBAD (CDS", " Strasbourg)."], "repaired": true}
+{"line_num": 3, "reason": "header row normalized", "raw": ["# Credit: ESA Hipparcos and Gaia missions; SIMBAD database", " CDS", " Strasbourg. Not copied from HYG (CC BY-SA)."], "repaired": true}
+{"line_num": 4, "reason": "header row normalized", "raw": ["# Typed from published values and not yet re-checked against SIMBAD in a live session (unverified 2026-11-15); distance = 1000 / parallax pc."], "repaired": true}

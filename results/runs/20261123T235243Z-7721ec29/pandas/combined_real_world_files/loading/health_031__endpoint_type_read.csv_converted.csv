@@ -1,0 +1,62 @@
+# Reading column: done by a language model (Claude), not a person. Sample: 60 random development trials (seed 23), held out from rule tuning. Rules as frozen before this sample was scored.
+assigned_type,reading,agree
+laboratory or physiological biomarker,laboratory or physiological biomarker,True
+laboratory or physiological biomarker,laboratory or physiological biomarker,True
+symptom or function scale,symptom or function scale,True
+laboratory or physiological biomarker,laboratory or physiological biomarker,True
+laboratory or physiological biomarker,laboratory or physiological biomarker,True
+other / unclear,symptom or function scale,False
+other / unclear,other / unclear,True
+symptom or function scale,symptom or function scale,True
+clinical event,symptom or function scale,False
+laboratory or physiological biomarker,clinical event,False
+laboratory or physiological biomarker,laboratory or physiological biomarker,True
+clinical event,clinical event,True
+imaging,laboratory or physiological biomarker,False
+survival or time-to-event,survival or time-to-event,True
+laboratory or physiological biomarker,laboratory or physiological biomarker,True
+symptom or function scale,symptom or function scale,True
+survival or time-to-event,survival or time-to-event,True
+symptom or function scale,symptom or function scale,True
+laboratory or physiological biomarker,laboratory or physiological biomarker,True
+clinical event,clinical event,True
+symptom or function scale,symptom or function scale,True
+other / unclear,clinical event,False
+symptom or function scale,symptom or function scale,True
+other / unclear,symptom or function scale,False
+survival or time-to-event,survival or time-to-event,True
+symptom or function scale,symptom or function scale,True
+symptom or function scale,symptom or function scale,True
+symptom or function scale,symptom or function scale,True
+symptom or function scale,symptom or function scale,True
+symptom or function scale,symptom or function scale,True
+laboratory or physiological biomarker,laboratory or physiological biomarker,True
+laboratory or physiological biomarker,laboratory or physiological biomarker,True
+survival or time-to-event,clinical event,False
+symptom or function scale,symptom or function scale,True
+symptom or function scale,symptom or function scale,True
+symptom or function scale,symptom or function scale,True
+symptom or function scale,symptom or function scale,True
+laboratory or physiological biomarker,laboratory or physiological biomarker,True
+symptom or function scale,symptom or function scale,True
+clinical event,clinical event,True
+symptom or function scale,other / unclear,False
+imaging,imaging,True
+symptom or function scale,symptom or function scale,True
+laboratory or physiological biomarker,laboratory or physiological biomarker,True
+symptom or function scale,clinical event,False
+survival or time-to-event,survival or time-to-event,True
+symptom or function scale,symptom or function scale,True
+imaging,imaging,True
+symptom or function scale,symptom or function scale,True
+symptom or function scale,symptom or function scale,True
+survival or time-to-event,survival or time-to-event,True
+clinical event,clinical event,True
+symptom or function scale,symptom or function scale,True
+survival or time-to-event,survival or time-to-event,True
+laboratory or physiological biomarker,laboratory or physiological biomarker,True
+symptom or function scale,symptom or function scale,True
+other / unclear,symptom or function scale,False
+other / unclear,symptom or function scale,False
+symptom or function scale,symptom or function scale,True
+symptom or function scale,symptom or function scale,True

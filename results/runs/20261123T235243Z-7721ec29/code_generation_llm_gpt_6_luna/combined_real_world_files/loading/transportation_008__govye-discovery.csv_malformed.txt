@@ -1,0 +1,2 @@
+Malformed rows: 1
+{"line_num": 1, "reason": "header row normalized", "raw": ["checked_at", "host", "selected_url", "final_url", "http_status", "content_type", "sources", "error"], "repaired": true}

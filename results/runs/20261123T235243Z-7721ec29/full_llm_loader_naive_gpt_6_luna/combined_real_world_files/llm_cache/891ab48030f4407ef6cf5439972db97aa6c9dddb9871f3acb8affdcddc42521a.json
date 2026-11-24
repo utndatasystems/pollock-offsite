@@ -1,0 +1,62 @@
+{
+  "cache_version": 1,
+  "created_at": "2026-11-24T18:42:03.067678+00:00",
+  "api_base": "https://api.openai.com/v1",
+  "payload": {
+    "model": "gpt-6-luna",
+    "messages": [
+      {
+        "role": "system",
+        "content": "You are a CSV repair assistant.\n\nYour task is to inspect a possibly malformed CSV file and reconstruct it as a valid CSV table.\n\nReturn the repaired CSV and a brief error report. Do not include explanations outside the requested output sections."
+      },
+      {
+        "role": "user",
+        "content": "Repair the following CSV file.\n\nReturn exactly two sections and nothing else.\nDo not use Markdown fences. Do not include prose before, between, or after the sections.\nThe section markers must appear exactly as shown, each on its own line.\n\n--BEGIN FIXED CSV--\n<repaired CSV text only, including exactly one header row>\n--END FIXED CSV--\n--BEGIN ERROR REPORT--\n<JSON error report object only>\n--END ERROR REPORT--\n\nRules for the fixed CSV section:\n\n- Use a comma as the output delimiter.\n- Use double quotes according to standard CSV escaping rules.\n- Encode an embedded double quote as two double quotes.\n- Preserve every payload character exactly.\n- Do not normalize, infer, translate, reformat, round, complete, shorten, or otherwise rewrite cell values.\n- Preserve embedded line breaks inside quoted fields.\n- Use LF line endings.\n- Return the complete repaired CSV, not a sample, preview, summary, or first portion.\n- Include every recoverable source data row exactly once unless the input clearly marks it as non-data.\n- Finish the entire fixed CSV section before starting the error report.\n- If output length is a concern, keep the error report as short as possible but do not truncate the fixed CSV.\n- Do not wrap the CSV in Markdown fences.\n- Do not include comments, explanations, or section labels inside the CSV.\n- If the input is empty, whitespace-only, or contains no table evidence, leave the fixed CSV section empty. Do not invent headers, rows, columns, examples, placeholder data, or sample content.\n\nThe error report must use this format:\n\n{\n  \"fixed_errors\": [\n    {\n      \"type\": \"<error type>\",\n      \"description\": \"<brief description>\",\n      \"rows\": [<affected physical line numbers>]\n    }\n  ],\n  \"summary\": \"<brief summary>\"\n}\n\nIf no errors were fixed, return an empty fixed_errors list.\n\nCSV content:\n\n# Twelve bright or well-known stars within 8 pc. J2000 RA and Dec in degrees, parallax in milliarcseconds.\n# Values are measured facts rounded from the Hipparcos new reduction (van Leeuwen 2007) and Gaia DR3 (ESA), as listed in SIMBAD (CDS, Strasbourg).\n# Credit: ESA Hipparcos and Gaia missions; SIMBAD database, CDS, Strasbourg. Not copied from HYG (CC BY-SA).\n# Typed from published values and not yet re-checked against SIMBAD in a live session (unverified 2026-11-15); distance = 1000 / parallax pc.\nname,ra_deg,dec_deg,parallax_mas,spectral\nProxima Centauri,217.42895,-62.67949,768.07,M5.5 V\nAlpha Centauri A,219.90206,-60.83399,747.17,G2 V\nBarnard's Star,269.45208,4.69339,546.98,M4 V\nWolf 359,164.12027,7.01470,415.18,M6 V\nLalande 21185,165.83414,35.96988,392.75,M2 V\nSirius,101.28716,-16.71612,379.21,A1 V\nEpsilon Eridani,53.23269,-9.45826,310.58,K2 V\n61 Cygni A,316.72475,38.74942,286.00,K5 V\nProcyon,114.82549,5.22499,284.56,F5 IV-V\nEpsilon Indi,330.84022,-56.78598,274.84,K5 V\nTau Ceti,26.01701,-15.93748,273.96,G8 V\nAltair,297.69583,8.86832,194.95,A7 V\n\n"
+      }
+    ],
+    "stream": false,
+    "max_completion_tokens": 16000
+  },
+  "content": "--BEGIN FIXED CSV--\nname,ra_deg,dec_deg,parallax_mas,spectral\nProxima Centauri,217.42895,-62.67949,768.07,M5.5 V\nAlpha Centauri A,219.90206,-60.83399,747.17,G2 V\nBarnard's Star,269.45208,4.69339,546.98,M4 V\nWolf 359,164.12027,7.01470,415.18,M6 V\nLalande 21185,165.83414,35.96988,392.75,M2 V\nSirius,101.28716,-16.71612,379.21,A1 V\nEpsilon Eridani,53.23269,-9.45826,310.58,K2 V\n61 Cygni A,316.72475,38.74942,286.00,K5 V\nProcyon,114.82549,5.22499,284.56,F5 IV-V\nEpsilon Indi,330.84022,-56.78598,274.84,K5 V\nTau Ceti,26.01701,-15.93748,273.96,G8 V\nAltair,297.69583,8.86832,194.95,A7 V\n--END FIXED CSV--\n--BEGIN ERROR REPORT--\n{\n  \"fixed_errors\": [\n    {\n      \"type\": \"comment_lines_removed\",\n      \"description\": \"Removed four leading comment lines; retained the table header and data rows.\",\n      \"rows\": [1, 2, 3, 4]\n    }\n  ],\n  \"summary\": \"Removed non-table comment lines.\"\n}\n--END ERROR REPORT--",
+  "usage": {
+    "prompt_tokens": 861,
+    "completion_tokens": 505,
+    "total_tokens": 1366,
+    "prompt_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 0,
+      "audio_tokens": 0
+    },
+    "completion_tokens_details": {
+      "reasoning_tokens": 126,
+      "audio_tokens": 0,
+      "accepted_prediction_tokens": 0,
+      "rejected_prediction_tokens": 0
+    }
+  },
+  "cost": {
+    "backend": "openai",
+    "model": "gpt-6-luna",
+    "api_base": "https://api.openai.com/v1",
+    "local_cache_hit": false,
+    "usage_available": true,
+    "cache_path": "/home/robin/offsite/pollock-offsite/results/runs/20261123T235243Z-7721ec29/full_llm_loader_naive_gpt_6_luna/combined_real_world_files/llm_cache/891ab48030f4407ef6cf5439972db97aa6c9dddb9871f3acb8affdcddc42521a.json",
+    "prompt_tokens": 861,
+    "cached_input_tokens": 0,
+    "uncached_input_tokens": 861,
+    "ordinary_input_tokens": 861,
+    "cache_write_tokens": 0,
+    "completion_tokens": 505,
+    "total_tokens": 1366,
+    "input_usd_per_1m": 0.1,
+    "cached_input_usd_per_1m": 0.01,
+    "cache_write_usd_per_1m": 0.125,
+    "output_usd_per_1m": 0.5,
+    "input_cost_usd": 8.61e-05,
+    "cached_input_cost_usd": 0.0,
+    "cache_write_cost_usd": 0.0,
+    "output_cost_usd": 0.0002525,
+    "estimated_api_cost_usd": 0.0003386,
+    "billable_cost_usd": 0.0003386
+  }
+}

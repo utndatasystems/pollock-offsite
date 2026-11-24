@@ -1,0 +1,2 @@
+Malformed rows: 1
+{"line_num": 1, "reason": "header row normalized", "raw": ["Departmental Family", "Entity", "Date", "Expense Type", "Expense Area", "Supplier", "Transaction Number", "Amount", "Vat Registration Num"], "repaired": true}

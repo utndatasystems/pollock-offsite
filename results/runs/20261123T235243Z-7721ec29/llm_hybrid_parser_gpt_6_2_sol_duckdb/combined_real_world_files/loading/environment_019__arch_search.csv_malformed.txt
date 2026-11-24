@@ -1,0 +1,2 @@
+Malformed rows: 1
+{"line_num": 61, "reason": "MISSING COLUMNS: Expected Number of Columns: 15 Found: 14", "raw": "4,32,0,1,2,0.797179,6,0.572,0.247859,0.405,0.16,8000,2000,/home/josef/Projects/IGNITE-grokbot/ml/checkpoints/arch_search/layers4_hidden32_fam0_reag1_site2/planner.pt", "repaired": true}

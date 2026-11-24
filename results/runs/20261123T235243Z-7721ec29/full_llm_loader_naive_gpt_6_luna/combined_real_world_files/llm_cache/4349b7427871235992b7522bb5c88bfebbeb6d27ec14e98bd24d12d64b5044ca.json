@@ -1,0 +1,62 @@
+{
+  "cache_version": 1,
+  "created_at": "2026-11-24T18:34:39.385405+00:00",
+  "api_base": "https://api.openai.com/v1",
+  "payload": {
+    "model": "gpt-6-luna",
+    "messages": [
+      {
+        "role": "system",
+        "content": "You are a CSV repair assistant.\n\nYour task is to inspect a possibly malformed CSV file and reconstruct it as a valid CSV table.\n\nReturn the repaired CSV and a brief error report. Do not include explanations outside the requested output sections."
+      },
+      {
+        "role": "user",
+        "content": "Repair the following CSV file.\n\nReturn exactly two sections and nothing else.\nDo not use Markdown fences. Do not include prose before, between, or after the sections.\nThe section markers must appear exactly as shown, each on its own line.\n\n--BEGIN FIXED CSV--\n<repaired CSV text only, including exactly one header row>\n--END FIXED CSV--\n--BEGIN ERROR REPORT--\n<JSON error report object only>\n--END ERROR REPORT--\n\nRules for the fixed CSV section:\n\n- Use a comma as the output delimiter.\n- Use double quotes according to standard CSV escaping rules.\n- Encode an embedded double quote as two double quotes.\n- Preserve every payload character exactly.\n- Do not normalize, infer, translate, reformat, round, complete, shorten, or otherwise rewrite cell values.\n- Preserve embedded line breaks inside quoted fields.\n- Use LF line endings.\n- Return the complete repaired CSV, not a sample, preview, summary, or first portion.\n- Include every recoverable source data row exactly once unless the input clearly marks it as non-data.\n- Finish the entire fixed CSV section before starting the error report.\n- If output length is a concern, keep the error report as short as possible but do not truncate the fixed CSV.\n- Do not wrap the CSV in Markdown fences.\n- Do not include comments, explanations, or section labels inside the CSV.\n- If the input is empty, whitespace-only, or contains no table evidence, leave the fixed CSV section empty. Do not invent headers, rows, columns, examples, placeholder data, or sample content.\n\nThe error report must use this format:\n\n{\n  \"fixed_errors\": [\n    {\n      \"type\": \"<error type>\",\n      \"description\": \"<brief description>\",\n      \"rows\": [<affected physical line numbers>]\n    }\n  ],\n  \"summary\": \"<brief summary>\"\n}\n\nIf no errors were fixed, return an empty fixed_errors list.\n\nCSV content:\n\n# Names file for the news linker (stock_advisor/news/link.py explains each kind).\n# Columns: symbol (watchlist symbol, or a driver name from risk.DRIVERS), alias, kind.\n# Kinds: name/short/driver any case; weak exact case and needs a cue or another alias;\n# ticker exact case; zh Traditional Chinese (Hong Kong); hans Simplified (second row only).\nsymbol,alias,kind\n0005.HK,HSBC Holdings plc,name\n0005.HK,HSBC,short\n0005.HK,0005.HK,ticker\n0005.HK,5.HK,ticker\n0005.HK,0005 HK,ticker\n0005.HK,00005,ticker\n0005.HK,0005,ticker\n0005.HK,匯豐控股,zh\n0005.HK,匯豐,zh\n0388.HK,HKEx Limited,name\n0388.HK,HKEx,short\n0388.HK,0388.HK,ticker\n0388.HK,388.HK,ticker\n0388.HK,0388 HK,ticker\n0388.HK,388 HK,ticker\n0388.HK,00388,ticker\n0388.HK,0388,ticker\n0388.HK,Hong Kong Exchanges and Clearing,name\n0388.HK,Hong Kong Exchanges,short\n0388.HK,香港交易所,zh\n0388.HK,港交所,zh\n0939.HK,China Construction Bank,name\n0939.HK,0939.HK,ticker\n0939.HK,939.HK,ticker\n0939.HK,0939 HK,ticker\n0939.HK,939 HK,ticker\n0939.HK,00939,ticker\n0939.HK,0939,ticker\n0939.HK,CCB,short\n0939.HK,建設銀行,zh\n0939.HK,建行,zh\n1299.HK,AIA Group Limited,name\n1299.HK,AIA,short\n1299.HK,1299.HK,ticker\n1299.HK,1299 HK,ticker\n1299.HK,01299,ticker\n1299.HK,1299,ticker\n1299.HK,友邦保險,zh\n1299.HK,友邦,zh\n1398.HK,Industrial and Commercial Bank of China,name\n1398.HK,1398.HK,ticker\n1398.HK,1398 HK,ticker\n1398.HK,01398,ticker\n1398.HK,1398,ticker\n1398.HK,ICBC,short\n1398.HK,工商銀行,zh\n2318.HK,Ping An Insurance,name\n2318.HK,2318.HK,ticker\n2318.HK,2318 HK,ticker\n\n"
+      }
+    ],
+    "stream": false,
+    "max_completion_tokens": 16000
+  },
+  "content": "--BEGIN FIXED CSV--\nsymbol,alias,kind\n0005.HK,HSBC Holdings plc,name\n0005.HK,HSBC,short\n0005.HK,0005.HK,ticker\n0005.HK,5.HK,ticker\n0005.HK,0005 HK,ticker\n0005.HK,00005,ticker\n0005.HK,0005,ticker\n0005.HK,匯豐控股,zh\n0005.HK,匯豐,zh\n0388.HK,HKEx Limited,name\n0388.HK,HKEx,short\n0388.HK,0388.HK,ticker\n0388.HK,388.HK,ticker\n0388.HK,0388 HK,ticker\n0388.HK,388 HK,ticker\n0388.HK,00388,ticker\n0388.HK,0388,ticker\n0388.HK,Hong Kong Exchanges and Clearing,name\n0388.HK,Hong Kong Exchanges,short\n0388.HK,香港交易所,zh\n0388.HK,港交所,zh\n0939.HK,China Construction Bank,name\n0939.HK,0939.HK,ticker\n0939.HK,939.HK,ticker\n0939.HK,0939 HK,ticker\n0939.HK,939 HK,ticker\n0939.HK,00939,ticker\n0939.HK,0939,ticker\n0939.HK,CCB,short\n0939.HK,建設銀行,zh\n0939.HK,建行,zh\n1299.HK,AIA Group Limited,name\n1299.HK,AIA,short\n1299.HK,1299.HK,ticker\n1299.HK,1299 HK,ticker\n1299.HK,01299,ticker\n1299.HK,1299,ticker\n1299.HK,友邦保險,zh\n1299.HK,友邦,zh\n1398.HK,Industrial and Commercial Bank of China,name\n1398.HK,1398.HK,ticker\n1398.HK,1398 HK,ticker\n1398.HK,01398,ticker\n1398.HK,1398,ticker\n1398.HK,ICBC,short\n1398.HK,工商銀行,zh\n2318.HK,Ping An Insurance,name\n2318.HK,2318.HK,ticker\n2318.HK,2318 HK,ticker\n--END FIXED CSV--\n--BEGIN ERROR REPORT--\n{\n  \"fixed_errors\": [],\n  \"summary\": \"No CSV errors; comment lines were excluded as non-data.\"\n}\n--END ERROR REPORT--",
+  "usage": {
+    "prompt_tokens": 1064,
+    "completion_tokens": 687,
+    "total_tokens": 1751,
+    "prompt_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 1061,
+      "audio_tokens": 0
+    },
+    "completion_tokens_details": {
+      "reasoning_tokens": 97,
+      "audio_tokens": 0,
+      "accepted_prediction_tokens": 0,
+      "rejected_prediction_tokens": 0
+    }
+  },
+  "cost": {
+    "backend": "openai",
+    "model": "gpt-6-luna",
+    "api_base": "https://api.openai.com/v1",
+    "local_cache_hit": false,
+    "usage_available": true,
+    "cache_path": "/home/robin/offsite/pollock-offsite/results/runs/20261123T235243Z-7721ec29/full_llm_loader_naive_gpt_6_luna/combined_real_world_files/llm_cache/4349b7427871235992b7522bb5c88bfebbeb6d27ec14e98bd24d12d64b5044ca.json",
+    "prompt_tokens": 1064,
+    "cached_input_tokens": 0,
+    "uncached_input_tokens": 1064,
+    "ordinary_input_tokens": 3,
+    "cache_write_tokens": 1061,
+    "completion_tokens": 687,
+    "total_tokens": 1751,
+    "input_usd_per_1m": 0.1,
+    "cached_input_usd_per_1m": 0.01,
+    "cache_write_usd_per_1m": 0.125,
+    "output_usd_per_1m": 0.5,
+    "input_cost_usd": 3.0000000000000004e-07,
+    "cached_input_cost_usd": 0.0,
+    "cache_write_cost_usd": 0.000132625,
+    "output_cost_usd": 0.0003435,
+    "estimated_api_cost_usd": 0.000476425,
+    "billable_cost_usd": 0.000476425
+  }
+}

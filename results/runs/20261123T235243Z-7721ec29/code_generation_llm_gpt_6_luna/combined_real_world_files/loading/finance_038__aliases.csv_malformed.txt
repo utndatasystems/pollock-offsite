@@ -1,0 +1,5 @@
+Malformed rows: 4
+{"line_num": 1, "reason": "header row normalized", "raw": ["# Names file for the news linker (stock_advisor/news/link.py explains each kind)."], "repaired": true}
+{"line_num": 2, "reason": "width 4 -> 3", "raw": ["# Columns: symbol (watchlist symbol", " or a driver name from risk.DRIVERS)", " alias", " kind."], "repaired": true}
+{"line_num": 3, "reason": "width 1 -> 3", "raw": ["# Kinds: name/short/driver any case; weak exact case and needs a cue or another alias;"], "repaired": true}
+{"line_num": 4, "reason": "width 1 -> 3", "raw": ["# ticker exact case; zh Traditional Chinese (Hong Kong); hans Simplified (second row only)."], "repaired": true}

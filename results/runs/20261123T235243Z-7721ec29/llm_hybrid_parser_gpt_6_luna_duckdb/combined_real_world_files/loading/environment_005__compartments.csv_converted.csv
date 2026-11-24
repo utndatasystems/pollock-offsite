@@ -1,0 +1,56 @@
+source_medium,source_sub,source_qualifier,target_medium,target_sub,target_qualifier,kind
+emissions to water,groundwater,long-term,water,groundwater,long-term,if_absent
+emissions to water,groundwater,,water,groundwater,,if_absent
+emissions to water,unspecified,long-term,water,unspecified,long-term,if_absent
+emissions to water,sea water,,water,ocean,,if_absent
+Emissions to fresh water,,,water,surface water,,if_absent
+Emissions to sea water,,,water,ocean,,if_absent
+water,fresh water,,water,surface water,,if_absent
+water,river,,water,surface water,,if_absent
+water,ground-,,water,groundwater,,if_absent
+water,"ground-, long-term",,water,"groundwater, long-term",,if_absent
+water,ground water,,water,groundwater,,if_absent
+water,"ground water, long-term",,water,"groundwater, long-term",,if_absent
+water,sea water,,water,ocean,,if_absent
+water,sea,,water,ocean,,if_absent
+Emissions to non-agricultural soil,,,soil,non-agricultural,,if_absent
+Emissions to agricultural soil,,,soil,agricultural,,if_absent
+soil,non-agricultural soil,,soil,non-agricultural,,if_absent
+soil,agricultural soil,,soil,agricultural,,if_absent
+lower stratosphere and upper troposphere,,,air,lower stratosphere + upper troposphere,,if_absent
+Emissions to air,,,air,,,if_absent
+Emissions to water,,,water,,,if_absent
+Emissions to soil,,,soil,,,if_absent
+Resources,,,natural resource,,,if_absent
+natural resource,non-renewable element resources from ground,,natural resource,in ground,,if_absent
+natural resource,renewable element resources from ground,,natural resource,in ground,,if_absent
+natural resource,non-renewable energy resources from ground,,natural resource,in ground,,if_absent
+natural resource,non-renewable material resources from ground,,natural resource,in ground,,if_absent
+natural resource,renewable material resources from ground,,natural resource,in ground,,if_absent
+natural resource,renewable energy resources from ground,,natural resource,in ground,,if_absent
+natural resource,non-renewable element resources from water,,natural resource,in water,,if_absent
+natural resource,non-renewable material resources from water,,natural resource,in water,,if_absent
+natural resource,renewable material resources from water,,natural resource,in water,,if_absent
+natural resource,renewable energy resources from water,,natural resource,in water,,if_absent
+natural resource,renewable element resources from air,,natural resource,in air,,if_absent
+natural resource,renewable material resources from air,,natural resource,in air,,if_absent
+natural resource,renewable energy resources from air,,natural resource,in air,,if_absent
+natural resource,renewable material resources from biosphere,,natural resource,biotic,,if_absent
+natural resource,renewable energy resources from biosphere,,natural resource,biotic,,if_absent
+land occupation,,,natural resource,land,,if_absent
+land transformation,,,natural resource,land,,if_absent
+resources,land,,natural resource,land,,if_absent
+air,low. pop.,,air,non-urban air or from high stacks,,if_absent
+air,"low. pop., long-term",,air,"low population density, long-term",,if_absent
+air,high. pop.,,air,urban air close to ground,,if_absent
+air,high population density,,air,urban air close to ground,,if_absent
+air,low population density,,air,non-urban air or from high stacks,,if_absent
+air,stratosphere + troposphere,,air,lower stratosphere + upper troposphere,,if_absent
+air,lower stratosphere and upper troposphere,,air,lower stratosphere + upper troposphere,,if_absent
+inventory indicator,waste,,waste,,,if_absent
+soil,forestry,,soil,non-agricultural,,if_absent
+soil,industrial,,soil,non-agricultural,,if_absent
+water,groundwater,,water,surface water,,if_absent
+water,lake,,water,surface water,,if_absent
+water,"groundwater, long-term",,water,unspecified (long-term),,if_absent
+air,"low population density, long-term",,air,unspecified (long-term),,if_absent

@@ -1,0 +1,2 @@
+Malformed rows: 1
+{"line_num": 1, "reason": "header row normalized", "raw": ["EN_YEAR", "EN_QUARTER", "EN_MONTH", "FR_ANNE\u00c9", "FR_TRIMESTRE", "FR_MOIS", "EN_GENDER", "FR_SEXE", "EN_SKILL_LEVEL", "FR_NIVEAU_DE_COMP\u00c9TENCE", "TOTAL"], "repaired": true}

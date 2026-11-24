@@ -1,0 +1,51 @@
+CRIME_CATEGORY,2020,2024,COUNTY
+Crimes,,,Santaclara
+Violent Crimes,"6,141","8,139",Santaclara
+Homicide,53,35,Santaclara
+Rape (Forcible Rape prior to 2014),806,"1,021",Santaclara
+Rape,796,"1,003",Santaclara
+Attempted Rape,10,18,Santaclara
+Robbery,"1,704","1,923",Santaclara
+Weapon,,,Santaclara
+Firearm,369,286,Santaclara
+Knife or Cutting Instrument,199,197,Santaclara
+Other Weapon,181,264,Santaclara
+Strong-Arm,955,"1,176",Santaclara
+Location,,,Santaclara
+Highway,659,539,Santaclara
+Commercial,374,540,Santaclara
+Gas Station,47,46,Santaclara
+Convenience Store,185,167,Santaclara
+Residence,165,184,Santaclara
+Bank,22,20,Santaclara
+Miscellaneous,252,427,Santaclara
+Aggravated Assault,"3,578","5,160",Santaclara
+Weapon,,,Santaclara
+Firearm,682,646,Santaclara
+Knife or Cutting Instrument,757,919,Santaclara
+Other Weapon,"1,568","2,332",Santaclara
+Hands  Fists  Feet,571,"1,263",Santaclara
+Property Crimes,"43,690","44,677",Santaclara
+Burglary,"7,233","6,735",Santaclara
+Means of Entry,,,Santaclara
+Forcible Entry,"5,312","4,788",Santaclara
+No Force,"1,921","1,947",Santaclara
+Location / Time,,,Santaclara
+Residence,"2,702","2,667",Santaclara
+Night,855,"1,251",Santaclara
+Day,721,"1,251",Santaclara
+Unknown,"1,126",165,Santaclara
+Non-Residence,"4,531","4,068",Santaclara
+Night,"2,221","2,466",Santaclara
+Day,735,"1,431",Santaclara
+Unknown,"1,575",171,Santaclara
+Motor Vehicle Theft,"9,926","8,709",Santaclara
+Automotive,"6,491","6,245",Santaclara
+Trucks and Buses,"2,819","1,851",Santaclara
+Other,616,613,Santaclara
+Larceny-Theft,"26,531","29,233",Santaclara
+Type,,,Santaclara
+Pocket-Picking,82,347,Santaclara
+Purse-Snatching,77,147,Santaclara
+Shoplifting,"2,247","7,270",Santaclara
+From Motor Vehicle,"10,837","7,089",Santaclara

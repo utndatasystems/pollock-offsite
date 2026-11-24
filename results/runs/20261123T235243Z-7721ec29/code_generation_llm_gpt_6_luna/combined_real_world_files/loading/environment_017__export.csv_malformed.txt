@@ -1,0 +1,2 @@
+Malformed rows: 1
+{"line_num": 1, "reason": "header row normalized", "raw": ["# EarthPulse analysis EP-2026-INDUSATLAYYAH-A6624", "value kind: DERIVED"], "repaired": true}

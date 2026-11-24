@@ -1,0 +1,62 @@
+{
+  "cache_version": 1,
+  "created_at": "2026-11-24T17:32:22.758058+00:00",
+  "api_base": "https://api.openai.com/v1",
+  "payload": {
+    "model": "gpt-6-luna",
+    "messages": [
+      {
+        "role": "system",
+        "content": "You are a CSV repair assistant.\n\nYour task is to inspect a possibly malformed CSV file and reconstruct it as a valid CSV table.\n\nReturn the repaired CSV and a brief error report. Do not include explanations outside the requested output sections."
+      },
+      {
+        "role": "user",
+        "content": "Repair the following CSV file.\n\nReturn exactly two sections and nothing else.\nDo not use Markdown fences. Do not include prose before, between, or after the sections.\nThe section markers must appear exactly as shown, each on its own line.\n\n--BEGIN FIXED CSV--\n<repaired CSV text only, including exactly one header row>\n--END FIXED CSV--\n--BEGIN ERROR REPORT--\n<JSON error report object only>\n--END ERROR REPORT--\n\nRules for the fixed CSV section:\n\n- Use a comma as the output delimiter.\n- Use double quotes according to standard CSV escaping rules.\n- Encode an embedded double quote as two double quotes.\n- Preserve every payload character exactly.\n- Do not normalize, infer, translate, reformat, round, complete, shorten, or otherwise rewrite cell values.\n- Preserve embedded line breaks inside quoted fields.\n- Use LF line endings.\n- Return the complete repaired CSV, not a sample, preview, summary, or first portion.\n- Include every recoverable source data row exactly once unless the input clearly marks it as non-data.\n- Finish the entire fixed CSV section before starting the error report.\n- If output length is a concern, keep the error report as short as possible but do not truncate the fixed CSV.\n- Do not wrap the CSV in Markdown fences.\n- Do not include comments, explanations, or section labels inside the CSV.\n- If the input is empty, whitespace-only, or contains no table evidence, leave the fixed CSV section empty. Do not invent headers, rows, columns, examples, placeholder data, or sample content.\n\nThe error report must use this format:\n\n{\n  \"fixed_errors\": [\n    {\n      \"type\": \"<error type>\",\n      \"description\": \"<brief description>\",\n      \"rows\": [<affected physical line numbers>]\n    }\n  ],\n  \"summary\": \"<brief summary>\"\n}\n\nIf no errors were fixed, return an empty fixed_errors list.\n\nCSV content:\n\ncompany\n# Seed watchlist for the automated company-watchlist sweep. One big employer per\n# row. The sweep checks each ~weekly against our own data and, if we have no\n# current-year entry, searches our news net for a layoff and adds the verified\n# one. Grow this list freely — every added name is monitored forever, for free.\n# US tech\nAmazon\nMicrosoft\nMeta\nGoogle\nAlphabet\nOracle\nDell Technologies\nHP Inc\nHewlett Packard Enterprise\nIntel\nIBM\nCisco\nSalesforce\nWorkday\nIntuit\nAutodesk\nCloudflare\nSnap\nPinterest\nCoinbase\nPayPal\nBlock\nRobinhood\nElectronic Arts\nUnity Technologies\nZoom\nTwilio\nOkta\nAtlassian\nServiceNow\nAdobe\nNvidia\nQualcomm\nBroadcom\nDropbox\nDocuSign\nSpotify\nUber\nLyft\nDoorDash\nInstacart\nStripe\n# US non-tech\nUPS\nFedEx\nBoeing\nLockheed Martin\nRTX\nNorthrop Grumman\nNike\n3M\nChevron\nExxonMobil\nConocoPhillips\nHalliburton\nTyson Foods\nGoodyear\nWhirlpool\nKraft Heinz\nConagra Brands\nGeneral Mills\nCleveland-Cliffs\nNucor\nFord\nGeneral Motors\nStellantis\nRivian\nLucid Motors\nHome Depot\nLowe's\nMacy's\nKohl's\nJCPenney\nKroger\nWalgreens\nCVS Health\nWalmart\nTarget\nBest Buy\nGameStop\nSaks Global\nNordstrom\nWells Fargo\nCitigroup\nJPMorgan Chase\nGoldman Sachs\nMorgan Stanley\nBank of America\nUnitedHealth\nOptum\nCigna\nHumana\nPfizer\nMerck\nBristol Myers Squibb\nJohnson & Johnson\nAbbVie\nAmgen\nGilead Sciences\nBiogen\nModerna\nMedtronic\nBoston Scientific\nBaxter International\nBecton Dickinson\nEstee Lauder\nPeloton\nWayfair\nWalt Disney\nWarner Bros Discovery\nParamount Skydance\nNBCUniversal\niHeartMedia\nVerizon\nAT&T\nT-Mobile\nComcast\nCharter Communications\nChegg\nADP\nStarbucks\nMcDonald's\nSpirit Airlines\nSouthwest Airlines\nAmerican Airlines\nUnited Airlines\nDelta Air Lines\n# Europe\nSAP\nBayer\nGSK\nAstraZeneca\nNovartis\nRoche\nSanofi\nBioNTech\nNestle\nUnilever\nHeineken\nDiageo\nDeutsche Bank\nCommerzbank\nUBS\nBarclays\nHSBC\nLloyds Banking\nNatWest\nBNP Paribas\nSociete Generale\nSantander\nTelefonica\nVodafone\nNokia\nEricsson\nVolkswagen\nMercedes-Benz\nBMW\nPorsche\nAudi\nBosch\nContinental\nZF Friedrichshafen\nSchaeffler\nMichelin\nBASF\nSiemens\nPhilips\nASML\nLufthansa\nAir France-KLM\nIntesa Sanpaolo\nUniCredit\nVirgin Media O2\nThyssenkrupp\n# Asia / other\nTata Consultancy Services\nInfosys\nWipro\nHCL Technologies\nTech Mahindra\nCognizant\nAccenture\nSamsung Electronics\nLG Electronics\nSK Hynix\nPanasonic\nSony\nTakeda\nNissan\nHonda\nToyota\nBYD\nAlibaba\nTencent\nBaidu\nByteDance\nRakuten\nSoftBank\nWiseTech Global\nTelstra\nSea Limited\nGrab\n\n"
+      }
+    ],
+    "stream": false,
+    "max_completion_tokens": 16000
+  },
+  "content": "--BEGIN FIXED CSV--\ncompany\nAmazon\nMicrosoft\nMeta\nGoogle\nAlphabet\nOracle\nDell Technologies\nHP Inc\nHewlett Packard Enterprise\nIntel\nIBM\nCisco\nSalesforce\nWorkday\nIntuit\nAutodesk\nCloudflare\nSnap\nPinterest\nCoinbase\nPayPal\nBlock\nRobinhood\nElectronic Arts\nUnity Technologies\nZoom\nTwilio\nOkta\nAtlassian\nServiceNow\nAdobe\nNvidia\nQualcomm\nBroadcom\nDropbox\nDocuSign\nSpotify\nUber\nLyft\nDoorDash\nInstacart\nStripe\nUPS\nFedEx\nBoeing\nLockheed Martin\nRTX\nNorthrop Grumman\nNike\n3M\nChevron\nExxonMobil\nConocoPhillips\nHalliburton\nTyson Foods\nGoodyear\nWhirlpool\nKraft Heinz\nConagra Brands\nGeneral Mills\nCleveland-Cliffs\nNucor\nFord\nGeneral Motors\nStellantis\nRivian\nLucid Motors\nHome Depot\nLowe's\nMacy's\nKohl's\nJCPenney\nKroger\nWalgreens\nCVS Health\nWalmart\nTarget\nBest Buy\nGameStop\nSaks Global\nNordstrom\nWells Fargo\nCitigroup\nJPMorgan Chase\nGoldman Sachs\nMorgan Stanley\nBank of America\nUnitedHealth\nOptum\nCigna\nHumana\nPfizer\nMerck\nBristol Myers Squibb\nJohnson & Johnson\nAbbVie\nAmgen\nGilead Sciences\nBiogen\nModerna\nMedtronic\nBoston Scientific\nBaxter International\nBecton Dickinson\nEstee Lauder\nPeloton\nWayfair\nWalt Disney\nWarner Bros Discovery\nParamount Skydance\nNBCUniversal\niHeartMedia\nVerizon\nAT&T\nT-Mobile\nComcast\nCharter Communications\nChegg\nADP\nStarbucks\nMcDonald's\nSpirit Airlines\nSouthwest Airlines\nAmerican Airlines\nUnited Airlines\nDelta Air Lines\nSAP\nBayer\nGSK\nAstraZeneca\nNovartis\nRoche\nSanofi\nBioNTech\nNestle\nUnilever\nHeineken\nDiageo\nDeutsche Bank\nCommerzbank\nUBS\nBarclays\nHSBC\nLloyds Banking\nNatWest\nBNP Paribas\nSociete Generale\nSantander\nTelefonica\nVodafone\nNokia\nEricsson\nVolkswagen\nMercedes-Benz\nBMW\nPorsche\nAudi\nBosch\nContinental\nZF Friedrichshafen\nSchaeffler\nMichelin\nBASF\nSiemens\nPhilips\nASML\nLufthansa\nAir France-KLM\nIntesa Sanpaolo\nUniCredit\nVirgin Media O2\nThyssenkrupp\nTata Consultancy Services\nInfosys\nWipro\nHCL Technologies\nTech Mahindra\nCognizant\nAccenture\nSamsung Electronics\nLG Electronics\nSK Hynix\nPanasonic\nSony\nTakeda\nNissan\nHonda\nToyota\nBYD\nAlibaba\nTencent\nBaidu\nByteDance\nRakuten\nSoftBank\nWiseTech Global\nTelstra\nSea Limited\nGrab\n--END FIXED CSV--\n--BEGIN ERROR REPORT--\n{\n  \"fixed_errors\": [\n    {\n      \"type\": \"non_data_comment_lines\",\n      \"description\": \"Excluded comment and section-label lines from the one-column data table.\",\n      \"rows\": [2, 3, 4, 5, 6, 7, 50, 135, 182]\n    }\n  ],\n  \"summary\": \"Removed 9 non-data comment lines; retained all company rows.\"\n}\n--END ERROR REPORT--",
+  "usage": {
+    "prompt_tokens": 1202,
+    "completion_tokens": 1848,
+    "total_tokens": 3050,
+    "prompt_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 1199,
+      "audio_tokens": 0
+    },
+    "completion_tokens_details": {
+      "reasoning_tokens": 1048,
+      "audio_tokens": 0,
+      "accepted_prediction_tokens": 0,
+      "rejected_prediction_tokens": 0
+    }
+  },
+  "cost": {
+    "backend": "openai",
+    "model": "gpt-6-luna",
+    "api_base": "https://api.openai.com/v1",
+    "local_cache_hit": false,
+    "usage_available": true,
+    "cache_path": "/home/robin/offsite/pollock-offsite/results/runs/20261123T235243Z-7721ec29/full_llm_loader_naive_gpt_6_luna/combined_real_world_files/llm_cache/13ce74df4ac930b043a47a3897f426d18725cce82498edca658b11dd5c6e05e1.json",
+    "prompt_tokens": 1202,
+    "cached_input_tokens": 0,
+    "uncached_input_tokens": 1202,
+    "ordinary_input_tokens": 3,
+    "cache_write_tokens": 1199,
+    "completion_tokens": 1848,
+    "total_tokens": 3050,
+    "input_usd_per_1m": 0.1,
+    "cached_input_usd_per_1m": 0.01,
+    "cache_write_usd_per_1m": 0.125,
+    "output_usd_per_1m": 0.5,
+    "input_cost_usd": 3.0000000000000004e-07,
+    "cached_input_cost_usd": 0.0,
+    "cache_write_cost_usd": 0.000149875,
+    "output_cost_usd": 0.000924,
+    "estimated_api_cost_usd": 0.001074175,
+    "billable_cost_usd": 0.001074175
+  }
+}

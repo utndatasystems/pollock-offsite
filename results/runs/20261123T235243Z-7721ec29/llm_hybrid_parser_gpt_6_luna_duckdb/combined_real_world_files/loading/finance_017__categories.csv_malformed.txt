@@ -1,0 +1,5 @@
+Malformed rows: 4
+{"line_num": 8, "reason": "MISSING COLUMNS: Expected Number of Columns: 2 Found: 1", "raw": "EQUIPMENT", "repaired": true}
+{"line_num": 12, "reason": "MISSING COLUMNS: Expected Number of Columns: 2 Found: 1", "raw": "FUEL/PROPULSION SYSTEM", "repaired": true}
+{"line_num": 15, "reason": "MISSING COLUMNS: Expected Number of Columns: 2 Found: 1", "raw": "LATCHES/LOCKS/LINKAGES", "repaired": true}
+{"line_num": 29, "reason": "MISSING COLUMNS: Expected Number of Columns: 2 Found: 1", "raw": "VISIBILITY/WIPER", "repaired": true}

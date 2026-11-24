@@ -1,0 +1,3 @@
+Malformed rows: 2
+{"line_num": 1, "reason": "header row normalized", "raw": ["path", "basis", "notes"], "repaired": true}
+{"line_num": 2, "reason": "width 4 -> 3", "raw": ["golden/report_feedback_export.csv", "", "golden-source wide export (F1) -- basis is ignored", " each row carries its own"], "repaired": true}

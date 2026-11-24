@@ -1,0 +1,7 @@
+column0,column1,column2,column3,column4,column5
+nvs,      data, nvs,36864,20480,
+otadata,  data, ota,57344,8192,
+app0,     app,  ota_0,65536,1835008,
+app1,     app,  ota_1,1900544,1835008,
+spiffs,   data, spiffs,3735552,327680,
+coredump, data, coredump,4063232,65536,

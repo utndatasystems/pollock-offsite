@@ -1,0 +1,62 @@
+{
+  "cache_version": 1,
+  "created_at": "2026-11-24T09:31:47.390632+00:00",
+  "api_base": "https://api.openai.com/v1",
+  "payload": {
+    "model": "gpt-6.2-sol",
+    "messages": [
+      {
+        "role": "system",
+        "content": "You are a CSV repair assistant.\n\nYour task is to inspect a possibly malformed CSV file and reconstruct it as a valid CSV table.\n\nReturn the repaired CSV and a brief error report. Do not include explanations outside the requested output sections."
+      },
+      {
+        "role": "user",
+        "content": "Repair the following CSV file.\n\nReturn exactly two sections and nothing else.\nDo not use Markdown fences. Do not include prose before, between, or after the sections.\nThe section markers must appear exactly as shown, each on its own line.\n\n--BEGIN FIXED CSV--\n<repaired CSV text only, including exactly one header row>\n--END FIXED CSV--\n--BEGIN ERROR REPORT--\n<JSON error report object only>\n--END ERROR REPORT--\n\nRules for the fixed CSV section:\n\n- Use a comma as the output delimiter.\n- Use double quotes according to standard CSV escaping rules.\n- Encode an embedded double quote as two double quotes.\n- Preserve every payload character exactly.\n- Do not normalize, infer, translate, reformat, round, complete, shorten, or otherwise rewrite cell values.\n- Preserve embedded line breaks inside quoted fields.\n- Use LF line endings.\n- Return the complete repaired CSV, not a sample, preview, summary, or first portion.\n- Include every recoverable source data row exactly once unless the input clearly marks it as non-data.\n- Finish the entire fixed CSV section before starting the error report.\n- If output length is a concern, keep the error report as short as possible but do not truncate the fixed CSV.\n- Do not wrap the CSV in Markdown fences.\n- Do not include comments, explanations, or section labels inside the CSV.\n- If the input is empty, whitespace-only, or contains no table evidence, leave the fixed CSV section empty. Do not invent headers, rows, columns, examples, placeholder data, or sample content.\n\nThe error report must use this format:\n\n{\n  \"fixed_errors\": [\n    {\n      \"type\": \"<error type>\",\n      \"description\": \"<brief description>\",\n      \"rows\": [<affected physical line numbers>]\n    }\n  ],\n  \"summary\": \"<brief summary>\"\n}\n\nIf no errors were fixed, return an empty fixed_errors list.\n\nCSV content:\n\nPosted_Date,Merchant_Name,Invoice_Net_Line_Amount\n01/02/2016,SHERATON HOTEL,1015.16\n01/02/2016,SHERATON HOTEL,1015.16\n02/02/2016,THE UNIVERSITY OF LIVE,1335\n02/02/2016,CIVIL SERVICE LEARNING,431.82\n03/02/2016,KELWAY LIMITED,1007\n04/02/2016,KELWAY LIMITED,586.41\n08/02/2016,WWW.NEOPOST.CO.UK,429.17\n10/02/2016,SUNBIRD CHAIN HOTELS,480.24\n10/02/2016,SUNBIRD CHAIN HOTELS,448.23\n12/02/2016,WWW.MISCO.CO.UK,980.99\n12/02/2016,WWW.UK.INSIGHT.COM,2713.5\n15/02/2016,SHERATON HOTEL,3951.76\n18/02/2016,KING OF COTTON,746\n19/02/2016,XMA LTD,905\n23/02/2016,WWW.CAPITATRAVELANDEVE,1495\n24/02/2016,WWW.CAPITATRAVELANDEVE,1495\n24/02/2016,WWW.CAPITATRAVELANDEVE,1495\n24/02/2016,WWW.CAPITATRAVELANDEVE,1495\n25/02/2016,KING OF COTTON,899.92\n25/02/2016,TOTAL BUSINESS FURNITU,585\n25/02/2016,WWW.APM.ORG.UK,517\n25/02/2016,WWW.APM.ORG.UK,517\n,,\n,,\nAll transactions listed below are made via an electronic payment system to suppliers as part of a centrally let government contract,,\n\n"
+      }
+    ],
+    "stream": false,
+    "max_completion_tokens": 16000
+  },
+  "content": "--BEGIN FIXED CSV--\nPosted_Date,Merchant_Name,Invoice_Net_Line_Amount\n01/02/2016,SHERATON HOTEL,1015.16\n01/02/2016,SHERATON HOTEL,1015.16\n02/02/2016,THE UNIVERSITY OF LIVE,1335\n02/02/2016,CIVIL SERVICE LEARNING,431.82\n03/02/2016,KELWAY LIMITED,1007\n04/02/2016,KELWAY LIMITED,586.41\n08/02/2016,WWW.NEOPOST.CO.UK,429.17\n10/02/2016,SUNBIRD CHAIN HOTELS,480.24\n10/02/2016,SUNBIRD CHAIN HOTELS,448.23\n12/02/2016,WWW.MISCO.CO.UK,980.99\n12/02/2016,WWW.UK.INSIGHT.COM,2713.5\n15/02/2016,SHERATON HOTEL,3951.76\n18/02/2016,KING OF COTTON,746\n19/02/2016,XMA LTD,905\n23/02/2016,WWW.CAPITATRAVELANDEVE,1495\n24/02/2016,WWW.CAPITATRAVELANDEVE,1495\n24/02/2016,WWW.CAPITATRAVELANDEVE,1495\n24/02/2016,WWW.CAPITATRAVELANDEVE,1495\n25/02/2016,KING OF COTTON,899.92\n25/02/2016,TOTAL BUSINESS FURNITU,585\n25/02/2016,WWW.APM.ORG.UK,517\n25/02/2016,WWW.APM.ORG.UK,517\n--END FIXED CSV--\n--BEGIN ERROR REPORT--\n{\n  \"fixed_errors\": [\n    {\n      \"type\": \"non_data_rows\",\n      \"description\": \"Removed two empty separator rows and a trailing explanatory note.\",\n      \"rows\": [24, 25, 26]\n    }\n  ],\n  \"summary\": \"Preserved all 22 transaction rows, including duplicates.\"\n}\n--END ERROR REPORT--",
+  "usage": {
+    "prompt_tokens": 869,
+    "completion_tokens": 535,
+    "total_tokens": 1404,
+    "prompt_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 0,
+      "audio_tokens": 0
+    },
+    "completion_tokens_details": {
+      "reasoning_tokens": 40,
+      "audio_tokens": 0,
+      "accepted_prediction_tokens": 0,
+      "rejected_prediction_tokens": 0
+    }
+  },
+  "cost": {
+    "backend": "openai",
+    "model": "gpt-6.2-sol",
+    "api_base": "https://api.openai.com/v1",
+    "local_cache_hit": false,
+    "usage_available": true,
+    "cache_path": "/home/robin/offsite/pollock-offsite/results/runs/20261123T235243Z-7721ec29/full_llm_loader_naive_gpt_6_2_sol/combined_real_world_files/llm_cache/af2ad837e7bfae310584f8d14dd89f32ace46e741937a50ecb43e0a9f8767a10.json",
+    "prompt_tokens": 869,
+    "cached_input_tokens": 0,
+    "uncached_input_tokens": 869,
+    "ordinary_input_tokens": 869,
+    "cache_write_tokens": 0,
+    "completion_tokens": 535,
+    "total_tokens": 1404,
+    "input_usd_per_1m": 2.0,
+    "cached_input_usd_per_1m": 0.1,
+    "cache_write_usd_per_1m": 2.5,
+    "output_usd_per_1m": 10.0,
+    "input_cost_usd": 0.001738,
+    "cached_input_cost_usd": 0.0,
+    "cache_write_cost_usd": 0.0,
+    "output_cost_usd": 0.00535,
+    "estimated_api_cost_usd": 0.007088,
+    "billable_cost_usd": 0.007088
+  }
+}

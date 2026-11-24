@@ -1,0 +1,50 @@
+food_id,name,category,serving,kcal,protein_g,carbs_g,fat_g,sat_fat_g,fiber_g,vit_a_ug,vit_c_mg,vit_d_ug,vit_e_mg,vit_k_ug,folate_ug,b12_ug,choline_mg,calcium_mg,iron_mg,magnesium_mg,potassium_mg,zinc_mg,selenium_ug,omega3_g
+almond-milk-unsweetened-plain-refrigerated-5b3ffe,"Almond milk, unsweetened, plain, refrigerated",beverage,1 cup (240 g),19.33,0.66,0.67,1.56,0,0,,,1.59,,0,0,0.45,,157.5,0.12,8.25,49.27,0.08,,0
+almond-milk-unsweetened-shelf-stable-b6bfac,"Almond milk, unsweetened, shelf stable",beverage,1 cup (240 g),15,0.4,1.31,0.96,0.08,0.2,0,0,1,6.33,0,1,0,3.1,184,0.28,6,67,0.06,0.1,0
+beer-5-alcohol-by-volume-d0fd8e,"Beer, (5% alcohol by volume)",beverage,1 cup (240 g),43,0.46,3.55,0,0,0,0,0,0,0,0,6,0.02,10.1,4,0.02,6,27,0.01,0.6,0
+beer-light-4-alcohol-by-volume-bc90f7,"Beer, light (4% alcohol by volume)",beverage,1 cup (240 g),29,0.24,1.64,0,0,0,0,0,0,0,0,6,0.02,8.8,4,0.03,5,21,0.01,0.4,0
+black-tea-dry-leaves-51e8ab,"Black tea, dry leaves",beverage,1 cup (240 g),234,20.3,51.7,2.5,,38.1,75,0,0,9.8,1500,210,0,,470,17,220,2000,4,8,
+black-tea-infusion-5c7333,"Black tea, infusion",beverage,1 cup (240 g),0,0.1,0,0,0,0,,0,0,,0.27,3,0,,0,0,2,27,0,0,
+black-tea-ready-to-drink-iced-unsweetened-2b7a86,"Black tea, ready-to-drink, iced, unsweetened",beverage,1 cup (240 g),0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+brandy-55ac35,Brandy,beverage,1 cup (240 g),234,0,0,0,,0,0,0,0,,0,0,0,,0,0,0,1,0,,
+carbonated-drink-ginger-ale-62ad12,"Carbonated drink, ginger ale",beverage,1 cup (240 g),34,0,8.76,0,0,0,0,0,0,0,0,0,0,0,3,0.18,1,1,0.05,0.1,0
+carbonated-drink-root-beer-64cdea,"Carbonated drink, root beer",beverage,1 cup (240 g),41,0,10.6,0,0,0,0,0,0,0,0,0,0,0.3,5,0.05,1,1,0.07,0.1,0
+carbonated-lemon-lime-soda-no-caffeine-8b9471,"Carbonated, lemon-lime soda, no caffeine",beverage,1 cup (240 g),41,0.09,10.42,0,0,0,0,0,0,0,0,0,0,0.4,2,0.02,1,1,0.01,0,0
+chamomile-tea-brewed-fc52be,"Chamomile tea, brewed",beverage,1 cup (240 g),1,0,0.2,0,0,0,1,0,0,0,0,1,0,0,2,0.08,1,9,0.04,0,0
+champagne-a23156,Champagne,beverage,1 cup (240 g),76.1,0.3,1.4,0,0,0,0,0,0,0,,0,0,,7.15,0.11,7.97,22.8,0.04,,0
+cider-average-38d2a9,Cider (average),beverage,1 cup (240 g),36.5,0.07,3.67,,0,0,0.06,9.97,,,,,,,7.9,0.61,3.14,100,0.02,,0
+cider-dry-e87604,"Cider, dry",beverage,1 cup (240 g),35.9,0,2.62,0,0,0,0,14.1,,,,,,,3.24,0.84,2.92,95.8,0.02,,0
+cocktail-margarita-3955d3,"Cocktail, margarita",beverage,1 cup (240 g),188,0.05,4.33,0.05,0.01,0.09,0.18,1.37,0,0.03,0.11,1.72,0,,2.85,0.07,1.51,17.18,0.02,0.04,0.01
+cocktail-rum-based-6fb2a4,"Cocktail, rum-based",beverage,1 cup (240 g),121,0,8.04,2.19,1.64,0.3,0.08,4.9,,0.02,0.1,12,0,,8,0.21,8,71,0.13,,0
+cocoa-powder-7fc29d,Cocoa powder,beverage,1 tbsp (5 g),319.1,22.1,38.2,15.2,9.17,27.7,,0,0,0.1,,62,0,,170,30,590,4400,7.5,10,0.04
+cocoa-powder-pure-d71891,"Cocoa powder, pure",beverage,1 cup (240 g),386,18.5,42.4,21.6,13.03,23.9,3,0,0,0.3,2,31,0,,140,14,440,2800,7,,0.06
+cocoa-milk-type-d70c07,"Cocoa, milk-type",beverage,1 cup (240 g),400,7.4,80.4,6.8,,5.5,8,0,,0.4,0,12,,,180,2.9,130,730,2.1,,
+coconut-water-05c854,Coconut water,beverage,1 cup (240 g),19,0.1,4.5,0,0,0,0,24.8,0,0,,0.8,0,,10,0,7.8,170,0,0,0
+coffee-brewed-breakfast-blend-d6aca0,"Coffee, brewed, breakfast blend",beverage,1 cup (237 g),2,0.3,0.17,0,0,0,0,0,0,0,0,0,0,0,2,0.02,4,50,0.02,0,0
+coffee-brewed-prepared-with-tap-water-601e58,"Coffee, brewed, prepared with tap water",beverage,1 cup (237 g),1,0.12,0,0.02,0,0,0,0,0,0.01,0.1,2,0,2.6,2,0.01,3,49,0.02,0,0
+coffee-canned-unsweetened-862723,"Coffee, canned, unsweetened",beverage,1 cup (240 g),3,0.1,0.5,0,,,,,,0,0,0,0,,1,0,5,68,0,0,
+cola-a258f5,Cola,beverage,1 cup (240 g),41,0,10.38,0,0,0,0,0,0,0,0,0,0,0.3,6,0,1,1,0,0,0
+cola-diet-09c740,"Cola, diet",beverage,1 cup (240 g),1,0,0,0,0,0,,0,0,,,0,0,,6,0,1,1,0,0,
+cooking-wine-86c2e1,Cooking wine,beverage,1 cup (240 g),50,0.5,6.3,0,0,0,0,0,0,0,0,1,0,5,9,0.4,10,88,0.08,0.2,0
+espresso-with-coffee-cream-no-sugar-added-9658c4,"Espresso with coffee cream, no sugar added",beverage,1 cup (240 g),28,0.5,1,2.5,1.5,0.2,24,0.2,0.1,0.06,,0.5,0.08,,23,0,4.1,45,0,,0.02
+gin-dda889,Gin,beverage,1 cup (240 g),265,0,0,0,0,0,0,0,0,0,0,0,0,,0,0,0,0,0,,0
+green-tea-brewed-23aa39,"Green tea, brewed",beverage,1 cup (245 g),1,0.22,0,0,0,0,0,0,0,0,0,0,0,0,0,0.02,1,8,0.01,0,0
+green-tea-infusion-f5acde,"Green tea, infusion",beverage,1 cup (240 g),0,0.1,0,0,0,0,,3,0,,,0,0,,2,0.1,0,20,0,0,
+hard-cider-a53031,Hard cider,beverage,1 cup (240 g),56,0,5.92,0,0,0,1,2.3,0,0.09,1.1,1,0,1.7,4,0.06,3,54,0.02,0,0
+hard-lemonade-malt-beer-e6799c,Hard lemonade (malt beer),beverage,1 cup (240 g),68,0,10.07,0,0,0,0,2.8,0,0.02,0,4,0.01,4.4,4,0.03,4,27,0.01,0.3,0
+herbal-tea-infusion-8a161e,"Herbal tea, infusion",beverage,1 cup (240 g),1,0,0.19,0,0,0,,0,0,,,1,0,,2,0.1,1,9,0,0,
+hibiscus-tea-334b02,Hibiscus tea,beverage,1 cup (240 g),0,0,0,0,0,0,0,0,0,0,0,1,0,0.4,8,0.08,3,20,0.04,0,0
+hot-chocolate-mix-powder-f00c00,"Hot chocolate, mix, powder",beverage,1 cup (240 g),398,6.67,83.73,4,2.38,3.7,1,0.2,0,0.19,0.9,6,0.35,33.1,133,1.19,83,712,1.46,5,0.01
+instant-coffee-dry-powder-or-granules-2ddea1,"Instant coffee, dry powder or granules",beverage,1 cup (240 g),140.5,18,24.2,0.3,0.11,20.6,,0,0,0.1,,0,0,,150,2.8,320,3500,0.29,4.1,0.01
+instant-coffee-powder-b325d1,"Instant coffee, powder",beverage,1 cup (240 g),353,12.2,75.4,0.5,0.2,0,0,0,0,0,1.9,0,0,101.9,141,4.41,327,3535,0.35,12.6,0.01
+kombucha-2ee4f7,Kombucha,beverage,1 cup (240 g),6.61,0.25,1.45,,,,0.21,,,,,,,,5.7,,1.5,7.7,,,
+lemon-instant-3ecc62,"Lemon, instant",beverage,1 cup (240 g),385,0.6,97.6,0.3,0.04,0,0,100,,,,43,0,,3,0.16,11,217,0.1,0.7,
+lemon-instant-diet-4e49b0,"Lemon, instant, diet",beverage,1 cup (240 g),2,0.02,0.44,0,0,0,0,0,0,0,0,0,0,0.2,3,0.05,2,14,0.01,0,0
+lemonade-bdd35a,Lemonade,beverage,1 cup (240 g),22,0,5.52,0,0,0,,0,0,,,0,0,,5,0,1,15,0,0,
+lemonade-homemade-22805e,"Lemonade, homemade",beverage,1 cup (240 g),63,0,16,0,0,0.1,,4,0,,,1,0,,4,0.5,1,10,0,0,
+lemonade-white-frozen-concentrate-2a19bc,"Lemonade, white, frozen concentrate",beverage,1 cup (240 g),196,0.22,49.89,0.7,0.03,0.3,0,13.1,0,0.09,0.2,7,0,2,7,0.09,7,72,0.04,0.4,0.02
+lime-juice-d0fdd9,Lime juice,beverage,1 tbsp (15 g),9.87,0.42,2.09,0.07,0.01,0.4,2.5,30,0,0.22,0.6,10,0,,14,0.09,8,117,0.08,,0
+liqueur-b095ea,Liqueur,beverage,1 cup (240 g),225,0.1,25.4,0.23,0.11,0,0,0,0,0,0,0,0,,1,0.06,3,30,0.03,,0.04
+liqueur-coffee-31-5-alcohol-by-volume-f0d28e,"Liqueur, coffee (31.5% alcohol by volume)",beverage,1 cup (240 g),308,0.1,32.2,0.3,0.11,0,0,0,0,0,,0,0,,1,0.06,3,30,0.03,0.3,0.01
+milkshake-vanilla-thick-3d51f4,"Milkshake, vanilla, thick",beverage,1 cup (240 g),112,3.86,17.75,3.03,1.89,0,25,0,0.6,0.05,0.2,7,0.52,,146,0.1,12,183,0.39,2.3,0.04
+mineral-sparkling-water-bottled-average-901557,"Mineral sparkling water, bottled (average)",beverage,1 cup (240 g),0.02,0,0,0,0,0,0,0,0,,,0,0,,15.4,0,3.7,1.25,0,,0

@@ -1,0 +1,62 @@
+{
+  "cache_version": 1,
+  "created_at": "2026-11-24T17:49:52.278358+00:00",
+  "api_base": "https://api.openai.com/v1",
+  "payload": {
+    "model": "gpt-6-luna",
+    "messages": [
+      {
+        "role": "system",
+        "content": "You are a CSV repair assistant.\n\nYour task is to inspect a possibly malformed CSV file and reconstruct it as a valid CSV table.\n\nReturn the repaired CSV and a brief error report. Do not include explanations outside the requested output sections."
+      },
+      {
+        "role": "user",
+        "content": "Repair the following CSV file.\n\nReturn exactly two sections and nothing else.\nDo not use Markdown fences. Do not include prose before, between, or after the sections.\nThe section markers must appear exactly as shown, each on its own line.\n\n--BEGIN FIXED CSV--\n<repaired CSV text only, including exactly one header row>\n--END FIXED CSV--\n--BEGIN ERROR REPORT--\n<JSON error report object only>\n--END ERROR REPORT--\n\nRules for the fixed CSV section:\n\n- Use a comma as the output delimiter.\n- Use double quotes according to standard CSV escaping rules.\n- Encode an embedded double quote as two double quotes.\n- Preserve every payload character exactly.\n- Do not normalize, infer, translate, reformat, round, complete, shorten, or otherwise rewrite cell values.\n- Preserve embedded line breaks inside quoted fields.\n- Use LF line endings.\n- Return the complete repaired CSV, not a sample, preview, summary, or first portion.\n- Include every recoverable source data row exactly once unless the input clearly marks it as non-data.\n- Finish the entire fixed CSV section before starting the error report.\n- If output length is a concern, keep the error report as short as possible but do not truncate the fixed CSV.\n- Do not wrap the CSV in Markdown fences.\n- Do not include comments, explanations, or section labels inside the CSV.\n- If the input is empty, whitespace-only, or contains no table evidence, leave the fixed CSV section empty. Do not invent headers, rows, columns, examples, placeholder data, or sample content.\n\nThe error report must use this format:\n\n{\n  \"fixed_errors\": [\n    {\n      \"type\": \"<error type>\",\n      \"description\": \"<brief description>\",\n      \"rows\": [<affected physical line numbers>]\n    }\n  ],\n  \"summary\": \"<brief summary>\"\n}\n\nIf no errors were fixed, return an empty fixed_errors list.\n\nCSV content:\n\n#,API / Service,Endpoint / Access,Purpose,Auth Required,How to Access\n1,NVIDIA NIM API,https://integrate.api.nvidia.com/v1/chat/completions,LLM reasoning layer - AI-driven analysis/ranking/commentary on candidate stocks,Yes - API key,Sign up free at build.nvidia.com > Get API Key. Set env var NVIDIA_API_KEY (free tier available).\n2,yfinance (Yahoo Finance),yf.download() / Ticker(),Bulk OHLCV market data for 375+ stocks + ETFs / fundamentals / per-ticker news,No,pip install yfinance. Keyless public data.\n3,Yahoo Finance RSS,finance.yahoo.com/rss/...,Macro market & earnings headlines,No,Public RSS - HTTP GET with a browser User-Agent header.\n4,CNBC RSS,cnbc.com/.../rss.html,US market + tech news headlines,No,Public RSS - HTTP GET.\n5,MarketWatch RSS,feeds.marketwatch.com/...,Top stories / bulletins / market pulse (sector),No,Public RSS - HTTP GET.\n6,BBC News RSS,feeds.bbci.co.uk/news/world/rss.xml,Geopolitical news,No,Public RSS - HTTP GET.\n7,NYTimes RSS,rss.nytimes.com/...,World / Politics / Business / Economy news,No,Public RSS - HTTP GET.\n8,EIA RSS (US Energy Info Admin),eia.gov/rss/news.xml,Official energy sector news,No,Public RSS - HTTP GET.\n9,OilPrice RSS,oilprice.com/rss/main,Energy / oil market news,No,Public RSS - HTTP GET.\n10,US Federal Reserve RSS,federalreserve.gov/feeds/press_all.xml,Official Fed press releases (rates/policy),No,Public RSS - HTTP GET.\n11,SEC EDGAR,sec.gov/files/company_tickers.json | data.sec.gov/submissions/CIK...json | sec.gov/cgi-bin/browse-edgar,Ticker->CIK mapping & recent SEC filings,No (User-Agent required),Public API. Must send a descriptive User-Agent header (SEC policy). No key.\n12,House Stock Watcher,house-stock-watcher-data.s3... | housestockwatcher.com/api/transactions,US House congressional trading disclosures,No,Public JSON/S3 - HTTP GET.\n13,Senate Stock Watcher,senate-stock-watcher-data.s3... | efts.us/...,US Senate congressional trading disclosures,No,Public JSON/S3 - HTTP GET.\n14,Wikipedia,en.wikipedia.org/wiki/List_of_S%26P_500_companies | List_of_S%26P_400_companies,Index constituent lists (S&P 500 / 400 universe),No,Public page scraped via pandas read_html.\n15,VADER (local),vaderSentiment library,Local NLP sentiment scoring on headlines,No,pip install vaderSentiment. Runs locally - no network/key.\n16,OpenAI Python SDK,library (installed),SDK present but code calls NVIDIA endpoint directly via requests,N/A,Not actively used for calls; NVIDIA path uses requests.\n\n"
+      }
+    ],
+    "stream": false,
+    "max_completion_tokens": 16000
+  },
+  "content": "--BEGIN FIXED CSV--\n#,API / Service,Endpoint / Access,Purpose,Auth Required,How to Access\n1,NVIDIA NIM API,https://integrate.api.nvidia.com/v1/chat/completions,LLM reasoning layer - AI-driven analysis/ranking/commentary on candidate stocks,Yes - API key,Sign up free at build.nvidia.com > Get API Key. Set env var NVIDIA_API_KEY (free tier available).\n2,yfinance (Yahoo Finance),yf.download() / Ticker(),Bulk OHLCV market data for 375+ stocks + ETFs / fundamentals / per-ticker news,No,pip install yfinance. Keyless public data.\n3,Yahoo Finance RSS,finance.yahoo.com/rss/...,Macro market & earnings headlines,No,Public RSS - HTTP GET with a browser User-Agent header.\n4,CNBC RSS,cnbc.com/.../rss.html,US market + tech news headlines,No,Public RSS - HTTP GET.\n5,MarketWatch RSS,feeds.marketwatch.com/...,Top stories / bulletins / market pulse (sector),No,Public RSS - HTTP GET.\n6,BBC News RSS,feeds.bbci.co.uk/news/world/rss.xml,Geopolitical news,No,Public RSS - HTTP GET.\n7,NYTimes RSS,rss.nytimes.com/...,World / Politics / Business / Economy news,No,Public RSS - HTTP GET.\n8,EIA RSS (US Energy Info Admin),eia.gov/rss/news.xml,Official energy sector news,No,Public RSS - HTTP GET.\n9,OilPrice RSS,oilprice.com/rss/main,Energy / oil market news,No,Public RSS - HTTP GET.\n10,US Federal Reserve RSS,federalreserve.gov/feeds/press_all.xml,Official Fed press releases (rates/policy),No,Public RSS - HTTP GET.\n11,SEC EDGAR,sec.gov/files/company_tickers.json | data.sec.gov/submissions/CIK...json | sec.gov/cgi-bin/browse-edgar,Ticker->CIK mapping & recent SEC filings,No (User-Agent required),Public API. Must send a descriptive User-Agent header (SEC policy). No key.\n12,House Stock Watcher,house-stock-watcher-data.s3... | housestockwatcher.com/api/transactions,US House congressional trading disclosures,No,Public JSON/S3 - HTTP GET.\n13,Senate Stock Watcher,senate-stock-watcher-data.s3... | efts.us/...,US Senate congressional trading disclosures,No,Public JSON/S3 - HTTP GET.\n14,Wikipedia,en.wikipedia.org/wiki/List_of_S%26P_500_companies | List_of_S%26P_400_companies,Index constituent lists (S&P 500 / 400 universe),No,Public page scraped via pandas read_html.\n15,VADER (local),vaderSentiment library,Local NLP sentiment scoring on headlines,No,pip install vaderSentiment. Runs locally - no network/key.\n16,OpenAI Python SDK,library (installed),SDK present but code calls NVIDIA endpoint directly via requests,N/A,Not actively used for calls; NVIDIA path uses requests.\n--END FIXED CSV--\n--BEGIN ERROR REPORT--\n{\n  \"fixed_errors\": [],\n  \"summary\": \"No CSV errors found; the table is already valid.\"\n}\n--END ERROR REPORT--",
+  "usage": {
+    "prompt_tokens": 1086,
+    "completion_tokens": 802,
+    "total_tokens": 1888,
+    "prompt_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 1083,
+      "audio_tokens": 0
+    },
+    "completion_tokens_details": {
+      "reasoning_tokens": 107,
+      "audio_tokens": 0,
+      "accepted_prediction_tokens": 0,
+      "rejected_prediction_tokens": 0
+    }
+  },
+  "cost": {
+    "backend": "openai",
+    "model": "gpt-6-luna",
+    "api_base": "https://api.openai.com/v1",
+    "local_cache_hit": false,
+    "usage_available": true,
+    "cache_path": "/home/robin/offsite/pollock-offsite/results/runs/20261123T235243Z-7721ec29/full_llm_loader_naive_gpt_6_luna/combined_real_world_files/llm_cache/f92db6e2bf997221331893b0ee7dedfc49a42abbf243bcf6c7e50bbda39362b2.json",
+    "prompt_tokens": 1086,
+    "cached_input_tokens": 0,
+    "uncached_input_tokens": 1086,
+    "ordinary_input_tokens": 3,
+    "cache_write_tokens": 1083,
+    "completion_tokens": 802,
+    "total_tokens": 1888,
+    "input_usd_per_1m": 0.1,
+    "cached_input_usd_per_1m": 0.01,
+    "cache_write_usd_per_1m": 0.125,
+    "output_usd_per_1m": 0.5,
+    "input_cost_usd": 3.0000000000000004e-07,
+    "cached_input_cost_usd": 0.0,
+    "cache_write_cost_usd": 0.000135375,
+    "output_cost_usd": 0.000401,
+    "estimated_api_cost_usd": 0.000536675,
+    "billable_cost_usd": 0.000536675
+  }
+}

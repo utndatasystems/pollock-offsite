@@ -1,0 +1,7 @@
+Malformed rows: 6
+{"line_num": 1, "reason": "header row normalized", "raw": ["# H100 GPU microbenchmark; Runpod Pod x4ji7wyn73p8vp; measured 2026-11-16 America/Los_Angeles"], "repaired": true}
+{"line_num": 2, "reason": "header row normalized", "raw": ["# GPU: NVIDIA H100 80GB HBM3; UUID GPU-50f50837-16c7-e2bd-d14a-238d4fbff8c8; 81559 MiB; compute capability 9.0"], "repaired": true}
+{"line_num": 3, "reason": "header row normalized", "raw": ["# Driver 595.112.07; CUDA toolkit 12.8 V12.8.93; compiler nvcc -O3 -lineinfo -arch=sm_90"], "repaired": true}
+{"line_num": 4, "reason": "header row normalized", "raw": ["# Synthetic FP32 logits", " vocabulary 151936", " tile 4096", " 25 warmups and 200 timed iterations per cell."], "repaired": true}
+{"line_num": 5, "reason": "header row normalized", "raw": ["# single_cta_ms and hierarchical_ms are per-call CUDA-event times; speedup = single_cta_ms / hierarchical_ms."], "repaired": true}
+{"line_num": 6, "reason": "header row normalized", "raw": ["# Three process-level repetitions; each used the same seeded input. First tie pair at token IDs 220 and 287."], "repaired": true}

@@ -1,0 +1,2 @@
+Malformed rows: 1
+{"line_num": 1, "reason": "header row normalized", "raw": ["1", "1", "'di4-iN.wav'", "'di'", "'i'", "4", "4", "10.28520464"], "repaired": true}

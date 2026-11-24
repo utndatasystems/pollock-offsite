@@ -1,0 +1,2 @@
+Malformed rows: 1
+{"line_num": 1, "reason": "header row normalized", "raw": ["#{\"t_start\": 1794232046.279533", " \"env_id\": \"None\"}"], "repaired": true}

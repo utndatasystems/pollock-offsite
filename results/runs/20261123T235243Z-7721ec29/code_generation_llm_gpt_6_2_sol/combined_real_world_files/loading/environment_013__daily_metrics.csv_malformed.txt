@@ -1,0 +1,2 @@
+Malformed rows: 1
+{"line_num": 1, "reason": "header row normalized", "raw": ["User_ID", "Date", "Daily_HRV", "Daily_RHR", "HR_Max", "HR_Rest", "Sleep_Duration", "Deep_Sleep_h", "REM_Sleep_h", "Sleep_Efficiency_pct", "Wake_Episodes_Count", "Grip_Strength_kg", "CMJ_Jump_cm", "Subjective_Mood", "DOMS_Scale", "Motivation_Level", "sRPE"], "repaired": true}

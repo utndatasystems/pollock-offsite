@@ -1,0 +1,2 @@
+Malformed rows: 1
+{"line_num": 1, "reason": "header row normalized", "raw": ["run", "version", "n_models", "QWK", "QWK_95CI", "accuracy", "macro_F1", "ref_sens", "ref_spec", "recall_per_grade"], "repaired": true}

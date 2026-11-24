@@ -1,0 +1,62 @@
+{
+  "cache_version": 1,
+  "created_at": "2026-11-24T09:17:41.291452+00:00",
+  "api_base": "https://api.openai.com/v1",
+  "payload": {
+    "model": "gpt-6.2-sol",
+    "messages": [
+      {
+        "role": "system",
+        "content": "You are a CSV repair assistant.\n\nYour task is to inspect a possibly malformed CSV file and reconstruct it as a valid CSV table.\n\nReturn the repaired CSV and a brief error report. Do not include explanations outside the requested output sections."
+      },
+      {
+        "role": "user",
+        "content": "Repair the following CSV file.\n\nReturn exactly two sections and nothing else.\nDo not use Markdown fences. Do not include prose before, between, or after the sections.\nThe section markers must appear exactly as shown, each on its own line.\n\n--BEGIN FIXED CSV--\n<repaired CSV text only, including exactly one header row>\n--END FIXED CSV--\n--BEGIN ERROR REPORT--\n<JSON error report object only>\n--END ERROR REPORT--\n\nRules for the fixed CSV section:\n\n- Use a comma as the output delimiter.\n- Use double quotes according to standard CSV escaping rules.\n- Encode an embedded double quote as two double quotes.\n- Preserve every payload character exactly.\n- Do not normalize, infer, translate, reformat, round, complete, shorten, or otherwise rewrite cell values.\n- Preserve embedded line breaks inside quoted fields.\n- Use LF line endings.\n- Return the complete repaired CSV, not a sample, preview, summary, or first portion.\n- Include every recoverable source data row exactly once unless the input clearly marks it as non-data.\n- Finish the entire fixed CSV section before starting the error report.\n- If output length is a concern, keep the error report as short as possible but do not truncate the fixed CSV.\n- Do not wrap the CSV in Markdown fences.\n- Do not include comments, explanations, or section labels inside the CSV.\n- If the input is empty, whitespace-only, or contains no table evidence, leave the fixed CSV section empty. Do not invent headers, rows, columns, examples, placeholder data, or sample content.\n\nThe error report must use this format:\n\n{\n  \"fixed_errors\": [\n    {\n      \"type\": \"<error type>\",\n      \"description\": \"<brief description>\",\n      \"rows\": [<affected physical line numbers>]\n    }\n  ],\n  \"summary\": \"<brief summary>\"\n}\n\nIf no errors were fixed, return an empty fixed_errors list.\n\nCSV content:\n\nProsecution Outcomes,2007 - 08 Volume,2007 - 08 Percentage,2008 - 09 Volume,2008 - 09 Percentage,2009 - 10 Volume,2009 - 10 Percentage,2010 - 11 Volume,2010 - 11 Percentage,2011 - 12 Volume,2011 - 12 Percentage,2012 - 13 Volume,2012 - 13 Percentage,2013 - 14 Volume,2013 - 14 Percentage\n\"Prosecutions Dropped inc. discontinued, no evidence offered & withdrawn\",795,22.69%,787,22.52%,740,19.38%,776,18.44%,626,16.20%,506,13.71%,508,13.1%\nof which - no evidence offered,494,14.10%,474,13.56%,488,12.78%,549,13.05%,448,11.59%,357,9.67%,386,9.9%\nDismissed after full trial,5,0.14%,0,0.00%,14,0.37%,9,0.21%,12,0.31%,7,0.19%,10,0.3%\nJudge directed acquittal,99,2.83%,64,1.83%,62,1.62%,72,1.71%,45,1.16%,35,0.95%,38,1.0%\nJury acquittal,539,15.39%,575,16.45%,691,18.09%,838,19.91%,733,18.97%,763,20.67%,930,23.9%\nAll Other Unsuccessful Outcomes,44,1.26%,51,1.46%,42,1.10%,48,1.14%,34,0.88%,48,1.30%,57,1.5%\nUnsuccessful Outcomes,1482,42.31%,1477,42.26%,1549,40.56%,1743,41.42%,1450,37.53%,1359,36.81%,1543,39.7%\nGuilty plea,1235,35.26%,1230,35.19%,1409,36.89%,1503,35.72%,1542,39.91%,1465,39.68%,1397,35.9%\nConviction after trial,786,22.44%,788,22.55%,858,22.47%,961,22.84%,871,22.54%,868,23.51%,951,24.4%\nProved in absence,0,0.00%,0,0.00%,3,0.08%,1,0.02%,1,0.03%,0,0.00%,0,0.0%\nConvictions,2021,57.69%,2018,57.74%,2270,59.44%,2465,58.58%,2414,62.47%,2333,63.19%,2348,60.3%\nTotal Prosecutions,3503,100.00%,3495,100.00%,3819,100.00%,4208,100.00%,3864,100.00%,3692,100.00%,3891,100.00%\n\n"
+      }
+    ],
+    "stream": false,
+    "max_completion_tokens": 16000
+  },
+  "content": "--BEGIN FIXED CSV--\nProsecution Outcomes,2007 - 08 Volume,2007 - 08 Percentage,2008 - 09 Volume,2008 - 09 Percentage,2009 - 10 Volume,2009 - 10 Percentage,2010 - 11 Volume,2010 - 11 Percentage,2011 - 12 Volume,2011 - 12 Percentage,2012 - 13 Volume,2012 - 13 Percentage,2013 - 14 Volume,2013 - 14 Percentage\n\"Prosecutions Dropped inc. discontinued, no evidence offered & withdrawn\",795,22.69%,787,22.52%,740,19.38%,776,18.44%,626,16.20%,506,13.71%,508,13.1%\nof which - no evidence offered,494,14.10%,474,13.56%,488,12.78%,549,13.05%,448,11.59%,357,9.67%,386,9.9%\nDismissed after full trial,5,0.14%,0,0.00%,14,0.37%,9,0.21%,12,0.31%,7,0.19%,10,0.3%\nJudge directed acquittal,99,2.83%,64,1.83%,62,1.62%,72,1.71%,45,1.16%,35,0.95%,38,1.0%\nJury acquittal,539,15.39%,575,16.45%,691,18.09%,838,19.91%,733,18.97%,763,20.67%,930,23.9%\nAll Other Unsuccessful Outcomes,44,1.26%,51,1.46%,42,1.10%,48,1.14%,34,0.88%,48,1.30%,57,1.5%\nUnsuccessful Outcomes,1482,42.31%,1477,42.26%,1549,40.56%,1743,41.42%,1450,37.53%,1359,36.81%,1543,39.7%\nGuilty plea,1235,35.26%,1230,35.19%,1409,36.89%,1503,35.72%,1542,39.91%,1465,39.68%,1397,35.9%\nConviction after trial,786,22.44%,788,22.55%,858,22.47%,961,22.84%,871,22.54%,868,23.51%,951,24.4%\nProved in absence,0,0.00%,0,0.00%,3,0.08%,1,0.02%,1,0.03%,0,0.00%,0,0.0%\nConvictions,2021,57.69%,2018,57.74%,2270,59.44%,2465,58.58%,2414,62.47%,2333,63.19%,2348,60.3%\nTotal Prosecutions,3503,100.00%,3495,100.00%,3819,100.00%,4208,100.00%,3864,100.00%,3692,100.00%,3891,100.00%\n--END FIXED CSV--\n--BEGIN ERROR REPORT--\n{\"fixed_errors\":[],\"summary\":\"No repairs needed.\"}\n--END ERROR REPORT--",
+  "usage": {
+    "prompt_tokens": 1154,
+    "completion_tokens": 745,
+    "total_tokens": 1899,
+    "prompt_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 1151,
+      "audio_tokens": 0
+    },
+    "completion_tokens_details": {
+      "reasoning_tokens": 0,
+      "audio_tokens": 0,
+      "accepted_prediction_tokens": 0,
+      "rejected_prediction_tokens": 0
+    }
+  },
+  "cost": {
+    "backend": "openai",
+    "model": "gpt-6.2-sol",
+    "api_base": "https://api.openai.com/v1",
+    "local_cache_hit": false,
+    "usage_available": true,
+    "cache_path": "/home/robin/offsite/pollock-offsite/results/runs/20261123T235243Z-7721ec29/full_llm_loader_naive_gpt_6_2_sol/combined_real_world_files/llm_cache/5cd4227049aa054682cbafd382854d7d1548a0adb85831a48f708cb377f3b53a.json",
+    "prompt_tokens": 1154,
+    "cached_input_tokens": 0,
+    "uncached_input_tokens": 1154,
+    "ordinary_input_tokens": 3,
+    "cache_write_tokens": 1151,
+    "completion_tokens": 745,
+    "total_tokens": 1899,
+    "input_usd_per_1m": 2.0,
+    "cached_input_usd_per_1m": 0.1,
+    "cache_write_usd_per_1m": 2.5,
+    "output_usd_per_1m": 10.0,
+    "input_cost_usd": 6e-06,
+    "cached_input_cost_usd": 0.0,
+    "cache_write_cost_usd": 0.0028775,
+    "output_cost_usd": 0.00745,
+    "estimated_api_cost_usd": 0.0103335,
+    "billable_cost_usd": 0.0103335
+  }
+}

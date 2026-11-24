@@ -1,0 +1,62 @@
+{
+  "cache_version": 1,
+  "created_at": "2026-11-24T10:58:20.282772+00:00",
+  "api_base": "https://api.openai.com/v1",
+  "payload": {
+    "model": "gpt-6.1-terra",
+    "messages": [
+      {
+        "role": "system",
+        "content": "You are a CSV repair assistant.\n\nYour task is to inspect a possibly malformed CSV file and reconstruct it as a valid CSV table.\n\nReturn the repaired CSV and a brief error report. Do not include explanations outside the requested output sections."
+      },
+      {
+        "role": "user",
+        "content": "Repair the following CSV file.\n\nReturn exactly two sections and nothing else.\nDo not use Markdown fences. Do not include prose before, between, or after the sections.\nThe section markers must appear exactly as shown, each on its own line.\n\n--BEGIN FIXED CSV--\n<repaired CSV text only, including exactly one header row>\n--END FIXED CSV--\n--BEGIN ERROR REPORT--\n<JSON error report object only>\n--END ERROR REPORT--\n\nRules for the fixed CSV section:\n\n- Use a comma as the output delimiter.\n- Use double quotes according to standard CSV escaping rules.\n- Encode an embedded double quote as two double quotes.\n- Preserve every payload character exactly.\n- Do not normalize, infer, translate, reformat, round, complete, shorten, or otherwise rewrite cell values.\n- Preserve embedded line breaks inside quoted fields.\n- Use LF line endings.\n- Return the complete repaired CSV, not a sample, preview, summary, or first portion.\n- Include every recoverable source data row exactly once unless the input clearly marks it as non-data.\n- Finish the entire fixed CSV section before starting the error report.\n- If output length is a concern, keep the error report as short as possible but do not truncate the fixed CSV.\n- Do not wrap the CSV in Markdown fences.\n- Do not include comments, explanations, or section labels inside the CSV.\n- If the input is empty, whitespace-only, or contains no table evidence, leave the fixed CSV section empty. Do not invent headers, rows, columns, examples, placeholder data, or sample content.\n\nThe error report must use this format:\n\n{\n  \"fixed_errors\": [\n    {\n      \"type\": \"<error type>\",\n      \"description\": \"<brief description>\",\n      \"rows\": [<affected physical line numbers>]\n    }\n  ],\n  \"summary\": \"<brief summary>\"\n}\n\nIf no errors were fixed, return an empty fixed_errors list.\n\nCSV content:\n\nvalue,frequency\nAIR BAGS,1610\nBACKOVER PREVENTION,180\nCHILD SEAT,210\nELECTRICAL SYSTEM,2610\nELECTRONIC STABILITY CONTROL,260\nENGINE,2880\nEQUIPMENT\nEXTERIOR LIGHTING,520\nFORWARD COLLISION AVOIDANCE,410\nFUEL SYSTEM,1810\nFUEL/PROPULSION SYSTEM\nHYBRID PROPULSION SYSTEM,210\nLANE DEPARTURE,360\nLATCHES/LOCKS/LINKAGES\nPARKING BRAKE,330\nPOWER TRAIN,2230\nSEAT BELTS,560\nSEATS,400\nSERVICE BRAKES,3120\nSTEERING,1520\nSTRUCTURE,870\nSUSPENSION,940\nTIRES,690\nTRACTION CONTROL SYSTEM,290\nUNKNOWN OR OTHER,180\nVEHICLE SPEED CONTROL,490\nVISIBILITY,810\nVISIBILITY/WIPER\nWHEELS,740\n\n"
+      }
+    ],
+    "stream": false,
+    "max_completion_tokens": 16000
+  },
+  "content": "--BEGIN FIXED CSV--\nvalue,frequency\nAIR BAGS,1610\nBACKOVER PREVENTION,180\nCHILD SEAT,210\nELECTRICAL SYSTEM,2610\nELECTRONIC STABILITY CONTROL,260\nENGINE,2880\nEQUIPMENT,\nEXTERIOR LIGHTING,520\nFORWARD COLLISION AVOIDANCE,410\nFUEL SYSTEM,1810\nFUEL/PROPULSION SYSTEM,\nHYBRID PROPULSION SYSTEM,210\nLANE DEPARTURE,360\nLATCHES/LOCKS/LINKAGES,\nPARKING BRAKE,330\nPOWER TRAIN,2230\nSEAT BELTS,560\nSEATS,400\nSERVICE BRAKES,3120\nSTEERING,1520\nSTRUCTURE,870\nSUSPENSION,940\nTIRES,690\nTRACTION CONTROL SYSTEM,290\nUNKNOWN OR OTHER,180\nVEHICLE SPEED CONTROL,490\nVISIBILITY,810\nVISIBILITY/WIPER,\nWHEELS,740\n--END FIXED CSV--\n--BEGIN ERROR REPORT--\n{\"fixed_errors\":[{\"type\":\"missing_field\",\"description\":\"Added empty frequency fields.\",\"rows\":[8,12,15,29]}],\"summary\":\"Repaired four rows with missing fields.\"}\n--END ERROR REPORT--",
+  "usage": {
+    "prompt_tokens": 656,
+    "completion_tokens": 377,
+    "total_tokens": 1033,
+    "prompt_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 0,
+      "audio_tokens": 0
+    },
+    "completion_tokens_details": {
+      "reasoning_tokens": 97,
+      "audio_tokens": 0,
+      "accepted_prediction_tokens": 0,
+      "rejected_prediction_tokens": 0
+    }
+  },
+  "cost": {
+    "backend": "openai",
+    "model": "gpt-6.1-terra",
+    "api_base": "https://api.openai.com/v1",
+    "local_cache_hit": false,
+    "usage_available": true,
+    "cache_path": "/home/robin/offsite/pollock-offsite/results/runs/20261123T235243Z-7721ec29/full_llm_loader_naive_gpt_6_1_terra/combined_real_world_files/llm_cache/917b527c73912ce1bc73691aff1a0658d726f385eea207aa7cfe553cc9ddf891.json",
+    "prompt_tokens": 656,
+    "cached_input_tokens": 0,
+    "uncached_input_tokens": 656,
+    "ordinary_input_tokens": 656,
+    "cache_write_tokens": 0,
+    "completion_tokens": 377,
+    "total_tokens": 1033,
+    "input_usd_per_1m": 1.0,
+    "cached_input_usd_per_1m": 0.05,
+    "cache_write_usd_per_1m": 1.25,
+    "output_usd_per_1m": 5.0,
+    "input_cost_usd": 0.000656,
+    "cached_input_cost_usd": 0.0,
+    "cache_write_cost_usd": 0.0,
+    "output_cost_usd": 0.001885,
+    "estimated_api_cost_usd": 0.002541,
+    "billable_cost_usd": 0.002541
+  }
+}

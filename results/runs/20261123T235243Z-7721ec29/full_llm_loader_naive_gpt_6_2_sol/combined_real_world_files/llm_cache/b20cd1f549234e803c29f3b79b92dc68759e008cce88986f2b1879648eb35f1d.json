@@ -1,0 +1,62 @@
+{
+  "cache_version": 1,
+  "created_at": "2026-11-24T09:07:02.201548+00:00",
+  "api_base": "https://api.openai.com/v1",
+  "payload": {
+    "model": "gpt-6.2-sol",
+    "messages": [
+      {
+        "role": "system",
+        "content": "You are a CSV repair assistant.\n\nYour task is to inspect a possibly malformed CSV file and reconstruct it as a valid CSV table.\n\nReturn the repaired CSV and a brief error report. Do not include explanations outside the requested output sections."
+      },
+      {
+        "role": "user",
+        "content": "Repair the following CSV file.\n\nReturn exactly two sections and nothing else.\nDo not use Markdown fences. Do not include prose before, between, or after the sections.\nThe section markers must appear exactly as shown, each on its own line.\n\n--BEGIN FIXED CSV--\n<repaired CSV text only, including exactly one header row>\n--END FIXED CSV--\n--BEGIN ERROR REPORT--\n<JSON error report object only>\n--END ERROR REPORT--\n\nRules for the fixed CSV section:\n\n- Use a comma as the output delimiter.\n- Use double quotes according to standard CSV escaping rules.\n- Encode an embedded double quote as two double quotes.\n- Preserve every payload character exactly.\n- Do not normalize, infer, translate, reformat, round, complete, shorten, or otherwise rewrite cell values.\n- Preserve embedded line breaks inside quoted fields.\n- Use LF line endings.\n- Return the complete repaired CSV, not a sample, preview, summary, or first portion.\n- Include every recoverable source data row exactly once unless the input clearly marks it as non-data.\n- Finish the entire fixed CSV section before starting the error report.\n- If output length is a concern, keep the error report as short as possible but do not truncate the fixed CSV.\n- Do not wrap the CSV in Markdown fences.\n- Do not include comments, explanations, or section labels inside the CSV.\n- If the input is empty, whitespace-only, or contains no table evidence, leave the fixed CSV section empty. Do not invent headers, rows, columns, examples, placeholder data, or sample content.\n\nThe error report must use this format:\n\n{\n  \"fixed_errors\": [\n    {\n      \"type\": \"<error type>\",\n      \"description\": \"<brief description>\",\n      \"rows\": [<affected physical line numbers>]\n    }\n  ],\n  \"summary\": \"<brief summary>\"\n}\n\nIf no errors were fixed, return an empty fixed_errors list.\n\nCSV content:\n\nT;Cp;S;H\n5.00;0.0174867;0.00295154;0.012864\n10.00;0.139923;0.0511471;0.396697\n20.00;0.855238;0.278229;4.02244\n30.00;4.21404;1.16596;27.0453\n40.00;9.6702;3.08463;95.0405\n50.00;17.3539;6.0143;227.751\n75.00;51.3615;18.7905;1044.08\n100.00;97.0089;39.756;2893.49\n125.00;139.821;66.1217;5867.31\n150.00;175.764;94.8924;9826.01\n175.00;205.981;124.317;14607.7\n200.00;232.266;153.573;20092.5\n225.00;255.81;182.313;26198.4\n250.00;277.225;210.391;32865.4\n275.00;296.787;237.744;40044.2\n298.15;313.37;262.403;47109.5\n300.00;314.634;264.346;47690.4\n325.00;330.86;290.181;55762.4\n350.00;345.559;315.247;64220.7\n375.00;358.837;339.549;73028.5\n400.00;370.806;363.097;82151.6\n425.00;381.583;385.906;91558.9\n450.00;391.284;407.996;101222\n475.00;400.018;429.39;111115\n500.00;407.887;450.111;121216\n525.00;414.987;470.187;131503\n550.00;421.4;489.643;141959\n575.00;427.204;508.505;152568\n600.00;432.465;526.8;163315\n625.00;437.244;544.552;174187\n650.00;441.592;561.787;185173\n675.00;445.557;578.528;196264\n700.00;449.179;594.799;207448\n\n"
+      }
+    ],
+    "stream": false,
+    "max_completion_tokens": 16000
+  },
+  "content": "--BEGIN FIXED CSV--\nT,Cp,S,H\n5.00,0.0174867,0.00295154,0.012864\n10.00,0.139923,0.0511471,0.396697\n20.00,0.855238,0.278229,4.02244\n30.00,4.21404,1.16596,27.0453\n40.00,9.6702,3.08463,95.0405\n50.00,17.3539,6.0143,227.751\n75.00,51.3615,18.7905,1044.08\n100.00,97.0089,39.756,2893.49\n125.00,139.821,66.1217,5867.31\n150.00,175.764,94.8924,9826.01\n175.00,205.981,124.317,14607.7\n200.00,232.266,153.573,20092.5\n225.00,255.81,182.313,26198.4\n250.00,277.225,210.391,32865.4\n275.00,296.787,237.744,40044.2\n298.15,313.37,262.403,47109.5\n300.00,314.634,264.346,47690.4\n325.00,330.86,290.181,55762.4\n350.00,345.559,315.247,64220.7\n375.00,358.837,339.549,73028.5\n400.00,370.806,363.097,82151.6\n425.00,381.583,385.906,91558.9\n450.00,391.284,407.996,101222\n475.00,400.018,429.39,111115\n500.00,407.887,450.111,121216\n525.00,414.987,470.187,131503\n550.00,421.4,489.643,141959\n575.00,427.204,508.505,152568\n600.00,432.465,526.8,163315\n625.00,437.244,544.552,174187\n650.00,441.592,561.787,185173\n675.00,445.557,578.528,196264\n700.00,449.179,594.799,207448\n--END FIXED CSV--\n--BEGIN ERROR REPORT--\n{\n  \"fixed_errors\": [\n    {\n      \"type\": \"delimiter_mismatch\",\n      \"description\": \"Replaced semicolon delimiters with commas.\",\n      \"rows\": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34]\n    }\n  ],\n  \"summary\": \"Preserved the header and all 33 data rows without changing any cell values.\"\n}\n--END ERROR REPORT--",
+  "usage": {
+    "prompt_tokens": 1012,
+    "completion_tokens": 753,
+    "total_tokens": 1765,
+    "prompt_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 0,
+      "audio_tokens": 0
+    },
+    "completion_tokens_details": {
+      "reasoning_tokens": 0,
+      "audio_tokens": 0,
+      "accepted_prediction_tokens": 0,
+      "rejected_prediction_tokens": 0
+    }
+  },
+  "cost": {
+    "backend": "openai",
+    "model": "gpt-6.2-sol",
+    "api_base": "https://api.openai.com/v1",
+    "local_cache_hit": false,
+    "usage_available": true,
+    "cache_path": "/home/robin/offsite/pollock-offsite/results/runs/20261123T235243Z-7721ec29/full_llm_loader_naive_gpt_6_2_sol/combined_real_world_files/llm_cache/b20cd1f549234e803c29f3b79b92dc68759e008cce88986f2b1879648eb35f1d.json",
+    "prompt_tokens": 1012,
+    "cached_input_tokens": 0,
+    "uncached_input_tokens": 1012,
+    "ordinary_input_tokens": 1012,
+    "cache_write_tokens": 0,
+    "completion_tokens": 753,
+    "total_tokens": 1765,
+    "input_usd_per_1m": 2.0,
+    "cached_input_usd_per_1m": 0.1,
+    "cache_write_usd_per_1m": 2.5,
+    "output_usd_per_1m": 10.0,
+    "input_cost_usd": 0.002024,
+    "cached_input_cost_usd": 0.0,
+    "cache_write_cost_usd": 0.0,
+    "output_cost_usd": 0.00753,
+    "estimated_api_cost_usd": 0.009554,
+    "billable_cost_usd": 0.009554
+  }
+}

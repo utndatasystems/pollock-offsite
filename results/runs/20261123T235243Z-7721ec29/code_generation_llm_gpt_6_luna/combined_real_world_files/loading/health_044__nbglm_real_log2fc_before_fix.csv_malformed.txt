@@ -1,0 +1,6 @@
+Malformed rows: 5
+{"line_num": 1, "reason": "header row normalized", "raw": ["# Verbatim columns of results/nbglm_real_summary.csv at commit 1c0c940"], "repaired": true}
+{"line_num": 2, "reason": "header row normalized", "raw": ["# (git show 1c0c940:results/nbglm_real_summary.csv)", " written before the GLM"], "repaired": true}
+{"line_num": 3, "reason": "header row normalized", "raw": ["# log2FC and the pseudobulk log2FC were put on one normalisation. Kept so"], "repaired": true}
+{"line_num": 4, "reason": "header row normalized", "raw": ["# scripts/make_figures.py can plot before/after without git history."], "repaired": true}
+{"line_num": 5, "reason": "header row normalized", "raw": ["# Superseded by results/nbglm_real_summary.csv; do not use for new analysis."], "repaired": true}

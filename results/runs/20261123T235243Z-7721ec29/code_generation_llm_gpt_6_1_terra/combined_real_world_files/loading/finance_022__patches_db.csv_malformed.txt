@@ -1,0 +1,2 @@
+Malformed rows: 1
+{"line_num": 1, "reason": "header row normalized", "raw": ["# Patch list Oracle Database 19c RCU repository (60-RCU-DB-19c, LOCAL_REP_DB=true) - Oct 2026 (19.33)"], "repaired": true}

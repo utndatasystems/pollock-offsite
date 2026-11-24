@@ -1,0 +1,2 @@
+Malformed rows: 1
+{"line_num": 1, "reason": "header row normalized", "raw": ["cve", "reviewed", "candidate", "distance", "candidate_is_alias", "candidate_assigner", "advisory_summary", "advisory_details", "candidate_text"], "repaired": true}

@@ -1,0 +1,2 @@
+Malformed rows: 1
+{"line_num": 1, "reason": "header row normalized", "raw": ["Observation ID", "Date", "Date Known", "Landmark", "Longitude", "latitude", "#", "Elevation", "Aspect", "Type", "Trigger", "Secondary Trigger", "Relative Size", "Destructive Size", "Accident", "Area", "Location", "Description", "Comments", "Sliding Sfc", "Status", "Locked", "Weak Layer", "Avg Width", "Width Units", "Avg Vertical", "Vertical Units", "Avg Crown", "Crown Units", "Terminus"], "repaired": true}

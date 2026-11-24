@@ -1,0 +1,67 @@
+ipa,candidates,preferred_score,rationale,status
+k,к,1.0,shared stop place and manner,established
+kʰ,к',0.96,aspiration is marked with an apostrophe in Ukrainian practical output,project-policy
+ŋ,нг,0.98,explicit velar nasal sequence,project-policy
+ɲ,нь|н,0.90,Ukrainian palatalized n is closer,project-policy
+tɕ,ч,1.0,closest Ukrainian affricate target,established
+d,д,1.0,shared voiced alveolar stop,established
+t,т,1.0,shared alveolar stop,established
+tʰ,т',0.95,aspiration is marked with an apostrophe in Ukrainian practical output,project-policy
+p,п,1.0,shared stop,established
+pʰ,п',0.96,aspiration is marked with an apostrophe in Ukrainian practical output,project-policy
+b,б,1.0,shared voiced stop,established
+m,м,1.0,shared nasal,established
+n,н,1.0,shared nasal,established
+s,с,1.0,shared fricative,established
+f,ф,1.0,shared fricative,established
+h,г,0.90,"Ukrainian г is the selected practical approximation for Lao /h/; this is a project policy, not phonetic identity",project-policy
+j,й,0.96,glide target,project-policy
+ʋ,в,0.94,closest Ukrainian labiodental approximant target,project-policy
+w,в,0.90,final /w/ approximation,project-policy
+r,р,0.80,only for foreign or historical /r/ readings,analysis-dependent
+l,л,0.96,shared lateral,project-policy
+ʔ,∅,0.80,glottal stop is not independently represented,project-policy
+a,а,1.0,shared vowel quality,established
+aː,а,0.95,quantity is analytical rather than doubled,project-policy
+i,і,1.0,shared high front vowel,established
+iː,і,0.95,quantity neutralization,project-policy
+ɯ,и,0.84,Ukrainian и is an explicit approximation,project-policy
+ɯː,и,0.82,quantity neutralization,project-policy
+u,у,1.0,shared high back rounded vowel,established
+uː,у,0.95,quantity neutralization,project-policy
+e,е,1.0,shared mid front vowel,established
+eː,е,0.95,quantity neutralization,project-policy
+ɛ,е,0.82,explicit approximation,project-policy
+ɛː,е,0.80,explicit approximation,project-policy
+o,о,1.0,shared mid back rounded vowel,established
+oː,о,0.95,quantity neutralization,project-policy
+ɔ,о,0.82,explicit approximation,project-policy
+ɔː,о,0.80,explicit approximation,project-policy
+ɤ,е,0.76,no exact Ukrainian target,project-policy
+ɤː,е,0.74,no exact Ukrainian target,project-policy
+iə,іа,0.78,transparent diphthong sequence,project-policy
+iːə,іа,0.78,transparent diphthong sequence,project-policy
+ɯə,иа,0.66,analysis-dependent approximation,analysis-dependent
+ɯːə,иа,0.66,analysis-dependent approximation,analysis-dependent
+uə,уа,0.78,transparent vowel sequence,project-policy
+uːə,уа,0.78,transparent vowel sequence,project-policy
+ai,ай,0.95,transparent glide sequence,project-policy
+aːj,ай,0.88,quantity neutralization,project-policy
+aw,ав,0.90,/w/ is consistently represented by Ukrainian в rather than у,project-policy
+am,ам,0.90,Sara Am remains a structural vowel unit,project-policy
+ɡ,ґ,0.94,foreign hard voiced velar stop uses Ukrainian ґ,project-policy
+g,ґ,0.90,ASCII alias for a source transcription of hard /ɡ/,project-policy
+x,х,1.0,genuine velar fricative remains Ukrainian х,project-policy
+ɦ,г,0.90,voiced glottal fricative aligns with Ukrainian г,project-policy
+t͡s,ц,1.0,Ukrainian affricate correspondence,project-policy
+d͡z,дз,1.0,Ukrainian voiced affricate correspondence,project-policy
+t͡ʃ,ч,1.0,Ukrainian postalveolar affricate correspondence,project-policy
+d͡ʒ,дж,1.0,Ukrainian voiced postalveolar affricate correspondence,project-policy
+ʃ,ш,1.0,Ukrainian postalveolar fricative correspondence,project-policy
+ʒ,ж,1.0,Ukrainian voiced postalveolar fricative correspondence,project-policy
+tʲ,ть,0.90,palatalized dental stop is represented with soft sign,project-policy
+dʲ,дь,0.90,palatalized dental stop is represented with soft sign,project-policy
+nʲ,нь,0.96,palatalized nasal has a direct Ukrainian sequence,project-policy
+lʲ,ль,0.90,palatalized lateral is represented with soft sign,project-policy
+rʲ,рь,0.80,palatalized rhotic is represented with soft sign where contrastive,analysis-dependent
+tɕʰ,ч',0.85,aspirated palatal affricate keeps aspiration marker,analysis-dependent

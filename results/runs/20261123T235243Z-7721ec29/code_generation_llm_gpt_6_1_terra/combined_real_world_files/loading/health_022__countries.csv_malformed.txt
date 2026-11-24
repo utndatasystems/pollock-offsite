@@ -1,0 +1,2 @@
+Malformed rows: 1
+{"line_num": 1, "reason": "header row normalized", "raw": ["AD", "42.546245", "1.601554", "Andorra"], "repaired": true}

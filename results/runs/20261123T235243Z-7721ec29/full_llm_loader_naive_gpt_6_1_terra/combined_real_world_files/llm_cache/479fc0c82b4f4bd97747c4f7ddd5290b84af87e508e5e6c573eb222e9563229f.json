@@ -1,0 +1,62 @@
+{
+  "cache_version": 1,
+  "created_at": "2026-11-24T11:37:57.884680+00:00",
+  "api_base": "https://api.openai.com/v1",
+  "payload": {
+    "model": "gpt-6.1-terra",
+    "messages": [
+      {
+        "role": "system",
+        "content": "You are a CSV repair assistant.\n\nYour task is to inspect a possibly malformed CSV file and reconstruct it as a valid CSV table.\n\nReturn the repaired CSV and a brief error report. Do not include explanations outside the requested output sections."
+      },
+      {
+        "role": "user",
+        "content": "Repair the following CSV file.\n\nReturn exactly two sections and nothing else.\nDo not use Markdown fences. Do not include prose before, between, or after the sections.\nThe section markers must appear exactly as shown, each on its own line.\n\n--BEGIN FIXED CSV--\n<repaired CSV text only, including exactly one header row>\n--END FIXED CSV--\n--BEGIN ERROR REPORT--\n<JSON error report object only>\n--END ERROR REPORT--\n\nRules for the fixed CSV section:\n\n- Use a comma as the output delimiter.\n- Use double quotes according to standard CSV escaping rules.\n- Encode an embedded double quote as two double quotes.\n- Preserve every payload character exactly.\n- Do not normalize, infer, translate, reformat, round, complete, shorten, or otherwise rewrite cell values.\n- Preserve embedded line breaks inside quoted fields.\n- Use LF line endings.\n- Return the complete repaired CSV, not a sample, preview, summary, or first portion.\n- Include every recoverable source data row exactly once unless the input clearly marks it as non-data.\n- Finish the entire fixed CSV section before starting the error report.\n- If output length is a concern, keep the error report as short as possible but do not truncate the fixed CSV.\n- Do not wrap the CSV in Markdown fences.\n- Do not include comments, explanations, or section labels inside the CSV.\n- If the input is empty, whitespace-only, or contains no table evidence, leave the fixed CSV section empty. Do not invent headers, rows, columns, examples, placeholder data, or sample content.\n\nThe error report must use this format:\n\n{\n  \"fixed_errors\": [\n    {\n      \"type\": \"<error type>\",\n      \"description\": \"<brief description>\",\n      \"rows\": [<affected physical line numbers>]\n    }\n  ],\n  \"summary\": \"<brief summary>\"\n}\n\nIf no errors were fixed, return an empty fixed_errors list.\n\nCSV content:\n\n0,0\n0.01,0\n0.02,0\n0.03,0\n0.04,0\n0.05,0\n0.06,0\n0.07,0\n0.08,0\n0.09,0\n0.1,0\n0.11,0.008\n0.12,0\n0.13,0\n0.14,0\n0.15,0\n0.16,0\n0.17,0\n0.18,0\n0.19,0\n0.2,0\n0.21,0\n0.22,0.008\n0.23,0.008\n0.24,0\n0.25,0.008\n0.26,0.008\n0.27,0.032\n0.28,0.104\n0.29,0.312\n0.3,0.304\n0.31,-0.072\n0.32,-0.376\n0.33,-0.552\n0.34,-0.328\n0.35,0.096\n0.36,0.336\n0.37,0.504\n0.38,0.248\n0.39,-0.16\n0.4,-0.432\n0.41,-0.488\n0.42,-0.112\n0.43,0.216\n0.44,0.44\n0.45,0.448\n0.46,0.064\n0.47,-0.288\n0.48,-0.496\n0.49,-0.368\n0.5,0.048\n0.51,0.304\n0.52,0.488\n0.53,0.296\n0.54,-0.096\n0.55,-0.384\n0.56,-0.488\n0.57,-0.184\n0.58,0.176\n0.59,0.392\n0.6,0.456\n0.61,0.12\n0.62,-0.232\n0.63,-0.456\n0.64,-0.4\n0.65,-0.008\n0.66,0.264\n0.67,0.456\n0.68,0.344\n0.69,-0.04\n0.7,-0.336\n0.71,-0.48\n0.72,-0.24\n0.73,0.128\n0.74,0.36\n0.75,0.456\n0.76,0.176\n0.77,-0.184\n0.78,-0.424\n0.79,-0.424\n0.8,-0.072\n0.81,0.224\n0.82,0.432\n0.83,0.376\n0.84,0.016\n0.85,-0.288\n0.86,-0.464\n0.87,-0.288\n0.88,0.08\n0.89,0.312\n0.9,0.448\n0.91,0.232\n0.92,-0.128\n0.93,-0.384\n0.94,-0.432\n0.95,-0.128\n0.96,0.184\n0.97,0.392\n0.98,0.4\n0.99,0.072\n1,-0.248\n1.01,-0.432\n1.02,-0.328\n1.03,0.024\n1.04,0.28\n1.05,0.432\n1.06,0.28\n1.07,-0.072\n1.08,-0.336\n1.09,-0.432\n1.1,-0.184\n1.11,0.144\n1.12,0.352\n1.13,0.408\n1.14,0.128\n1.15,-0.2\n1.16,-0.4\n1.17,-0.36\n1.18,-0.032\n1.19,0.24\n1.2,0.408\n1.21,0.312\n1.22,-0.024\n1.23,-0.296\n1.24,-0.424\n1.25,-0.232\n1.26,0.096\n1.27,0.32\n1.28,0.408\n1.29,0.176\n1.3,-0.152\n1.31,-0.368\n1.32,-0.376\n1.33,-0.08\n1.34,0.2\n1.35,0.384\n1.36,0.344\n1.37,0.024\n1.38,-0.256\n1.39,-0.408\n1.4,-0.272\n1.41,0.048\n1.42,0.28\n1.43,0.392\n1.44,0.216\n1.45,-0.104\n1.46,-0.328\n1.47,-0.384\n1.48,-0.128\n1.49,0.16\n1.5,0.352\n1.51,0.36\n1.52,0.08\n1.53,-0.216\n1.54,-0.384\n1.55,-0.304\n1.56,0.008\n1.57,0.248\n1.58,0.384\n1.59,0.256\n1.6,-0.056\n1.61,-0.304\n1.62,-0.384\n1.63,-0.176\n1.64,0.12\n1.65,0.312\n1.66,0.368\n1.67,0.128\n1.68,-0.168\n1.69,-0.36\n1.7,-0.32\n1.71,-0.04\n1.72,0.208\n1.73,0.36\n1.74,0.288\n1.75,-0.008\n1.76,-0.256\n1.77,-0.376\n1.78,-0.216\n1.79,0.08\n1.8,0.288\n1.81,0.36\n1.82,0.168\n1.83,-0.12\n1.84,-0.328\n1.85,-0.336\n1.86,-0.088\n1.87,0.176\n1.88,0.336\n1.89,0.304\n1.9,0.04\n1.91,-0.224\n1.92,-0.36\n1.93,-0.248\n1.94,0.032\n1.95,0.256\n1.96,0.352\n1.97,0.208\n1.98,-0.08\n1.99,-0.296\n2,-0.344\n2.01,-0.128\n2.02,0.136\n2.03,0.312\n2.04,0.32\n2.05,0.08\n2.06,-0.184\n2.07,-0.336\n2.08,-0.272\n2.09,-0.008\n2.1,0.216\n2.11,0.336\n2.12,0.232\n2.13,-0.04\n2.14,-0.264\n2.15,-0.336\n2.16,-0.168\n2.17,0.096\n2.18,0.28\n2.19,0.32\n2.2,0.12\n2.21,-0.144\n2.22,-0.32\n2.23,-0.296\n2.24,-0.048\n2.25,0.184\n2.26,0.32\n2.27,0.256\n2.28,0\n2.29,-0.232\n2.3,-0.328\n2.31,-0.2\n2.32,0.064\n2.33,0.248\n2.34,0.32\n2.35,0.16\n2.36,-0.104\n2.37,-0.288\n2.38,-0.304\n2.39,-0.088\n2.4,0.144\n2.41,0.296\n2.42,0.272\n2.43,0.048\n2.44,-0.192\n2.45,-0.32\n2.46,-0.224\n2.47,0.024\n2.48,0.224\n2.49,0.312\n2.5,0.192\n2.51,-0.064\n2.52,-0.256\n2.53,-0.304\n2.54,-0.128\n2.55,0.112\n2.56,0.272\n2.57,0.288\n2.58,0.08\n2.59,-0.16\n2.6,-0.304\n2.61,-0.248\n2.62,-0.016\n2.63,0.192\n2.64,0.304\n2.65,0.216\n2.66,-0.024\n2.67,-0.232\n2.68,-0.304\n2.69,-0.16\n2.7,0.08\n2.71,0.256\n2.72,0.288\n2.73,0.12\n2.74,-0.12\n2.75,-0.28\n2.76,-0.264\n2.77,-0.056\n2.78,0.16\n2.79,0.288\n2.8,0.232\n2.81,0.008\n2.82,-0.2\n2.83,-0.296\n2.84,-0.184\n2.85,0.04\n2.86,0.224\n2.87,0.288\n2.88,0.152\n2.89,-0.08\n2.9,-0.256\n2.91,-0.272\n2.92,-0.096\n2.93,0.128\n2.94,0.264\n2.95,0.248\n2.96,0.048\n2.97,-0.168\n2.98,-0.28\n2.99,-0.208\n\n"
+      }
+    ],
+    "stream": false,
+    "max_completion_tokens": 16000
+  },
+  "content": "--BEGIN FIXED CSV--\ncolumn_1,column_2\n0,0\n0.01,0\n0.02,0\n0.03,0\n0.04,0\n0.05,0\n0.06,0\n0.07,0\n0.08,0\n0.09,0\n0.1,0\n0.11,0.008\n0.12,0\n0.13,0\n0.14,0\n0.15,0\n0.16,0\n0.17,0\n0.18,0\n0.19,0\n0.2,0\n0.21,0\n0.22,0.008\n0.23,0.008\n0.24,0\n0.25,0.008\n0.26,0.008\n0.27,0.032\n0.28,0.104\n0.29,0.312\n0.3,0.304\n0.31,-0.072\n0.32,-0.376\n0.33,-0.552\n0.34,-0.328\n0.35,0.096\n0.36,0.336\n0.37,0.504\n0.38,0.248\n0.39,-0.16\n0.4,-0.432\n0.41,-0.488\n0.42,-0.112\n0.43,0.216\n0.44,0.44\n0.45,0.448\n0.46,0.064\n0.47,-0.288\n0.48,-0.496\n0.49,-0.368\n0.5,0.048\n0.51,0.304\n0.52,0.488\n0.53,0.296\n0.54,-0.096\n0.55,-0.384\n0.56,-0.488\n0.57,-0.184\n0.58,0.176\n0.59,0.392\n0.6,0.456\n0.61,0.12\n0.62,-0.232\n0.63,-0.456\n0.64,-0.4\n0.65,-0.008\n0.66,0.264\n0.67,0.456\n0.68,0.344\n0.69,-0.04\n0.7,-0.336\n0.71,-0.48\n0.72,-0.24\n0.73,0.128\n0.74,0.36\n0.75,0.456\n0.76,0.176\n0.77,-0.184\n0.78,-0.424\n0.79,-0.424\n0.8,-0.072\n0.81,0.224\n0.82,0.432\n0.83,0.376\n0.84,0.016\n0.85,-0.288\n0.86,-0.464\n0.87,-0.288\n0.88,0.08\n0.89,0.312\n0.9,0.448\n0.91,0.232\n0.92,-0.128\n0.93,-0.384\n0.94,-0.432\n0.95,-0.128\n0.96,0.184\n0.97,0.392\n0.98,0.4\n0.99,0.072\n1,-0.248\n1.01,-0.432\n1.02,-0.328\n1.03,0.024\n1.04,0.28\n1.05,0.432\n1.06,0.28\n1.07,-0.072\n1.08,-0.336\n1.09,-0.432\n1.1,-0.184\n1.11,0.144\n1.12,0.352\n1.13,0.408\n1.14,0.128\n1.15,-0.2\n1.16,-0.4\n1.17,-0.36\n1.18,-0.032\n1.19,0.24\n1.2,0.408\n1.21,0.312\n1.22,-0.024\n1.23,-0.296\n1.24,-0.424\n1.25,-0.232\n1.26,0.096\n1.27,0.32\n1.28,0.408\n1.29,0.176\n1.3,-0.152\n1.31,-0.368\n1.32,-0.376\n1.33,-0.08\n1.34,0.2\n1.35,0.384\n1.36,0.344\n1.37,0.024\n1.38,-0.256\n1.39,-0.408\n1.4,-0.272\n1.41,0.048\n1.42,0.28\n1.43,0.392\n1.44,0.216\n1.45,-0.104\n1.46,-0.328\n1.47,-0.384\n1.48,-0.128\n1.49,0.16\n1.5,0.352\n1.51,0.36\n1.52,0.08\n1.53,-0.216\n1.54,-0.384\n1.55,-0.304\n1.56,0.008\n1.57,0.248\n1.58,0.384\n1.59,0.256\n1.6,-0.056\n1.61,-0.304\n1.62,-0.384\n1.63,-0.176\n1.64,0.12\n1.65,0.312\n1.66,0.368\n1.67,0.128\n1.68,-0.168\n1.69,-0.36\n1.7,-0.32\n1.71,-0.04\n1.72,0.208\n1.73,0.36\n1.74,0.288\n1.75,-0.008\n1.76,-0.256\n1.77,-0.376\n1.78,-0.216\n1.79,0.08\n1.8,0.288\n1.81,0.36\n1.82,0.168\n1.83,-0.12\n1.84,-0.328\n1.85,-0.336\n1.86,-0.088\n1.87,0.176\n1.88,0.336\n1.89,0.304\n1.9,0.04\n1.91,-0.224\n1.92,-0.36\n1.93,-0.248\n1.94,0.032\n1.95,0.256\n1.96,0.352\n1.97,0.208\n1.98,-0.08\n1.99,-0.296\n2,-0.344\n2.01,-0.128\n2.02,0.136\n2.03,0.312\n2.04,0.32\n2.05,0.08\n2.06,-0.184\n2.07,-0.336\n2.08,-0.272\n2.09,-0.008\n2.1,0.216\n2.11,0.336\n2.12,0.232\n2.13,-0.04\n2.14,-0.264\n2.15,-0.336\n2.16,-0.168\n2.17,0.096\n2.18,0.28\n2.19,0.32\n2.2,0.12\n2.21,-0.144\n2.22,-0.32\n2.23,-0.296\n2.24,-0.048\n2.25,0.184\n2.26,0.32\n2.27,0.256\n2.28,0\n2.29,-0.232\n2.3,-0.328\n2.31,-0.2\n2.32,0.064\n2.33,0.248\n2.34,0.32\n2.35,0.16\n2.36,-0.104\n2.37,-0.288\n2.38,-0.304\n2.39,-0.088\n2.4,0.144\n2.41,0.296\n2.42,0.272\n2.43,0.048\n2.44,-0.192\n2.45,-0.32\n2.46,-0.224\n2.47,0.024\n2.48,0.224\n2.49,0.312\n2.5,0.192\n2.51,-0.064\n2.52,-0.256\n2.53,-0.304\n2.54,-0.128\n2.55,0.112\n2.56,0.272\n2.57,0.288\n2.58,0.08\n2.59,-0.16\n2.6,-0.304\n2.61,-0.248\n2.62,-0.016\n2.63,0.192\n2.64,0.304\n2.65,0.216\n2.66,-0.024\n2.67,-0.232\n2.68,-0.304\n2.69,-0.16\n2.7,0.08\n2.71,0.256\n2.72,0.288\n2.73,0.12\n2.74,-0.12\n2.75,-0.28\n2.76,-0.264\n2.77,-0.056\n2.78,0.16\n2.79,0.288\n2.8,0.232\n2.81,0.008\n2.82,-0.2\n2.83,-0.296\n2.84,-0.184\n2.85,0.04\n2.86,0.224\n2.87,0.288\n2.88,0.152\n2.89,-0.08\n2.9,-0.256\n2.91,-0.272\n2.92,-0.096\n2.93,0.128\n2.94,0.264\n2.95,0.248\n2.96,0.048\n2.97,-0.168\n2.98,-0.28\n2.99,-0.208\n--END FIXED CSV--\n--BEGIN ERROR REPORT--\n{\"fixed_errors\":[{\"type\":\"missing_header\",\"description\":\"Added a header to the headerless table.\",\"rows\":[1]}],\"summary\":\"Added a header; preserved all data rows.\"}\n--END ERROR REPORT--",
+  "usage": {
+    "prompt_tokens": 2794,
+    "completion_tokens": 2455,
+    "total_tokens": 5249,
+    "prompt_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 2791,
+      "audio_tokens": 0
+    },
+    "completion_tokens_details": {
+      "reasoning_tokens": 31,
+      "audio_tokens": 0,
+      "accepted_prediction_tokens": 0,
+      "rejected_prediction_tokens": 0
+    }
+  },
+  "cost": {
+    "backend": "openai",
+    "model": "gpt-6.1-terra",
+    "api_base": "https://api.openai.com/v1",
+    "local_cache_hit": false,
+    "usage_available": true,
+    "cache_path": "/home/robin/offsite/pollock-offsite/results/runs/20261123T235243Z-7721ec29/full_llm_loader_naive_gpt_6_1_terra/combined_real_world_files/llm_cache/479fc0c82b4f4bd97747c4f7ddd5290b84af87e508e5e6c573eb222e9563229f.json",
+    "prompt_tokens": 2794,
+    "cached_input_tokens": 0,
+    "uncached_input_tokens": 2794,
+    "ordinary_input_tokens": 3,
+    "cache_write_tokens": 2791,
+    "completion_tokens": 2455,
+    "total_tokens": 5249,
+    "input_usd_per_1m": 1.0,
+    "cached_input_usd_per_1m": 0.05,
+    "cache_write_usd_per_1m": 1.25,
+    "output_usd_per_1m": 5.0,
+    "input_cost_usd": 3e-06,
+    "cached_input_cost_usd": 0.0,
+    "cache_write_cost_usd": 0.00348875,
+    "output_cost_usd": 0.012275,
+    "estimated_api_cost_usd": 0.01576675,
+    "billable_cost_usd": 0.01576675
+  }
+}

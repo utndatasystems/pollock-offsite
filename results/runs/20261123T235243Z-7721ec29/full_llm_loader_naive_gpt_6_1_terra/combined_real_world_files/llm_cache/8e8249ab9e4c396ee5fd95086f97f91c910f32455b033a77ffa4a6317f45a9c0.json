@@ -1,0 +1,62 @@
+{
+  "cache_version": 1,
+  "created_at": "2026-11-24T11:42:38.049377+00:00",
+  "api_base": "https://api.openai.com/v1",
+  "payload": {
+    "model": "gpt-6.1-terra",
+    "messages": [
+      {
+        "role": "system",
+        "content": "You are a CSV repair assistant.\n\nYour task is to inspect a possibly malformed CSV file and reconstruct it as a valid CSV table.\n\nReturn the repaired CSV and a brief error report. Do not include explanations outside the requested output sections."
+      },
+      {
+        "role": "user",
+        "content": "Repair the following CSV file.\n\nReturn exactly two sections and nothing else.\nDo not use Markdown fences. Do not include prose before, between, or after the sections.\nThe section markers must appear exactly as shown, each on its own line.\n\n--BEGIN FIXED CSV--\n<repaired CSV text only, including exactly one header row>\n--END FIXED CSV--\n--BEGIN ERROR REPORT--\n<JSON error report object only>\n--END ERROR REPORT--\n\nRules for the fixed CSV section:\n\n- Use a comma as the output delimiter.\n- Use double quotes according to standard CSV escaping rules.\n- Encode an embedded double quote as two double quotes.\n- Preserve every payload character exactly.\n- Do not normalize, infer, translate, reformat, round, complete, shorten, or otherwise rewrite cell values.\n- Preserve embedded line breaks inside quoted fields.\n- Use LF line endings.\n- Return the complete repaired CSV, not a sample, preview, summary, or first portion.\n- Include every recoverable source data row exactly once unless the input clearly marks it as non-data.\n- Finish the entire fixed CSV section before starting the error report.\n- If output length is a concern, keep the error report as short as possible but do not truncate the fixed CSV.\n- Do not wrap the CSV in Markdown fences.\n- Do not include comments, explanations, or section labels inside the CSV.\n- If the input is empty, whitespace-only, or contains no table evidence, leave the fixed CSV section empty. Do not invent headers, rows, columns, examples, placeholder data, or sample content.\n\nThe error report must use this format:\n\n{\n  \"fixed_errors\": [\n    {\n      \"type\": \"<error type>\",\n      \"description\": \"<brief description>\",\n      \"rows\": [<affected physical line numbers>]\n    }\n  ],\n  \"summary\": \"<brief summary>\"\n}\n\nIf no errors were fixed, return an empty fixed_errors list.\n\nCSV content:\n\n# Name,   Type, SubType, Offset,   Size,     Flags\nnvs,      data, nvs,     0x9000,   0x5000,\notadata,  data, ota,     0xe000,   0x2000,\napp0,     app,  ota_0,   0x10000,  0x1C0000,\napp1,     app,  ota_1,   0x1D0000, 0x1C0000,\n# The offline cache needs 2.3 KB, so the filesystem gives space back to the application.\nspiffs,   data, spiffs,  0x390000, 0x50000,\ncoredump, data, coredump,0x3E0000, 0x10000,\n\n"
+      }
+    ],
+    "stream": false,
+    "max_completion_tokens": 16000
+  },
+  "content": "--BEGIN FIXED CSV--\n# Name,   Type, SubType, Offset,   Size,     Flags\nnvs,      data, nvs,     0x9000,   0x5000,\notadata,  data, ota,     0xe000,   0x2000,\napp0,     app,  ota_0,   0x10000,  0x1C0000,\napp1,     app,  ota_1,   0x1D0000, 0x1C0000,\nspiffs,   data, spiffs,  0x390000, 0x50000,\ncoredump, data, coredump,0x3E0000, 0x10000,\n--END FIXED CSV--\n--BEGIN ERROR REPORT--\n{\"fixed_errors\":[{\"type\":\"non_data_comment\",\"description\":\"Removed a comment line.\",\"rows\":[6]}],\"summary\":\"Removed one non-data comment.\"}\n--END ERROR REPORT--",
+  "usage": {
+    "prompt_tokens": 628,
+    "completion_tokens": 385,
+    "total_tokens": 1013,
+    "prompt_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 0,
+      "audio_tokens": 0
+    },
+    "completion_tokens_details": {
+      "reasoning_tokens": 161,
+      "audio_tokens": 0,
+      "accepted_prediction_tokens": 0,
+      "rejected_prediction_tokens": 0
+    }
+  },
+  "cost": {
+    "backend": "openai",
+    "model": "gpt-6.1-terra",
+    "api_base": "https://api.openai.com/v1",
+    "local_cache_hit": false,
+    "usage_available": true,
+    "cache_path": "/home/robin/offsite/pollock-offsite/results/runs/20261123T235243Z-7721ec29/full_llm_loader_naive_gpt_6_1_terra/combined_real_world_files/llm_cache/8e8249ab9e4c396ee5fd95086f97f91c910f32455b033a77ffa4a6317f45a9c0.json",
+    "prompt_tokens": 628,
+    "cached_input_tokens": 0,
+    "uncached_input_tokens": 628,
+    "ordinary_input_tokens": 628,
+    "cache_write_tokens": 0,
+    "completion_tokens": 385,
+    "total_tokens": 1013,
+    "input_usd_per_1m": 1.0,
+    "cached_input_usd_per_1m": 0.05,
+    "cache_write_usd_per_1m": 1.25,
+    "output_usd_per_1m": 5.0,
+    "input_cost_usd": 0.000628,
+    "cached_input_cost_usd": 0.0,
+    "cache_write_cost_usd": 0.0,
+    "output_cost_usd": 0.001925,
+    "estimated_api_cost_usd": 0.002553,
+    "billable_cost_usd": 0.002553
+  }
+}

@@ -1,0 +1,6 @@
+Malformed rows: 5
+{"line_num": 1, "reason": "header row normalized", "raw": ["value", "frequency"], "repaired": true}
+{"line_num": 8, "reason": "width 1 -> 2", "raw": ["EQUIPMENT"], "repaired": true}
+{"line_num": 12, "reason": "width 1 -> 2", "raw": ["FUEL/PROPULSION SYSTEM"], "repaired": true}
+{"line_num": 15, "reason": "width 1 -> 2", "raw": ["LATCHES/LOCKS/LINKAGES"], "repaired": true}
+{"line_num": 29, "reason": "width 1 -> 2", "raw": ["VISIBILITY/WIPER"], "repaired": true}

@@ -1,0 +1,2 @@
+Malformed rows: 1
+{"line_num": 1, "reason": "header row normalized", "raw": ["id", "station_cd1", "station_cd2", "distance"], "repaired": true}

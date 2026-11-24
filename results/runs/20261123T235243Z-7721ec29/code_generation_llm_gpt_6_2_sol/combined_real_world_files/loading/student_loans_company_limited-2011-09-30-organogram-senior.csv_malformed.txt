@@ -1,0 +1,2 @@
+Malformed rows: 1
+{"line_num": 1, "reason": "header row normalized", "raw": ["Post Unique Reference", "Name", "Grade (or equivalent)", "Job Title", "Job/Team Function", "Parent Department", "Organisation", "Unit", "Contact Phone", "Contact E-mail", "Reports to Senior Post", "Salary Cost of Reports (\u00a3)", "FTE", "Actual Pay Floor (\u00a3)", "Actual Pay Ceiling (\u00a3)", "", "Professional/Occupational Group", "Notes", "Valid?"], "repaired": true}

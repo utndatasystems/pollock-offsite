@@ -1,0 +1,62 @@
+{
+  "cache_version": 1,
+  "created_at": "2026-11-24T08:58:03.509877+00:00",
+  "api_base": "https://api.openai.com/v1",
+  "payload": {
+    "model": "gpt-6.2-sol",
+    "messages": [
+      {
+        "role": "system",
+        "content": "You are a CSV repair assistant.\n\nYour task is to inspect a possibly malformed CSV file and reconstruct it as a valid CSV table.\n\nReturn the repaired CSV and a brief error report. Do not include explanations outside the requested output sections."
+      },
+      {
+        "role": "user",
+        "content": "Repair the following CSV file.\n\nReturn exactly two sections and nothing else.\nDo not use Markdown fences. Do not include prose before, between, or after the sections.\nThe section markers must appear exactly as shown, each on its own line.\n\n--BEGIN FIXED CSV--\n<repaired CSV text only, including exactly one header row>\n--END FIXED CSV--\n--BEGIN ERROR REPORT--\n<JSON error report object only>\n--END ERROR REPORT--\n\nRules for the fixed CSV section:\n\n- Use a comma as the output delimiter.\n- Use double quotes according to standard CSV escaping rules.\n- Encode an embedded double quote as two double quotes.\n- Preserve every payload character exactly.\n- Do not normalize, infer, translate, reformat, round, complete, shorten, or otherwise rewrite cell values.\n- Preserve embedded line breaks inside quoted fields.\n- Use LF line endings.\n- Return the complete repaired CSV, not a sample, preview, summary, or first portion.\n- Include every recoverable source data row exactly once unless the input clearly marks it as non-data.\n- Finish the entire fixed CSV section before starting the error report.\n- If output length is a concern, keep the error report as short as possible but do not truncate the fixed CSV.\n- Do not wrap the CSV in Markdown fences.\n- Do not include comments, explanations, or section labels inside the CSV.\n- If the input is empty, whitespace-only, or contains no table evidence, leave the fixed CSV section empty. Do not invent headers, rows, columns, examples, placeholder data, or sample content.\n\nThe error report must use this format:\n\n{\n  \"fixed_errors\": [\n    {\n      \"type\": \"<error type>\",\n      \"description\": \"<brief description>\",\n      \"rows\": [<affected physical line numbers>]\n    }\n  ],\n  \"summary\": \"<brief summary>\"\n}\n\nIf no errors were fixed, return an empty fixed_errors list.\n\nCSV content:\n\nipa,candidates,preferred_score,rationale,status\nk,к,1.0,shared stop place and manner,established\nkʰ,к',0.96,aspiration is marked with an apostrophe in Ukrainian practical output,project-policy\nŋ,нг,0.98,explicit velar nasal sequence,project-policy\nɲ,нь|н,0.90,Ukrainian palatalized n is closer,project-policy\ntɕ,ч,1.0,closest Ukrainian affricate target,established\nd,д,1.0,shared voiced alveolar stop,established\nt,т,1.0,shared alveolar stop,established\ntʰ,т',0.95,aspiration is marked with an apostrophe in Ukrainian practical output,project-policy\np,п,1.0,shared stop,established\npʰ,п',0.96,aspiration is marked with an apostrophe in Ukrainian practical output,project-policy\nb,б,1.0,shared voiced stop,established\nm,м,1.0,shared nasal,established\nn,н,1.0,shared nasal,established\ns,с,1.0,shared fricative,established\nf,ф,1.0,shared fricative,established\nh,г,0.90,Ukrainian г is the selected practical approximation for Lao /h/; this is a project policy, not phonetic identity,project-policy\nj,й,0.96,glide target,project-policy\nʋ,в,0.94,closest Ukrainian labiodental approximant target,project-policy\nw,в,0.90,final /w/ approximation,project-policy\nr,р,0.80,only for foreign or historical /r/ readings,analysis-dependent\nl,л,0.96,shared lateral,project-policy\nʔ,∅,0.80,glottal stop is not independently represented,project-policy\na,а,1.0,shared vowel quality,established\naː,а,0.95,quantity is analytical rather than doubled,project-policy\ni,і,1.0,shared high front vowel,established\niː,і,0.95,quantity neutralization,project-policy\nɯ,и,0.84,Ukrainian и is an explicit approximation,project-policy\nɯː,и,0.82,quantity neutralization,project-policy\nu,у,1.0,shared high back rounded vowel,established\nuː,у,0.95,quantity neutralization,project-policy\ne,е,1.0,shared mid front vowel,established\neː,е,0.95,quantity neutralization,project-policy\nɛ,е,0.82,explicit approximation,project-policy\nɛː,е,0.80,explicit approximation,project-policy\no,о,1.0,shared mid back rounded vowel,established\noː,о,0.95,quantity neutralization,project-policy\nɔ,о,0.82,explicit approximation,project-policy\nɔː,о,0.80,explicit approximation,project-policy\nɤ,е,0.76,no exact Ukrainian target,project-policy\nɤː,е,0.74,no exact Ukrainian target,project-policy\niə,іа,0.78,transparent diphthong sequence,project-policy\niːə,іа,0.78,transparent diphthong sequence,project-policy\nɯə,иа,0.66,analysis-dependent approximation,analysis-dependent\nɯːə,иа,0.66,analysis-dependent approximation,analysis-dependent\nuə,уа,0.78,transparent vowel sequence,project-policy\nuːə,уа,0.78,transparent vowel sequence,project-policy\nai,ай,0.95,transparent glide sequence,project-policy\naːj,ай,0.88,quantity neutralization,project-policy\naw,ав,0.90,/w/ is consistently represented by Ukrainian в rather than у,project-policy\nam,ам,0.90,Sara Am remains a structural vowel unit,project-policy\nɡ,ґ,0.94,foreign hard voiced velar stop uses Ukrainian ґ,project-policy\ng,ґ,0.90,ASCII alias for a source transcription of hard /ɡ/,project-policy\nx,х,1.0,genuine velar fricative remains Ukrainian х,project-policy\nɦ,г,0.90,voiced glottal fricative aligns with Ukrainian г,project-policy\nt͡s,ц,1.0,Ukrainian affricate correspondence,project-policy\nd͡z,дз,1.0,Ukrainian voiced affricate correspondence,project-policy\nt͡ʃ,ч,1.0,Ukrainian postalveolar affricate correspondence,project-policy\nd͡ʒ,дж,1.0,Ukrainian voiced postalveolar affricate correspondence,project-policy\nʃ,ш,1.0,Ukrainian postalveolar fricative correspondence,project-policy\nʒ,ж,1.0,Ukrainian voiced postalveolar fricative correspondence,project-policy\ntʲ,ть,0.90,palatalized dental stop is represented with soft sign,project-policy\ndʲ,дь,0.90,palatalized dental stop is represented with soft sign,project-policy\nnʲ,нь,0.96,palatalized nasal has a direct Ukrainian sequence,project-policy\nlʲ,ль,0.90,palatalized lateral is represented with soft sign,project-policy\nrʲ,рь,0.80,palatalized rhotic is represented with soft sign where contrastive,analysis-dependent\ntɕʰ,ч',0.85,aspirated palatal affricate keeps aspiration marker,analysis-dependent\n\n"
+      }
+    ],
+    "stream": false,
+    "max_completion_tokens": 16000
+  },
+  "content": "--BEGIN FIXED CSV--\nipa,candidates,preferred_score,rationale,status\nk,к,1.0,shared stop place and manner,established\nkʰ,к',0.96,aspiration is marked with an apostrophe in Ukrainian practical output,project-policy\nŋ,нг,0.98,explicit velar nasal sequence,project-policy\nɲ,нь|н,0.90,Ukrainian palatalized n is closer,project-policy\ntɕ,ч,1.0,closest Ukrainian affricate target,established\nd,д,1.0,shared voiced alveolar stop,established\nt,т,1.0,shared alveolar stop,established\ntʰ,т',0.95,aspiration is marked with an apostrophe in Ukrainian practical output,project-policy\np,п,1.0,shared stop,established\npʰ,п',0.96,aspiration is marked with an apostrophe in Ukrainian practical output,project-policy\nb,б,1.0,shared voiced stop,established\nm,м,1.0,shared nasal,established\nn,н,1.0,shared nasal,established\ns,с,1.0,shared fricative,established\nf,ф,1.0,shared fricative,established\nh,г,0.90,\"Ukrainian г is the selected practical approximation for Lao /h/; this is a project policy, not phonetic identity\",project-policy\nj,й,0.96,glide target,project-policy\nʋ,в,0.94,closest Ukrainian labiodental approximant target,project-policy\nw,в,0.90,final /w/ approximation,project-policy\nr,р,0.80,only for foreign or historical /r/ readings,analysis-dependent\nl,л,0.96,shared lateral,project-policy\nʔ,∅,0.80,glottal stop is not independently represented,project-policy\na,а,1.0,shared vowel quality,established\naː,а,0.95,quantity is analytical rather than doubled,project-policy\ni,і,1.0,shared high front vowel,established\niː,і,0.95,quantity neutralization,project-policy\nɯ,и,0.84,Ukrainian и is an explicit approximation,project-policy\nɯː,и,0.82,quantity neutralization,project-policy\nu,у,1.0,shared high back rounded vowel,established\nuː,у,0.95,quantity neutralization,project-policy\ne,е,1.0,shared mid front vowel,established\neː,е,0.95,quantity neutralization,project-policy\nɛ,е,0.82,explicit approximation,project-policy\nɛː,е,0.80,explicit approximation,project-policy\no,о,1.0,shared mid back rounded vowel,established\noː,о,0.95,quantity neutralization,project-policy\nɔ,о,0.82,explicit approximation,project-policy\nɔː,о,0.80,explicit approximation,project-policy\nɤ,е,0.76,no exact Ukrainian target,project-policy\nɤː,е,0.74,no exact Ukrainian target,project-policy\niə,іа,0.78,transparent diphthong sequence,project-policy\niːə,іа,0.78,transparent diphthong sequence,project-policy\nɯə,иа,0.66,analysis-dependent approximation,analysis-dependent\nɯːə,иа,0.66,analysis-dependent approximation,analysis-dependent\nuə,уа,0.78,transparent vowel sequence,project-policy\nuːə,уа,0.78,transparent vowel sequence,project-policy\nai,ай,0.95,transparent glide sequence,project-policy\naːj,ай,0.88,quantity neutralization,project-policy\naw,ав,0.90,/w/ is consistently represented by Ukrainian в rather than у,project-policy\nam,ам,0.90,Sara Am remains a structural vowel unit,project-policy\nɡ,ґ,0.94,foreign hard voiced velar stop uses Ukrainian ґ,project-policy\ng,ґ,0.90,ASCII alias for a source transcription of hard /ɡ/,project-policy\nx,х,1.0,genuine velar fricative remains Ukrainian х,project-policy\nɦ,г,0.90,voiced glottal fricative aligns with Ukrainian г,project-policy\nt͡s,ц,1.0,Ukrainian affricate correspondence,project-policy\nd͡z,дз,1.0,Ukrainian voiced affricate correspondence,project-policy\nt͡ʃ,ч,1.0,Ukrainian postalveolar affricate correspondence,project-policy\nd͡ʒ,дж,1.0,Ukrainian voiced postalveolar affricate correspondence,project-policy\nʃ,ш,1.0,Ukrainian postalveolar fricative correspondence,project-policy\nʒ,ж,1.0,Ukrainian voiced postalveolar fricative correspondence,project-policy\ntʲ,ть,0.90,palatalized dental stop is represented with soft sign,project-policy\ndʲ,дь,0.90,palatalized dental stop is represented with soft sign,project-policy\nnʲ,нь,0.96,palatalized nasal has a direct Ukrainian sequence,project-policy\nlʲ,ль,0.90,palatalized lateral is represented with soft sign,project-policy\nrʲ,рь,0.80,palatalized rhotic is represented with soft sign where contrastive,analysis-dependent\ntɕʰ,ч',0.85,aspirated palatal affricate keeps aspiration marker,analysis-dependent\n--END FIXED CSV--\n--BEGIN ERROR REPORT--\n{\"fixed_errors\":[{\"type\":\"unquoted_comma\",\"description\":\"Quoted the rationale field containing an embedded comma.\",\"rows\":[17]}],\"summary\":\"Fixed one quoting error.\"}\n--END ERROR REPORT--",
+  "usage": {
+    "prompt_tokens": 1759,
+    "completion_tokens": 1375,
+    "total_tokens": 3134,
+    "prompt_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 1756,
+      "audio_tokens": 0
+    },
+    "completion_tokens_details": {
+      "reasoning_tokens": 0,
+      "audio_tokens": 0,
+      "accepted_prediction_tokens": 0,
+      "rejected_prediction_tokens": 0
+    }
+  },
+  "cost": {
+    "backend": "openai",
+    "model": "gpt-6.2-sol",
+    "api_base": "https://api.openai.com/v1",
+    "local_cache_hit": false,
+    "usage_available": true,
+    "cache_path": "/home/robin/offsite/pollock-offsite/results/runs/20261123T235243Z-7721ec29/full_llm_loader_naive_gpt_6_2_sol/combined_real_world_files/llm_cache/bb29caef7c36e9074c2132e2ea7ef378ab711005b54b2dc281ff9ee924772d47.json",
+    "prompt_tokens": 1759,
+    "cached_input_tokens": 0,
+    "uncached_input_tokens": 1759,
+    "ordinary_input_tokens": 3,
+    "cache_write_tokens": 1756,
+    "completion_tokens": 1375,
+    "total_tokens": 3134,
+    "input_usd_per_1m": 2.0,
+    "cached_input_usd_per_1m": 0.1,
+    "cache_write_usd_per_1m": 2.5,
+    "output_usd_per_1m": 10.0,
+    "input_cost_usd": 6e-06,
+    "cached_input_cost_usd": 0.0,
+    "cache_write_cost_usd": 0.00439,
+    "output_cost_usd": 0.01375,
+    "estimated_api_cost_usd": 0.018146,
+    "billable_cost_usd": 0.018146
+  }
+}

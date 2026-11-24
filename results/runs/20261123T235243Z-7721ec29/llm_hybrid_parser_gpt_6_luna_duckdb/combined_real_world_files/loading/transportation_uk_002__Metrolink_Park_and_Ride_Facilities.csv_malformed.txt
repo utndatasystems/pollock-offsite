@@ -1,0 +1,21 @@
+Malformed rows: 20
+{"line_num": 3, "reason": "INVALID ENCODING: Invalid unicode (byte sequence mismatch) detected. This file is not utf-8 encoded.", "raw": "Navigation Road,,81?spaces,6?spaces,5 stands,5 lockers,?", "repaired": true}
+{"line_num": 14, "reason": "INVALID ENCODING: Invalid unicode (byte sequence mismatch) detected. This file is not utf-8 encoded.", "raw": "Radcliffe,,369?spaces,22?spaces,5?stands,5 lockers,2.3m?", "repaired": true}
+{"line_num": 15, "reason": "INVALID ENCODING: Invalid unicode (byte sequence mismatch) detected. This file is not utf-8 encoded.", "raw": "Whitefield,,216?spaces,13?spaces,4 stands,5 lockers,2.3m?", "repaired": true}
+{"line_num": 22, "reason": "INVALID ENCODING: Invalid unicode (byte sequence mismatch) detected. This file is not utf-8 encoded.", "raw": "Queens?Road,Yes?,,,5 stands?,,?", "repaired": true}
+{"line_num": 57, "reason": "INVALID ENCODING: Invalid unicode (byte sequence mismatch) detected. This file is not utf-8 encoded.", "raw": "Milnrow?,?,19? spaces,3? spaces,5? stands,5?lockers,?", "repaired": true}
+{"line_num": 59, "reason": "INVALID ENCODING: Invalid unicode (byte sequence mismatch) detected. This file is not utf-8 encoded.", "raw": "Shaw and Crompton?,,44 spaces,?4 spaces,?5 stands,5 lockers?,?", "repaired": true}
+{"line_num": 60, "reason": "INVALID ENCODING: Invalid unicode (byte sequence mismatch) detected. This file is not utf-8 encoded.", "raw": "Derker,Yes?,251?spaces?,?16 spaces,?5 stands,5 lockers?,2.4m?", "repaired": true}
+{"line_num": 61, "reason": "INVALID ENCODING: Invalid unicode (byte sequence mismatch) detected. This file is not utf-8 encoded.", "raw": "Oldham Mumps,,270?spaces??,16 spaces?,?5 stands?,5 lockers?,?", "repaired": true}
+{"line_num": 62, "reason": "INVALID ENCODING: Invalid unicode (byte sequence mismatch) detected. This file is not utf-8 encoded.", "raw": "Oldham Central?,?,?,?,?9 stands?,?,?", "repaired": true}
+{"line_num": 63, "reason": "INVALID ENCODING: Invalid unicode (byte sequence mismatch) detected. This file is not utf-8 encoded.", "raw": "Oldham King Street?,?,?,?,?5 stands?,?,?", "repaired": true}
+{"line_num": 64, "reason": "INVALID ENCODING: Invalid unicode (byte sequence mismatch) detected. This file is not utf-8 encoded.", "raw": "Westwood,?,?,?,?5 stands?,5 lockers?,?", "repaired": true}
+{"line_num": 65, "reason": "INVALID ENCODING: Invalid unicode (byte sequence mismatch) detected. This file is not utf-8 encoded.", "raw": "Freehold,Yes,3 spaces,3 spaces,5 stands,4?lockers,?", "repaired": true}
+{"line_num": 67, "reason": "INVALID ENCODING: Invalid unicode (byte sequence mismatch) detected. This file is not utf-8 encoded.", "raw": "Hollinwood,Yes,190 spaces,12?spaces,5 stands,5 lockers,2.1m?", "repaired": true}
+{"line_num": 73, "reason": "INVALID ENCODING: Invalid unicode (byte sequence mismatch) detected. This file is not utf-8 encoded.", "raw": "Ashton-under-Lyne?,?,?,?,5?stands?,5?lockers?,?", "repaired": true}
+{"line_num": 74, "reason": "INVALID ENCODING: Invalid unicode (byte sequence mismatch) detected. This file is not utf-8 encoded.", "raw": "Ashton West?,?,195?spaces?,?,5 stands?,5?lockers?,?", "repaired": true}
+{"line_num": 75, "reason": "INVALID ENCODING: Invalid unicode (byte sequence mismatch) detected. This file is not utf-8 encoded.", "raw": "Ashton Moss?,?,200?spaces?,?,5 stands?,5 lockers?,2.4m?", "repaired": true}
+{"line_num": 76, "reason": "INVALID ENCODING: Invalid unicode (byte sequence mismatch) detected. This file is not utf-8 encoded.", "raw": "Audenshaw?,?,?,?,5 stands?,5?lockers?,?", "repaired": true}
+{"line_num": 78, "reason": "INVALID ENCODING: Invalid unicode (byte sequence mismatch) detected. This file is not utf-8 encoded.", "raw": "Cemetery Road?,?,?,?,5 stands?,5?lockers??,?", "repaired": true}
+{"line_num": 79, "reason": "INVALID ENCODING: Invalid unicode (byte sequence mismatch) detected. This file is not utf-8 encoded.", "raw": "Edge Lane?,?,?,?,5 stands?,5?lockers??,?", "repaired": true}
+{"line_num": 80, "reason": "INVALID ENCODING: Invalid unicode (byte sequence mismatch) detected. This file is not utf-8 encoded.", "raw": "Clayton Hall?,?,?,?,5 stands?,5?lockers??,?", "repaired": true}

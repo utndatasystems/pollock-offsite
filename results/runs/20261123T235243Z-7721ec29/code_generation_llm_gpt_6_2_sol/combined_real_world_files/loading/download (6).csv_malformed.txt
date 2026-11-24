@@ -1,0 +1,3 @@
+Malformed rows: 2
+{"line_num": 1, "reason": "header row normalized", "raw": ["ID:GO:0014069\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0Name:postsynaptic density"], "repaired": true}
+{"line_num": 2, "reason": "width 1 -> 4", "raw": ["C=186; O=67; E=21.62; R=3.1; PValue=0e+00; FDR=0e+00"], "repaired": true}

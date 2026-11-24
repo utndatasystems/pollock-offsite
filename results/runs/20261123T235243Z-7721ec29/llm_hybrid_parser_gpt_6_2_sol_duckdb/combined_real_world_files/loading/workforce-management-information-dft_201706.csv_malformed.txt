@@ -1,0 +1,3 @@
+Malformed rows: 2
+{"line_num": 4, "reason": "MISSING COLUMNS: Expected Number of Columns: 42 Found: 14", "raw": "(workforce numbers)\",,Payroll staff costs,,,,,,,Non-Payroll staff (contingent labour/consultancy) costs,,,Grand Total paybill/staffing (payroll and non-payroll) costs,\"Comments", "repaired": true}
+{"line_num": 5, "reason": "MISSING COLUMNS: Expected Number of Columns: 42 Found: 2", "raw": "(NB: These will be published alongside your row of information)\",", "repaired": true}

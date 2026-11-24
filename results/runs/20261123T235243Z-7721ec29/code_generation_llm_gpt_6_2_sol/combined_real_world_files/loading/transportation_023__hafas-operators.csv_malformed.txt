@@ -1,0 +1,62 @@
+Malformed rows: 61
+{"line_num": 1, "reason": "header row normalized", "raw": ["hafas-id", "name"], "repaired": true}
+{"line_num": 2, "reason": "header row normalized", "raw": ["aare-seeland-mobil", "Aare Seeland mobil"], "repaired": true}
+{"line_num": 3, "reason": "header row normalized", "raw": ["aargau-verkehr-ag", "Aargau Verkehr AG"], "repaired": true}
+{"line_num": 4, "reason": "header row normalized", "raw": ["abellio-rail-gmbh", "Abellio Rail GmbH"], "repaired": true}
+{"line_num": 5, "reason": "header row normalized", "raw": ["abellio-rail-mitteldeutschland-gmbh", "Abellio Rail Mitteldeutschland GmbH"], "repaired": true}
+{"line_num": 6, "reason": "header row normalized", "raw": ["abellio-scotrail-service", "Abellio ScotRail Service"], "repaired": true}
+{"line_num": 7, "reason": "header row normalized", "raw": ["adler-schiffe", "Adler-Schiffe"], "repaired": true}
+{"line_num": 8, "reason": "header row normalized", "raw": ["adliswil-felsenegg", "Adliswil-Felsenegg"], "repaired": true}
+{"line_num": 9, "reason": "header row normalized", "raw": ["agilis", "agilis"], "repaired": true}
+{"line_num": 10, "reason": "header row normalized", "raw": ["akn-eisenbahn-gmbh", "AKN Eisenbahn GmbH"], "repaired": true}
+{"line_num": 11, "reason": "header row normalized", "raw": ["erfurter-bahn-gmbh", "Erfurter Bahn GmbH"], "repaired": true}
+{"line_num": 12, "reason": "header row normalized", "raw": ["erixx", "erixx"], "repaired": true}
+{"line_num": 13, "reason": "header row normalized", "raw": ["erlenbach-stockhorn", "Erlenbach-Stockhorn"], "repaired": true}
+{"line_num": 14, "reason": "header row normalized", "raw": ["eurobahn", "eurobahn"], "repaired": true}
+{"line_num": 15, "reason": "header row normalized", "raw": ["european-sleeper", "European Sleeper"], "repaired": true}
+{"line_num": 16, "reason": "header row normalized", "raw": ["eurostar", "EUROSTAR"], "repaired": true}
+{"line_num": 17, "reason": "header row normalized", "raw": ["evb-elbe-weser-gmbh", "EVB ELBE-WESER GmbH"], "repaired": true}
+{"line_num": 18, "reason": "header row normalized", "raw": ["fahre-horgen-meilen", "F\u00e4hre Horgen-Meilen"], "repaired": true}
+{"line_num": 19, "reason": "header row normalized", "raw": ["ferrovia-monte-generoso", "Ferrovia Monte Generoso"], "repaired": true}
+{"line_num": 20, "reason": "header row normalized", "raw": ["ferrovie-autolinee-regionali-ticinesi", "Ferrovie Autolinee Regionali Ticinesi"], "repaired": true}
+{"line_num": 21, "reason": "header row normalized", "raw": ["first-great-western", "First Great Western"], "repaired": true}
+{"line_num": 22, "reason": "header row normalized", "raw": ["flixtrain", "FlixTrain"], "repaired": true}
+{"line_num": 23, "reason": "header row normalized", "raw": ["forchbahn", "Forchbahn"], "repaired": true}
+{"line_num": 24, "reason": "header row normalized", "raw": ["frauenfeld-wil", "Frauenfeld-Wil"], "repaired": true}
+{"line_num": 25, "reason": "header row normalized", "raw": ["freiberger-eisenbahngesellschaft", "Freiberger Eisenbahngesellschaft"], "repaired": true}
+{"line_num": 26, "reason": "header row normalized", "raw": ["friedrich-muller-omnibusunternehmen-gmbh", "Friedrich M\u00fcller Omnibusunternehmen GmbH"], "repaired": true}
+{"line_num": 27, "reason": "header row normalized", "raw": ["funiculaire-neuchatel-universite-neuchatel-gare", "Funiculaire Neuch\u00e2tel-Universit\u00e9 - Neuch\u00e2tel-Gare"], "repaired": true}
+{"line_num": 28, "reason": "header row normalized", "raw": ["funiculaire-saint-imier-mont-soleil-sa", "Funiculaire Saint-Imier-Mont-Soleil SA"], "repaired": true}
+{"line_num": 29, "reason": "header row normalized", "raw": ["gatwick-express-service", "Gatwick Express Service"], "repaired": true}
+{"line_num": 30, "reason": "header row normalized", "raw": ["glaris-rinerhorn", "Glaris-Rinerhorn"], "repaired": true}
+{"line_num": 31, "reason": "header row normalized", "raw": ["go-ahead-norge", "Go Ahead Norge"], "repaired": true}
+{"line_num": 32, "reason": "header row normalized", "raw": ["gondelbahn-kandersteg-oeschinensee", "Gondelbahn Kandersteg-Oeschinensee"], "repaired": true}
+{"line_num": 33, "reason": "header row normalized", "raw": ["gornergratbahn", "Gornergratbahn"], "repaired": true}
+{"line_num": 34, "reason": "header row normalized", "raw": ["grand-central", "Grand Central"], "repaired": true}
+{"line_num": 35, "reason": "header row normalized", "raw": ["great-northern", "Great Northern"], "repaired": true}
+{"line_num": 36, "reason": "header row normalized", "raw": ["greater-anglia", "Greater Anglia"], "repaired": true}
+{"line_num": 37, "reason": "header row normalized", "raw": ["greifensee", "Greifensee"], "repaired": true}
+{"line_num": 38, "reason": "header row normalized", "raw": ["grindelwald-bus-ag", "Grindelwald Bus AG"], "repaired": true}
+{"line_num": 39, "reason": "header row normalized", "raw": ["grindelwald-first", "Grindelwald-First"], "repaired": true}
+{"line_num": 40, "reason": "header row normalized", "raw": ["grindelwald-grund-mannlichen", "Grindelwald Grund-M\u00e4nnlichen"], "repaired": true}
+{"line_num": 41, "reason": "header row normalized", "raw": ["gstaad-3000-ag", "Gstaad 3000 AG"], "repaired": true}
+{"line_num": 42, "reason": "header row normalized", "raw": ["gurtenbahn", "Gurtenbahn"], "repaired": true}
+{"line_num": 43, "reason": "header row normalized", "raw": ["gw-train-regio", "GW Train Regio"], "repaired": true}
+{"line_num": 44, "reason": "header row normalized", "raw": ["gysev", "GySEV"], "repaired": true}
+{"line_num": 45, "reason": "header row normalized", "raw": ["hallwilersee", "Hallwilersee"], "repaired": true}
+{"line_num": 46, "reason": "header row normalized", "raw": ["hanekamp-busreisen-gmbh", "Hanekamp Busreisen GmbH"], "repaired": true}
+{"line_num": 47, "reason": "header row normalized", "raw": ["hanseatische-eisenbahn-gmbh", "Hanseatische Eisenbahn GmbH"], "repaired": true}
+{"line_num": 48, "reason": "header row normalized", "raw": ["harderbahn", "Harderbahn"], "repaired": true}
+{"line_num": 49, "reason": "header row normalized", "raw": ["harzer-schmalspurbahn", "Harzer Schmalspurbahn"], "repaired": true}
+{"line_num": 50, "reason": "header row normalized", "raw": ["heathrow-express", "Heathrow Express"], "repaired": true}
+{"line_num": 51, "reason": "header row normalized", "raw": ["hellenic-train", "Hellenic Train"], "repaired": true}
+{"line_num": 52, "reason": "header row normalized", "raw": ["hessische-landesbahn", "Hessische Landesbahn"], "repaired": true}
+{"line_num": 53, "reason": "header row normalized", "raw": ["hetzler-pfadt", "Hetzler & Pfadt"], "repaired": true}
+{"line_num": 54, "reason": "header row normalized", "raw": ["hlb-hessenbahn-gmbh", "HLB Hessenbahn GmbH"], "repaired": true}
+{"line_num": 55, "reason": "header row normalized", "raw": ["hohenzollerische-landesbahn-sweg", "Hohenzollerische Landesbahn (SWEG)"], "repaired": true}
+{"line_num": 56, "reason": "header row normalized", "raw": ["hull-trains", "Hull Trains"], "repaired": true}
+{"line_num": 57, "reason": "header row normalized", "raw": ["hzpp", "HZPP"], "repaired": true}
+{"line_num": 58, "reason": "header row normalized", "raw": ["ilztalbahn", "Ilztalbahn"], "repaired": true}
+{"line_num": 59, "reason": "header row normalized", "raw": ["interlaken-heimwehfluh", "Interlaken-Heimwehfluh"], "repaired": true}
+{"line_num": 60, "reason": "header row normalized", "raw": ["island-line", "Island Line"], "repaired": true}
+{"line_num": 61, "reason": "width 3 -> 2", "raw": ["jindrichohradecke-mistni-drahy-a-s", "Jindrichohradeck\u00e9 m\u00edstn\u00ed dr\u00e1hy", " a.s."], "repaired": true}

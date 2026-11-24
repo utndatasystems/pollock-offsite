@@ -1,0 +1,2 @@
+Malformed rows: 1
+{"line_num": 61, "reason": "TOO MANY COLUMNS: Expected Number of Columns: 2 Found: 3", "raw": "jindrichohradecke-mistni-drahy-a-s,Jindrichohradeck\u00e9 m\u00edstn\u00ed dr\u00e1hy, a.s.", "repaired": true}

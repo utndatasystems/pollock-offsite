@@ -1,0 +1,2 @@
+Malformed rows: 1
+{"line_num": 1, "reason": "header row normalized", "raw": ["Newcastle City Council Invoices over \u00a3250 paid in June 2015", "", "", "", "", "", "", "", "", "", ""], "repaired": true}

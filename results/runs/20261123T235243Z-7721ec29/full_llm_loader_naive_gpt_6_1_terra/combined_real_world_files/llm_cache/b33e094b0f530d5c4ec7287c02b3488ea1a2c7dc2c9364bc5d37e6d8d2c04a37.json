@@ -1,0 +1,62 @@
+{
+  "cache_version": 1,
+  "created_at": "2026-11-24T11:32:26.480563+00:00",
+  "api_base": "https://api.openai.com/v1",
+  "payload": {
+    "model": "gpt-6.1-terra",
+    "messages": [
+      {
+        "role": "system",
+        "content": "You are a CSV repair assistant.\n\nYour task is to inspect a possibly malformed CSV file and reconstruct it as a valid CSV table.\n\nReturn the repaired CSV and a brief error report. Do not include explanations outside the requested output sections."
+      },
+      {
+        "role": "user",
+        "content": "Repair the following CSV file.\n\nReturn exactly two sections and nothing else.\nDo not use Markdown fences. Do not include prose before, between, or after the sections.\nThe section markers must appear exactly as shown, each on its own line.\n\n--BEGIN FIXED CSV--\n<repaired CSV text only, including exactly one header row>\n--END FIXED CSV--\n--BEGIN ERROR REPORT--\n<JSON error report object only>\n--END ERROR REPORT--\n\nRules for the fixed CSV section:\n\n- Use a comma as the output delimiter.\n- Use double quotes according to standard CSV escaping rules.\n- Encode an embedded double quote as two double quotes.\n- Preserve every payload character exactly.\n- Do not normalize, infer, translate, reformat, round, complete, shorten, or otherwise rewrite cell values.\n- Preserve embedded line breaks inside quoted fields.\n- Use LF line endings.\n- Return the complete repaired CSV, not a sample, preview, summary, or first portion.\n- Include every recoverable source data row exactly once unless the input clearly marks it as non-data.\n- Finish the entire fixed CSV section before starting the error report.\n- If output length is a concern, keep the error report as short as possible but do not truncate the fixed CSV.\n- Do not wrap the CSV in Markdown fences.\n- Do not include comments, explanations, or section labels inside the CSV.\n- If the input is empty, whitespace-only, or contains no table evidence, leave the fixed CSV section empty. Do not invent headers, rows, columns, examples, placeholder data, or sample content.\n\nThe error report must use this format:\n\n{\n  \"fixed_errors\": [\n    {\n      \"type\": \"<error type>\",\n      \"description\": \"<brief description>\",\n      \"rows\": [<affected physical line numbers>]\n    }\n  ],\n  \"summary\": \"<brief summary>\"\n}\n\nIf no errors were fixed, return an empty fixed_errors list.\n\nCSV content:\n\n#,Search Term,Visits from this term\n1,student finance,\"136,497\"\n2,jobcentre plus,\"86,281\"\n3,directgov,\"69,418\"\n4,direct gov,\"34,588\"\n5,job centre,\"21,570\"\n6,car tax,\"17,425\"\n7,student finance england,\"17,027\"\n8,direct.gov.uk,\"11,992\"\n9,directgov jobs,\"11,326\"\n10,road tax,\"10,687\"\n11,job seekers allowance,\"10,665\"\n12,dvla,\"10,650\"\n13,provisional driving licence,\"10,044\"\n14,www.direct.gov.uk,\"9,205\"\n15,passport renewal,\"8,944\"\n16,direct.gov,\"8,753\"\n17,council tax,\"7,937\"\n18,income support,\"7,523\"\n19,job centre plus,\"7,114\"\n20,jobcentre,\"6,891\"\n21,housing benefit,\"6,860\"\n22,minimum wage 2010,\"6,682\"\n23,theory test,\"6,459\"\n24,dvla change of address,\"6,367\"\n25,www.direct.gov.uk/taxdisc,\"6,080\"\n26,ema,\"5,756\"\n27,disability living allowance,\"5,726\"\n28,car tax bands,\"5,499\"\n29,driving licence,\"5,462\"\n30,dvla driving licence,\"5,346\"\n31,student loans,\"5,318\"\n32,jobseekers allowance,\"5,170\"\n33,dsa change practical test,\"5,057\"\n34,highway code,\"5,001\"\n35,driving test,\"4,895\"\n36,national insurance number,\"4,869\"\n37,passport fees,\"4,819\"\n38,student loan,\"4,725\"\n39,stamp duty,\"4,611\"\n40,carers allowance,\"4,547\"\n41,dla,\"4,471\"\n42,minimum wage,\"4,070\"\n43,uk bank holidays 2010,\"3,863\"\n44,theory test practice,\"3,559\"\n45,directgov student finance,\"3,532\"\n46,jobcentreplus,\"3,508\"\n47,car tax online,\"3,454\"\n48,practical driving test,\"3,340\"\n49,dvla theory test,\"3,335\"\n50,gov.uk,\"3,282\"\n\n"
+      }
+    ],
+    "stream": false,
+    "max_completion_tokens": 16000
+  },
+  "content": "--BEGIN FIXED CSV--\n#,Search Term,Visits from this term\n1,student finance,\"136,497\"\n2,jobcentre plus,\"86,281\"\n3,directgov,\"69,418\"\n4,direct gov,\"34,588\"\n5,job centre,\"21,570\"\n6,car tax,\"17,425\"\n7,student finance england,\"17,027\"\n8,direct.gov.uk,\"11,992\"\n9,directgov jobs,\"11,326\"\n10,road tax,\"10,687\"\n11,job seekers allowance,\"10,665\"\n12,dvla,\"10,650\"\n13,provisional driving licence,\"10,044\"\n14,www.direct.gov.uk,\"9,205\"\n15,passport renewal,\"8,944\"\n16,direct.gov,\"8,753\"\n17,council tax,\"7,937\"\n18,income support,\"7,523\"\n19,job centre plus,\"7,114\"\n20,jobcentre,\"6,891\"\n21,housing benefit,\"6,860\"\n22,minimum wage 2010,\"6,682\"\n23,theory test,\"6,459\"\n24,dvla change of address,\"6,367\"\n25,www.direct.gov.uk/taxdisc,\"6,080\"\n26,ema,\"5,756\"\n27,disability living allowance,\"5,726\"\n28,car tax bands,\"5,499\"\n29,driving licence,\"5,462\"\n30,dvla driving licence,\"5,346\"\n31,student loans,\"5,318\"\n32,jobseekers allowance,\"5,170\"\n33,dsa change practical test,\"5,057\"\n34,highway code,\"5,001\"\n35,driving test,\"4,895\"\n36,national insurance number,\"4,869\"\n37,passport fees,\"4,819\"\n38,student loan,\"4,725\"\n39,stamp duty,\"4,611\"\n40,carers allowance,\"4,547\"\n41,dla,\"4,471\"\n42,minimum wage,\"4,070\"\n43,uk bank holidays 2010,\"3,863\"\n44,theory test practice,\"3,559\"\n45,directgov student finance,\"3,532\"\n46,jobcentreplus,\"3,508\"\n47,car tax online,\"3,454\"\n48,practical driving test,\"3,340\"\n49,dvla theory test,\"3,335\"\n50,gov.uk,\"3,282\"\n--END FIXED CSV--\n--BEGIN ERROR REPORT--\n{\"fixed_errors\":[],\"summary\":\"No errors found.\"}\n--END ERROR REPORT--",
+  "usage": {
+    "prompt_tokens": 950,
+    "completion_tokens": 560,
+    "total_tokens": 1510,
+    "prompt_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 0,
+      "audio_tokens": 0
+    },
+    "completion_tokens_details": {
+      "reasoning_tokens": 13,
+      "audio_tokens": 0,
+      "accepted_prediction_tokens": 0,
+      "rejected_prediction_tokens": 0
+    }
+  },
+  "cost": {
+    "backend": "openai",
+    "model": "gpt-6.1-terra",
+    "api_base": "https://api.openai.com/v1",
+    "local_cache_hit": false,
+    "usage_available": true,
+    "cache_path": "/home/robin/offsite/pollock-offsite/results/runs/20261123T235243Z-7721ec29/full_llm_loader_naive_gpt_6_1_terra/combined_real_world_files/llm_cache/b33e094b0f530d5c4ec7287c02b3488ea1a2c7dc2c9364bc5d37e6d8d2c04a37.json",
+    "prompt_tokens": 950,
+    "cached_input_tokens": 0,
+    "uncached_input_tokens": 950,
+    "ordinary_input_tokens": 950,
+    "cache_write_tokens": 0,
+    "completion_tokens": 560,
+    "total_tokens": 1510,
+    "input_usd_per_1m": 1.0,
+    "cached_input_usd_per_1m": 0.05,
+    "cache_write_usd_per_1m": 1.25,
+    "output_usd_per_1m": 5.0,
+    "input_cost_usd": 0.00095,
+    "cached_input_cost_usd": 0.0,
+    "cache_write_cost_usd": 0.0,
+    "output_cost_usd": 0.0028,
+    "estimated_api_cost_usd": 0.00375,
+    "billable_cost_usd": 0.00375
+  }
+}

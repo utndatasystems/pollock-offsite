@@ -1,0 +1,2 @@
+Malformed rows: 1
+{"line_num": 1, "reason": "header row normalized", "raw": ["task", "domain", "run_dir", "status", "score", "raw", "metric", "runtime_sec", "input_tokens_total", "output_tokens_total", "served_models", "note"], "repaired": true}

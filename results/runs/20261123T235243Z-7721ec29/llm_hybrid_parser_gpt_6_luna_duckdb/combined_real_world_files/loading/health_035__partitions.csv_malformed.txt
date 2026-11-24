@@ -1,0 +1,2 @@
+Malformed rows: 1
+{"line_num": 6, "reason": "MISSING COLUMNS: Expected Number of Columns: 6 Found: 2; MISSING COLUMNS: Expected Number of Columns: 6 Found: 3; MISSING COLUMNS: Expected Number of Columns: 6 Found: 4; MISSING COLUMNS: Expected Number of Columns: 6 Found: 5", "raw": "# The offline cache needs 2.3 KB, so the filesystem gives space back to the application.", "repaired": true}

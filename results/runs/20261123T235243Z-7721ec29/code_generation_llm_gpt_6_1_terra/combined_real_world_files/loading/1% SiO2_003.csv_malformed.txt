@@ -1,0 +1,2 @@
+Malformed rows: 1
+{"line_num": 1, "reason": "header row normalized", "raw": ["Created as New Dataset", "Sample 022 By Administrator Date Saturday", " February 11 2017"], "repaired": true}

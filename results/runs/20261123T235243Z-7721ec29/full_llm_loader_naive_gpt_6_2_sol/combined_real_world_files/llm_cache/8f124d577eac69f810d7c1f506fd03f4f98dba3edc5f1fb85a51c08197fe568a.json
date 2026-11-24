@@ -1,0 +1,62 @@
+{
+  "cache_version": 1,
+  "created_at": "2026-11-24T02:27:34.301179+00:00",
+  "api_base": "https://api.openai.com/v1",
+  "payload": {
+    "model": "gpt-6.2-sol",
+    "messages": [
+      {
+        "role": "system",
+        "content": "You are a CSV repair assistant.\n\nYour task is to inspect a possibly malformed CSV file and reconstruct it as a valid CSV table.\n\nReturn the repaired CSV and a brief error report. Do not include explanations outside the requested output sections."
+      },
+      {
+        "role": "user",
+        "content": "Repair the following CSV file.\n\nReturn exactly two sections and nothing else.\nDo not use Markdown fences. Do not include prose before, between, or after the sections.\nThe section markers must appear exactly as shown, each on its own line.\n\n--BEGIN FIXED CSV--\n<repaired CSV text only, including exactly one header row>\n--END FIXED CSV--\n--BEGIN ERROR REPORT--\n<JSON error report object only>\n--END ERROR REPORT--\n\nRules for the fixed CSV section:\n\n- Use a comma as the output delimiter.\n- Use double quotes according to standard CSV escaping rules.\n- Encode an embedded double quote as two double quotes.\n- Preserve every payload character exactly.\n- Do not normalize, infer, translate, reformat, round, complete, shorten, or otherwise rewrite cell values.\n- Preserve embedded line breaks inside quoted fields.\n- Use LF line endings.\n- Return the complete repaired CSV, not a sample, preview, summary, or first portion.\n- Include every recoverable source data row exactly once unless the input clearly marks it as non-data.\n- Finish the entire fixed CSV section before starting the error report.\n- If output length is a concern, keep the error report as short as possible but do not truncate the fixed CSV.\n- Do not wrap the CSV in Markdown fences.\n- Do not include comments, explanations, or section labels inside the CSV.\n- If the input is empty, whitespace-only, or contains no table evidence, leave the fixed CSV section empty. Do not invent headers, rows, columns, examples, placeholder data, or sample content.\n\nThe error report must use this format:\n\n{\n  \"fixed_errors\": [\n    {\n      \"type\": \"<error type>\",\n      \"description\": \"<brief description>\",\n      \"rows\": [<affected physical line numbers>]\n    }\n  ],\n  \"summary\": \"<brief summary>\"\n}\n\nIf no errors were fixed, return an empty fixed_errors list.\n\nCSV content:\n\nTransaction Date,Merchant Name, Transaction Amount ,Expense Description\n22/12/2014,AUTOTIME SOLUTIONS,660,Payment of non-PRIME equipment\n18/12/2014,WWW.ROYALMAIL.COM,504,Payment of Royal Mail services\n17/12/2014,S J F PHOTOGRAPHIC,508.32,Payment for camera consumables\n17/12/2014,N/A AS MOTO ONLY,519.79,Payment of external staff training session\n10/12/2014,EXHIBITION SVC LTD,537.67,Payment of equipment for marketing event\n09/12/2014,BRITISH PSYCHO SOC,539,Payment for an official conference \n04/12/2014,BLACKWELLS,507.9,Payment of work related books\n01/12/2014,OPP LIMITED,516,Payment of external staff training session\n\n"
+      }
+    ],
+    "stream": false,
+    "max_completion_tokens": 16000
+  },
+  "content": "--BEGIN FIXED CSV--\nTransaction Date,Merchant Name,\" Transaction Amount \",Expense Description\n22/12/2014,AUTOTIME SOLUTIONS,660,Payment of non-PRIME equipment\n18/12/2014,WWW.ROYALMAIL.COM,504,Payment of Royal Mail services\n17/12/2014,S J F PHOTOGRAPHIC,508.32,Payment for camera consumables\n17/12/2014,N/A AS MOTO ONLY,519.79,Payment of external staff training session\n10/12/2014,EXHIBITION SVC LTD,537.67,Payment of equipment for marketing event\n09/12/2014,BRITISH PSYCHO SOC,539,\"Payment for an official conference \"\n04/12/2014,BLACKWELLS,507.9,Payment of work related books\n01/12/2014,OPP LIMITED,516,Payment of external staff training session\n--END FIXED CSV--\n--BEGIN ERROR REPORT--\n{\"fixed_errors\":[],\"summary\":\"No CSV errors found. All 8 data rows preserved.\"}\n--END ERROR REPORT--",
+  "usage": {
+    "prompt_tokens": 641,
+    "completion_tokens": 240,
+    "total_tokens": 881,
+    "prompt_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 0,
+      "audio_tokens": 0
+    },
+    "completion_tokens_details": {
+      "reasoning_tokens": 0,
+      "audio_tokens": 0,
+      "accepted_prediction_tokens": 0,
+      "rejected_prediction_tokens": 0
+    }
+  },
+  "cost": {
+    "backend": "openai",
+    "model": "gpt-6.2-sol",
+    "api_base": "https://api.openai.com/v1",
+    "local_cache_hit": false,
+    "usage_available": true,
+    "cache_path": "/home/robin/offsite/pollock-offsite/results/runs/20261123T235243Z-7721ec29/full_llm_loader_naive_gpt_6_2_sol/combined_real_world_files/llm_cache/8f124d577eac69f810d7c1f506fd03f4f98dba3edc5f1fb85a51c08197fe568a.json",
+    "prompt_tokens": 641,
+    "cached_input_tokens": 0,
+    "uncached_input_tokens": 641,
+    "ordinary_input_tokens": 641,
+    "cache_write_tokens": 0,
+    "completion_tokens": 240,
+    "total_tokens": 881,
+    "input_usd_per_1m": 2.0,
+    "cached_input_usd_per_1m": 0.1,
+    "cache_write_usd_per_1m": 2.5,
+    "output_usd_per_1m": 10.0,
+    "input_cost_usd": 0.001282,
+    "cached_input_cost_usd": 0.0,
+    "cache_write_cost_usd": 0.0,
+    "output_cost_usd": 0.0024,
+    "estimated_api_cost_usd": 0.0036819999999999995,
+    "billable_cost_usd": 0.0036819999999999995
+  }
+}

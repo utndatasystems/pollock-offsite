@@ -1,0 +1,2 @@
+Malformed rows: 1
+{"line_num": 1, "reason": "header row normalized", "raw": ["Organisation Code", "Organisation Label", "Effective Date", "Organisational Unit", "Service Division Label", "Category Internal Name", "Purpose", "Detailed Expenditure Code", "Payment Date", "Transaction Number", "Irrecoverable VAT Amount", "Amount", "Capital Or Revenue", "Benificiary Name", "Procurement Card"], "repaired": true}

@@ -1,0 +1,2 @@
+Malformed rows: 1
+{"line_num": 1, "reason": "header row normalized", "raw": ["Data_x", "Data_y", "x0001", "y0001"], "repaired": true}

@@ -1,0 +1,62 @@
+{
+  "cache_version": 1,
+  "created_at": "2026-11-24T11:42:20.973042+00:00",
+  "api_base": "https://api.openai.com/v1",
+  "payload": {
+    "model": "gpt-6.1-terra",
+    "messages": [
+      {
+        "role": "system",
+        "content": "You are a CSV repair assistant.\n\nYour task is to inspect a possibly malformed CSV file and reconstruct it as a valid CSV table.\n\nReturn the repaired CSV and a brief error report. Do not include explanations outside the requested output sections."
+      },
+      {
+        "role": "user",
+        "content": "Repair the following CSV file.\n\nReturn exactly two sections and nothing else.\nDo not use Markdown fences. Do not include prose before, between, or after the sections.\nThe section markers must appear exactly as shown, each on its own line.\n\n--BEGIN FIXED CSV--\n<repaired CSV text only, including exactly one header row>\n--END FIXED CSV--\n--BEGIN ERROR REPORT--\n<JSON error report object only>\n--END ERROR REPORT--\n\nRules for the fixed CSV section:\n\n- Use a comma as the output delimiter.\n- Use double quotes according to standard CSV escaping rules.\n- Encode an embedded double quote as two double quotes.\n- Preserve every payload character exactly.\n- Do not normalize, infer, translate, reformat, round, complete, shorten, or otherwise rewrite cell values.\n- Preserve embedded line breaks inside quoted fields.\n- Use LF line endings.\n- Return the complete repaired CSV, not a sample, preview, summary, or first portion.\n- Include every recoverable source data row exactly once unless the input clearly marks it as non-data.\n- Finish the entire fixed CSV section before starting the error report.\n- If output length is a concern, keep the error report as short as possible but do not truncate the fixed CSV.\n- Do not wrap the CSV in Markdown fences.\n- Do not include comments, explanations, or section labels inside the CSV.\n- If the input is empty, whitespace-only, or contains no table evidence, leave the fixed CSV section empty. Do not invent headers, rows, columns, examples, placeholder data, or sample content.\n\nThe error report must use this format:\n\n{\n  \"fixed_errors\": [\n    {\n      \"type\": \"<error type>\",\n      \"description\": \"<brief description>\",\n      \"rows\": [<affected physical line numbers>]\n    }\n  ],\n  \"summary\": \"<brief summary>\"\n}\n\nIf no errors were fixed, return an empty fixed_errors list.\n\nCSV content:\n\n# The US macro news that moves the Nasdaq: FOMC statements, CPI, the jobs report (NFP) and\n# the PCE price index (Personal Income and Outlays) since 2024; from late 2026, producer prices\n# (PPI), retail sales (RETAIL, Census's advance report), the GDP's advance estimate (GDP) and job\n# openings (JOLTS). Times are New York's. Every date was read from the source named on its row:\n# the first four kinds on 2026-10-20 (PCE's 2027 dates on 2026-10-26), the others on 2026-10-26.\n# The releases of October 2025 that the shutdown cancelled are absent, the delayed ones are at the\n# day they came out; dates after the day they were read are those scheduled then. BLS had not given\n# the 2027 dates of JOLTS on 2026-10-26. ISM's manufacturing index is not kept: only its rule is\n# public (the first business day, 10:00), which it broke in January 2026, and its dated calendar is\n# for its members. Keep it up to date: python -m lab calendar check.\ndate,time_new_york,event,covers,source\n2024-01-05,08:30,NFP,2023-12,bls.gov/bls/news-release/empsit.htm\n2024-01-11,08:30,CPI,2023-12,bls.gov/bls/news-release/cpi.htm\n2024-01-26,08:30,PCE,2023-12,bea.gov/news/2024 (each release's page)\n2024-01-31,14:00,FOMC,statement,federalreserve.gov/monetarypolicy/fomccalendars.htm\n2024-02-02,08:30,NFP,2024-01,bls.gov/bls/news-release/empsit.htm\n2024-02-13,08:30,CPI,2024-01,bls.gov/bls/news-release/cpi.htm\n2024-02-29,08:30,PCE,2024-01,bea.gov/news/2024 (each release's page)\n2024-03-08,08:30,NFP,2024-02,bls.gov/bls/news-release/empsit.htm\n2024-03-12,08:30,CPI,2024-02,bls.gov/bls/news-release/cpi.htm\n2024-03-20,14:00,FOMC,statement,federalreserve.gov/monetarypolicy/fomccalendars.htm\n2024-03-29,08:30,PCE,2024-02,bea.gov/news/2024 (each release's page)\n2024-04-05,08:30,NFP,2024-03,bls.gov/bls/news-release/empsit.htm\n2024-04-10,08:30,CPI,2024-03,bls.gov/bls/news-release/cpi.htm\n2024-04-26,08:30,PCE,2024-03,bea.gov/news/2024 (each release's page)\n2024-05-01,14:00,FOMC,statement,federalreserve.gov/monetarypolicy/fomccalendars.htm\n2024-05-03,08:30,NFP,2024-04,bls.gov/bls/news-release/empsit.htm\n2024-05-15,08:30,CPI,2024-04,bls.gov/bls/news-release/cpi.htm\n2024-05-31,08:30,PCE,2024-04,bea.gov/news/2024 (each release's page)\n2024-06-07,08:30,NFP,2024-05,bls.gov/bls/news-release/empsit.htm\n2024-06-12,08:30,CPI,2024-05,bls.gov/bls/news-release/cpi.htm\n2024-06-12,14:00,FOMC,statement,federalreserve.gov/monetarypolicy/fomccalendars.htm\n2024-06-28,08:30,PCE,2024-05,bea.gov/news/2024 (each release's page)\n2024-07-05,08:30,NFP,2024-06,bls.gov/bls/news-release/empsit.htm\n2024-07-11,08:30,CPI,2024-06,bls.gov/bls/news-release/cpi.htm\n2024-07-26,08:30,PCE,2024-06,bea.gov/news/2024 (each release's page)\n2024-07-31,14:00,FOMC,statement,federalreserve.gov/monetarypolicy/fomccalendars.htm\n2024-08-02,08:30,NFP,2024-07,bls.gov/bls/news-release/empsit.htm\n2024-08-14,08:30,CPI,2024-07,bls.gov/bls/news-release/cpi.htm\n2024-08-30,08:30,PCE,2024-07,bea.gov/news/2024 (each release's page)\n2024-09-06,08:30,NFP,2024-08,bls.gov/bls/news-release/empsit.htm\n2024-09-11,08:30,CPI,2024-08,bls.gov/bls/news-release/cpi.htm\n2024-09-18,14:00,FOMC,statement,federalreserve.gov/monetarypolicy/fomccalendars.htm\n2024-09-27,08:30,PCE,2024-08,bea.gov/news/2024 (each release's page)\n2024-10-04,08:30,NFP,2024-09,bls.gov/bls/news-release/empsit.htm\n2024-10-10,08:30,CPI,2024-09,bls.gov/bls/news-release/cpi.htm\n2024-10-31,08:30,PCE,2024-09,bea.gov/news/2024 (each release's page)\n2024-11-01,08:30,NFP,2024-10,bls.gov/bls/news-release/empsit.htm\n2024-11-07,14:00,FOMC,statement,federalreserve.gov/monetarypolicy/fomccalendars.htm\n2024-11-13,08:30,CPI,2024-10,bls.gov/bls/news-release/cpi.htm\n2024-11-27,08:30,PCE,2024-10,bea.gov/news/2024 (each release's page)\n2024-12-06,08:30,NFP,2024-11,bls.gov/bls/news-release/empsit.htm\n2024-12-11,08:30,CPI,2024-11,bls.gov/bls/news-release/cpi.htm\n2024-12-18,14:00,FOMC,statement,federalreserve.gov/monetarypolicy/fomccalendars.htm\n2024-12-20,08:30,PCE,2024-11,bea.gov/news/2024 (each release's page)\n2025-01-10,08:30,NFP,2024-12,bls.gov/bls/news-release/empsit.htm\n2025-01-15,08:30,CPI,2024-12,bls.gov/bls/news-release/cpi.htm\n2025-01-29,14:00,FOMC,statement,federalreserve.gov/monetarypolicy/fomccalendars.htm\n2025-01-31,08:30,PCE,2024-12,bea.gov/news/schedule/full-2025\n2025-02-07,08:30,NFP,2025-01,bls.gov/bls/news-release/empsit.htm\n\n"
+      }
+    ],
+    "stream": false,
+    "max_completion_tokens": 16000
+  },
+  "content": "--BEGIN FIXED CSV--\ndate,time_new_york,event,covers,source\n2024-01-05,08:30,NFP,2023-12,bls.gov/bls/news-release/empsit.htm\n2024-01-11,08:30,CPI,2023-12,bls.gov/bls/news-release/cpi.htm\n2024-01-26,08:30,PCE,2023-12,bea.gov/news/2024 (each release's page)\n2024-01-31,14:00,FOMC,statement,federalreserve.gov/monetarypolicy/fomccalendars.htm\n2024-02-02,08:30,NFP,2024-01,bls.gov/bls/news-release/empsit.htm\n2024-02-13,08:30,CPI,2024-01,bls.gov/bls/news-release/cpi.htm\n2024-02-29,08:30,PCE,2024-01,bea.gov/news/2024 (each release's page)\n2024-03-08,08:30,NFP,2024-02,bls.gov/bls/news-release/empsit.htm\n2024-03-12,08:30,CPI,2024-02,bls.gov/bls/news-release/cpi.htm\n2024-03-20,14:00,FOMC,statement,federalreserve.gov/monetarypolicy/fomccalendars.htm\n2024-03-29,08:30,PCE,2024-02,bea.gov/news/2024 (each release's page)\n2024-04-05,08:30,NFP,2024-03,bls.gov/bls/news-release/empsit.htm\n2024-04-10,08:30,CPI,2024-03,bls.gov/bls/news-release/cpi.htm\n2024-04-26,08:30,PCE,2024-03,bea.gov/news/2024 (each release's page)\n2024-05-01,14:00,FOMC,statement,federalreserve.gov/monetarypolicy/fomccalendars.htm\n2024-05-03,08:30,NFP,2024-04,bls.gov/bls/news-release/empsit.htm\n2024-05-15,08:30,CPI,2024-04,bls.gov/bls/news-release/cpi.htm\n2024-05-31,08:30,PCE,2024-04,bea.gov/news/2024 (each release's page)\n2024-06-07,08:30,NFP,2024-05,bls.gov/bls/news-release/empsit.htm\n2024-06-12,08:30,CPI,2024-05,bls.gov/bls/news-release/cpi.htm\n2024-06-12,14:00,FOMC,statement,federalreserve.gov/monetarypolicy/fomccalendars.htm\n2024-06-28,08:30,PCE,2024-05,bea.gov/news/2024 (each release's page)\n2024-07-05,08:30,NFP,2024-06,bls.gov/bls/news-release/empsit.htm\n2024-07-11,08:30,CPI,2024-06,bls.gov/bls/news-release/cpi.htm\n2024-07-26,08:30,PCE,2024-06,bea.gov/news/2024 (each release's page)\n2024-07-31,14:00,FOMC,statement,federalreserve.gov/monetarypolicy/fomccalendars.htm\n2024-08-02,08:30,NFP,2024-07,bls.gov/bls/news-release/empsit.htm\n2024-08-14,08:30,CPI,2024-07,bls.gov/bls/news-release/cpi.htm\n2024-08-30,08:30,PCE,2024-07,bea.gov/news/2024 (each release's page)\n2024-09-06,08:30,NFP,2024-08,bls.gov/bls/news-release/empsit.htm\n2024-09-11,08:30,CPI,2024-08,bls.gov/bls/news-release/cpi.htm\n2024-09-18,14:00,FOMC,statement,federalreserve.gov/monetarypolicy/fomccalendars.htm\n2024-09-27,08:30,PCE,2024-08,bea.gov/news/2024 (each release's page)\n2024-10-04,08:30,NFP,2024-09,bls.gov/bls/news-release/empsit.htm\n2024-10-10,08:30,CPI,2024-09,bls.gov/bls/news-release/cpi.htm\n2024-10-31,08:30,PCE,2024-09,bea.gov/news/2024 (each release's page)\n2024-11-01,08:30,NFP,2024-10,bls.gov/bls/news-release/empsit.htm\n2024-11-07,14:00,FOMC,statement,federalreserve.gov/monetarypolicy/fomccalendars.htm\n2024-11-13,08:30,CPI,2024-10,bls.gov/bls/news-release/cpi.htm\n2024-11-27,08:30,PCE,2024-10,bea.gov/news/2024 (each release's page)\n2024-12-06,08:30,NFP,2024-11,bls.gov/bls/news-release/empsit.htm\n2024-12-11,08:30,CPI,2024-11,bls.gov/bls/news-release/cpi.htm\n2024-12-18,14:00,FOMC,statement,federalreserve.gov/monetarypolicy/fomccalendars.htm\n2024-12-20,08:30,PCE,2024-11,bea.gov/news/2024 (each release's page)\n2025-01-10,08:30,NFP,2024-12,bls.gov/bls/news-release/empsit.htm\n2025-01-15,08:30,CPI,2024-12,bls.gov/bls/news-release/cpi.htm\n2025-01-29,14:00,FOMC,statement,federalreserve.gov/monetarypolicy/fomccalendars.htm\n2025-01-31,08:30,PCE,2024-12,bea.gov/news/schedule/full-2025\n2025-02-07,08:30,NFP,2025-01,bls.gov/bls/news-release/empsit.htm\n--END FIXED CSV--\n--BEGIN ERROR REPORT--\n{\"fixed_errors\":[{\"type\":\"non-data comments\",\"description\":\"Removed comment lines preceding the header.\",\"rows\":[1,2,3,4,5,6,7,8,9,10]}],\"summary\":\"Removed non-data comments; preserved all table rows.\"}\n--END ERROR REPORT--",
+  "usage": {
+    "prompt_tokens": 2201,
+    "completion_tokens": 1623,
+    "total_tokens": 3824,
+    "prompt_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 2198,
+      "audio_tokens": 0
+    },
+    "completion_tokens_details": {
+      "reasoning_tokens": 52,
+      "audio_tokens": 0,
+      "accepted_prediction_tokens": 0,
+      "rejected_prediction_tokens": 0
+    }
+  },
+  "cost": {
+    "backend": "openai",
+    "model": "gpt-6.1-terra",
+    "api_base": "https://api.openai.com/v1",
+    "local_cache_hit": false,
+    "usage_available": true,
+    "cache_path": "/home/robin/offsite/pollock-offsite/results/runs/20261123T235243Z-7721ec29/full_llm_loader_naive_gpt_6_1_terra/combined_real_world_files/llm_cache/ed1b874ce6e41087076f1c8463c09561b489e5bbbb06142f68c4900e0b29e391.json",
+    "prompt_tokens": 2201,
+    "cached_input_tokens": 0,
+    "uncached_input_tokens": 2201,
+    "ordinary_input_tokens": 3,
+    "cache_write_tokens": 2198,
+    "completion_tokens": 1623,
+    "total_tokens": 3824,
+    "input_usd_per_1m": 1.0,
+    "cached_input_usd_per_1m": 0.05,
+    "cache_write_usd_per_1m": 1.25,
+    "output_usd_per_1m": 5.0,
+    "input_cost_usd": 3e-06,
+    "cached_input_cost_usd": 0.0,
+    "cache_write_cost_usd": 0.0027475,
+    "output_cost_usd": 0.008115,
+    "estimated_api_cost_usd": 0.0108655,
+    "billable_cost_usd": 0.0108655
+  }
+}

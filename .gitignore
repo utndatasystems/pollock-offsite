@@ -129,7 +129,10 @@ target/
 !/results/*/csv_storm/loading/
 /results/*/csv_storm/loading/*
 !/results/*/csv_storm/loading/*_converted.csv
-/results/runs/
+/results/runs/*
+# Real-world run from the paper, without its backup/quarantine dirs.
+!/results/runs/20261123T235243Z-7721ec29/
+/results/runs/20261123T235243Z-7721ec29/_*/
 !/data/combined_real_world_files
 
 Agentic_Parsing.pdf

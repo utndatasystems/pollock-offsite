@@ -1,0 +1,282 @@
+slug,ats,name,sector
+# ── ATS-direct company registry ──────────────────────────────────────────────,,,
+# The employer universe `scripts/feed.py` watches. Every row's ATS accepts an,,,
+# application with NO account — so anything sourced here is directly submittable,,,
+# with the driver named in the `ats` column (sites/<ats>/).,,,
+#,,,
+# slug    the company's board slug on that ATS (the bit in its careers URL).,,,
+# ats     greenhouse | lever | ashby | workable | smartrecruiters | recruitee,,,
+# name    display name (lands in the tracker's Company column).,,,
+# sector  pipe-separated tags; filter with `--sector music,design`.,,
+#         Tags in use: design research music devops security fintech saas consumer,,,
+#         media health ai data ecommerce travel energy agency cms devtools purpose.,,,
+#,,,
+# ⚠️ ONE ROW PER COMPANY. Several firms answer on two ATSes (Skyscanner, Wayve,,
+# TooGoodToGo, Peak) — listing both double-sources the same job under two ids.,,
+# Keep the board with more live postings; re-check with `feed.py --verify`.,,,
+#,,,
+# All slugs below verified live (non-empty listing endpoint) on 2026-07-17.,,,
+# Add companies freely: find a careers page on one of the six ATSes, take the slug,,
+# then confirm with:  python3 scripts/feed.py --verify --companies <slug>,,,
+# ── design / product / research — the core lane (§1–§3) ──────────────────────,,,
+figma,greenhouse,Figma,design|saas
+miro,ashby,Miro,design|saas
+webflow,greenhouse,Webflow,design|devtools
+linear,ashby,Linear,design|devtools
+notion,ashby,Notion,design|saas
+dovetail,ashby,Dovetail,research|design
+ideo,greenhouse,IDEO,design|agency
+rga,greenhouse,R/GA,design|agency
+typeform,greenhouse,Typeform,design|saas
+sanity,ashby,Sanity,cms|devtools
+contentful,greenhouse,Contentful,cms|saas
+storyblok,greenhouse,Storyblok,cms|saas
+prismic,lever,Prismic,cms|devtools
+contentsquare,lever,Contentsquare,data|design
+fullstory,ashby,FullStory,data|design
+airtable,greenhouse,Airtable,saas|design
+# ── music / audio — his standout differentiator (§10) ────────────────────────,,,
+soundcloud71,greenhouse,SoundCloud,music
+focusrite,workable,Focusrite,music
+output,ashby,Output,music
+epidemic-sound,ashby,Epidemic Sound,music
+resident-advisor,workable,Resident Advisor,music
+spotify,lever,Spotify,music|design
+splice,greenhouse,Splice,music
+musixmatch,lever,Musixmatch,music
+downtownmusic,greenhouse,Downtown Music Holdings,music
+mubi,ashby,MUBI,media|music
+# ── devops / infra / linux (§5) ──────────────────────────────────────────────,,,
+canonical,greenhouse,Canonical (Ubuntu),devops|security
+elastic,greenhouse,Elastic,devops|data
+vercel,greenhouse,Vercel,devops|devtools
+netlify,greenhouse,Netlify,devops|devtools
+mongodb,greenhouse,MongoDB,devops|data
+graphcore,greenhouse,Graphcore,devops|ai
+# ── cybersecurity (§6) ───────────────────────────────────────────────────────,,,
+sophos,lever,Sophos,security
+quantexa,ashby,Quantexa,security|data
+# ── fintech — London's deepest junior/mid pool ───────────────────────────────,,,
+monzo,greenhouse,Monzo,fintech|design
+tide,greenhouse,Tide,fintech
+sumup,greenhouse,SumUp,fintech
+gocardless,greenhouse,GoCardless,fintech
+truelayer,greenhouse,TrueLayer,fintech
+dojo,greenhouse,Dojo,fintech
+liberis,greenhouse,Liberis,fintech
+cleo,greenhouse,Cleo,fintech|ai
+zopa,lever,Zopa,fintech
+plaid,ashby,Plaid,fintech
+lendable,ashby,Lendable,fintech
+oaknorth,ashby,OakNorth,fintech
+primer,ashby,Primer,fintech
+freetrade,ashby,Freetrade,fintech
+gohenry,ashby,GoHenry,fintech
+paddle,ashby,Paddle,fintech|saas
+zego,workable,Zego,fintech
+Visa,smartrecruiters,Visa,fintech
+Experian,smartrecruiters,Experian,fintech|data
+# ── consumer / ecommerce / travel ────────────────────────────────────────────,,,
+deliveroo,ashby,Deliveroo,consumer|design
+trainline,ashby,Trainline,travel|design
+skyscanner,ashby,Skyscanner,travel|design
+toogoodtogo,ashby,Too Good To Go,consumer|purpose
+hellofresh,greenhouse,HelloFresh,consumer
+butternutbox,greenhouse,Butternut Box,consumer
+gymshark,greenhouse,Gymshark,ecommerce|design
+farfetch,lever,Farfetch,ecommerce|design
+moonpig,lever,Moonpig,ecommerce|design
+trustpilot,greenhouse,Trustpilot,saas
+peak,greenhouse,Peak,ai|data
+wayve,greenhouse,Wayve,ai|devops
+improbable,ashby,Improbable,media|devops
+ovoenergy,greenhouse,OVO Energy,energy
+disney,greenhouse,Disney,media
+# ── health / purpose ─────────────────────────────────────────────────────────,,,
+accurx,ashby,Accurx,health|design
+unmind,ashby,Unmind,health|design
+echo,greenhouse,Echo,health
+lantum,workable,Lantum,health
+# ── 2026-08-14 Greenhouse expansion — all verified live (HTTP 200, >=1 job) ──,,
+# boards-api.greenhouse.io/v1/boards/<slug>/jobs?content=false,,,
+databricks,greenhouse,Databricks,data|devops
+capco,greenhouse,Capco,fintech|agency
+stripe,greenhouse,Stripe,fintech|saas
+feverup,greenhouse,FeverUp,travel|media
+anthropic,greenhouse,Anthropic,ai
+datadog,greenhouse,Datadog,devops|data
+zscaler,greenhouse,Zscaler,security
+okta,greenhouse,Okta,security
+cloudflare,greenhouse,Cloudflare,devops|security
+viagogo,greenhouse,viagogo,media|consumer
+satalia,greenhouse,Satalia,ai|data
+socket,greenhouse,Socket,security|devtools
+spryker,greenhouse,Spryker,ecommerce|saas
+lottoland,greenhouse,Lottoland,media|consumer
+tes,greenhouse,TES Global,consumer|media
+medium,greenhouse,Medium,media
+theverge,greenhouse,The Verge,media
+kayak,greenhouse,KAYAK,travel|consumer
+# ── round 2 expansion: live Greenhouse boards, UK/EMEA-weighted (2026-08-14) ──,,
+carvana,greenhouse,Carvana,ecommerce|consumer
+speechify,greenhouse,Speechify,ai|consumer
+coupang,greenhouse,Coupang,ecommerce|consumer
+wundermanthompson,greenhouse,VML,design|agency
+stone,greenhouse,StoneCo,fintech
+waymo,greenhouse,Waymo,ai|research
+nebius,greenhouse,Nebius,ai|devops
+monks,greenhouse,Monks,design|agency
+onrunning,greenhouse,On,ecommerce|consumer
+onemedical,greenhouse,One Medical,health|consumer
+tempo,greenhouse,Tempo,saas
+salaryfinance,greenhouse,Salary Finance,fintech|purpose
+blueshift,greenhouse,Blueshift,media|data
+salesmsg,greenhouse,Salesmsg,saas|media
+invoca,greenhouse,Invoca,media|data
+figment,greenhouse,Figment,fintech
+blacks,greenhouse,Blacks,ecommerce|consumer
+millets,greenhouse,Millets,ecommerce|consumer
+bark,greenhouse,BARK,ecommerce|consumer
+regie,greenhouse,Regie.ai,ai|saas
+# ── SmartRecruiters expansion (2026-08-15) — all verified live (HTTP 200, >=1 ──,,
+# job) and company-name-checked via the posting-detail endpoint. Demo/sandbox,,,
+# boards and name-squats were rejected; see the round report.,,,
+# api.smartrecruiters.com/v1/companies/<slug>/postings,,,
+wise,smartrecruiters,Wise,fintech
+legalandgeneral,smartrecruiters,Legal & General,fintech
+wtw,smartrecruiters,WTW,fintech
+socure,smartrecruiters,Socure,security|fintech
+servicenow,smartrecruiters,ServiceNow,saas
+freshworks,smartrecruiters,Freshworks,saas
+canva,smartrecruiters,Canva,design|saas
+hibob,smartrecruiters,HiBob,saas
+smartrecruiters,smartrecruiters,SmartRecruiters,saas
+hirevue,smartrecruiters,HireVue,ai|saas
+omio,smartrecruiters,Omio,travel|consumer
+accor,smartrecruiters,Accor,travel|consumer
+grab,smartrecruiters,Grab,consumer
+kpn,smartrecruiters,KPN,consumer
+alorica,smartrecruiters,Alorica,consumer
+averydennison,smartrecruiters,Avery Dennison,consumer
+kimberlyclark,smartrecruiters,Kimberly-Clark,consumer
+vattenfall,smartrecruiters,Vattenfall,energy
+ecovadis,smartrecruiters,EcoVadis,energy|data
+# ── recruitee expansion (2026-08-15) — live boards, NL/BE/DE/FR/Nordics-weighted ──,,
+bunq,recruitee,bunq,fintech
+multisafepay,recruitee,MultiSafepay,fintech
+pay,recruitee,Pay.,fintech
+cmcom,recruitee,CM.com,saas|media
+copernica,recruitee,Copernica,saas|media
+meltwater,recruitee,Meltwater,media|data
+zeotap,recruitee,Zeotap,data|media
+eventim,recruitee,EVENTIM Benelux,media|consumer
+hygraph,recruitee,Hygraph,cms|saas
+channable,recruitee,Channable,ecommerce|saas
+vandebron,recruitee,Vandebron,energy
+sunrock,recruitee,Sunrock,energy
+arturia,recruitee,Arturia,music
+adesso,recruitee,adesso Netherlands,agency
+appunite,recruitee,AppUnite,agency
+espeo,recruitee,Espeo Software,agency
+inovex,recruitee,inovex,agency
+conclusion,recruitee,Conclusion,agency
+iodigital,recruitee,iO,design|agency
+# ── recruitee expansion (2026-08-15) — second pass ──,,,
+holded,recruitee,Holded,fintech|saas
+livestorm,recruitee,Livestorm,saas|media
+dpgmedia,recruitee,DPG Media,media
+rtl,recruitee,RTL Nederland,media
+televic,recruitee,Televic,media|data
+dataroots,recruitee,dataroots,ai|data
+radix,recruitee,Superlinear,ai|data
+robovision,recruitee,Robovision,ai|data
+loavies,recruitee,LOAVIES,ecommerce|consumer
+mantel,recruitee,Mantel,ecommerce|consumer
+# ── greenhouse expansion (2026-08-15) ─ live boards (HTTP 200, >=1 job), board ──,
+# name checked against the intended company; squats/mismatches rejected.,,,
+# boards-api.greenhouse.io/v1/boards/<slug>/jobs?content=false,,,
+flatironhealth,greenhouse,Flatiron Health,health|data
+mavenclinic,greenhouse,Maven Clinic,health
+carrotfertility,greenhouse,Carrot,health
+pacaso,greenhouse,Pacaso,consumer
+masterclass,greenhouse,MasterClass,media|consumer
+outschool,greenhouse,Outschool,saas
+everlaw,greenhouse,Everlaw,saas
+cision,greenhouse,Cision,media|data
+abnormalsecurity,greenhouse,Abnormal Security,security
+orcasecurity,greenhouse,Orca Security,security
+litify,greenhouse,Litify,saas
+gigs,greenhouse,Gigs,fintech
+silvr,greenhouse,Silvr,fintech
+roofstock,greenhouse,Roofstock,fintech
+gongio,greenhouse,Gong.io,saas|data
+espresa,greenhouse,Espresa,saas
+7shifts,greenhouse,7shifts,saas
+legion,greenhouse,Legion,saas
+# ── lever expansion (2026-08-15) ── all verified live (HTTP 200, >=1 job) and,,
+# name-checked against the board title at jobs.lever.co/<slug>. Squatted / name-collision,,,
+# and dead-stub boards were rejected; see the round report.,,,
+# api.lever.co/v0/postings/<slug>?mode=json,,,
+100ms,lever,100ms,ai|health
+15five,lever,15Five,saas
+360learning,lever,360Learning,saas
+acceldata,lever,Acceldata,data|devtools
+activecampaign,lever,ActiveCampaign,saas|media
+agicap,lever,Agicap,fintech|saas
+aircall,lever,Aircall,saas
+aleph,lever,Aleph,media|data
+arcadia,lever,Arcadia,health|data
+vestiairecollective,lever,Vestiaire Collective,ecommerce|consumer
+vevo,lever,Vevo,media|music
+watchguard,lever,WatchGuard Technologies,security
+whereby,lever,Whereby,devtools|saas
+younited,lever,Younited,fintech
+zerotier,lever,ZeroTier,devops|security
+zilliz,lever,Zilliz,ai|devtools
+zoox,lever,Zoox,ai|research
+# ── added 2026-10-05: design-led London/remote product + fintech/music/creative-tech (slugs verified live) ──,,,
+zilch,ashby,Zilch,fintech
+marshmallow,ashby,Marshmallow,fintech
+mixcloud,workable,Mixcloud,music
+tldraw,ashby,tldraw,design|devtools
+raycast,ashby,Raycast,design|devtools
+chromatic,ashby,Chromatic,design|devtools
+beamery,ashby,Beamery,saas
+faculty,ashby,Faculty,ai|data
+goodlord,ashby,Goodlord,saas
+tractable,ashby,Tractable,ai
+backmarket,ashby,Back Market,ecommerce|consumer
+strava,ashby,Strava,consumer
+runway,ashby,Runway,ai|design
+reach,ashby,Reach,media
+oyster,ashby,Oyster,saas
+whoop,ashby,Whoop,consumer
+hive,lever,Hive,consumer
+# ── 2026-10-05 lane3 additions (verified live non-empty listing) ─────────────,,,
+moo,lever,MOO,design|ecommerce
+carwow,ashby,Carwow,consumer|design
+octoenergy,lever,Octopus Energy,energy|climate
+loop-earplugs,ashby,Loop Earplugs,consumer|design
+oviva,ashby,Oviva,health
+reply,lever,Reply,agency|design
+cfoinsights,greenhouse,CFO Insights,fintech|agency
+brevo,lever,Brevo,saas|design
+substack,ashby,Substack,media|design
+bynder,ashby,Bynder,saas|design
+gamma,ashby,Gamma,ai|design
+zapier,ashby,Zapier,saas|devtools
+n8n,ashby,n8n,devtools|ai
+clickup,ashby,ClickUp,saas|design
+bubble,ashby,Bubble,devtools|design
+heygen,greenhouse,HeyGen,ai|design
+chargepoint,greenhouse,ChargePoint,energy|climate
+# ── 2026-10-09 lane8 additions (verified live non-empty listing) ─────────────,,,
+zoe,ashby,ZOE,health|design
+what3words,ashby,what3words,consumer|design
+vitl,ashby,Vitl,consumer|health
+fender,greenhouse,Fender,music
+focal,ashby,Focal,music|ai
+ditto,ashby,Ditto Music,music
+luminate,greenhouse,Luminate,music|data
+anima,ashby,Anima,design|devtools
+checkly,ashby,Checkly,devtools|design

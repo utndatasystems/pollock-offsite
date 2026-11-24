@@ -1,0 +1,3 @@
+Malformed rows: 2
+{"line_num": 1, "reason": "header row normalized", "raw": ["ipa", "candidates", "preferred_score", "rationale", "status"], "repaired": true}
+{"line_num": 17, "reason": "width 6 -> 5", "raw": ["h", "\u0433", "0.90", "Ukrainian \u0433 is the selected practical approximation for Lao /h/; this is a project policy", " not phonetic identity", "project-policy"], "repaired": true}

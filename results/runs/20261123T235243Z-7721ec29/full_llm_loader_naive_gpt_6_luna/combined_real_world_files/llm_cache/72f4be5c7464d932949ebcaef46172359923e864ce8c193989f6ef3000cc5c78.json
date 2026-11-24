@@ -1,0 +1,62 @@
+{
+  "cache_version": 1,
+  "created_at": "2026-11-24T18:11:47.084010+00:00",
+  "api_base": "https://api.openai.com/v1",
+  "payload": {
+    "model": "gpt-6-luna",
+    "messages": [
+      {
+        "role": "system",
+        "content": "You are a CSV repair assistant.\n\nYour task is to inspect a possibly malformed CSV file and reconstruct it as a valid CSV table.\n\nReturn the repaired CSV and a brief error report. Do not include explanations outside the requested output sections."
+      },
+      {
+        "role": "user",
+        "content": "Repair the following CSV file.\n\nReturn exactly two sections and nothing else.\nDo not use Markdown fences. Do not include prose before, between, or after the sections.\nThe section markers must appear exactly as shown, each on its own line.\n\n--BEGIN FIXED CSV--\n<repaired CSV text only, including exactly one header row>\n--END FIXED CSV--\n--BEGIN ERROR REPORT--\n<JSON error report object only>\n--END ERROR REPORT--\n\nRules for the fixed CSV section:\n\n- Use a comma as the output delimiter.\n- Use double quotes according to standard CSV escaping rules.\n- Encode an embedded double quote as two double quotes.\n- Preserve every payload character exactly.\n- Do not normalize, infer, translate, reformat, round, complete, shorten, or otherwise rewrite cell values.\n- Preserve embedded line breaks inside quoted fields.\n- Use LF line endings.\n- Return the complete repaired CSV, not a sample, preview, summary, or first portion.\n- Include every recoverable source data row exactly once unless the input clearly marks it as non-data.\n- Finish the entire fixed CSV section before starting the error report.\n- If output length is a concern, keep the error report as short as possible but do not truncate the fixed CSV.\n- Do not wrap the CSV in Markdown fences.\n- Do not include comments, explanations, or section labels inside the CSV.\n- If the input is empty, whitespace-only, or contains no table evidence, leave the fixed CSV section empty. Do not invent headers, rows, columns, examples, placeholder data, or sample content.\n\nThe error report must use this format:\n\n{\n  \"fixed_errors\": [\n    {\n      \"type\": \"<error type>\",\n      \"description\": \"<brief description>\",\n      \"rows\": [<affected physical line numbers>]\n    }\n  ],\n  \"summary\": \"<brief summary>\"\n}\n\nIf no errors were fixed, return an empty fixed_errors list.\n\nCSV content:\n\n#{\"t_start\": 1794232046.279533, \"env_id\": \"None\"}\nr,l,t\n-2.462668,17,126.354253\n-1.6608958,19,142.29616\n-1.9400873,24,161.614511\n-2.0803545,26,177.750848\n-1.2136424,28,193.522676\n-2.7719235,39,220.737669\n0.6325512,42,238.552506\n-1.8333094,27,255.672529\n-2.2807376,46,273.71248\n-1.9446874,50,293.313972\n-2.7255611,53,312.571737\n-1.9680884,53,312.571844\n-2.5892484,60,335.819185\n-2.3037393,62,355.727698\n-2.1611094,63,371.494308\n-2.2659626,30,394.922644\n-0.0823555,43,394.922768\n-0.6893368,71,412.220922\n-0.42802286,29,412.221041\n1.1995687,73,431.387329\n-3.125843,74,450.084997\n-2.7501123,74,450.085158\n-1.9606655,76,477.40112\n-2.5460715,76,477.401225\n-1.7466054,33,493.275454\n-2.8126488,31,493.275568\n-0.6468048,78,508.146807\n4.4414682,61,535.984605\n-0.8490057,83,553.788904\n3.2416372,56,569.264471\n-2.24501,84,569.264628\n\n"
+      }
+    ],
+    "stream": false,
+    "max_completion_tokens": 16000
+  },
+  "content": "--BEGIN FIXED CSV--\nr,l,t\n-2.462668,17,126.354253\n-1.6608958,19,142.29616\n-1.9400873,24,161.614511\n-2.0803545,26,177.750848\n-1.2136424,28,193.522676\n-2.7719235,39,220.737669\n0.6325512,42,238.552506\n-1.8333094,27,255.672529\n-2.2807376,46,273.71248\n-1.9446874,50,293.313972\n-2.7255611,53,312.571737\n-1.9680884,53,312.571844\n-2.5892484,60,335.819185\n-2.3037393,62,355.727698\n-2.1611094,63,371.494308\n-2.2659626,30,394.922644\n-0.0823555,43,394.922768\n-0.6893368,71,412.220922\n-0.42802286,29,412.221041\n1.1995687,73,431.387329\n-3.125843,74,450.084997\n-2.7501123,74,450.085158\n-1.9606655,76,477.40112\n-2.5460715,76,477.401225\n-1.7466054,33,493.275454\n-2.8126488,31,493.275568\n-0.6468048,78,508.146807\n4.4414682,61,535.984605\n-0.8490057,83,553.788904\n3.2416372,56,569.264471\n-2.24501,84,569.264628\n--END FIXED CSV--\n--BEGIN ERROR REPORT--\n{\n  \"fixed_errors\": [\n    {\n      \"type\": \"non_table_metadata\",\n      \"description\": \"Excluded the leading metadata line from the CSV table.\",\n      \"rows\": [1]\n    }\n  ],\n  \"summary\": \"Removed one non-table metadata line; retained the header and all data rows.\"\n}\n--END ERROR REPORT--",
+  "usage": {
+    "prompt_tokens": 898,
+    "completion_tokens": 735,
+    "total_tokens": 1633,
+    "prompt_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 0,
+      "audio_tokens": 0
+    },
+    "completion_tokens_details": {
+      "reasoning_tokens": 208,
+      "audio_tokens": 0,
+      "accepted_prediction_tokens": 0,
+      "rejected_prediction_tokens": 0
+    }
+  },
+  "cost": {
+    "backend": "openai",
+    "model": "gpt-6-luna",
+    "api_base": "https://api.openai.com/v1",
+    "local_cache_hit": false,
+    "usage_available": true,
+    "cache_path": "/home/robin/offsite/pollock-offsite/results/runs/20261123T235243Z-7721ec29/full_llm_loader_naive_gpt_6_luna/combined_real_world_files/llm_cache/72f4be5c7464d932949ebcaef46172359923e864ce8c193989f6ef3000cc5c78.json",
+    "prompt_tokens": 898,
+    "cached_input_tokens": 0,
+    "uncached_input_tokens": 898,
+    "ordinary_input_tokens": 898,
+    "cache_write_tokens": 0,
+    "completion_tokens": 735,
+    "total_tokens": 1633,
+    "input_usd_per_1m": 0.1,
+    "cached_input_usd_per_1m": 0.01,
+    "cache_write_usd_per_1m": 0.125,
+    "output_usd_per_1m": 0.5,
+    "input_cost_usd": 8.980000000000001e-05,
+    "cached_input_cost_usd": 0.0,
+    "cache_write_cost_usd": 0.0,
+    "output_cost_usd": 0.0003675,
+    "estimated_api_cost_usd": 0.0004573,
+    "billable_cost_usd": 0.0004573
+  }
+}

@@ -1,0 +1,54 @@
+# Leiaute da PeNSE 2009 (base completa, registro de 311 posicoes, 187 variaveis).
+# Origem: https://ftp.ibge.gov.br/pense/2009/microdados/PENSE_2009_microdados.zip," membro ""Input SAS/SAS_2009.xls"" (IBGE", 2013-12-16).
+# Extraido uma vez do XLS (nome e formato w.d da planilha; posicoes calculadas em sequencia a partir de 1) e congelado aqui, para nao depender de leitor de Excel.
+# Colunas: nome, inicio (base 1), largura, texto (1 = formato $), decimais.
+nome,inicio,largura,texto,decimais
+ID,1,4,0,0
+QUESTIONARIO,5,1,0,0
+B00P01,6,1,0,0
+B01P01,7,1,0,0
+B01P02,8,1,0,0
+B01P03,9,1,0,0
+B01P04,10,2,0,0
+B01P05,12,1,0,0
+B01P06,13,1,0,0
+B01P07,14,1,0,0
+B01P08,15,1,0,0
+B01P12,16,1,0,0
+B01P13,17,1,0,0
+B01P14,18,1,0,0
+B01P15,19,1,0,0
+B01P16,20,1,0,0
+B01P17,21,1,0,0
+B01P18,22,1,0,0
+B01P19,23,1,0,0
+B01P20,24,1,0,0
+B01P21,25,1,0,0
+B01P22,26,1,0,0
+B01P23,27,1,0,0
+B01P24,28,1,0,0
+B01P25,29,1,0,0
+B01P26,30,1,0,0
+B02P01,31,1,0,0
+B02P02,32,1,0,0
+B02P03,33,1,0,0
+B02P04,34,1,0,0
+B02P05,35,1,0,0
+B02P06,36,1,0,0
+B02P07,37,1,0,0
+B02P08,38,1,0,0
+B02P09,39,1,0,0
+B02P10,40,1,0,0
+B02P11,41,1,0,0
+B02P12,42,1,0,0
+B02P13,43,1,0,0
+B02P14,44,1,0,0
+B02P15,45,1,0,0
+B02P16,46,1,0,0
+B02P17,47,1,0,0
+B02P18,48,1,0,0
+B02P19,49,1,0,0
+B03P01,50,1,0,0
+B03P02,51,1,0,0
+B03P03,52,1,0,0
+B03P04,53,1,0,0

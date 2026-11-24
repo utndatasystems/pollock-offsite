@@ -1,0 +1,50 @@
+Malformed rows: 49
+{"line_num": 2, "reason": "MISSING COLUMNS: Expected Number of Columns: 7 Found: 6", "raw": "emissions to water,groundwater,long-term,water,groundwater,long-term", "repaired": true}
+{"line_num": 3, "reason": "MISSING COLUMNS: Expected Number of Columns: 7 Found: 6", "raw": "emissions to water,groundwater,,water,groundwater,", "repaired": true}
+{"line_num": 4, "reason": "MISSING COLUMNS: Expected Number of Columns: 7 Found: 6", "raw": "emissions to water,unspecified,long-term,water,unspecified,long-term", "repaired": true}
+{"line_num": 5, "reason": "MISSING COLUMNS: Expected Number of Columns: 7 Found: 6", "raw": "emissions to water,sea water,,water,ocean,", "repaired": true}
+{"line_num": 6, "reason": "MISSING COLUMNS: Expected Number of Columns: 7 Found: 6", "raw": "Emissions to fresh water,,,water,surface water,", "repaired": true}
+{"line_num": 7, "reason": "MISSING COLUMNS: Expected Number of Columns: 7 Found: 6", "raw": "Emissions to sea water,,,water,ocean,", "repaired": true}
+{"line_num": 8, "reason": "MISSING COLUMNS: Expected Number of Columns: 7 Found: 6", "raw": "water,fresh water,,water,surface water,", "repaired": true}
+{"line_num": 9, "reason": "MISSING COLUMNS: Expected Number of Columns: 7 Found: 6", "raw": "water,river,,water,surface water,", "repaired": true}
+{"line_num": 10, "reason": "MISSING COLUMNS: Expected Number of Columns: 7 Found: 6", "raw": "water,ground-,,water,groundwater,", "repaired": true}
+{"line_num": 11, "reason": "MISSING COLUMNS: Expected Number of Columns: 7 Found: 6", "raw": "\"water\",\"ground-, long-term\",,water,\"groundwater, long-term\",", "repaired": true}
+{"line_num": 12, "reason": "MISSING COLUMNS: Expected Number of Columns: 7 Found: 6", "raw": "water,ground water,,water,groundwater,", "repaired": true}
+{"line_num": 13, "reason": "MISSING COLUMNS: Expected Number of Columns: 7 Found: 6", "raw": "water,\"ground water, long-term\",,water,\"groundwater, long-term\",", "repaired": true}
+{"line_num": 14, "reason": "MISSING COLUMNS: Expected Number of Columns: 7 Found: 6", "raw": "water,sea water,,water,ocean,", "repaired": true}
+{"line_num": 15, "reason": "MISSING COLUMNS: Expected Number of Columns: 7 Found: 6", "raw": "water,sea,,water,ocean,", "repaired": true}
+{"line_num": 16, "reason": "MISSING COLUMNS: Expected Number of Columns: 7 Found: 6", "raw": "Emissions to non-agricultural soil,,,soil,non-agricultural,", "repaired": true}
+{"line_num": 17, "reason": "MISSING COLUMNS: Expected Number of Columns: 7 Found: 6", "raw": "Emissions to agricultural soil,,,soil,agricultural,", "repaired": true}
+{"line_num": 18, "reason": "MISSING COLUMNS: Expected Number of Columns: 7 Found: 6", "raw": "soil,non-agricultural soil,,soil,non-agricultural,", "repaired": true}
+{"line_num": 19, "reason": "MISSING COLUMNS: Expected Number of Columns: 7 Found: 6", "raw": "soil,agricultural soil,,soil,agricultural,", "repaired": true}
+{"line_num": 20, "reason": "MISSING COLUMNS: Expected Number of Columns: 7 Found: 6", "raw": "lower stratosphere and upper troposphere,,,air,lower stratosphere + upper troposphere,", "repaired": true}
+{"line_num": 21, "reason": "MISSING COLUMNS: Expected Number of Columns: 7 Found: 6", "raw": "Emissions to air,,,air,,", "repaired": true}
+{"line_num": 22, "reason": "MISSING COLUMNS: Expected Number of Columns: 7 Found: 6", "raw": "Emissions to water,,,water,,", "repaired": true}
+{"line_num": 23, "reason": "MISSING COLUMNS: Expected Number of Columns: 7 Found: 6", "raw": "Emissions to soil,,,soil,,", "repaired": true}
+{"line_num": 24, "reason": "MISSING COLUMNS: Expected Number of Columns: 7 Found: 6", "raw": "Resources,,,natural resource,,", "repaired": true}
+{"line_num": 25, "reason": "MISSING COLUMNS: Expected Number of Columns: 7 Found: 6", "raw": "natural resource,non-renewable element resources from ground,,natural resource,in ground,", "repaired": true}
+{"line_num": 26, "reason": "MISSING COLUMNS: Expected Number of Columns: 7 Found: 6", "raw": "natural resource,renewable element resources from ground,,natural resource,in ground,", "repaired": true}
+{"line_num": 27, "reason": "MISSING COLUMNS: Expected Number of Columns: 7 Found: 6", "raw": "natural resource,non-renewable energy resources from ground,,natural resource,in ground,", "repaired": true}
+{"line_num": 28, "reason": "MISSING COLUMNS: Expected Number of Columns: 7 Found: 6", "raw": "natural resource,non-renewable material resources from ground,,natural resource,in ground,", "repaired": true}
+{"line_num": 29, "reason": "MISSING COLUMNS: Expected Number of Columns: 7 Found: 6", "raw": "natural resource,renewable material resources from ground,,natural resource,in ground,", "repaired": true}
+{"line_num": 30, "reason": "MISSING COLUMNS: Expected Number of Columns: 7 Found: 6", "raw": "natural resource,renewable energy resources from ground,,natural resource,in ground,", "repaired": true}
+{"line_num": 31, "reason": "MISSING COLUMNS: Expected Number of Columns: 7 Found: 6", "raw": "natural resource,non-renewable element resources from water,,natural resource,in water,", "repaired": true}
+{"line_num": 32, "reason": "MISSING COLUMNS: Expected Number of Columns: 7 Found: 6", "raw": "natural resource,non-renewable material resources from water,,natural resource,in water,", "repaired": true}
+{"line_num": 33, "reason": "MISSING COLUMNS: Expected Number of Columns: 7 Found: 6", "raw": "natural resource,renewable material resources from water,,natural resource,in water,", "repaired": true}
+{"line_num": 34, "reason": "MISSING COLUMNS: Expected Number of Columns: 7 Found: 6", "raw": "natural resource,renewable energy resources from water,,natural resource,in water,", "repaired": true}
+{"line_num": 35, "reason": "MISSING COLUMNS: Expected Number of Columns: 7 Found: 6", "raw": "natural resource,renewable element resources from air,,natural resource,in air,", "repaired": true}
+{"line_num": 36, "reason": "MISSING COLUMNS: Expected Number of Columns: 7 Found: 6", "raw": "natural resource,renewable material resources from air,,natural resource,in air,", "repaired": true}
+{"line_num": 37, "reason": "MISSING COLUMNS: Expected Number of Columns: 7 Found: 6", "raw": "natural resource,renewable energy resources from air,,natural resource,in air,", "repaired": true}
+{"line_num": 38, "reason": "MISSING COLUMNS: Expected Number of Columns: 7 Found: 6", "raw": "natural resource,renewable material resources from biosphere,,natural resource,biotic,", "repaired": true}
+{"line_num": 39, "reason": "MISSING COLUMNS: Expected Number of Columns: 7 Found: 6", "raw": "natural resource,renewable energy resources from biosphere,,natural resource,biotic,", "repaired": true}
+{"line_num": 40, "reason": "MISSING COLUMNS: Expected Number of Columns: 7 Found: 6", "raw": "land occupation,,,natural resource,land,", "repaired": true}
+{"line_num": 41, "reason": "MISSING COLUMNS: Expected Number of Columns: 7 Found: 6", "raw": "land transformation,,,natural resource,land,", "repaired": true}
+{"line_num": 42, "reason": "MISSING COLUMNS: Expected Number of Columns: 7 Found: 6", "raw": "resources,land,,natural resource,land,", "repaired": true}
+{"line_num": 43, "reason": "MISSING COLUMNS: Expected Number of Columns: 7 Found: 6", "raw": "air,low. pop.,,air,non-urban air or from high stacks,", "repaired": true}
+{"line_num": 44, "reason": "MISSING COLUMNS: Expected Number of Columns: 7 Found: 6", "raw": "air,\"low. pop., long-term\",,air,\"low population density, long-term\",", "repaired": true}
+{"line_num": 45, "reason": "MISSING COLUMNS: Expected Number of Columns: 7 Found: 6", "raw": "air,high. pop.,,air,urban air close to ground,", "repaired": true}
+{"line_num": 46, "reason": "MISSING COLUMNS: Expected Number of Columns: 7 Found: 6", "raw": "air,high population density,,air,urban air close to ground,", "repaired": true}
+{"line_num": 47, "reason": "MISSING COLUMNS: Expected Number of Columns: 7 Found: 6", "raw": "air,low population density,,air,non-urban air or from high stacks,", "repaired": true}
+{"line_num": 48, "reason": "MISSING COLUMNS: Expected Number of Columns: 7 Found: 6", "raw": "air,stratosphere + troposphere,,air,lower stratosphere + upper troposphere,", "repaired": true}
+{"line_num": 49, "reason": "MISSING COLUMNS: Expected Number of Columns: 7 Found: 6", "raw": "air,lower stratosphere and upper troposphere,,air,lower stratosphere + upper troposphere,", "repaired": true}
+{"line_num": 50, "reason": "MISSING COLUMNS: Expected Number of Columns: 7 Found: 6", "raw": "inventory indicator,waste,,waste,,", "repaired": true}

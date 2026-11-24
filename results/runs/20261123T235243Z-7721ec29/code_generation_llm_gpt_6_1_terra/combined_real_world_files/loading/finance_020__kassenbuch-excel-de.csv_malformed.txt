@@ -1,0 +1,2 @@
+Malformed rows: 1
+{"line_num": 1, "reason": "header row normalized", "raw": ["transactionId", "bookingDate", "valueDate", "financialAccountId", "direction", "amount", "signedAmount", "currency", "status", "provenance", "description", "counterpartyNameRaw", "counterpartyIbanRaw", "propertyReferenceId", "splitCount", "correctionOfTransactionId", "correctionRole", "reversalTransactionId", "replacementTransactionId", "confirmedAt", "confirmedBy", "createdAt", "version"], "repaired": true}

@@ -1,0 +1,2 @@
+Malformed rows: 1
+{"line_num": 1, "reason": "header row normalized", "raw": ["Stop name", "Lift", "Total parking", "Blue Badge Bays", "Cycling stands", "Cycle lockers", "Car park height restriction?"], "repaired": true}

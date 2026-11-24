@@ -1,0 +1,62 @@
+{
+  "cache_version": 1,
+  "created_at": "2026-11-24T11:20:05.018169+00:00",
+  "api_base": "https://api.openai.com/v1",
+  "payload": {
+    "model": "gpt-6.1-terra",
+    "messages": [
+      {
+        "role": "system",
+        "content": "You are a CSV repair assistant.\n\nYour task is to inspect a possibly malformed CSV file and reconstruct it as a valid CSV table.\n\nReturn the repaired CSV and a brief error report. Do not include explanations outside the requested output sections."
+      },
+      {
+        "role": "user",
+        "content": "Repair the following CSV file.\n\nReturn exactly two sections and nothing else.\nDo not use Markdown fences. Do not include prose before, between, or after the sections.\nThe section markers must appear exactly as shown, each on its own line.\n\n--BEGIN FIXED CSV--\n<repaired CSV text only, including exactly one header row>\n--END FIXED CSV--\n--BEGIN ERROR REPORT--\n<JSON error report object only>\n--END ERROR REPORT--\n\nRules for the fixed CSV section:\n\n- Use a comma as the output delimiter.\n- Use double quotes according to standard CSV escaping rules.\n- Encode an embedded double quote as two double quotes.\n- Preserve every payload character exactly.\n- Do not normalize, infer, translate, reformat, round, complete, shorten, or otherwise rewrite cell values.\n- Preserve embedded line breaks inside quoted fields.\n- Use LF line endings.\n- Return the complete repaired CSV, not a sample, preview, summary, or first portion.\n- Include every recoverable source data row exactly once unless the input clearly marks it as non-data.\n- Finish the entire fixed CSV section before starting the error report.\n- If output length is a concern, keep the error report as short as possible but do not truncate the fixed CSV.\n- Do not wrap the CSV in Markdown fences.\n- Do not include comments, explanations, or section labels inside the CSV.\n- If the input is empty, whitespace-only, or contains no table evidence, leave the fixed CSV section empty. Do not invent headers, rows, columns, examples, placeholder data, or sample content.\n\nThe error report must use this format:\n\n{\n  \"fixed_errors\": [\n    {\n      \"type\": \"<error type>\",\n      \"description\": \"<brief description>\",\n      \"rows\": [<affected physical line numbers>]\n    }\n  ],\n  \"summary\": \"<brief summary>\"\n}\n\nIf no errors were fixed, return an empty fixed_errors list.\n\nCSV content:\n\n# format: lindhard-stopping-data/1\n# name: bader1956-p-cu\n# description: Stopping cross section of Cu for protons, 50 to 600 keV, as printed in Table I of Bader et al. (1956); values from the authors' smooth curves through their measured points\n# source: M. Bader, R. E. Pixley, F. S. Mozer and W. Whaling, Phys. Rev. 103, 32 (1956)\n# note: the paper states no uncertainty for these values, so sigma is 0 (none stated)\nion_z,ion_mass_amu,target,energy_ev,s_e_ev_1e15_cm2,sigma_ev_1e15_cm2,method,citation\n1,,Cu,50000,21.5,0,backscattering of protons from thin evaporated Cu layers (smoothed curve),\"M. Bader, R. E. Pixley, F. S. Mozer and W. Whaling, Phys. Rev. 103, 32 (1956), doi:10.1103/PhysRev.103.32, Table I (Cu column)\"\n1,,Cu,75000,23.0,0,backscattering of protons from thin evaporated Cu layers (smoothed curve),\"M. Bader, R. E. Pixley, F. S. Mozer and W. Whaling, Phys. Rev. 103, 32 (1956), doi:10.1103/PhysRev.103.32, Table I (Cu column)\"\n1,,Cu,100000,24.0,0,backscattering of protons from thin evaporated Cu layers (smoothed curve),\"M. Bader, R. E. Pixley, F. S. Mozer and W. Whaling, Phys. Rev. 103, 32 (1956), doi:10.1103/PhysRev.103.32, Table I (Cu column)\"\n1,,Cu,125000,24.3,0,backscattering of protons from thin evaporated Cu layers (smoothed curve),\"M. Bader, R. E. Pixley, F. S. Mozer and W. Whaling, Phys. Rev. 103, 32 (1956), doi:10.1103/PhysRev.103.32, Table I (Cu column)\"\n1,,Cu,150000,24.0,0,backscattering of protons from thin evaporated Cu layers (smoothed curve),\"M. Bader, R. E. Pixley, F. S. Mozer and W. Whaling, Phys. Rev. 103, 32 (1956), doi:10.1103/PhysRev.103.32, Table I (Cu column)\"\n1,,Cu,175000,23.4,0,backscattering of protons from thin evaporated Cu layers (smoothed curve),\"M. Bader, R. E. Pixley, F. S. Mozer and W. Whaling, Phys. Rev. 103, 32 (1956), doi:10.1103/PhysRev.103.32, Table I (Cu column)\"\n1,,Cu,200000,22.9,0,backscattering of protons from thin evaporated Cu layers (smoothed curve),\"M. Bader, R. E. Pixley, F. S. Mozer and W. Whaling, Phys. Rev. 103, 32 (1956), doi:10.1103/PhysRev.103.32, Table I (Cu column)\"\n1,,Cu,250000,21.7,0,backscattering of protons from thin evaporated Cu layers (smoothed curve),\"M. Bader, R. E. Pixley, F. S. Mozer and W. Whaling, Phys. Rev. 103, 32 (1956), doi:10.1103/PhysRev.103.32, Table I (Cu column)\"\n1,,Cu,300000,21.0,0,backscattering of protons from thin evaporated Cu layers (smoothed curve),\"M. Bader, R. E. Pixley, F. S. Mozer and W. Whaling, Phys. Rev. 103, 32 (1956), doi:10.1103/PhysRev.103.32, Table I (Cu column)\"\n1,,Cu,350000,20.2,0,backscattering of protons from thin evaporated Cu layers (smoothed curve),\"M. Bader, R. E. Pixley, F. S. Mozer and W. Whaling, Phys. Rev. 103, 32 (1956), doi:10.1103/PhysRev.103.32, Table I (Cu column)\"\n1,,Cu,400000,19.5,0,backscattering of protons from thin evaporated Cu layers (smoothed curve),\"M. Bader, R. E. Pixley, F. S. Mozer and W. Whaling, Phys. Rev. 103, 32 (1956), doi:10.1103/PhysRev.103.32, Table I (Cu column)\"\n1,,Cu,450000,18.8,0,backscattering of protons from thin evaporated Cu layers (smoothed curve),\"M. Bader, R. E. Pixley, F. S. Mozer and W. Whaling, Phys. Rev. 103, 32 (1956), doi:10.1103/PhysRev.103.32, Table I (Cu column)\"\n1,,Cu,500000,18.1,0,backscattering of protons from thin evaporated Cu layers (smoothed curve),\"M. Bader, R. E. Pixley, F. S. Mozer and W. Whaling, Phys. Rev. 103, 32 (1956), doi:10.1103/PhysRev.103.32, Table I (Cu column)\"\n1,,Cu,550000,17.5,0,backscattering of protons from thin evaporated Cu layers (smoothed curve),\"M. Bader, R. E. Pixley, F. S. Mozer and W. Whaling, Phys. Rev. 103, 32 (1956), doi:10.1103/PhysRev.103.32, Table I (Cu column)\"\n1,,Cu,600000,16.9,0,backscattering of protons from thin evaporated Cu layers (smoothed curve),\"M. Bader, R. E. Pixley, F. S. Mozer and W. Whaling, Phys. Rev. 103, 32 (1956), doi:10.1103/PhysRev.103.32, Table I (Cu column)\"\n\n"
+      }
+    ],
+    "stream": false,
+    "max_completion_tokens": 16000
+  },
+  "content": "--BEGIN FIXED CSV--\nion_z,ion_mass_amu,target,energy_ev,s_e_ev_1e15_cm2,sigma_ev_1e15_cm2,method,citation\n1,,Cu,50000,21.5,0,backscattering of protons from thin evaporated Cu layers (smoothed curve),\"M. Bader, R. E. Pixley, F. S. Mozer and W. Whaling, Phys. Rev. 103, 32 (1956), doi:10.1103/PhysRev.103.32, Table I (Cu column)\"\n1,,Cu,75000,23.0,0,backscattering of protons from thin evaporated Cu layers (smoothed curve),\"M. Bader, R. E. Pixley, F. S. Mozer and W. Whaling, Phys. Rev. 103, 32 (1956), doi:10.1103/PhysRev.103.32, Table I (Cu column)\"\n1,,Cu,100000,24.0,0,backscattering of protons from thin evaporated Cu layers (smoothed curve),\"M. Bader, R. E. Pixley, F. S. Mozer and W. Whaling, Phys. Rev. 103, 32 (1956), doi:10.1103/PhysRev.103.32, Table I (Cu column)\"\n1,,Cu,125000,24.3,0,backscattering of protons from thin evaporated Cu layers (smoothed curve),\"M. Bader, R. E. Pixley, F. S. Mozer and W. Whaling, Phys. Rev. 103, 32 (1956), doi:10.1103/PhysRev.103.32, Table I (Cu column)\"\n1,,Cu,150000,24.0,0,backscattering of protons from thin evaporated Cu layers (smoothed curve),\"M. Bader, R. E. Pixley, F. S. Mozer and W. Whaling, Phys. Rev. 103, 32 (1956), doi:10.1103/PhysRev.103.32, Table I (Cu column)\"\n1,,Cu,175000,23.4,0,backscattering of protons from thin evaporated Cu layers (smoothed curve),\"M. Bader, R. E. Pixley, F. S. Mozer and W. Whaling, Phys. Rev. 103, 32 (1956), doi:10.1103/PhysRev.103.32, Table I (Cu column)\"\n1,,Cu,200000,22.9,0,backscattering of protons from thin evaporated Cu layers (smoothed curve),\"M. Bader, R. E. Pixley, F. S. Mozer and W. Whaling, Phys. Rev. 103, 32 (1956), doi:10.1103/PhysRev.103.32, Table I (Cu column)\"\n1,,Cu,250000,21.7,0,backscattering of protons from thin evaporated Cu layers (smoothed curve),\"M. Bader, R. E. Pixley, F. S. Mozer and W. Whaling, Phys. Rev. 103, 32 (1956), doi:10.1103/PhysRev.103.32, Table I (Cu column)\"\n1,,Cu,300000,21.0,0,backscattering of protons from thin evaporated Cu layers (smoothed curve),\"M. Bader, R. E. Pixley, F. S. Mozer and W. Whaling, Phys. Rev. 103, 32 (1956), doi:10.1103/PhysRev.103.32, Table I (Cu column)\"\n1,,Cu,350000,20.2,0,backscattering of protons from thin evaporated Cu layers (smoothed curve),\"M. Bader, R. E. Pixley, F. S. Mozer and W. Whaling, Phys. Rev. 103, 32 (1956), doi:10.1103/PhysRev.103.32, Table I (Cu column)\"\n1,,Cu,400000,19.5,0,backscattering of protons from thin evaporated Cu layers (smoothed curve),\"M. Bader, R. E. Pixley, F. S. Mozer and W. Whaling, Phys. Rev. 103, 32 (1956), doi:10.1103/PhysRev.103.32, Table I (Cu column)\"\n1,,Cu,450000,18.8,0,backscattering of protons from thin evaporated Cu layers (smoothed curve),\"M. Bader, R. E. Pixley, F. S. Mozer and W. Whaling, Phys. Rev. 103, 32 (1956), doi:10.1103/PhysRev.103.32, Table I (Cu column)\"\n1,,Cu,500000,18.1,0,backscattering of protons from thin evaporated Cu layers (smoothed curve),\"M. Bader, R. E. Pixley, F. S. Mozer and W. Whaling, Phys. Rev. 103, 32 (1956), doi:10.1103/PhysRev.103.32, Table I (Cu column)\"\n1,,Cu,550000,17.5,0,backscattering of protons from thin evaporated Cu layers (smoothed curve),\"M. Bader, R. E. Pixley, F. S. Mozer and W. Whaling, Phys. Rev. 103, 32 (1956), doi:10.1103/PhysRev.103.32, Table I (Cu column)\"\n1,,Cu,600000,16.9,0,backscattering of protons from thin evaporated Cu layers (smoothed curve),\"M. Bader, R. E. Pixley, F. S. Mozer and W. Whaling, Phys. Rev. 103, 32 (1956), doi:10.1103/PhysRev.103.32, Table I (Cu column)\"\n--END FIXED CSV--\n--BEGIN ERROR REPORT--\n{\"fixed_errors\":[{\"type\":\"non_data_lines\",\"description\":\"Removed metadata comments preceding the header.\",\"rows\":[1,2,3,4,5]}],\"summary\":\"Removed five non-data lines; preserved all data rows.\"}\n--END ERROR REPORT--",
+  "usage": {
+    "prompt_tokens": 1915,
+    "completion_tokens": 1448,
+    "total_tokens": 3363,
+    "prompt_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 1912,
+      "audio_tokens": 0
+    },
+    "completion_tokens_details": {
+      "reasoning_tokens": 31,
+      "audio_tokens": 0,
+      "accepted_prediction_tokens": 0,
+      "rejected_prediction_tokens": 0
+    }
+  },
+  "cost": {
+    "backend": "openai",
+    "model": "gpt-6.1-terra",
+    "api_base": "https://api.openai.com/v1",
+    "local_cache_hit": false,
+    "usage_available": true,
+    "cache_path": "/home/robin/offsite/pollock-offsite/results/runs/20261123T235243Z-7721ec29/full_llm_loader_naive_gpt_6_1_terra/combined_real_world_files/llm_cache/1ec0a54d1989b43fdbe08c7af9f5433af2cdb627d2001d56c9c812f9423fbcb7.json",
+    "prompt_tokens": 1915,
+    "cached_input_tokens": 0,
+    "uncached_input_tokens": 1915,
+    "ordinary_input_tokens": 3,
+    "cache_write_tokens": 1912,
+    "completion_tokens": 1448,
+    "total_tokens": 3363,
+    "input_usd_per_1m": 1.0,
+    "cached_input_usd_per_1m": 0.05,
+    "cache_write_usd_per_1m": 1.25,
+    "output_usd_per_1m": 5.0,
+    "input_cost_usd": 3e-06,
+    "cached_input_cost_usd": 0.0,
+    "cache_write_cost_usd": 0.00239,
+    "output_cost_usd": 0.00724,
+    "estimated_api_cost_usd": 0.009633000000000001,
+    "billable_cost_usd": 0.009633000000000001
+  }
+}

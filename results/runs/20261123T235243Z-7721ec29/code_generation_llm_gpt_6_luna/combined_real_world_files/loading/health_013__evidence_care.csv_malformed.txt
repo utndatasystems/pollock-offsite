@@ -1,0 +1,4 @@
+Malformed rows: 3
+{"line_num": 1, "reason": "header row normalized", "raw": ["need_id", "crisis_type", "setting", "metric", "value", "unit", "denominator", "low", "high", "n", "source_id", "note"], "repaired": true}
+{"line_num": 50, "reason": "width 13 -> 12", "raw": ["all", "war", "Gaza, October 2023 to 20 June 2024", "patients needing evacuation (WHO estimate)", ">10000", "patients", "", "", "", "", "WHO_MEDEVAC_2024_06", "'over 10", "000 patients need medical evacuation outside Gaza for specialized care'"], "repaired": true}
+{"line_num": 51, "reason": "width 13 -> 12", "raw": ["all", "war", "Gaza, October 2023 to 20 June 2024", "patients unable to leave since closure of the Rafah Crossing on 7 May 2024", "2150", "patients", "", "", "", "", "WHO_MEDEVAC_2024_06", "'Around 2", "150'; backlog count and not a waiting time"], "repaired": true}

@@ -1,0 +1,2 @@
+Malformed rows: 1
+{"line_num": 1, "reason": "header row normalized", "raw": ["2/28/2008", "1:00:00", "NaN"], "repaired": true}

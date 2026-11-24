@@ -1,0 +1,2 @@
+Malformed rows: 1
+{"line_num": 10, "reason": "MISSING COLUMNS: Expected Number of Columns: 5 Found: 1; MISSING COLUMNS: Expected Number of Columns: 5 Found: 2; MISSING COLUMNS: Expected Number of Columns: 5 Found: 3; MISSING COLUMNS: Expected Number of Columns: 5 Found: 4", "raw": "# for its members. Keep it up to date: python -m lab calendar check.", "repaired": true}

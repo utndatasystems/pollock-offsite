@@ -1,0 +1,5 @@
+Malformed rows: 4
+{"line_num": 1, "reason": "header row normalized", "raw": ["timestamp_utc", "ticker", "jupiter_price_usd", "market_open", "equity_feed", "equity_price", "equity_conf", "equity_publish_utc", "equity_status", "xstock_feed", "xstock_price", "xstock_conf", "xstock_publish_utc", "xstock_status"], "repaired": true}
+{"line_num": 61, "reason": "width 1 -> 14", "raw": ["<<<<<<< HEAD"], "repaired": true}
+{"line_num": 162, "reason": "width 1 -> 14", "raw": ["======="], "repaired": true}
+{"line_num": 166, "reason": "width 1 -> 14", "raw": [">>>>>>> 207a8c1 (pyth 2026-09-19T08:30:02Z)"], "repaired": true}

@@ -1,0 +1,3 @@
+Malformed rows: 2
+{"line_num": 1, "reason": "header row normalized", "raw": ["Minister", "Date of Hospitality", "Name of Organisation", "Type of hospitality received"], "repaired": true}
+{"line_num": 2, "reason": "width 1 -> 4", "raw": [""], "repaired": true}

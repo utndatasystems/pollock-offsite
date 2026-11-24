@@ -1,0 +1,2 @@
+Malformed rows: 1
+{"line_num": 1, "reason": "header row normalized", "raw": ["# Reading column: done by a language model (Claude)", " not a person. Sample: 60 random development trials (seed 23)", " held out from rule tuning. Rules as frozen before this sample was scored."], "repaired": true}

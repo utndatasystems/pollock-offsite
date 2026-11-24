@@ -1,0 +1,62 @@
+{
+  "cache_version": 1,
+  "created_at": "2026-11-24T02:17:35.854579+00:00",
+  "api_base": "https://api.openai.com/v1",
+  "payload": {
+    "model": "gpt-6.2-sol",
+    "messages": [
+      {
+        "role": "system",
+        "content": "You are a CSV repair assistant.\n\nYour task is to inspect a possibly malformed CSV file and reconstruct it as a valid CSV table.\n\nReturn the repaired CSV and a brief error report. Do not include explanations outside the requested output sections."
+      },
+      {
+        "role": "user",
+        "content": "Repair the following CSV file.\n\nReturn exactly two sections and nothing else.\nDo not use Markdown fences. Do not include prose before, between, or after the sections.\nThe section markers must appear exactly as shown, each on its own line.\n\n--BEGIN FIXED CSV--\n<repaired CSV text only, including exactly one header row>\n--END FIXED CSV--\n--BEGIN ERROR REPORT--\n<JSON error report object only>\n--END ERROR REPORT--\n\nRules for the fixed CSV section:\n\n- Use a comma as the output delimiter.\n- Use double quotes according to standard CSV escaping rules.\n- Encode an embedded double quote as two double quotes.\n- Preserve every payload character exactly.\n- Do not normalize, infer, translate, reformat, round, complete, shorten, or otherwise rewrite cell values.\n- Preserve embedded line breaks inside quoted fields.\n- Use LF line endings.\n- Return the complete repaired CSV, not a sample, preview, summary, or first portion.\n- Include every recoverable source data row exactly once unless the input clearly marks it as non-data.\n- Finish the entire fixed CSV section before starting the error report.\n- If output length is a concern, keep the error report as short as possible but do not truncate the fixed CSV.\n- Do not wrap the CSV in Markdown fences.\n- Do not include comments, explanations, or section labels inside the CSV.\n- If the input is empty, whitespace-only, or contains no table evidence, leave the fixed CSV section empty. Do not invent headers, rows, columns, examples, placeholder data, or sample content.\n\nThe error report must use this format:\n\n{\n  \"fixed_errors\": [\n    {\n      \"type\": \"<error type>\",\n      \"description\": \"<brief description>\",\n      \"rows\": [<affected physical line numbers>]\n    }\n  ],\n  \"summary\": \"<brief summary>\"\n}\n\nIf no errors were fixed, return an empty fixed_errors list.\n\nCSV content:\n\n\"Problem Name\";\"Total time limit\";\"Original Obj. Value\";\"Original Status\";\"Original Runtime\";\"HYP Obj. Value\";\"Hyp Status\";\"Hyp Runtime\";\"Hyp Kmax\";\"Hyp Kmin\";\"EOCG Obj value\";\"EOCG Status\";\"EOCG Runtime (total)\";\"m\";\"n\";\"D\"\n\"OR30x250-0.75_9.dat\";\"1440\";\"149570\";\"TIME_LIMIT\";\"1440.01\";\"149570\";\"TIME_LIMIT\";\"1440\";\"190\";\"183\";\"149570\";\"TIME_LIMIT\";\"1440.01\";\"30\";\"250\";\"30\";\"\n\"\n\n"
+      }
+    ],
+    "stream": false,
+    "max_completion_tokens": 16000
+  },
+  "content": "--BEGIN FIXED CSV--\n\"Problem Name\",\"Total time limit\",\"Original Obj. Value\",\"Original Status\",\"Original Runtime\",\"HYP Obj. Value\",\"Hyp Status\",\"Hyp Runtime\",\"Hyp Kmax\",\"Hyp Kmin\",\"EOCG Obj value\",\"EOCG Status\",\"EOCG Runtime (total)\",\"m\",\"n\",\"D\",\"\"\n\"OR30x250-0.75_9.dat\",\"1440\",\"149570\",\"TIME_LIMIT\",\"1440.01\",\"149570\",\"TIME_LIMIT\",\"1440\",\"190\",\"183\",\"149570\",\"TIME_LIMIT\",\"1440.01\",\"30\",\"250\",\"30\",\"\n\"\n--END FIXED CSV--\n--BEGIN ERROR REPORT--\n{\n  \"fixed_errors\": [\n    {\n      \"type\": \"delimiter\",\n      \"description\": \"Converted semicolon delimiters to commas.\",\n      \"rows\": [1, 2]\n    },\n    {\n      \"type\": \"column_count_mismatch\",\n      \"description\": \"Added an empty header cell for the final field, which contains a line break.\",\n      \"rows\": [1, 2, 3]\n    }\n  ],\n  \"summary\": \"Repaired one data row without changing any field values.\"\n}\n--END ERROR REPORT--",
+  "usage": {
+    "prompt_tokens": 599,
+    "completion_tokens": 346,
+    "total_tokens": 945,
+    "prompt_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 0,
+      "audio_tokens": 0
+    },
+    "completion_tokens_details": {
+      "reasoning_tokens": 83,
+      "audio_tokens": 0,
+      "accepted_prediction_tokens": 0,
+      "rejected_prediction_tokens": 0
+    }
+  },
+  "cost": {
+    "backend": "openai",
+    "model": "gpt-6.2-sol",
+    "api_base": "https://api.openai.com/v1",
+    "local_cache_hit": false,
+    "usage_available": true,
+    "cache_path": "/home/robin/offsite/pollock-offsite/results/runs/20261123T235243Z-7721ec29/full_llm_loader_naive_gpt_6_2_sol/combined_real_world_files/llm_cache/8c7e71c67ce1e01d1b90fec247dc6d0f03bb3f478cd84070d6a5e73842105f35.json",
+    "prompt_tokens": 599,
+    "cached_input_tokens": 0,
+    "uncached_input_tokens": 599,
+    "ordinary_input_tokens": 599,
+    "cache_write_tokens": 0,
+    "completion_tokens": 346,
+    "total_tokens": 945,
+    "input_usd_per_1m": 2.0,
+    "cached_input_usd_per_1m": 0.1,
+    "cache_write_usd_per_1m": 2.5,
+    "output_usd_per_1m": 10.0,
+    "input_cost_usd": 0.001198,
+    "cached_input_cost_usd": 0.0,
+    "cache_write_cost_usd": 0.0,
+    "output_cost_usd": 0.00346,
+    "estimated_api_cost_usd": 0.004658,
+    "billable_cost_usd": 0.004658
+  }
+}

@@ -1,0 +1,2 @@
+Malformed rows: 1
+{"line_num": 1, "reason": "header row normalized", "raw": ["BOROUGH", "HPSC_Survey", "Total number of toilets", "Local authority flush toilets", "Local authority steet urinals", "Toilets in other public buildings", "Community Toilet Scheme", "Other private toilets accessible to public", "Street or park name", "Address or description", "Postcode", "Map", "Disabled access", "Charging", "Opening hours", "Staffing", "Baby changing facilities", "Website"], "repaired": true}

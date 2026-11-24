@@ -1,0 +1,62 @@
+{
+  "cache_version": 1,
+  "created_at": "2026-11-24T17:44:18.663709+00:00",
+  "api_base": "https://api.openai.com/v1",
+  "payload": {
+    "model": "gpt-6-luna",
+    "messages": [
+      {
+        "role": "system",
+        "content": "You are a CSV repair assistant.\n\nYour task is to inspect a possibly malformed CSV file and reconstruct it as a valid CSV table.\n\nReturn the repaired CSV and a brief error report. Do not include explanations outside the requested output sections."
+      },
+      {
+        "role": "user",
+        "content": "Repair the following CSV file.\n\nReturn exactly two sections and nothing else.\nDo not use Markdown fences. Do not include prose before, between, or after the sections.\nThe section markers must appear exactly as shown, each on its own line.\n\n--BEGIN FIXED CSV--\n<repaired CSV text only, including exactly one header row>\n--END FIXED CSV--\n--BEGIN ERROR REPORT--\n<JSON error report object only>\n--END ERROR REPORT--\n\nRules for the fixed CSV section:\n\n- Use a comma as the output delimiter.\n- Use double quotes according to standard CSV escaping rules.\n- Encode an embedded double quote as two double quotes.\n- Preserve every payload character exactly.\n- Do not normalize, infer, translate, reformat, round, complete, shorten, or otherwise rewrite cell values.\n- Preserve embedded line breaks inside quoted fields.\n- Use LF line endings.\n- Return the complete repaired CSV, not a sample, preview, summary, or first portion.\n- Include every recoverable source data row exactly once unless the input clearly marks it as non-data.\n- Finish the entire fixed CSV section before starting the error report.\n- If output length is a concern, keep the error report as short as possible but do not truncate the fixed CSV.\n- Do not wrap the CSV in Markdown fences.\n- Do not include comments, explanations, or section labels inside the CSV.\n- If the input is empty, whitespace-only, or contains no table evidence, leave the fixed CSV section empty. Do not invent headers, rows, columns, examples, placeholder data, or sample content.\n\nThe error report must use this format:\n\n{\n  \"fixed_errors\": [\n    {\n      \"type\": \"<error type>\",\n      \"description\": \"<brief description>\",\n      \"rows\": [<affected physical line numbers>]\n    }\n  ],\n  \"summary\": \"<brief summary>\"\n}\n\nIf no errors were fixed, return an empty fixed_errors list.\n\nCSV content:\n\nwavelength,Emissivity\n2.02129,0.166023\n2.04968,0.165057\n2.08162,0.167004\n2.09937,0.166522\n2.1384,0.164102\n2.1597,0.162164\n2.18809,0.160227\n2.22003,0.158291\n2.25196,0.156354\n2.26971,0.155872\n2.30165,0.147625\n2.33004,0.15297\n2.35488,0.144236\n2.38327,0.152979\n2.40811,0.151042\n2.4365,0.14959\n2.46844,0.146198\n2.49328,0.14426\n2.51458,0.142322\n2.54297,0.141842\n2.56781,0.136992\n2.59265,0.136996\n2.61394,0.135543\n2.64588,0.139918\n2.66717,0.134582\n2.69202,0.136042\n2.70976,0.131676\n2.73815,0.13605\n2.76654,0.130715\n2.78783,0.13169\n2.81267,0.125869\n2.83042,0.125872\n2.85881,0.122479\n2.8801,0.125881\n2.90494,0.122972\n2.92978,0.125889\n2.95108,0.116184\n2.96882,0.117644\n3.00076,0.119106\n3.01496,0.12639\n3.04335,0.1162\n3.06464,0.118631\n3.07883,0.117177\n3.10368,0.119123\n3.12852,0.117186\n3.14271,0.117188\n3.1711,0.114281\n3.1924,0.115741\n3.21014,0.111375\n3.23498,0.118175\n3.25272,0.111382\n3.27757,0.11527\n3.29531,0.11139\n3.3166,0.114791\n3.34144,0.11431\n3.35564,0.114798\n3.37338,0.109947\n3.39468,0.113349\n3.41242,0.11141\n3.43016,0.110442\n3.44791,0.108989\n3.4763,0.114334\n3.49049,0.110938\n3.51179,0.109971\n3.52598,0.109002\n3.54373,0.109006\n3.56502,0.10998\n3.58276,0.11241\n3.61115,0.107561\n3.61825,0.109504\n3.64664,0.108538\n3.66084,0.112424\n3.67858,0.108543\n3.69987,0.110974\n3.71762,0.106123\n3.73181,0.109038\n3.75311,0.107585\n3.77085,0.108559\n3.78859,0.107592\n3.80279,0.110021\n3.82408,0.107112\n3.83118,0.107114\n3.85602,0.107118\n3.87376,0.109548\n3.89506,0.105183\n3.90925,0.108583\n3.92345,0.105673\n3.94474,0.108104\n3.95539,0.105679\n3.97668,0.112964\n3.99442,0.105686\n4.01217,0.108601\n4.02991,0.102294\n4.04411,0.10618\n4.0583,0.105211\n4.07605,0.109583\n4.10089,0.105219\n4.11153,0.106191\n4.12573,0.103281\n4.14347,0.105711\n4.16477,0.10523\n4.17896,0.110087\n4.19316,0.108147\n4.2109,0.111063\n4.22864,0.0994155\n4.24994,0.117866\n4.25703,0.100877\n4.28188,0.104279\n4.29607,0.101369\n4.31381,0.106712\n4.32091,0.101859\n4.34221,0.10526\n4.35995,0.103807\n4.37769,0.105752\n4.38834,0.101385\n4.40963,0.104301\n4.43093,0.10479\n4.43802,0.107704\n4.46286,0.0999416\n4.48061,0.105284\n4.48771,0.101402\n4.50545,0.108687\n4.51965,0.100437\n4.53739,0.10578\n4.55513,0.100443\n4.56933,0.103358\n4.59417,0.102877\n4.60127,0.105305\n4.62256,0.102396\n4.6403,0.110166\n4.66515,0.10386\n4.67224,0.108716\n4.68644,0.103378\n4.70418,0.106294\n4.72193,0.101928\n4.74322,0.112126\n4.75032,0.104846\n4.77516,0.111646\n4.7929,0.100484\n\n"
+      }
+    ],
+    "stream": false,
+    "max_completion_tokens": 16000
+  },
+  "content": "--BEGIN FIXED CSV--\nwavelength,Emissivity\n2.02129,0.166023\n2.04968,0.165057\n2.08162,0.167004\n2.09937,0.166522\n2.1384,0.164102\n2.1597,0.162164\n2.18809,0.160227\n2.22003,0.158291\n2.25196,0.156354\n2.26971,0.155872\n2.30165,0.147625\n2.33004,0.15297\n2.35488,0.144236\n2.38327,0.152979\n2.40811,0.151042\n2.4365,0.14959\n2.46844,0.146198\n2.49328,0.14426\n2.51458,0.142322\n2.54297,0.141842\n2.56781,0.136992\n2.59265,0.136996\n2.61394,0.135543\n2.64588,0.139918\n2.66717,0.134582\n2.69202,0.136042\n2.70976,0.131676\n2.73815,0.13605\n2.76654,0.130715\n2.78783,0.13169\n2.81267,0.125869\n2.83042,0.125872\n2.85881,0.122479\n2.8801,0.125881\n2.90494,0.122972\n2.92978,0.125889\n2.95108,0.116184\n2.96882,0.117644\n3.00076,0.119106\n3.01496,0.12639\n3.04335,0.1162\n3.06464,0.118631\n3.07883,0.117177\n3.10368,0.119123\n3.12852,0.117186\n3.14271,0.117188\n3.1711,0.114281\n3.1924,0.115741\n3.21014,0.111375\n3.23498,0.118175\n3.25272,0.111382\n3.27757,0.11527\n3.29531,0.11139\n3.3166,0.114791\n3.34144,0.11431\n3.35564,0.114798\n3.37338,0.109947\n3.39468,0.113349\n3.41242,0.11141\n3.43016,0.110442\n3.44791,0.108989\n3.4763,0.114334\n3.49049,0.110938\n3.51179,0.109971\n3.52598,0.109002\n3.54373,0.109006\n3.56502,0.10998\n3.58276,0.11241\n3.61115,0.107561\n3.61825,0.109504\n3.64664,0.108538\n3.66084,0.112424\n3.67858,0.108543\n3.69987,0.110974\n3.71762,0.106123\n3.73181,0.109038\n3.75311,0.107585\n3.77085,0.108559\n3.78859,0.107592\n3.80279,0.110021\n3.82408,0.107112\n3.83118,0.107114\n3.85602,0.107118\n3.87376,0.109548\n3.89506,0.105183\n3.90925,0.108583\n3.92345,0.105673\n3.94474,0.108104\n3.95539,0.105679\n3.97668,0.112964\n3.99442,0.105686\n4.01217,0.108601\n4.02991,0.102294\n4.04411,0.10618\n4.0583,0.105211\n4.07605,0.109583\n4.10089,0.105219\n4.11153,0.106191\n4.12573,0.103281\n4.14347,0.105711\n4.16477,0.10523\n4.17896,0.110087\n4.19316,0.108147\n4.2109,0.111063\n4.22864,0.0994155\n4.24994,0.117866\n4.25703,0.100877\n4.28188,0.104279\n4.29607,0.101369\n4.31381,0.106712\n4.32091,0.101859\n4.34221,0.10526\n4.35995,0.103807\n4.37769,0.105752\n4.38834,0.101385\n4.40963,0.104301\n4.43093,0.10479\n4.43802,0.107704\n4.46286,0.0999416\n4.48061,0.105284\n4.48771,0.101402\n4.50545,0.108687\n4.51965,0.100437\n4.53739,0.10578\n4.55513,0.100443\n4.56933,0.103358\n4.59417,0.102877\n4.60127,0.105305\n4.62256,0.102396\n4.6403,0.110166\n4.66515,0.10386\n4.67224,0.108716\n4.68644,0.103378\n4.70418,0.106294\n4.72193,0.101928\n4.74322,0.112126\n4.75032,0.104846\n4.77516,0.111646\n4.7929,0.100484\n--END FIXED CSV--\n--BEGIN ERROR REPORT--\n{\n  \"fixed_errors\": [],\n  \"summary\": \"No errors found; CSV is valid.\"\n}\n--END ERROR REPORT--",
+  "usage": {
+    "prompt_tokens": 1845,
+    "completion_tokens": 1489,
+    "total_tokens": 3334,
+    "prompt_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 1842,
+      "audio_tokens": 0
+    },
+    "completion_tokens_details": {
+      "reasoning_tokens": 38,
+      "audio_tokens": 0,
+      "accepted_prediction_tokens": 0,
+      "rejected_prediction_tokens": 0
+    }
+  },
+  "cost": {
+    "backend": "openai",
+    "model": "gpt-6-luna",
+    "api_base": "https://api.openai.com/v1",
+    "local_cache_hit": false,
+    "usage_available": true,
+    "cache_path": "/home/robin/offsite/pollock-offsite/results/runs/20261123T235243Z-7721ec29/full_llm_loader_naive_gpt_6_luna/combined_real_world_files/llm_cache/ac663c128e3917f26c392ff229876ede8fe7a1da5aac8a485385810c3bccc4ea.json",
+    "prompt_tokens": 1845,
+    "cached_input_tokens": 0,
+    "uncached_input_tokens": 1845,
+    "ordinary_input_tokens": 3,
+    "cache_write_tokens": 1842,
+    "completion_tokens": 1489,
+    "total_tokens": 3334,
+    "input_usd_per_1m": 0.1,
+    "cached_input_usd_per_1m": 0.01,
+    "cache_write_usd_per_1m": 0.125,
+    "output_usd_per_1m": 0.5,
+    "input_cost_usd": 3.0000000000000004e-07,
+    "cached_input_cost_usd": 0.0,
+    "cache_write_cost_usd": 0.00023025,
+    "output_cost_usd": 0.0007445,
+    "estimated_api_cost_usd": 0.0009750500000000001,
+    "billable_cost_usd": 0.0009750500000000001
+  }
+}

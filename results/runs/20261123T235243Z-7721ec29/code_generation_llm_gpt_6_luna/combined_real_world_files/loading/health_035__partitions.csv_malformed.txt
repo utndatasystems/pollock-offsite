@@ -1,0 +1,3 @@
+Malformed rows: 2
+{"line_num": 1, "reason": "header row normalized", "raw": ["# Name", "   Type", " SubType", " Offset", "   Size", "     Flags"], "repaired": true}
+{"line_num": 6, "reason": "width 2 -> 6", "raw": ["# The offline cache needs 2.3 KB", " so the filesystem gives space back to the application."], "repaired": true}

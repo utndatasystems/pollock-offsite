@@ -1,0 +1,4 @@
+Malformed rows: 3
+{"line_num": 2, "reason": "MISSING COLUMNS: Expected Number of Columns: 5 Found: 3; MISSING COLUMNS: Expected Number of Columns: 5 Found: 4", "raw": "# Leiaute da PeNSE 2009 (base completa, registro de 311 posicoes, 187 variaveis).", "repaired": true}
+{"line_num": 3, "reason": "MISSING COLUMNS: Expected Number of Columns: 5 Found: 3; MISSING COLUMNS: Expected Number of Columns: 5 Found: 4", "raw": "# Origem: https://ftp.ibge.gov.br/pense/2009/microdados/PENSE_2009_microdados.zip, membro \"Input SAS/SAS_2009.xls\" (IBGE, 2013-12-16).", "repaired": true}
+{"line_num": 4, "reason": "MISSING COLUMNS: Expected Number of Columns: 5 Found: 2; MISSING COLUMNS: Expected Number of Columns: 5 Found: 3; MISSING COLUMNS: Expected Number of Columns: 5 Found: 4", "raw": "# Extraido uma vez do XLS (nome e formato w.d da planilha; posicoes calculadas em sequencia a partir de 1) e congelado aqui, para nao depender de leitor de Excel.", "repaired": true}

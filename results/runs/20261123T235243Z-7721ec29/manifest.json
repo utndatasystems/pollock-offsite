@@ -1,0 +1,332 @@
+{
+  "completed_suts": [
+    "duckdbauto_strict",
+    "pandas",
+    "clevercs",
+    "pycsv",
+    "llm_hybrid_parser_gpt_6_2_sol_duckdb",
+    "code_generation_llm_gpt_6_2_sol",
+    "full_llm_loader_naive_gpt_6_2_sol",
+    "llm_hybrid_parser_gpt_6_1_terra_duckdb",
+    "code_generation_llm_gpt_6_1_terra",
+    "full_llm_loader_naive_gpt_6_1_terra",
+    "llm_hybrid_parser_gpt_6_luna_duckdb",
+    "code_generation_llm_gpt_6_luna",
+    "full_llm_loader_naive_gpt_6_luna"
+  ],
+  "config": {
+    "cache_policy": "cold",
+    "dataset": "combined_real_world_files",
+    "dataset_seed": 1337,
+    "eval_njobs": 100,
+    "files": [],
+    "local_api_base": "http://localhost:11434/v1",
+    "local_models": [],
+    "remote_endpoint": "https://api.openai.com/v1/chat/completions",
+    "remote_models": [
+      "gpt-6.2-sol",
+      "gpt-6.1-terra",
+      "gpt-6-luna"
+    ],
+    "repetitions": "1",
+    "row_order_invariant": true,
+    "script": "full",
+    "suts": [
+      "duckdbauto_strict",
+      "pandas",
+      "clevercs",
+      "pycsv",
+      "llm_hybrid_parser_gpt_6_2_sol_duckdb",
+      "code_generation_llm_gpt_6_2_sol",
+      "full_llm_loader_naive_gpt_6_2_sol",
+      "llm_hybrid_parser_gpt_6_1_terra_duckdb",
+      "code_generation_llm_gpt_6_1_terra",
+      "full_llm_loader_naive_gpt_6_1_terra",
+      "llm_hybrid_parser_gpt_6_luna_duckdb",
+      "code_generation_llm_gpt_6_luna",
+      "full_llm_loader_naive_gpt_6_luna"
+    ],
+    "verbose": false
+  },
+  "dataset_sha256": "034608259927a39d70ec96f43004ab49d0cb05b1359df3e3ad9f3a2f72209489",
+  "finished_at_utc": "2026-11-24T18:42:35+00:00",
+  "git_commit": "7721ec296d03606c7587f0385e3364d16e50ae98",
+  "installed_dependencies": {
+    "Faker": "40.19.1",
+    "Pygments": "2.20.0",
+    "attrs": "26.1.0",
+    "bounded-pool-executor": "0.0.3",
+    "certifi": "2026.5.20",
+    "chardet": "7.4.3",
+    "charset-normalizer": "3.4.7",
+    "clevercsv": "0.8.5",
+    "contourpy": "1.3.3",
+    "cycler": "0.12.1",
+    "duckdb": "1.5.2",
+    "fonttools": "4.63.0",
+    "huggingface_hub": "1.2.3",
+    "idna": "3.16",
+    "iniconfig": "2.3.0",
+    "joblib": "1.5.3",
+    "kiwisolver": "1.5.0",
+    "lxml": "6.1.0",
+    "matplotlib": "3.10.9",
+    "multiset": "3.2.0",
+    "numpy": "2.4.6",
+    "packaging": "26.2",
+    "pandas": "3.0.3",
+    "pillow": "12.2.0",
+    "pluggy": "1.6.0",
+    "pqdm": "0.2.0",
+    "price-parser": "0.5.1",
+    "pyparsing": "3.3.2",
+    "pytest": "9.0.3",
+    "python-dateutil": "2.9.0.post0",
+    "python-dotenv": "1.2.2",
+    "regex": "2026.5.9",
+    "requests": "2.34.2",
+    "six": "1.17.0",
+    "tqdm": "4.67.3",
+    "typing_extensions": "4.15.0",
+    "urllib3": "2.7.0",
+    "zstandard": "0.25.0"
+  },
+  "python_version": "3.12.3",
+  "reopened": [
+    {
+      "at_utc": "2026-11-24T07:53:02+00:00",
+      "reason": "OpenAI organization spend limit hit from 03:48 UTC; outputs written after that were quota errors or LLM-less hybrid fallbacks. Moved to _quarantine_spend_limit/.",
+      "suts": [
+        "llm_hybrid_parser_gpt_6_1_terra_duckdb",
+        "llm_hybrid_parser_gpt_6_luna_duckdb",
+        "code_generation_llm_gpt_6_1_terra",
+        "code_generation_llm_gpt_6_luna",
+        "full_llm_loader_naive_gpt_6_1_terra",
+        "full_llm_loader_naive_gpt_6_luna",
+        "full_llm_loader_naive_gpt_6_2_sol"
+      ]
+    },
+    {
+      "at_utc": "2026-11-24T08:52:40+00:00",
+      "reason": "Resume at 2026-11-24T07:54:10Z used an invalid OpenAI API key (401); the outputs it wrote for these SUTs were deleted.",
+      "suts": [
+        "llm_hybrid_parser_gpt_6_1_terra_duckdb",
+        "llm_hybrid_parser_gpt_6_luna_duckdb",
+        "code_generation_llm_gpt_6_1_terra",
+        "code_generation_llm_gpt_6_luna",
+        "full_llm_loader_naive_gpt_6_1_terra",
+        "full_llm_loader_naive_gpt_6_luna",
+        "full_llm_loader_naive_gpt_6_2_sol"
+      ]
+    },
+    {
+      "at_utc": "2026-11-24T14:17:11+00:00",
+      "reason": "Resume at 2026-11-24T13:41:29Z used an invalid OpenAI API key (401); the outputs it wrote for these SUTs (82 terra full-agentic files and their time-CSV rows, all luna SUTs) were deleted.",
+      "suts": [
+        "full_llm_loader_naive_gpt_6_1_terra",
+        "llm_hybrid_parser_gpt_6_luna_duckdb",
+        "code_generation_llm_gpt_6_luna",
+        "full_llm_loader_naive_gpt_6_luna"
+      ]
+    }
+  ],
+  "replays": [
+    {
+      "at_utc": "2026-11-24T07:18:31+00:00",
+      "git_commit": "3b1d88c3e91acda886c364c8bcfdb63f01a013e3",
+      "reason": "Re-executed the saved generated programs (no LLM calls) with the extended builtin allowlist of commit 3b1d88c3e; replay with the run's original sandbox reproduced every output and malformed report byte for byte.",
+      "replaced_files": {
+        "code_generation_llm_gpt_6_2_sol": [
+          "10.January_2019.csv",
+          "2004-2016.csv",
+          "300mAThree.CSV",
+          "April-2011-for-publication.csv",
+          "Auto_Tone_sub242_nov.csv",
+          "Auto_Tone_sub315_day1.csv",
+          "Consular_cases_April_2016.csv",
+          "Copy_of_2016-17_Q3_Final_V2.csv",
+          "GPC_DCLG_December_2015_for_Publication.csv",
+          "HMRC_spending_over_25000_for_September_2018.csv",
+          "LOS_1050CFit.csv",
+          "NBA_scores_out.csv",
+          "Note_4_Staff_costs_-_Average_number_of_persons_employed_13-14.csv",
+          "O18_air.csv",
+          "OccurrenceData351.csv",
+          "Oct_2013.csv",
+          "ResultsOR30x100-0.25_10.dat__m21Infos.csv",
+          "ResultsOR30x100-0.25_5.dat__m28.csv",
+          "ResultsOR30x100-0.50_1.dat__m21.csv",
+          "ResultsOR30x100-0.50_10.dat__m28Infos.csv",
+          "ResultsOR30x100-0.75_10.dat__m13.csv",
+          "ResultsOR30x250-0.50_4.dat.csv",
+          "ResultsOR30x250-0.75_2.dat.csv",
+          "ResultsOR30x500-0.75_3.dat.csv",
+          "Resultsgk06.datInfos.csv",
+          "S39.csv",
+          "SouthTrent_Demand_zone-based.csv",
+          "Sun2014-Rs.csv",
+          "Sustainability_-_Water_consumption_P_56.csv",
+          "Takakai2008-ch4.csv",
+          "air_quality_station3_2006.csv",
+          "business_expenses_apr_jun_14_peter_lewis.csv",
+          "demographics_019__samp-phase1.csv",
+          "demographics_020__bader1956_p_cu.csv",
+          "demographics_022__race_polls.csv",
+          "demographics_024__key.csv",
+          "dwp-cmg-spend-1214.csv",
+          "environment_010__trisource_poc_bom.csv",
+          "environment_013__daily_metrics.csv",
+          "environment_019__arch_search.csv",
+          "environment_025__starts-anywhere.csv",
+          "environment_uk_004__BEIS_exemption_2016-17_Q2_ICT.csv",
+          "epcs-dwp-cmg-spend-july-2017.csv",
+          "erionite.csv",
+          "extended.csv",
+          "finance_001__pyth.csv",
+          "finance_020__kassenbuch-excel-de.csv",
+          "finance_023__run_20260506_050231.csv",
+          "finance_026__midnight.csv",
+          "finance_034__dedup_a.csv",
+          "finance_036__iocs.csv",
+          "finance_ca_003__fpd-dpf-balance_sheet_2016_5m_20m.csv",
+          "finance_uk_001__ODA_FCO_Programme_Spend_Jan_-_Dec2012.csv",
+          "fire_archive_V1_50574.csv",
+          "health_009__fig5_hepatocyte_ascii.csv",
+          "health_023__threat-intelligence-feeds.csv",
+          "health_027__run_metrics.csv",
+          "health_030__idrid_ensemble.csv",
+          "health_032__immunizations.csv",
+          "health_033__diabetes_raw.csv",
+          "health_034__partitions.csv",
+          "health_039__flags-headers.csv",
+          "health_043__errors.csv",
+          "health_ca_002__foodbook-pumf-fmgd-part-partie-1-en.csv",
+          "health_ca_004__Sodium-usual-intake-Canada-excl-territories-2015-en.csv",
+          "health_uk_016__M4-Jul-18-Published-data.csv",
+          "hypo5.csv",
+          "june_2015(1).csv",
+          "ministry-of-defence__30-09-2012__mod_300912-Air-Govt-data-template-u-senior.csv",
+          "narrow.csv",
+          "planning-application-aug-17.csv",
+          "prison-and-probation-ombudsman__30-09-2014__justice_PPO-September-Return-senior.csv",
+          "rape_table_3_prosecution_outcomes_0708_1314.csv",
+          "senior-staff-march-2020.csv",
+          "student_loans_company_limited-2011-09-30-organogram-senior.csv",
+          "transportation_020__estados.csv",
+          "transportation_022__vacancy_municipality.csv",
+          "transportation_028__8_connections.csv",
+          "transportation_036__ba_crime_combined.csv",
+          "transportation_038__blokade_solo.csv",
+          "transportation_042__Class_Based_Storage.csv",
+          "transportation_ca_001__ODP-TR_transition-IS_PT_immcat.csv",
+          "transportation_ca_002__ODP-TR-Work-IMP-gender_skill.csv",
+          "transportation_uk_003__Speed_Camera_Locations_GM_Mobile.csv",
+          "trinity-house__31-03-2015__dft_310315-Trinity-House-Organogram-ver-1-junior.csv",
+          "vissim_data_conf2473_i12_v2026.csv",
+          "wairakite-dh.csv",
+          "workforce-management-information-dft_201706.csv"
+        ]
+      },
+      "type": "code_generation_sandbox_replay"
+    },
+    {
+      "at_utc": "2026-11-24T09:05:38+00:00",
+      "reason": "These files fail to decode before any request, but their time-CSV rows held the previous file's cost record (fixed in llm_utils/custom-bench by a per-file reset). A rerun without network produced byte-identical outputs and no cost record; usage/cost columns were cleared, time_0 kept.",
+      "suts": {
+        "full_llm_loader_naive_gpt_6_2_sol": [
+          "environment_uk_004__BEIS_exemption_2016-17_Q2_ICT.csv",
+          "health_ca_004__Sodium-usual-intake-Canada-excl-territories-2015-en.csv"
+        ]
+      },
+      "type": "full_llm_loader_stale_cost_fix"
+    },
+    {
+      "at_utc": "2026-11-24T19:52:15+00:00",
+      "git_commit": "f68a03c437f68c3ac44ac32623e6f691721813d1",
+      "reason": "Re-executed the saved generated programs (no LLM calls) with __build_class__ and OverflowError added to the builtin allowlist (on top of git_commit, committed afterwards); replay with the previous sandbox reproduced every output that has a saved program byte for byte.",
+      "replaced_files": {
+        "code_generation_llm_gpt_6_1_terra": [
+          "ResultsOR30x100-0.25_5.dat__m28.csv",
+          "environment_047__companies.csv",
+          "health_017__fault-kill20.csv"
+        ],
+        "code_generation_llm_gpt_6_luna": [
+          "health_030__idrid_ensemble.csv"
+        ]
+      },
+      "type": "code_generation_sandbox_replay"
+    },
+    {
+      "at_utc": "2026-11-24T19:52:48+00:00",
+      "reason": "These files fail to decode before any request, but their time-CSV rows held the previous file's cost record (written before the per-file reset was committed). A rerun without network produced byte-identical outputs and no cost record; usage/cost columns were cleared, time_0 kept.",
+      "suts": {
+        "full_llm_loader_naive_gpt_6_1_terra": [
+          "environment_uk_004__BEIS_exemption_2016-17_Q2_ICT.csv",
+          "health_ca_004__Sodium-usual-intake-Canada-excl-territories-2015-en.csv"
+        ]
+      },
+      "type": "full_llm_loader_stale_cost_fix"
+    }
+  ],
+  "requirements_sha256": "142e953722e0f65ed2a357c508f6c9aff2a8386fbed2494f5549d9613d5b1a81",
+  "resumes": [
+    {
+      "completed_suts": [
+        "duckdbauto_strict",
+        "pandas",
+        "clevercs",
+        "pycsv",
+        "llm_hybrid_parser_gpt_6_2_sol_duckdb",
+        "code_generation_llm_gpt_6_2_sol"
+      ],
+      "git_commit": "7b234b8a38d9f04ba8e9d2a70e5571f5da9a98bd",
+      "resumed_at_utc": "2026-11-24T07:54:10+00:00"
+    },
+    {
+      "completed_suts": [
+        "duckdbauto_strict",
+        "pandas",
+        "clevercs",
+        "pycsv",
+        "llm_hybrid_parser_gpt_6_2_sol_duckdb",
+        "code_generation_llm_gpt_6_2_sol"
+      ],
+      "git_commit": "7b234b8a38d9f04ba8e9d2a70e5571f5da9a98bd",
+      "resumed_at_utc": "2026-11-24T08:54:15+00:00"
+    },
+    {
+      "completed_suts": [
+        "duckdbauto_strict",
+        "pandas",
+        "clevercs",
+        "pycsv",
+        "llm_hybrid_parser_gpt_6_2_sol_duckdb",
+        "code_generation_llm_gpt_6_2_sol",
+        "full_llm_loader_naive_gpt_6_2_sol",
+        "llm_hybrid_parser_gpt_6_1_terra_duckdb",
+        "code_generation_llm_gpt_6_1_terra"
+      ],
+      "git_commit": "f68a03c437f68c3ac44ac32623e6f691721813d1",
+      "resumed_at_utc": "2026-11-24T13:41:29+00:00"
+    },
+    {
+      "completed_suts": [
+        "duckdbauto_strict",
+        "pandas",
+        "clevercs",
+        "pycsv",
+        "llm_hybrid_parser_gpt_6_2_sol_duckdb",
+        "code_generation_llm_gpt_6_2_sol",
+        "full_llm_loader_naive_gpt_6_2_sol",
+        "llm_hybrid_parser_gpt_6_1_terra_duckdb",
+        "code_generation_llm_gpt_6_1_terra"
+      ],
+      "git_commit": "f68a03c437f68c3ac44ac32623e6f691721813d1",
+      "resumed_at_utc": "2026-11-24T14:18:45+00:00"
+    }
+  ],
+  "run_id": "20261123T235243Z-7721ec29",
+  "schema_version": 1,
+  "started_at_utc": "2026-11-23T23:52:43+00:00",
+  "status": "complete"
+}

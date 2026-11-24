@@ -1,0 +1,62 @@
+{
+  "cache_version": 1,
+  "created_at": "2026-11-24T15:11:53.523725+00:00",
+  "api_base": "https://api.openai.com/v1",
+  "payload": {
+    "model": "gpt-6.1-terra",
+    "messages": [
+      {
+        "role": "system",
+        "content": "You are a CSV repair assistant.\n\nYour task is to inspect a possibly malformed CSV file and reconstruct it as a valid CSV table.\n\nReturn the repaired CSV and a brief error report. Do not include explanations outside the requested output sections."
+      },
+      {
+        "role": "user",
+        "content": "Repair the following CSV file.\n\nReturn exactly two sections and nothing else.\nDo not use Markdown fences. Do not include prose before, between, or after the sections.\nThe section markers must appear exactly as shown, each on its own line.\n\n--BEGIN FIXED CSV--\n<repaired CSV text only, including exactly one header row>\n--END FIXED CSV--\n--BEGIN ERROR REPORT--\n<JSON error report object only>\n--END ERROR REPORT--\n\nRules for the fixed CSV section:\n\n- Use a comma as the output delimiter.\n- Use double quotes according to standard CSV escaping rules.\n- Encode an embedded double quote as two double quotes.\n- Preserve every payload character exactly.\n- Do not normalize, infer, translate, reformat, round, complete, shorten, or otherwise rewrite cell values.\n- Preserve embedded line breaks inside quoted fields.\n- Use LF line endings.\n- Return the complete repaired CSV, not a sample, preview, summary, or first portion.\n- Include every recoverable source data row exactly once unless the input clearly marks it as non-data.\n- Finish the entire fixed CSV section before starting the error report.\n- If output length is a concern, keep the error report as short as possible but do not truncate the fixed CSV.\n- Do not wrap the CSV in Markdown fences.\n- Do not include comments, explanations, or section labels inside the CSV.\n- If the input is empty, whitespace-only, or contains no table evidence, leave the fixed CSV section empty. Do not invent headers, rows, columns, examples, placeholder data, or sample content.\n\nThe error report must use this format:\n\n{\n  \"fixed_errors\": [\n    {\n      \"type\": \"<error type>\",\n      \"description\": \"<brief description>\",\n      \"rows\": [<affected physical line numbers>]\n    }\n  ],\n  \"summary\": \"<brief summary>\"\n}\n\nIf no errors were fixed, return an empty fixed_errors list.\n\nCSV content:\n\ntime,temperature,humidity\n00:00:02,28.20,27.60\n00:00:11,28.10,27.60\n00:00:31,28.20,27.50\n00:00:43,28.10,27.60\n00:00:53,28.20,27.60\n00:01:12,28.20,27.50\n00:01:21,28.20,27.50\n00:01:33,28.20,27.50\n00:01:50,28.20,27.60\n12:41:05,28.70,28.20\n12:41:15,28.70,28.40\n12:41:25,28.70,28.40\n12:41:35,28.70,28.40\n12:41:45,28.70,28.60\n12:41:55,28.70,28.20\n12:42:05,28.70,28.30\n12:42:15,28.70,28.60\n12:42:25,28.70,28.20\n12:42:35,28.70,28.20\n12:42:45,28.70,28.30\n12:42:55,28.80,28.70\n12:43:05,28.70,28.10\n12:43:15,28.70,28.20\n12:43:25,28.70,28.30\n12:43:35,28.80,28.50\n12:43:45,28.70,28.40\n12:43:55,28.80,28.40\n12:44:05,28.80,28.30\n12:44:18,28.80,28.50\n12:44:28,28.80,28.40\n12:44:38,28.80,28.20\n12:44:48,28.80,28.30\n12:44:58,28.80,28.30\n12:45:08,28.70,28.30\n12:45:19,28.80,28.30\n12:45:28,28.70,28.30\n12:45:38,28.70,28.30\n12:45:48,28.80,28.30\n12:45:58,28.80,28.40\n12:46:09,28.80,28.50\n12:46:18,28.80,28.30\n12:46:28,28.80,28.40\n12:46:38,28.80,28.70\n12:46:48,28.70,28.70\n12:46:59,28.80,28.70\n12:47:08,28.80,28.70\n12:47:18,28.80,28.70\n12:47:28,28.70,28.20\n12:47:38,28.70,28.60\n12:47:48,28.70,28.60\n12:47:58,28.80,28.70\n12:48:09,28.70,28.80\n12:48:18,28.80,28.80\n12:48:28,28.70,28.80\n12:48:38,28.80,28.80\n12:48:48,28.80,28.90\n12:48:58,28.70,28.60\n12:49:09,28.80,28.60\n12:49:19,28.80,28.60\n\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u000012:58:04,28.80,28.00\n12:58:15,28.80,28.20\n12:58:26,28.80,28.20\n12:58:35,28.80,28.10\n12:58:45,28.80,28.10\n12:58:55,28.80,28.10\n12:59:05,28.80,28.00\n12:59:15,28.80,27.80\n12:59:25,28.80,28.00\n12:59:35,28.80,28.00\n12:59:45,28.80,27.50\n12:59:55,28.80,27.40\n13:00:05,28.80,27.70\n13:00:15,28.80,27.60\n13:00:26,28.80,27.40\n13:00:35,28.80,27.50\n13:00:45,28.80,27.60\n13:00:55,28.80,27.60\n13:01:05,28.80,27.80\n13:01:15,28.80,28.10\n13:01:25,28.80,28.00\n13:01:35,28.80,28.20\n13:01:45,28.80,28.20\n13:01:55,28.80,28.30\n13:02:05,28.80,28.30\n13:02:15,28.80,28.30\n13:02:25,28.80,28.40\n13:02:35,28.80,28.50\n13:02:45,28.80,28.50\n13:02:56,28.80,28.50\n13:03:05,28.80,28.60\n13:03:15,28.80,28.60\n13:03:26,28.70,28.50\n13:03:35,28.80,28.70\n13:03:45,28.80,28.70\n13:03:55,28.80,28.40\n13:04:05,28.70,28.40\n13:04:15,28.70,28.50\n13:04:25,28.80,28.50\n13:04:35,28.80,28.60\n13:04:45,28.70,28.50\n13:04:55,28.80,28.70\n13:05:05,28.70,28.50\n13:05:15,28.70,28.50\n13:05:25,28.70,28.60\n13:05:35,28.70,28.60\n13:05:45,28.70,28.30\n13:05:55,28.70,28.50\n13:06:05,28.70,28.70\n13:06:15,28.70,28.50\n13:06:25,28.70,28.30\n\n"
+      }
+    ],
+    "stream": false,
+    "max_completion_tokens": 16000
+  },
+  "content": "--BEGIN FIXED CSV--\ntime,temperature,humidity\n00:00:02,28.20,27.60\n00:00:11,28.10,27.60\n00:00:31,28.20,27.50\n00:00:43,28.10,27.60\n00:00:53,28.20,27.60\n00:01:12,28.20,27.50\n00:01:21,28.20,27.50\n00:01:33,28.20,27.50\n00:01:50,28.20,27.60\n12:41:05,28.70,28.20\n12:41:15,28.70,28.40\n12:41:25,28.70,28.40\n12:41:35,28.70,28.40\n12:41:45,28.70,28.60\n12:41:55,28.70,28.20\n12:42:05,28.70,28.30\n12:42:15,28.70,28.60\n12:42:25,28.70,28.20\n12:42:35,28.70,28.20\n12:42:45,28.70,28.30\n12:42:55,28.80,28.70\n12:43:05,28.70,28.10\n12:43:15,28.70,28.20\n12:43:25,28.70,28.30\n12:43:35,28.80,28.50\n12:43:45,28.70,28.40\n12:43:55,28.80,28.40\n12:44:05,28.80,28.30\n12:44:18,28.80,28.50\n12:44:28,28.80,28.40\n12:44:38,28.80,28.20\n12:44:48,28.80,28.30\n12:44:58,28.80,28.30\n12:45:08,28.70,28.30\n12:45:19,28.80,28.30\n12:45:28,28.70,28.30\n12:45:38,28.70,28.30\n12:45:48,28.80,28.30\n12:45:58,28.80,28.40\n12:46:09,28.80,28.50\n12:46:18,28.80,28.30\n12:46:28,28.80,28.40\n12:46:38,28.80,28.70\n12:46:48,28.70,28.70\n12:46:59,28.80,28.70\n12:47:08,28.80,28.70\n12:47:18,28.80,28.70\n12:47:28,28.70,28.20\n12:47:38,28.70,28.60\n12:47:48,28.70,28.60\n12:47:58,28.80,28.70\n12:48:09,28.70,28.80\n12:48:18,28.80,28.80\n12:48:28,28.70,28.80\n12:48:38,28.80,28.80\n12:48:48,28.80,28.90\n12:48:58,28.70,28.60\n12:49:09,28.80,28.60\n12:49:19,28.80,28.60\n12:58:04,28.80,28.00\n12:58:15,28.80,28.20\n12:58:26,28.80,28.20\n12:58:35,28.80,28.10\n12:58:45,28.80,28.10\n12:58:55,28.80,28.10\n12:59:05,28.80,28.00\n12:59:15,28.80,27.80\n12:59:25,28.80,28.00\n12:59:35,28.80,28.00\n12:59:45,28.80,27.50\n12:59:55,28.80,27.40\n13:00:05,28.80,27.70\n13:00:15,28.80,27.60\n13:00:26,28.80,27.40\n13:00:35,28.80,27.50\n13:00:45,28.80,27.60\n13:00:55,28.80,27.60\n13:01:05,28.80,27.80\n13:01:15,28.80,28.10\n13:01:25,28.80,28.00\n13:01:35,28.80,28.20\n13:01:45,28.80,28.20\n13:01:55,28.80,28.30\n13:02:05,28.80,28.30\n13:02:15,28.80,28.30\n13:02:25,28.80,28.40\n13:02:35,28.80,28.50\n13:02:45,28.80,28.50\n13:02:56,28.80,28.50\n13:03:05,28.80,28.60\n13:03:15,28.80,28.60\n13:03:26,28.70,28.50\n13:03:35,28.80,28.70\n13:03:45,28.80,28.70\n13:03:55,28.80,28.40\n13:04:05,28.70,28.40\n13:04:15,28.70,28.50\n13:04:25,28.80,28.50\n13:04:35,28.80,28.60\n13:04:45,28.70,28.50\n13:04:55,28.80,28.70\n13:05:05,28.70,28.50\n13:05:15,28.70,28.50\n13:05:25,28.70,28.60\n13:05:35,28.70,28.60\n13:05:45,28.70,28.30\n13:05:55,28.70,28.50\n13:06:05,28.70,28.70\n13:06:15,28.70,28.50\n13:06:25,28.70,28.30\n--END FIXED CSV--\n--BEGIN ERROR REPORT--\n{\"fixed_errors\":[{\"type\":\"null_bytes\",\"description\":\"Removed leading NUL padding.\",\"rows\":[61]}],\"summary\":\"Removed corrupt NUL padding.\"}\n--END ERROR REPORT--",
+  "usage": {
+    "prompt_tokens": 2003,
+    "completion_tokens": 1812,
+    "total_tokens": 3815,
+    "prompt_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 2000,
+      "audio_tokens": 0
+    },
+    "completion_tokens_details": {
+      "reasoning_tokens": 203,
+      "audio_tokens": 0,
+      "accepted_prediction_tokens": 0,
+      "rejected_prediction_tokens": 0
+    }
+  },
+  "cost": {
+    "backend": "openai",
+    "model": "gpt-6.1-terra",
+    "api_base": "https://api.openai.com/v1",
+    "local_cache_hit": false,
+    "usage_available": true,
+    "cache_path": "/home/robin/offsite/pollock-offsite/results/runs/20261123T235243Z-7721ec29/full_llm_loader_naive_gpt_6_1_terra/combined_real_world_files/llm_cache/ec233c103688d6f5db6e09b4563147ddd32785e720655a246820ef63639c6fc3.json",
+    "prompt_tokens": 2003,
+    "cached_input_tokens": 0,
+    "uncached_input_tokens": 2003,
+    "ordinary_input_tokens": 3,
+    "cache_write_tokens": 2000,
+    "completion_tokens": 1812,
+    "total_tokens": 3815,
+    "input_usd_per_1m": 1.0,
+    "cached_input_usd_per_1m": 0.05,
+    "cache_write_usd_per_1m": 1.25,
+    "output_usd_per_1m": 5.0,
+    "input_cost_usd": 3e-06,
+    "cached_input_cost_usd": 0.0,
+    "cache_write_cost_usd": 0.0025,
+    "output_cost_usd": 0.00906,
+    "estimated_api_cost_usd": 0.011563,
+    "billable_cost_usd": 0.011563
+  }
+}

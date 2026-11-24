@@ -1,0 +1,2 @@
+Malformed rows: 1
+{"line_num": 1, "reason": "header row normalized", "raw": ["Posted_Date", "Merchant_Name", "Invoice_Net_Line_Amount"], "repaired": true}

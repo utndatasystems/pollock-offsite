@@ -1,0 +1,2 @@
+Malformed rows: 1
+{"line_num": 1, "reason": "header row normalized", "raw": ["pedido", "data", "hora", "distancia_km", "chuva_mm", "tempo_entrega_min"], "repaired": true}

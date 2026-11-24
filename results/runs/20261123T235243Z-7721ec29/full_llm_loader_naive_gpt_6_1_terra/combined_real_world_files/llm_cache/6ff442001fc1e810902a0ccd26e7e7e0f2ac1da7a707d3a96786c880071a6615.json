@@ -1,0 +1,62 @@
+{
+  "cache_version": 1,
+  "created_at": "2026-11-24T12:15:36.558392+00:00",
+  "api_base": "https://api.openai.com/v1",
+  "payload": {
+    "model": "gpt-6.1-terra",
+    "messages": [
+      {
+        "role": "system",
+        "content": "You are a CSV repair assistant.\n\nYour task is to inspect a possibly malformed CSV file and reconstruct it as a valid CSV table.\n\nReturn the repaired CSV and a brief error report. Do not include explanations outside the requested output sections."
+      },
+      {
+        "role": "user",
+        "content": "Repair the following CSV file.\n\nReturn exactly two sections and nothing else.\nDo not use Markdown fences. Do not include prose before, between, or after the sections.\nThe section markers must appear exactly as shown, each on its own line.\n\n--BEGIN FIXED CSV--\n<repaired CSV text only, including exactly one header row>\n--END FIXED CSV--\n--BEGIN ERROR REPORT--\n<JSON error report object only>\n--END ERROR REPORT--\n\nRules for the fixed CSV section:\n\n- Use a comma as the output delimiter.\n- Use double quotes according to standard CSV escaping rules.\n- Encode an embedded double quote as two double quotes.\n- Preserve every payload character exactly.\n- Do not normalize, infer, translate, reformat, round, complete, shorten, or otherwise rewrite cell values.\n- Preserve embedded line breaks inside quoted fields.\n- Use LF line endings.\n- Return the complete repaired CSV, not a sample, preview, summary, or first portion.\n- Include every recoverable source data row exactly once unless the input clearly marks it as non-data.\n- Finish the entire fixed CSV section before starting the error report.\n- If output length is a concern, keep the error report as short as possible but do not truncate the fixed CSV.\n- Do not wrap the CSV in Markdown fences.\n- Do not include comments, explanations, or section labels inside the CSV.\n- If the input is empty, whitespace-only, or contains no table evidence, leave the fixed CSV section empty. Do not invent headers, rows, columns, examples, placeholder data, or sample content.\n\nThe error report must use this format:\n\n{\n  \"fixed_errors\": [\n    {\n      \"type\": \"<error type>\",\n      \"description\": \"<brief description>\",\n      \"rows\": [<affected physical line numbers>]\n    }\n  ],\n  \"summary\": \"<brief summary>\"\n}\n\nIf no errors were fixed, return an empty fixed_errors list.\n\nCSV content:\n\n# Genesis experiment\n# genesis 0.7.0 commit 469f747, node v22.23.4\n# settings {\"days\":60,\"brain\":64,\"people\":25,\"herbivores\":20,\"predators\":6,\"fish\":24,\"retina\":false,\"vicar\":true,\"pickyCopy\":true,\"soundPhysics\":true,\"animalCalls\":true,\"modernVoice\":false,\"homeland\":false,\"earth\":false}\n# seeds 1-12\n# day_X = the day (1 = first) something first happened in that world; empty = never\nseed,days_run,people_alive,generations,plant_eaters,hunters,fish,best_fire_skill,learns_from_others,copies_successful,follows_crowd,loners_pct,full_sibling_pct,vocal_control,point_urge,share_joy,words_said,words_shared,brain_general,brain_fear,brain_memory,brain_words,brain_regions,died_hunger,died_thirst,died_killed_by_a_predator,died_drowned,died_burned,died_its_wounds,died_old_age,died_struck_by_lightning,died_giving_birth,day_take,day_nut,day_flake,day_root,day_dig,day_meat,day_butcher,day_hunt,day_cooked,day_brand,day_setfire,day_fed,day_kept,day_madefire,day_rubfire,day_share,day_vicar,day_swim,day_point,day_joint,day_speak,day_shared\n1,60,16,2,85,11,139,0.57,0.72,0.58,0.47,44,21,0.17,0.15,0.13,1432,127,0.683,0.131,0.124,0.063,4,15,0,17,0,0,6,0,0,0,1,1,4,1,2,1,,1,42,28,56,,,,42,1,2,10,1,1,1,17\n2,60,13,2,94,18,139,0.02,0.92,0.52,0.54,0,41,0.18,0.12,0.11,1016,125,0.686,0.127,0.124,0.063,4.077,20,0,1,4,1,3,0,0,0,1,2,14,2,3,18,,20,8,,,,,,,1,1,2,1,1,1,21\n3,60,10,1,43,12,140,0.06,0.47,0.53,0.74,40,68,0.14,0.14,0.14,556,83,0.683,0.127,0.128,0.063,4,8,0,0,5,18,0,0,0,0,1,2,11,1,2,,,,6,6,,32,,,,1,4,4,1,,1,48\n4,60,7,1,44,11,140,0.01,0.66,0.42,0.45,29,16,0.22,0.06,0.11,1221,125,0.685,0.123,0.127,0.065,4,19,0,0,6,12,1,0,0,0,1,1,2,1,1,,,,11,11,,,,,,1,5,4,1,1,1,13\n5,60,8,1,60,12,140,0.01,1,0.41,0.34,13,67,0.17,0.19,0.09,531,77,0.686,0.121,0.131,0.063,4,8,0,17,1,2,1,0,0,0,1,2,1,1,6,,,,8,9,,,,,9,1,1,5,1,6,1,36\n6,60,19,2,1,8,137,0.03,1.02,0.39,0.5,0,37,0.07,0.13,0.16,1367,129,0.683,0.125,0.127,0.065,4.053,22,0,6,1,1,0,0,0,0,1,1,1,1,2,10,,11,,,,,,,,1,1,9,1,1,1,15\n7,60,16,1,85,21,140,0.39,0.68,0.4,0.48,38,41,0.11,0.12,0.21,1170,125,0.686,0.125,0.128,0.062,4,13,0,12,4,1,1,0,0,0,1,1,2,1,1,28,,,13,13,40,,,,40,1,1,5,1,2,1,18\n8,60,23,1,93,13,138,0.07,0.76,0.61,0.55,9,29,0.18,0.12,0.12,1391,126,0.683,0.126,0.128,0.063,4,12,0,3,4,5,2,2,0,0,1,1,6,1,4,4,21,6,6,,,,,,,1,2,9,1,1,1,13\n9,60,11,1,97,20,139,0.04,1.19,0.41,0.4,0,27,0.14,0.11,0.16,1566,130,0.68,0.126,0.125,0.068,4.091,28,0,4,7,0,1,2,0,0,1,1,3,1,1,25,,23,,,,,,,,1,5,8,1,1,1,16\n10,60,33,2,89,11,136,0.06,0.94,0.41,0.53,15,17,0.19,0.12,0.12,1359,128,0.685,0.125,0.126,0.063,4,13,1,8,6,0,0,1,0,0,1,1,5,1,1,1,49,1,36,36,36,36,,,,1,1,5,1,1,1,14\n11,60,27,2,82,13,140,0.04,0.85,0.46,0.32,7,18,0.18,0.12,0.13,1692,127,0.684,0.127,0.126,0.064,4,15,0,2,8,3,0,0,0,0,1,1,6,1,1,7,,4,4,,,,,,,1,1,2,1,1,1,11\n12,24,0,1,86,14,140,0,,,,,,,,,202,10,,,,,,23,0,8,0,0,0,0,0,0,1,5,4,1,5,13,,,,,,,,,,1,3,3,1,1,1,\n\n"
+      }
+    ],
+    "stream": false,
+    "max_completion_tokens": 16000
+  },
+  "content": "--BEGIN FIXED CSV--\nseed,days_run,people_alive,generations,plant_eaters,hunters,fish,best_fire_skill,learns_from_others,copies_successful,follows_crowd,loners_pct,full_sibling_pct,vocal_control,point_urge,share_joy,words_said,words_shared,brain_general,brain_fear,brain_memory,brain_words,brain_regions,died_hunger,died_thirst,died_killed_by_a_predator,died_drowned,died_burned,died_its_wounds,died_old_age,died_struck_by_lightning,died_giving_birth,day_take,day_nut,day_flake,day_root,day_dig,day_meat,day_butcher,day_hunt,day_cooked,day_brand,day_setfire,day_fed,day_kept,day_madefire,day_rubfire,day_share,day_vicar,day_swim,day_point,day_joint,day_speak,day_shared\n1,60,16,2,85,11,139,0.57,0.72,0.58,0.47,44,21,0.17,0.15,0.13,1432,127,0.683,0.131,0.124,0.063,4,15,0,17,0,0,6,0,0,0,1,1,4,1,2,1,,1,42,28,56,,,,42,1,2,10,1,1,1,17\n2,60,13,2,94,18,139,0.02,0.92,0.52,0.54,0,41,0.18,0.12,0.11,1016,125,0.686,0.127,0.124,0.063,4.077,20,0,1,4,1,3,0,0,0,1,2,14,2,3,18,,20,8,,,,,,,1,1,2,1,1,1,21\n3,60,10,1,43,12,140,0.06,0.47,0.53,0.74,40,68,0.14,0.14,0.14,556,83,0.683,0.127,0.128,0.063,4,8,0,0,5,18,0,0,0,0,1,2,11,1,2,,,,6,6,,32,,,,1,4,4,1,,1,48\n4,60,7,1,44,11,140,0.01,0.66,0.42,0.45,29,16,0.22,0.06,0.11,1221,125,0.685,0.123,0.127,0.065,4,19,0,0,6,12,1,0,0,0,1,1,2,1,1,,,,11,11,,,,,,1,5,4,1,1,1,13\n5,60,8,1,60,12,140,0.01,1,0.41,0.34,13,67,0.17,0.19,0.09,531,77,0.686,0.121,0.131,0.063,4,8,0,17,1,2,1,0,0,0,1,2,1,1,6,,,,8,9,,,,,9,1,1,5,1,6,1,36\n6,60,19,2,1,8,137,0.03,1.02,0.39,0.5,0,37,0.07,0.13,0.16,1367,129,0.683,0.125,0.127,0.065,4.053,22,0,6,1,1,0,0,0,0,1,1,1,1,2,10,,11,,,,,,,,1,1,9,1,1,1,15\n7,60,16,1,85,21,140,0.39,0.68,0.4,0.48,38,41,0.11,0.12,0.21,1170,125,0.686,0.125,0.128,0.062,4,13,0,12,4,1,1,0,0,0,1,1,2,1,1,28,,,13,13,40,,,,40,1,1,5,1,2,1,18\n8,60,23,1,93,13,138,0.07,0.76,0.61,0.55,9,29,0.18,0.12,0.12,1391,126,0.683,0.126,0.128,0.063,4,12,0,3,4,5,2,2,0,0,1,1,6,1,4,4,21,6,6,,,,,,,1,2,9,1,1,1,13\n9,60,11,1,97,20,139,0.04,1.19,0.41,0.4,0,27,0.14,0.11,0.16,1566,130,0.68,0.126,0.125,0.068,4.091,28,0,4,7,0,1,2,0,0,1,1,3,1,1,25,,23,,,,,,,,1,5,8,1,1,1,16\n10,60,33,2,89,11,136,0.06,0.94,0.41,0.53,15,17,0.19,0.12,0.12,1359,128,0.685,0.125,0.126,0.063,4,13,1,8,6,0,0,1,0,0,1,1,5,1,1,1,49,1,36,36,36,36,,,,1,1,5,1,1,1,14\n11,60,27,2,82,13,140,0.04,0.85,0.46,0.32,7,18,0.18,0.12,0.13,1692,127,0.684,0.127,0.126,0.064,4,15,0,2,8,3,0,0,0,0,1,1,6,1,1,7,,4,4,,,,,,,1,1,2,1,1,1,11\n12,24,0,1,86,14,140,0,,,,,,,,,202,10,,,,,,23,0,8,0,0,0,0,0,0,1,5,4,1,5,13,,,,,,,,,,1,3,3,1,1,1,\n--END FIXED CSV--\n--BEGIN ERROR REPORT--\n{\"fixed_errors\":[{\"type\":\"non_data_comments\",\"description\":\"Removed comment lines preceding the header.\",\"rows\":[1,2,3,4,5]}],\"summary\":\"Removed non-data comments; retained all 12 data rows.\"}\n--END ERROR REPORT--",
+  "usage": {
+    "prompt_tokens": 2160,
+    "completion_tokens": 1810,
+    "total_tokens": 3970,
+    "prompt_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 2157,
+      "audio_tokens": 0
+    },
+    "completion_tokens_details": {
+      "reasoning_tokens": 143,
+      "audio_tokens": 0,
+      "accepted_prediction_tokens": 0,
+      "rejected_prediction_tokens": 0
+    }
+  },
+  "cost": {
+    "backend": "openai",
+    "model": "gpt-6.1-terra",
+    "api_base": "https://api.openai.com/v1",
+    "local_cache_hit": false,
+    "usage_available": true,
+    "cache_path": "/home/robin/offsite/pollock-offsite/results/runs/20261123T235243Z-7721ec29/full_llm_loader_naive_gpt_6_1_terra/combined_real_world_files/llm_cache/6ff442001fc1e810902a0ccd26e7e7e0f2ac1da7a707d3a96786c880071a6615.json",
+    "prompt_tokens": 2160,
+    "cached_input_tokens": 0,
+    "uncached_input_tokens": 2160,
+    "ordinary_input_tokens": 3,
+    "cache_write_tokens": 2157,
+    "completion_tokens": 1810,
+    "total_tokens": 3970,
+    "input_usd_per_1m": 1.0,
+    "cached_input_usd_per_1m": 0.05,
+    "cache_write_usd_per_1m": 1.25,
+    "output_usd_per_1m": 5.0,
+    "input_cost_usd": 3e-06,
+    "cached_input_cost_usd": 0.0,
+    "cache_write_cost_usd": 0.00269625,
+    "output_cost_usd": 0.00905,
+    "estimated_api_cost_usd": 0.011749250000000001,
+    "billable_cost_usd": 0.011749250000000001
+  }
+}

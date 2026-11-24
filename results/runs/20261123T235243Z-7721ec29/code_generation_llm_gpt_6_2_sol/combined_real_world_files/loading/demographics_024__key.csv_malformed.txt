@@ -1,0 +1,2 @@
+Malformed rows: 1
+{"line_num": 1, "reason": "header row normalized", "raw": ["# {\"max_verdict_id\": 12213", " \"population\": {\"adopt/candidate\": 4", " \"adopt/limit\": 3", " \"fetch/candidate\": 60", " \"fetch/limit\": 1", " \"fetch/machine\": 6", " \"inspect/candidate\": 17", " \"inspect/machine\": 99", " \"inspect/upstream\": 13", " \"screen/candidate\": 6", " \"screen/limit\": 4", " \"screen/runtime\": 26}", " \"seed\": 918}"], "repaired": true}

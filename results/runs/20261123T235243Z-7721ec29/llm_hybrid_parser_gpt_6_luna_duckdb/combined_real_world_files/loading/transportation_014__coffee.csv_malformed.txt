@@ -1,0 +1,12 @@
+Malformed rows: 11
+{"line_num": 62, "reason": "TOO MANY COLUMNS: Expected Number of Columns: 3 Found: 4", "raw": "Caf\u00e9 Lyria,\"New York, NY\",8.7,2026-10-21", "repaired": true}
+{"line_num": 63, "reason": "TOO MANY COLUMNS: Expected Number of Columns: 3 Found: 4", "raw": "Tiny Dancer Coffee,\"New York, NY\",7.3,2026-10-24", "repaired": true}
+{"line_num": 64, "reason": "TOO MANY COLUMNS: Expected Number of Columns: 3 Found: 4", "raw": "Maman,\"New York, NY\",9,2026-10-25", "repaired": true}
+{"line_num": 65, "reason": "TOO MANY COLUMNS: Expected Number of Columns: 3 Found: 4", "raw": "Outside In,\"New York, NY\",7.4,2026-10-26", "repaired": true}
+{"line_num": 66, "reason": "TOO MANY COLUMNS: Expected Number of Columns: 3 Found: 4", "raw": "Foreigner,\"New York, NY\",7.4,2026-10-28", "repaired": true}
+{"line_num": 67, "reason": "TOO MANY COLUMNS: Expected Number of Columns: 3 Found: 4", "raw": "Hungry Ghost Coffee,\"New York, NY\",8.9,2026-10-28", "repaired": true}
+{"line_num": 68, "reason": "TOO MANY COLUMNS: Expected Number of Columns: 3 Found: 4", "raw": "Sawada Coffee,\"New York, NY\",8.7,2026-10-30", "repaired": true}
+{"line_num": 69, "reason": "TOO MANY COLUMNS: Expected Number of Columns: 3 Found: 4", "raw": "Urban Backyard,\"New York, NY\",7.6,2026-10-31", "repaired": true}
+{"line_num": 70, "reason": "TOO MANY COLUMNS: Expected Number of Columns: 3 Found: 4", "raw": "Jake\u2019s at The Knick,\"New York, NY\",7.3,2026-11-02", "repaired": true}
+{"line_num": 71, "reason": "TOO MANY COLUMNS: Expected Number of Columns: 3 Found: 4", "raw": "A-Frame Cafe,\"New York, NY\",7.6,2026-11-02", "repaired": true}
+{"line_num": 72, "reason": "TOO MANY COLUMNS: Expected Number of Columns: 3 Found: 4", "raw": "Sant Ambroeus,\"New York, NY\",7.4,2026-11-02", "repaired": true}

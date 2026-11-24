@@ -1,0 +1,62 @@
+{
+  "cache_version": 1,
+  "created_at": "2026-11-24T18:38:48.264267+00:00",
+  "api_base": "https://api.openai.com/v1",
+  "payload": {
+    "model": "gpt-6-luna",
+    "messages": [
+      {
+        "role": "system",
+        "content": "You are a CSV repair assistant.\n\nYour task is to inspect a possibly malformed CSV file and reconstruct it as a valid CSV table.\n\nReturn the repaired CSV and a brief error report. Do not include explanations outside the requested output sections."
+      },
+      {
+        "role": "user",
+        "content": "Repair the following CSV file.\n\nReturn exactly two sections and nothing else.\nDo not use Markdown fences. Do not include prose before, between, or after the sections.\nThe section markers must appear exactly as shown, each on its own line.\n\n--BEGIN FIXED CSV--\n<repaired CSV text only, including exactly one header row>\n--END FIXED CSV--\n--BEGIN ERROR REPORT--\n<JSON error report object only>\n--END ERROR REPORT--\n\nRules for the fixed CSV section:\n\n- Use a comma as the output delimiter.\n- Use double quotes according to standard CSV escaping rules.\n- Encode an embedded double quote as two double quotes.\n- Preserve every payload character exactly.\n- Do not normalize, infer, translate, reformat, round, complete, shorten, or otherwise rewrite cell values.\n- Preserve embedded line breaks inside quoted fields.\n- Use LF line endings.\n- Return the complete repaired CSV, not a sample, preview, summary, or first portion.\n- Include every recoverable source data row exactly once unless the input clearly marks it as non-data.\n- Finish the entire fixed CSV section before starting the error report.\n- If output length is a concern, keep the error report as short as possible but do not truncate the fixed CSV.\n- Do not wrap the CSV in Markdown fences.\n- Do not include comments, explanations, or section labels inside the CSV.\n- If the input is empty, whitespace-only, or contains no table evidence, leave the fixed CSV section empty. Do not invent headers, rows, columns, examples, placeholder data, or sample content.\n\nThe error report must use this format:\n\n{\n  \"fixed_errors\": [\n    {\n      \"type\": \"<error type>\",\n      \"description\": \"<brief description>\",\n      \"rows\": [<affected physical line numbers>]\n    }\n  ],\n  \"summary\": \"<brief summary>\"\n}\n\nIf no errors were fixed, return an empty fixed_errors list.\n\nCSV content:\n\nname,city,score,date,note\nCafé du Clown,\"Paris, France\",9.3\nSubko Coffee,\"Mumbai, India\",9.2\nCaffe Trieste,\"San Francisco, CA\",9.1\nAnnie’s Social,\"Queens, NY\",9.1\nKamson Coffee,\"San Rafael, CA\",9.2\nCafe Aquatica,\"Jenner, CA\",9\nVictrola Coffee Roasters,\"Seattle, WA\",9\nSoul Rebel Coffee,\"Calistoga, CA\",9\nAvid Coffee,\"Santa Rosa, CA\",8.9\nStarter Bakery,\"Oakland, CA\",8.9\nLONGWAY,\"San Anselmo, CA\",7.4\nUplift Cafe,\"Stateline, NV\",7.9\nClydes Coffee Roasting Company,\"Stateline, NV\",7.5\nPillowfight Coffee,\"Kenwood, CA\",7.4\nCafé Sebastian,\"San Francisco, CA\",6.2\nBoicot Cafe,\"Mexico City, Mexico\",7.6\nEl Callejon Cafe,\"Mexico City, Mexico\",6.4\nTierra Garat,\"Mexico City, Mexico\",8.1\nKopi Bar,\"Walnut Creek, CA\",7.6\nOhm Coffee Roasters,\"Napa, CA\",8.7\nOutset Coffee,\"San Francisco, CA\",7.5\nCafe Angolo,\"San Francisco, CA\",9.1\nSisterita,\"San Francisco, CA\",6.8\nMoka Coffee,\"San Francisco, CA\",7.5\nCoffee Commissary,\"Los Angeles, CA\",7.6\nPaper Son Coffee,\"San Francisco, CA\",8.3\nQuail & Condor,\"Healdsburg, CA\",7.8\nGoodthing Coffee,\"Burlingame, CA\",8.1\nCoffee Bodega,\"San Francisco, CA\",7.7\nTwisted St Cafe,\"San Francisco, CA\",8.4\nLinea Caffe,\"San Francisco, CA\",8.9\nCafe Isabella,\"San Francisco, CA\",8.5\nCassava Cafe,\"San Francisco, CA\",8.2\nPostscript,\"San Francisco, CA\",8.6\nMonorail Espresso,\"Seattle, WA\",7.8\nAnchorhead Coffee,\"Seattle, WA\",8\nRainier Valley Coffee Co,\"Puyallup, WA\",8.2\nGhost Alley Espresso,\"Seattle, WA\",8.5\nStoryville Coffee,\"Seattle, WA\",8.3\nFresh Brew Coffee,\"San Francisco, CA\",7.6\nRêve Coffee,\"New York, NY\",8\nMonoblend Coffee,\"New York, NY\",8.5\nDevoción,\"New York, NY\",9.2\nGround Support Cafe,\"New York, NY\",8.8\nEmbriago Coffee,\"New York, NY\",7.7\nAlden’s Coffee,\"New York, NY\",7.6\nCoffeeShop,\"San Francisco, CA\",8.8\nAlways Awake Coffee,\"San Francisco, CA\",8.8\nSide Characters,\"San Francisco, CA\",9\nThe Richfield,\"San Francisco, CA\",7.9\nSoon & Soon Souvenir Shop,\"San Francisco, CA\",9\nThe Line Coffee,\"Berkeley, CA\",7.5\nNoor Specialty Coffee,\"Barcelona, Spain\",7.1\nXiloteca,\"Barcelona, Spain\",8.6\nThree Marks Coffee,\"Barcelona, Spain\",8.8\nHidden Coffee Roasters,\"Barcelona, Spain\",7.7\nEon Coffee,\"Hayward, CA\",5.5\nFermata Coffee,\"Geyserville, CA\",7.9\nCoffee Labs Roasters Inc,\"Tarrytown, NY\",7.9\nGasoline Alley Coffee,\"New York, NY\",7.8\nCafé Lyria,\"New York, NY\",8.7,2026-10-21\nTiny Dancer Coffee,\"New York, NY\",7.3,2026-10-24\nMaman,\"New York, NY\",9,2026-10-25\nOutside In,\"New York, NY\",7.4,2026-10-26\nForeigner,\"New York, NY\",7.4,2026-10-28\nHungry Ghost Coffee,\"New York, NY\",8.9,2026-10-28\nSawada Coffee,\"New York, NY\",8.7,2026-10-30\nUrban Backyard,\"New York, NY\",7.6,2026-10-31\nJake’s at The Knick,\"New York, NY\",7.3,2026-11-02\nA-Frame Cafe,\"New York, NY\",7.6,2026-11-02\nSant Ambroeus,\"New York, NY\",7.4,2026-11-02\n\n"
+      }
+    ],
+    "stream": false,
+    "max_completion_tokens": 16000
+  },
+  "content": "--BEGIN FIXED CSV--\nname,city,score,date,note\nCafé du Clown,\"Paris, France\",9.3,,\nSubko Coffee,\"Mumbai, India\",9.2,,\nCaffe Trieste,\"San Francisco, CA\",9.1,,\nAnnie’s Social,\"Queens, NY\",9.1,,\nKamson Coffee,\"San Rafael, CA\",9.2,,\nCafe Aquatica,\"Jenner, CA\",9,,\nVictrola Coffee Roasters,\"Seattle, WA\",9,,\nSoul Rebel Coffee,\"Calistoga, CA\",9,,\nAvid Coffee,\"Santa Rosa, CA\",8.9,,\nStarter Bakery,\"Oakland, CA\",8.9,,\nLONGWAY,\"San Anselmo, CA\",7.4,,\nUplift Cafe,\"Stateline, NV\",7.9,,\nClydes Coffee Roasting Company,\"Stateline, NV\",7.5,,\nPillowfight Coffee,\"Kenwood, CA\",7.4,,\nCafé Sebastian,\"San Francisco, CA\",6.2,,\nBoicot Cafe,\"Mexico City, Mexico\",7.6,,\nEl Callejon Cafe,\"Mexico City, Mexico\",6.4,,\nTierra Garat,\"Mexico City, Mexico\",8.1,,\nKopi Bar,\"Walnut Creek, CA\",7.6,,\nOhm Coffee Roasters,\"Napa, CA\",8.7,,\nOutset Coffee,\"San Francisco, CA\",7.5,,\nCafe Angolo,\"San Francisco, CA\",9.1,,\nSisterita,\"San Francisco, CA\",6.8,,\nMoka Coffee,\"San Francisco, CA\",7.5,,\nCoffee Commissary,\"Los Angeles, CA\",7.6,,\nPaper Son Coffee,\"San Francisco, CA\",8.3,,\nQuail & Condor,\"Healdsburg, CA\",7.8,,\nGoodthing Coffee,\"Burlingame, CA\",8.1,,\nCoffee Bodega,\"San Francisco, CA\",7.7,,\nTwisted St Cafe,\"San Francisco, CA\",8.4,,\nLinea Caffe,\"San Francisco, CA\",8.9,,\nCafe Isabella,\"San Francisco, CA\",8.5,,\nCassava Cafe,\"San Francisco, CA\",8.2,,\nPostscript,\"San Francisco, CA\",8.6,,\nMonorail Espresso,\"Seattle, WA\",7.8,,\nAnchorhead Coffee,\"Seattle, WA\",8,,\nRainier Valley Coffee Co,\"Puyallup, WA\",8.2,,\nGhost Alley Espresso,\"Seattle, WA\",8.5,,\nStoryville Coffee,\"Seattle, WA\",8.3,,\nFresh Brew Coffee,\"San Francisco, CA\",7.6,,\nRêve Coffee,\"New York, NY\",8,,\nMonoblend Coffee,\"New York, NY\",8.5,,\nDevoción,\"New York, NY\",9.2,,\nGround Support Cafe,\"New York, NY\",8.8,,\nEmbriago Coffee,\"New York, NY\",7.7,,\nAlden’s Coffee,\"New York, NY\",7.6,,\nCoffeeShop,\"San Francisco, CA\",8.8,,\nAlways Awake Coffee,\"San Francisco, CA\",8.8,,\nSide Characters,\"San Francisco, CA\",9,,\nThe Richfield,\"San Francisco, CA\",7.9,,\nSoon & Soon Souvenir Shop,\"San Francisco, CA\",9,,\nThe Line Coffee,\"Berkeley, CA\",7.5,,\nNoor Specialty Coffee,\"Barcelona, Spain\",7.1,,\nXiloteca,\"Barcelona, Spain\",8.6,,\nThree Marks Coffee,\"Barcelona, Spain\",8.8,,\nHidden Coffee Roasters,\"Barcelona, Spain\",7.7,,\nEon Coffee,\"Hayward, CA\",5.5,,\nFermata Coffee,\"Geyserville, CA\",7.9,,\nCoffee Labs Roasters Inc,\"Tarrytown, NY\",7.9,,\nGasoline Alley Coffee,\"New York, NY\",7.8,,\nCafé Lyria,\"New York, NY\",8.7,2026-10-21,\nTiny Dancer Coffee,\"New York, NY\",7.3,2026-10-24,\nMaman,\"New York, NY\",9,2026-10-25,\nOutside In,\"New York, NY\",7.4,2026-10-26,\nForeigner,\"New York, NY\",7.4,2026-10-28,\nHungry Ghost Coffee,\"New York, NY\",8.9,2026-10-28,\nSawada Coffee,\"New York, NY\",8.7,2026-10-30,\nUrban Backyard,\"New York, NY\",7.6,2026-10-31,\nJake’s at The Knick,\"New York, NY\",7.3,2026-11-02,\nA-Frame Cafe,\"New York, NY\",7.6,2026-11-02,\nSant Ambroeus,\"New York, NY\",7.4,2026-11-02,\n--END FIXED CSV--\n--BEGIN ERROR REPORT--\n{\n  \"fixed_errors\": [\n    {\n      \"type\": \"inconsistent_column_count\",\n      \"description\": \"Rows had fewer than five fields; appended empty trailing fields to match the header.\",\n      \"rows\": [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72]\n    }\n  ],\n  \"summary\": \"Aligned all 71 data rows to the five-column header by adding empty trailing fields.\"\n}\n--END ERROR REPORT--",
+  "usage": {
+    "prompt_tokens": 1471,
+    "completion_tokens": 2226,
+    "total_tokens": 3697,
+    "prompt_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 1468,
+      "audio_tokens": 0
+    },
+    "completion_tokens_details": {
+      "reasoning_tokens": 820,
+      "audio_tokens": 0,
+      "accepted_prediction_tokens": 0,
+      "rejected_prediction_tokens": 0
+    }
+  },
+  "cost": {
+    "backend": "openai",
+    "model": "gpt-6-luna",
+    "api_base": "https://api.openai.com/v1",
+    "local_cache_hit": false,
+    "usage_available": true,
+    "cache_path": "/home/robin/offsite/pollock-offsite/results/runs/20261123T235243Z-7721ec29/full_llm_loader_naive_gpt_6_luna/combined_real_world_files/llm_cache/c8127a5a0132bd06bfe694ae12028721bf20b799d8fa7178085e8510cdabb76e.json",
+    "prompt_tokens": 1471,
+    "cached_input_tokens": 0,
+    "uncached_input_tokens": 1471,
+    "ordinary_input_tokens": 3,
+    "cache_write_tokens": 1468,
+    "completion_tokens": 2226,
+    "total_tokens": 3697,
+    "input_usd_per_1m": 0.1,
+    "cached_input_usd_per_1m": 0.01,
+    "cache_write_usd_per_1m": 0.125,
+    "output_usd_per_1m": 0.5,
+    "input_cost_usd": 3.0000000000000004e-07,
+    "cached_input_cost_usd": 0.0,
+    "cache_write_cost_usd": 0.0001835,
+    "output_cost_usd": 0.001113,
+    "estimated_api_cost_usd": 0.0012968,
+    "billable_cost_usd": 0.0012968
+  }
+}

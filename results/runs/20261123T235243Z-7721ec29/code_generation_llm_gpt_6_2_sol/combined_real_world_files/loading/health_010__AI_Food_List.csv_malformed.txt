@@ -1,0 +1,2 @@
+Malformed rows: 1
+{"line_num": 1, "reason": "header row normalized", "raw": ["# Per 100 g. Empty = not measured. Use food_id exactly."], "repaired": true}

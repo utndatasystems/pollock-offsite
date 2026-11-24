@@ -1,0 +1,5 @@
+# H100 GPU microbenchmark; Runpod Pod x4ji7wyn73p8vp; measured 2026-11-16 America/Los_Angeles
+# GPU: NVIDIA H100 80GB HBM3; UUID GPU-50f50837-16c7-e2bd-d14a-238d4fbff8c8; 81559 MiB; compute capability 9.0
+# Driver 595.112.07; CUDA toolkit 12.8 V12.8.93; compiler nvcc -O3 -lineinfo -arch=sm_90
+# single_cta_ms and hierarchical_ms are per-call CUDA-event times; speedup = single_cta_ms / hierarchical_ms.
+# Three process-level repetitions; each used the same seeded input. First tie pair at token IDs 220 and 287.

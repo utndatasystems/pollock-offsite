@@ -1,0 +1,62 @@
+{
+  "cache_version": 1,
+  "created_at": "2026-11-24T18:25:37.219694+00:00",
+  "api_base": "https://api.openai.com/v1",
+  "payload": {
+    "model": "gpt-6-luna",
+    "messages": [
+      {
+        "role": "system",
+        "content": "You are a CSV repair assistant.\n\nYour task is to inspect a possibly malformed CSV file and reconstruct it as a valid CSV table.\n\nReturn the repaired CSV and a brief error report. Do not include explanations outside the requested output sections."
+      },
+      {
+        "role": "user",
+        "content": "Repair the following CSV file.\n\nReturn exactly two sections and nothing else.\nDo not use Markdown fences. Do not include prose before, between, or after the sections.\nThe section markers must appear exactly as shown, each on its own line.\n\n--BEGIN FIXED CSV--\n<repaired CSV text only, including exactly one header row>\n--END FIXED CSV--\n--BEGIN ERROR REPORT--\n<JSON error report object only>\n--END ERROR REPORT--\n\nRules for the fixed CSV section:\n\n- Use a comma as the output delimiter.\n- Use double quotes according to standard CSV escaping rules.\n- Encode an embedded double quote as two double quotes.\n- Preserve every payload character exactly.\n- Do not normalize, infer, translate, reformat, round, complete, shorten, or otherwise rewrite cell values.\n- Preserve embedded line breaks inside quoted fields.\n- Use LF line endings.\n- Return the complete repaired CSV, not a sample, preview, summary, or first portion.\n- Include every recoverable source data row exactly once unless the input clearly marks it as non-data.\n- Finish the entire fixed CSV section before starting the error report.\n- If output length is a concern, keep the error report as short as possible but do not truncate the fixed CSV.\n- Do not wrap the CSV in Markdown fences.\n- Do not include comments, explanations, or section labels inside the CSV.\n- If the input is empty, whitespace-only, or contains no table evidence, leave the fixed CSV section empty. Do not invent headers, rows, columns, examples, placeholder data, or sample content.\n\nThe error report must use this format:\n\n{\n  \"fixed_errors\": [\n    {\n      \"type\": \"<error type>\",\n      \"description\": \"<brief description>\",\n      \"rows\": [<affected physical line numbers>]\n    }\n  ],\n  \"summary\": \"<brief summary>\"\n}\n\nIf no errors were fixed, return an empty fixed_errors list.\n\nCSV content:\n\nid,group,order,name,definition,source\nH1,H,1,Wirtschaftsleistung,\"BIP pro Kopf, real in € zu Preisen von 2015\",\"WIFO-Daten-System, Macrobond\"\nH2,H,2,Arbeitsproduktivität,\"BIP je Arbeitsstunde, nominell, EU 27 = 100\",Eurostat \nH3,H,3,Multifaktorproduktivität,\"Wachstumsbeitag in Prozentpunkten, Zweijahresdurchschnitt\",\"TED-Total Economy Database, Conference Board\"\nH4,H,4,Energieintensität,Anteil Endenergieeinsatz (PJ) am BIP (zu Preisen von 2015) in %,\"IEA World Energy Balances; WIFO-Daten-System, Macrobond\"\nH5,H,5,CO2-Intensität ,Anteil CO2-Emissionen (kt) am BIP (zu Preisen von 2015) in %,\"UNFCCC GHG Data Interface; WDS - WIFO-Daten-System, Macrobond\"\nH6,H,6,Anteil erneuerbarer Energieträger,Anteil erneuerbarer Energieträger am energetischen Endverbrauch in %,Eurostat\nH7,H,7,Armutsgefährdung,\"Anteil von Personen mit höchstens 60% des medianen Äquivalenzeinkommens in %, nach Sozialleistungen\",Eurostat\nH8,H,8,Arbeitslosenquote,\"Anteil der Arbeitslosen an den 15- bis 64-\nJährigen Erwerbspersonen in %\",Eurostat\nH9,H,9,Beschäftigungsquote,Anteil der Beschäftigten an allen 15- bis 64-Jährigen in %,Eurostat\nH10,H,10,Einkommensverteilung,Verhältnis der Bevölkerung mit den höchsten 20% der verfügbaren Einkommen zu der mit den niedrigsten 20%,Eurostat\nH11,H,11,Regionale Kohäsion,\"Variationskoeffizient: Bruttoregionalprodukt pro Kopf zu KKP, NUTS-3-Regionen\",ARDECO (Annual Regional Database of the European Commission)\nH12,H,12,Leistungsbilanzsaldo,Leistungsbilanzsaldo in % des BIP,Eurostat\nE1,E,1,Pro-Kopf-Einkommen (kaufkraftbereinigt),BIP pro Kopf zu KKP von 2021,\"Conference Board, TED – Total Economy Database\"\nE2,E,2,BIP pro Kopf Metropolregionen,\"Bruttoregionalprodukt pro Kopf zu KKP, EU-Metrolpolregionen\",ARDECO (Annual Regional Database of the European Commission)\nE3,E,3,BIP pro Kopf Nicht-Metropolregionen,\"Bruttoregionalprodukt pro Kopf zu KKP, Nicht-Metropolregionen der EU\",ARDECO (Annual Regional Database of the European Commission)\nE4,E,4,Beschäftigungsquote in Vollzeitäquivalenten,Anteil der Beschäftigten in Vollzeitäquivalenten an allen 15- bis 64-Jährigen in %,\"Eurostat, Labour Force Survey, Sonderauswertung\"\nE5,E,5,Gender-Gap Beschäftigung,\"Differenz der Beschäftigungsquote von Männern und Frauen (25- bis 44-Jährige, Vollzeitäquivalente) in Prozentpunkten\",\"Eurostat, Labour Force Survey, Sonderauswertung\"\nE6,E,6,NEET-Quote,\"Anteil der Nicht-Erwerbstätigen, die keine Bildung oder Weiterbildung besuchen, an allen 18- bis 24-Jährigen in %\",Eurostat\nE7,E,7,Weiterbildung,\"Anteil der Personen, die an Bildung oder Weiterbildung teilnehmen, an allen 25- bis 64-Jährigen in %\",Eurostat\nE8,E,8,Energieabhängigkeit,Anteil der Nettoenergieimporte am Bruttoinlandsverbrauch von Energie in %,Eurostat; IEA\nE9,E,9,Modal Split Gütertransport,Verhältnis des Gütertransports mit der Bahn zu dem auf der Straße in t-km,Eurostat\nE10,E,10,Umweltpatente,Anteil umwelt- und klimarelevanter Patentanträge bei der EPO (Durchschnitt der letzten 3 Jahre) in %,\"Patstat, OECD-Definition\"\nE11,E,11,Marktanteil Warenexport ,Anteil am weltweiten Warenexport in %,\"WIFO-Daten-System, Macrobond\"\nE12,E,12,Marktanteil Tourismusexport,Anteil am weltweiten Export von Reiseverkehrsdienstleistungen (ohne Personentransporte) in %,\"Macrobond, WIFO-Berechnungen\"\n\n"
+      }
+    ],
+    "stream": false,
+    "max_completion_tokens": 16000
+  },
+  "content": "--BEGIN FIXED CSV--\nid,group,order,name,definition,source\nH1,H,1,Wirtschaftsleistung,\"BIP pro Kopf, real in € zu Preisen von 2015\",\"WIFO-Daten-System, Macrobond\"\nH2,H,2,Arbeitsproduktivität,\"BIP je Arbeitsstunde, nominell, EU 27 = 100\",Eurostat \nH3,H,3,Multifaktorproduktivität,\"Wachstumsbeitag in Prozentpunkten, Zweijahresdurchschnitt\",\"TED-Total Economy Database, Conference Board\"\nH4,H,4,Energieintensität,Anteil Endenergieeinsatz (PJ) am BIP (zu Preisen von 2015) in %,\"IEA World Energy Balances; WIFO-Daten-System, Macrobond\"\nH5,H,5,CO2-Intensität ,Anteil CO2-Emissionen (kt) am BIP (zu Preisen von 2015) in %,\"UNFCCC GHG Data Interface; WDS - WIFO-Daten-System, Macrobond\"\nH6,H,6,Anteil erneuerbarer Energieträger,Anteil erneuerbarer Energieträger am energetischen Endverbrauch in %,Eurostat\nH7,H,7,Armutsgefährdung,\"Anteil von Personen mit höchstens 60% des medianen Äquivalenzeinkommens in %, nach Sozialleistungen\",Eurostat\nH8,H,8,Arbeitslosenquote,\"Anteil der Arbeitslosen an den 15- bis 64-\nJährigen Erwerbspersonen in %\",Eurostat\nH9,H,9,Beschäftigungsquote,Anteil der Beschäftigten an allen 15- bis 64-Jährigen in %,Eurostat\nH10,H,10,Einkommensverteilung,Verhältnis der Bevölkerung mit den höchsten 20% der verfügbaren Einkommen zu der mit den niedrigsten 20%,Eurostat\nH11,H,11,Regionale Kohäsion,\"Variationskoeffizient: Bruttoregionalprodukt pro Kopf zu KKP, NUTS-3-Regionen\",ARDECO (Annual Regional Database of the European Commission)\nH12,H,12,Leistungsbilanzsaldo,Leistungsbilanzsaldo in % des BIP,Eurostat\nE1,E,1,Pro-Kopf-Einkommen (kaufkraftbereinigt),BIP pro Kopf zu KKP von 2021,\"Conference Board, TED – Total Economy Database\"\nE2,E,2,BIP pro Kopf Metropolregionen,\"Bruttoregionalprodukt pro Kopf zu KKP, EU-Metrolpolregionen\",ARDECO (Annual Regional Database of the European Commission)\nE3,E,3,BIP pro Kopf Nicht-Metropolregionen,\"Bruttoregionalprodukt pro Kopf zu KKP, Nicht-Metropolregionen der EU\",ARDECO (Annual Regional Database of the European Commission)\nE4,E,4,Beschäftigungsquote in Vollzeitäquivalenten,Anteil der Beschäftigten in Vollzeitäquivalenten an allen 15- bis 64-Jährigen in %,\"Eurostat, Labour Force Survey, Sonderauswertung\"\nE5,E,5,Gender-Gap Beschäftigung,\"Differenz der Beschäftigungsquote von Männern und Frauen (25- bis 44-Jährige, Vollzeitäquivalente) in Prozentpunkten\",\"Eurostat, Labour Force Survey, Sonderauswertung\"\nE6,E,6,NEET-Quote,\"Anteil der Nicht-Erwerbstätigen, die keine Bildung oder Weiterbildung besuchen, an allen 18- bis 24-Jährigen in %\",Eurostat\nE7,E,7,Weiterbildung,\"Anteil der Personen, die an Bildung oder Weiterbildung teilnehmen, an allen 25- bis 64-Jährigen in %\",Eurostat\nE8,E,8,Energieabhängigkeit,Anteil der Nettoenergieimporte am Bruttoinlandsverbrauch von Energie in %,Eurostat; IEA\nE9,E,9,Modal Split Gütertransport,Verhältnis des Gütertransports mit der Bahn zu dem auf der Straße in t-km,Eurostat\nE10,E,10,Umweltpatente,Anteil umwelt- und klimarelevanter Patentanträge bei der EPO (Durchschnitt der letzten 3 Jahre) in %,\"Patstat, OECD-Definition\"\nE11,E,11,Marktanteil Warenexport ,Anteil am weltweiten Warenexport in %,\"WIFO-Daten-System, Macrobond\"\nE12,E,12,Marktanteil Tourismusexport,Anteil am weltweiten Export von Reiseverkehrsdienstleistungen (ohne Personentransporte) in %,\"Macrobond, WIFO-Berechnungen\"\n--END FIXED CSV--\n--BEGIN ERROR REPORT--\n{\n  \"fixed_errors\": [],\n  \"summary\": \"No repairs were needed; the quoted embedded line break is valid CSV.\"\n}\n--END ERROR REPORT--",
+  "usage": {
+    "prompt_tokens": 1452,
+    "completion_tokens": 1201,
+    "total_tokens": 2653,
+    "prompt_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 1449,
+      "audio_tokens": 0
+    },
+    "completion_tokens_details": {
+      "reasoning_tokens": 137,
+      "audio_tokens": 0,
+      "accepted_prediction_tokens": 0,
+      "rejected_prediction_tokens": 0
+    }
+  },
+  "cost": {
+    "backend": "openai",
+    "model": "gpt-6-luna",
+    "api_base": "https://api.openai.com/v1",
+    "local_cache_hit": false,
+    "usage_available": true,
+    "cache_path": "/home/robin/offsite/pollock-offsite/results/runs/20261123T235243Z-7721ec29/full_llm_loader_naive_gpt_6_luna/combined_real_world_files/llm_cache/48160a54a4f528393375162f0e8d8416b56fb4615f170dfbcea00e8e8a9029bc.json",
+    "prompt_tokens": 1452,
+    "cached_input_tokens": 0,
+    "uncached_input_tokens": 1452,
+    "ordinary_input_tokens": 3,
+    "cache_write_tokens": 1449,
+    "completion_tokens": 1201,
+    "total_tokens": 2653,
+    "input_usd_per_1m": 0.1,
+    "cached_input_usd_per_1m": 0.01,
+    "cache_write_usd_per_1m": 0.125,
+    "output_usd_per_1m": 0.5,
+    "input_cost_usd": 3.0000000000000004e-07,
+    "cached_input_cost_usd": 0.0,
+    "cache_write_cost_usd": 0.000181125,
+    "output_cost_usd": 0.0006005,
+    "estimated_api_cost_usd": 0.000781925,
+    "billable_cost_usd": 0.000781925
+  }
+}

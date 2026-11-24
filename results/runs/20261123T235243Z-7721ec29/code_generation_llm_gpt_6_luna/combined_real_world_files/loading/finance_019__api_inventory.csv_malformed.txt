@@ -1,0 +1,2 @@
+Malformed rows: 1
+{"line_num": 1, "reason": "header row normalized", "raw": ["#", "API / Service", "Endpoint / Access", "Purpose", "Auth Required", "How to Access"], "repaired": true}

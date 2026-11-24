@@ -1,0 +1,67 @@
+Malformed rows: 66
+{"line_num": 4, "reason": "MISSING COLUMNS: Expected Number of Columns: 43 Found: 14; MISSING COLUMNS: Expected Number of Columns: 43 Found: 42", "raw": "(workforce numbers)\",,Payroll staff costs,,,,,,,Non-Payroll staff (contingent labour/consultancy) costs,,,Grand Total paybill/staffing (payroll and non-payroll) costs,\"Comments", "repaired": true}
+{"line_num": 5, "reason": "MISSING COLUMNS: Expected Number of Columns: 43 Found: 2; MISSING COLUMNS: Expected Number of Columns: 43 Found: 42", "raw": "(NB: These will be published alongside your row of information)\",", "repaired": true}
+{"line_num": 6, "reason": "MISSING COLUMNS: Expected Number of Columns: 43 Found: 16; MISSING COLUMNS: Expected Number of Columns: 43 Found: 42", "raw": ",,,AO/AA,,EO,,SEO/HEO,,Grade 6/7,,SCS,,\"Other, unknown, or unspecified\",,\"Total", "repaired": true}
+{"line_num": 7, "reason": "MISSING COLUMNS: Expected Number of Columns: 43 Found: 3; MISSING COLUMNS: Expected Number of Columns: 43 Found: 42", "raw": "Employees\",,\"Agency staff ", "repaired": true}
+{"line_num": 8, "reason": "MISSING COLUMNS: Expected Number of Columns: 43 Found: 21; MISSING COLUMNS: Expected Number of Columns: 43 Found: 42", "raw": "(clerical/admin)\",,Interim managers,,Specialist Contractors,,Consultants/consultancy,,Total,,,,Salary,Allowances,Non-consolidated performance payments,Overtime,Employer pension contributions,Employer national insurance contributions,Total paybill for payroll staff,\"Total monthly cost of contingent labour: agency (clerical and admin) staff, interim managers and specialist contractors\",\"Total monthly cost of consultants/", "repaired": true}
+{"line_num": 9, "reason": "MISSING COLUMNS: Expected Number of Columns: 43 Found: 42; MISSING COLUMNS: Expected Number of Columns: 43 Found: 5", "raw": "British Transport Police Authority,Executive Non-Departmental Public Body,Department for Transport,0,0,0,0,7,7,5,4.6,3,2.3,0,0,15,14,0,0,0,0,0,0,0,0,0,0,15,14,\"\u00a348,760.00\",\"\u00a33,231.00\",,,\"\u00a35,526.00\",\"\u00a35,736.00\",\"\u00a363,253.00\",\"\u00a328,575.00\",\"-\u00a345,550.00\",\"-\u00a316,975.00\",\"\u00a346,278.00\",,", "repaired": true}
+{"line_num": 10, "reason": "MISSING COLUMNS: Expected Number of Columns: 43 Found: 42; MISSING COLUMNS: Expected Number of Columns: 43 Found: 5", "raw": "High Speed 2,Executive Non-Departmental Public Body,Department for Transport,45,45,51,51,368,367.8,384,384,183,183,110,98,\"1,141\",\"1,129\",33,33,173,164,129,127,0,0,335,324,\"1,476\",\"1,453\",\"\u00a37,519,681.47\",\u00a30.00,\u00a30.00,\u00a30.00,\"\u00a3589,676.14\",\"\u00a3757,982.07\",\"\u00a38,867,339.68\",\"\u00a33,469,288.61\",\u00a30.00,\"\u00a33,469,288.61\",\"\u00a312,336,628.29\",,", "repaired": true}
+{"line_num": 11, "reason": "MISSING COLUMNS: Expected Number of Columns: 43 Found: 3; MISSING COLUMNS: Expected Number of Columns: 43 Found: 42", "raw": "equivalent\",Headcount,\"Full-time ", "repaired": true}
+{"line_num": 12, "reason": "MISSING COLUMNS: Expected Number of Columns: 43 Found: 3; MISSING COLUMNS: Expected Number of Columns: 43 Found: 42", "raw": "equivalent\",Headcount,\"Full-time ", "repaired": true}
+{"line_num": 13, "reason": "MISSING COLUMNS: Expected Number of Columns: 43 Found: 3; MISSING COLUMNS: Expected Number of Columns: 43 Found: 42", "raw": "equivalent\",Headcount,\"Full-time ", "repaired": true}
+{"line_num": 14, "reason": "MISSING COLUMNS: Expected Number of Columns: 43 Found: 3; MISSING COLUMNS: Expected Number of Columns: 43 Found: 42", "raw": "equivalent\",Headcount,\"Full-time ", "repaired": true}
+{"line_num": 15, "reason": "MISSING COLUMNS: Expected Number of Columns: 43 Found: 3; MISSING COLUMNS: Expected Number of Columns: 43 Found: 42", "raw": "equivalent\",Headcount,\"Full-time ", "repaired": true}
+{"line_num": 16, "reason": "MISSING COLUMNS: Expected Number of Columns: 43 Found: 3; MISSING COLUMNS: Expected Number of Columns: 43 Found: 42", "raw": "equivalent\",Headcount,\"Full-time ", "repaired": true}
+{"line_num": 17, "reason": "MISSING COLUMNS: Expected Number of Columns: 43 Found: 3; MISSING COLUMNS: Expected Number of Columns: 43 Found: 42", "raw": "equivalent\",Headcount,\"Full-time ", "repaired": true}
+{"line_num": 18, "reason": "MISSING COLUMNS: Expected Number of Columns: 43 Found: 3; MISSING COLUMNS: Expected Number of Columns: 43 Found: 42", "raw": "equivalent\",Headcount,\"Full-time ", "repaired": true}
+{"line_num": 19, "reason": "MISSING COLUMNS: Expected Number of Columns: 43 Found: 3; MISSING COLUMNS: Expected Number of Columns: 43 Found: 42", "raw": "equivalent\",Headcount,\"Full-time ", "repaired": true}
+{"line_num": 20, "reason": "MISSING COLUMNS: Expected Number of Columns: 43 Found: 3; MISSING COLUMNS: Expected Number of Columns: 43 Found: 42", "raw": "equivalent\",Headcount,\"Full-time ", "repaired": true}
+{"line_num": 21, "reason": "MISSING COLUMNS: Expected Number of Columns: 43 Found: 3; MISSING COLUMNS: Expected Number of Columns: 43 Found: 42", "raw": "equivalent\",Headcount,\"Full-time ", "repaired": true}
+{"line_num": 22, "reason": "MISSING COLUMNS: Expected Number of Columns: 43 Found: 3; MISSING COLUMNS: Expected Number of Columns: 43 Found: 42", "raw": "equivalent\",Headcount,\"Full-time ", "repaired": true}
+{"line_num": 23, "reason": "MISSING COLUMNS: Expected Number of Columns: 43 Found: 14; MISSING COLUMNS: Expected Number of Columns: 43 Found: 42", "raw": "equivalent\",,,,,,,,,,,,,", "repaired": true}
+{"line_num": 24, "reason": "MISSING COLUMNS: Expected Number of Columns: 43 Found: 42", "raw": ",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,", "repaired": true}
+{"line_num": 25, "reason": "MISSING COLUMNS: Expected Number of Columns: 43 Found: 42", "raw": ",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,", "repaired": true}
+{"line_num": 26, "reason": "MISSING COLUMNS: Expected Number of Columns: 43 Found: 42", "raw": ",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,", "repaired": true}
+{"line_num": 27, "reason": "MISSING COLUMNS: Expected Number of Columns: 43 Found: 42", "raw": ",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,", "repaired": true}
+{"line_num": 28, "reason": "MISSING COLUMNS: Expected Number of Columns: 43 Found: 42", "raw": ",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,", "repaired": true}
+{"line_num": 29, "reason": "MISSING COLUMNS: Expected Number of Columns: 43 Found: 42", "raw": ",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,", "repaired": true}
+{"line_num": 30, "reason": "MISSING COLUMNS: Expected Number of Columns: 43 Found: 42", "raw": ",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,", "repaired": true}
+{"line_num": 31, "reason": "MISSING COLUMNS: Expected Number of Columns: 43 Found: 42", "raw": ",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,", "repaired": true}
+{"line_num": 32, "reason": "MISSING COLUMNS: Expected Number of Columns: 43 Found: 42", "raw": ",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,", "repaired": true}
+{"line_num": 33, "reason": "MISSING COLUMNS: Expected Number of Columns: 43 Found: 42", "raw": ",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,", "repaired": true}
+{"line_num": 34, "reason": "MISSING COLUMNS: Expected Number of Columns: 43 Found: 42", "raw": ",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,", "repaired": true}
+{"line_num": 35, "reason": "MISSING COLUMNS: Expected Number of Columns: 43 Found: 42", "raw": ",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,", "repaired": true}
+{"line_num": 36, "reason": "MISSING COLUMNS: Expected Number of Columns: 43 Found: 42", "raw": ",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,", "repaired": true}
+{"line_num": 37, "reason": "MISSING COLUMNS: Expected Number of Columns: 43 Found: 42", "raw": ",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,", "repaired": true}
+{"line_num": 38, "reason": "MISSING COLUMNS: Expected Number of Columns: 43 Found: 42", "raw": ",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,", "repaired": true}
+{"line_num": 39, "reason": "MISSING COLUMNS: Expected Number of Columns: 43 Found: 42", "raw": ",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,", "repaired": true}
+{"line_num": 40, "reason": "MISSING COLUMNS: Expected Number of Columns: 43 Found: 42", "raw": ",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,", "repaired": true}
+{"line_num": 41, "reason": "MISSING COLUMNS: Expected Number of Columns: 43 Found: 42", "raw": ",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,", "repaired": true}
+{"line_num": 42, "reason": "MISSING COLUMNS: Expected Number of Columns: 43 Found: 42", "raw": ",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,", "repaired": true}
+{"line_num": 43, "reason": "MISSING COLUMNS: Expected Number of Columns: 43 Found: 42", "raw": ",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,", "repaired": true}
+{"line_num": 44, "reason": "MISSING COLUMNS: Expected Number of Columns: 43 Found: 42", "raw": ",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,", "repaired": true}
+{"line_num": 45, "reason": "MISSING COLUMNS: Expected Number of Columns: 43 Found: 42", "raw": ",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,", "repaired": true}
+{"line_num": 46, "reason": "MISSING COLUMNS: Expected Number of Columns: 43 Found: 42", "raw": ",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,", "repaired": true}
+{"line_num": 47, "reason": "MISSING COLUMNS: Expected Number of Columns: 43 Found: 42", "raw": ",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,", "repaired": true}
+{"line_num": 48, "reason": "MISSING COLUMNS: Expected Number of Columns: 43 Found: 42", "raw": ",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,", "repaired": true}
+{"line_num": 49, "reason": "MISSING COLUMNS: Expected Number of Columns: 43 Found: 42", "raw": ",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,", "repaired": true}
+{"line_num": 50, "reason": "MISSING COLUMNS: Expected Number of Columns: 43 Found: 42", "raw": ",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,", "repaired": true}
+{"line_num": 51, "reason": "MISSING COLUMNS: Expected Number of Columns: 43 Found: 42", "raw": ",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,", "repaired": true}
+{"line_num": 52, "reason": "MISSING COLUMNS: Expected Number of Columns: 43 Found: 42", "raw": ",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,", "repaired": true}
+{"line_num": 53, "reason": "MISSING COLUMNS: Expected Number of Columns: 43 Found: 42", "raw": ",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,", "repaired": true}
+{"line_num": 54, "reason": "MISSING COLUMNS: Expected Number of Columns: 43 Found: 42", "raw": ",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,", "repaired": true}
+{"line_num": 55, "reason": "MISSING COLUMNS: Expected Number of Columns: 43 Found: 42", "raw": ",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,", "repaired": true}
+{"line_num": 56, "reason": "MISSING COLUMNS: Expected Number of Columns: 43 Found: 42", "raw": ",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,", "repaired": true}
+{"line_num": 57, "reason": "MISSING COLUMNS: Expected Number of Columns: 43 Found: 42", "raw": ",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,", "repaired": true}
+{"line_num": 58, "reason": "MISSING COLUMNS: Expected Number of Columns: 43 Found: 42", "raw": ",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,", "repaired": true}
+{"line_num": 59, "reason": "MISSING COLUMNS: Expected Number of Columns: 43 Found: 42", "raw": ",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,", "repaired": true}
+{"line_num": 60, "reason": "MISSING COLUMNS: Expected Number of Columns: 43 Found: 42", "raw": ",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,", "repaired": true}
+{"line_num": 61, "reason": "MISSING COLUMNS: Expected Number of Columns: 43 Found: 42", "raw": ",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,", "repaired": true}
+{"line_num": 62, "reason": "MISSING COLUMNS: Expected Number of Columns: 43 Found: 42", "raw": ",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,", "repaired": true}
+{"line_num": 63, "reason": "MISSING COLUMNS: Expected Number of Columns: 43 Found: 42", "raw": ",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,", "repaired": true}
+{"line_num": 64, "reason": "MISSING COLUMNS: Expected Number of Columns: 43 Found: 42", "raw": ",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,", "repaired": true}
+{"line_num": 65, "reason": "MISSING COLUMNS: Expected Number of Columns: 43 Found: 42", "raw": ",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,", "repaired": true}
+{"line_num": 66, "reason": "MISSING COLUMNS: Expected Number of Columns: 43 Found: 42", "raw": ",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,", "repaired": true}
+{"line_num": 67, "reason": "MISSING COLUMNS: Expected Number of Columns: 43 Found: 42", "raw": ",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,", "repaired": true}
+{"line_num": 68, "reason": "MISSING COLUMNS: Expected Number of Columns: 43 Found: 42", "raw": ",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,", "repaired": true}
+{"line_num": 69, "reason": "MISSING COLUMNS: Expected Number of Columns: 43 Found: 42", "raw": ",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,", "repaired": true}

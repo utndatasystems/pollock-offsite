@@ -1,0 +1,2 @@
+Malformed rows: 1
+{"line_num": 1, "reason": "header row normalized", "raw": ["", "CD_UF", "NM_UF", "SIGLA", "NM_REGIAO", "AREA", "X_TXT_OFF", "Y_TXT_OFF"], "repaired": true}

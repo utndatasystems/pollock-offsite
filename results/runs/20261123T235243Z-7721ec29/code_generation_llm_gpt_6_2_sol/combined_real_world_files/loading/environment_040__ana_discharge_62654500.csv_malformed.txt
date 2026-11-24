@@ -1,0 +1,2 @@
+Malformed rows: 1
+{"line_num": 1, "reason": "header row normalized", "raw": ["date", "discharge_m3s", "consistency_level"], "repaired": true}

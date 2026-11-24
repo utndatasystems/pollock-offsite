@@ -1,0 +1,8 @@
+Malformed rows: 7
+{"line_num": 1, "reason": "header row normalized", "raw": ["source_medium", "source_sub", "source_qualifier", "target_medium", "target_sub", "target_qualifier", "kind"], "repaired": true}
+{"line_num": 51, "reason": "width 7 -> 6", "raw": ["soil", "forestry", "", "soil", "non-agricultural", "", "if_absent"], "repaired": true}
+{"line_num": 52, "reason": "width 7 -> 6", "raw": ["soil", "industrial", "", "soil", "non-agricultural", "", "if_absent"], "repaired": true}
+{"line_num": 53, "reason": "width 7 -> 6", "raw": ["water", "groundwater", "", "water", "surface water", "", "if_absent"], "repaired": true}
+{"line_num": 54, "reason": "width 7 -> 6", "raw": ["water", "lake", "", "water", "surface water", "", "if_absent"], "repaired": true}
+{"line_num": 55, "reason": "width 7 -> 6", "raw": ["water", "groundwater, long-term", "", "water", "unspecified (long-term)", "", "if_absent"], "repaired": true}
+{"line_num": 56, "reason": "width 7 -> 6", "raw": ["air", "low population density, long-term", "", "air", "unspecified (long-term)", "", "if_absent"], "repaired": true}

@@ -1,0 +1,4 @@
+# Name,Type,SubType,Offset,Size,Flags
+nvs,      data, nvs,36864,24576,
+phy_init, data, phy,61440,4096,
+factory,  app,  factory,65536,3145728,

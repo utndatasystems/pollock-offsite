@@ -1,0 +1,6 @@
+Malformed rows: 5
+{"line_num": 1, "reason": "header row normalized", "raw": ["# format: lindhard-stopping-data/1"], "repaired": true}
+{"line_num": 2, "reason": "header row normalized", "raw": ["# name: bader1956-p-cu"], "repaired": true}
+{"line_num": 3, "reason": "header row normalized", "raw": ["# description: Stopping cross section of Cu for protons", " 50 to 600 keV", " as printed in Table I of Bader et al. (1956); values from the authors' smooth curves through their measured points"], "repaired": true}
+{"line_num": 4, "reason": "header row normalized", "raw": ["# source: M. Bader", " R. E. Pixley", " F. S. Mozer and W. Whaling", " Phys. Rev. 103", " 32 (1956)"], "repaired": true}
+{"line_num": 5, "reason": "header row normalized", "raw": ["# note: the paper states no uncertainty for these values", " so sigma is 0 (none stated)"], "repaired": true}

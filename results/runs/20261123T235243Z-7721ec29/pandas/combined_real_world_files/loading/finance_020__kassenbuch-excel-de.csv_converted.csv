@@ -1,0 +1,4 @@
+transactionId;bookingDate;valueDate;financialAccountId;direction;amount;signedAmount;currency;status;provenance;description;counterpartyNameRaw;counterpartyIbanRaw;propertyReferenceId;splitCount;correctionOfTransactionId;correctionRole;reversalTransactionId;replacementTransactionId;confirmedAt;confirmedBy;createdAt;version
+" Whg. 3 """"EG links"""""";Erika Mustermann;DE02120300000000202051;;2;;;;;2026-10-03T09:00:00.000Z;vermieter@example.org;2026-10-02T08:15:00.000Z;2"
+""
+""

@@ -1,0 +1,62 @@
+{
+  "cache_version": 1,
+  "created_at": "2026-11-24T12:00:57.129398+00:00",
+  "api_base": "https://api.openai.com/v1",
+  "payload": {
+    "model": "gpt-6.1-terra",
+    "messages": [
+      {
+        "role": "system",
+        "content": "You are a CSV repair assistant.\n\nYour task is to inspect a possibly malformed CSV file and reconstruct it as a valid CSV table.\n\nReturn the repaired CSV and a brief error report. Do not include explanations outside the requested output sections."
+      },
+      {
+        "role": "user",
+        "content": "Repair the following CSV file.\n\nReturn exactly two sections and nothing else.\nDo not use Markdown fences. Do not include prose before, between, or after the sections.\nThe section markers must appear exactly as shown, each on its own line.\n\n--BEGIN FIXED CSV--\n<repaired CSV text only, including exactly one header row>\n--END FIXED CSV--\n--BEGIN ERROR REPORT--\n<JSON error report object only>\n--END ERROR REPORT--\n\nRules for the fixed CSV section:\n\n- Use a comma as the output delimiter.\n- Use double quotes according to standard CSV escaping rules.\n- Encode an embedded double quote as two double quotes.\n- Preserve every payload character exactly.\n- Do not normalize, infer, translate, reformat, round, complete, shorten, or otherwise rewrite cell values.\n- Preserve embedded line breaks inside quoted fields.\n- Use LF line endings.\n- Return the complete repaired CSV, not a sample, preview, summary, or first portion.\n- Include every recoverable source data row exactly once unless the input clearly marks it as non-data.\n- Finish the entire fixed CSV section before starting the error report.\n- If output length is a concern, keep the error report as short as possible but do not truncate the fixed CSV.\n- Do not wrap the CSV in Markdown fences.\n- Do not include comments, explanations, or section labels inside the CSV.\n- If the input is empty, whitespace-only, or contains no table evidence, leave the fixed CSV section empty. Do not invent headers, rows, columns, examples, placeholder data, or sample content.\n\nThe error report must use this format:\n\n{\n  \"fixed_errors\": [\n    {\n      \"type\": \"<error type>\",\n      \"description\": \"<brief description>\",\n      \"rows\": [<affected physical line numbers>]\n    }\n  ],\n  \"summary\": \"<brief summary>\"\n}\n\nIf no errors were fixed, return an empty fixed_errors list.\n\nCSV content:\n\nMinister,Date,Person or organisation that offered hospitality,Type of hospitality received,\"Accompanied by spouse, family member(s) or friend?\"\nRt Hon David Davis MP,25 April 2017,Ernst & Young,Dinner,No\nRt Hon David Davis MP,13 June 2017,Reaction,Dinner,No\n,,,,\n\"Lord Bridges of Headley MBE\nUntil 13th June\",3 May 2017,Maritime UK,Breakfast,No\n\"Lord Bridges of Headley MBE\nUntil 13th June\",3 May 2017,European Lunch Club,Lunch ,No\n\"Lord Bridges of Headley MBE\nUntil 13th June\",11 May 2017,Cazenove Capital,Lunch ,No\n\"Lord Bridges of Headley MBE\nUntil 13th June\",16 May 2016,E&Y,Breakfast,No\n,,,,\n\"Rt Hon David Jones MP \nUntil 12th June\",10 April 2017,Netherlands British Chamber of Commerce,Dinner,No\n\"Rt Hon David Jones MP \nUntil 12th June\",11 April 2017,Amsterdam financial services industry representatives,Lunch,No\n,,,,\n\"Baroness Anelay of St Johns\nFrom 12th June\n\",Nil,,,\n,,,,\n\"Steve Baker MP\nFrom 13th June\",Nil,,,\n,,,,\nRobin Walker MP,Nil,,,\n"
+      }
+    ],
+    "stream": false,
+    "max_completion_tokens": 16000
+  },
+  "content": "--BEGIN FIXED CSV--\nMinister,Date,Person or organisation that offered hospitality,Type of hospitality received,\"Accompanied by spouse, family member(s) or friend?\"\nRt Hon David Davis MP,25 April 2017,Ernst & Young,Dinner,No\nRt Hon David Davis MP,13 June 2017,Reaction,Dinner,No\n,,,,\n\"Lord Bridges of Headley MBE\nUntil 13th June\",3 May 2017,Maritime UK,Breakfast,No\n\"Lord Bridges of Headley MBE\nUntil 13th June\",3 May 2017,European Lunch Club,Lunch ,No\n\"Lord Bridges of Headley MBE\nUntil 13th June\",11 May 2017,Cazenove Capital,Lunch ,No\n\"Lord Bridges of Headley MBE\nUntil 13th June\",16 May 2016,E&Y,Breakfast,No\n,,,,\n\"Rt Hon David Jones MP \nUntil 12th June\",10 April 2017,Netherlands British Chamber of Commerce,Dinner,No\n\"Rt Hon David Jones MP \nUntil 12th June\",11 April 2017,Amsterdam financial services industry representatives,Lunch,No\n,,,,\n\"Baroness Anelay of St Johns\nFrom 12th June\n\",Nil,,,\n,,,,\n\"Steve Baker MP\nFrom 13th June\",Nil,,,\n,,,,\nRobin Walker MP,Nil,,,\n--END FIXED CSV--\n--BEGIN ERROR REPORT--\n{\"fixed_errors\":[],\"summary\":\"No errors fixed.\"}\n--END ERROR REPORT--",
+  "usage": {
+    "prompt_tokens": 741,
+    "completion_tokens": 547,
+    "total_tokens": 1288,
+    "prompt_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 0,
+      "audio_tokens": 0
+    },
+    "completion_tokens_details": {
+      "reasoning_tokens": 209,
+      "audio_tokens": 0,
+      "accepted_prediction_tokens": 0,
+      "rejected_prediction_tokens": 0
+    }
+  },
+  "cost": {
+    "backend": "openai",
+    "model": "gpt-6.1-terra",
+    "api_base": "https://api.openai.com/v1",
+    "local_cache_hit": false,
+    "usage_available": true,
+    "cache_path": "/home/robin/offsite/pollock-offsite/results/runs/20261123T235243Z-7721ec29/full_llm_loader_naive_gpt_6_1_terra/combined_real_world_files/llm_cache/0a6aa4820ef5df84087adad567343e86e5c485921387c627ea2955623f2fcfbc.json",
+    "prompt_tokens": 741,
+    "cached_input_tokens": 0,
+    "uncached_input_tokens": 741,
+    "ordinary_input_tokens": 741,
+    "cache_write_tokens": 0,
+    "completion_tokens": 547,
+    "total_tokens": 1288,
+    "input_usd_per_1m": 1.0,
+    "cached_input_usd_per_1m": 0.05,
+    "cache_write_usd_per_1m": 1.25,
+    "output_usd_per_1m": 5.0,
+    "input_cost_usd": 0.000741,
+    "cached_input_cost_usd": 0.0,
+    "cache_write_cost_usd": 0.0,
+    "output_cost_usd": 0.002735,
+    "estimated_api_cost_usd": 0.003476,
+    "billable_cost_usd": 0.003476
+  }
+}

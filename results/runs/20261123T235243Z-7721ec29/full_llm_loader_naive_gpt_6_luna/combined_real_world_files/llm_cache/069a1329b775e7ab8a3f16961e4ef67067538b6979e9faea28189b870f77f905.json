@@ -1,0 +1,62 @@
+{
+  "cache_version": 1,
+  "created_at": "2026-11-24T18:17:11.382705+00:00",
+  "api_base": "https://api.openai.com/v1",
+  "payload": {
+    "model": "gpt-6-luna",
+    "messages": [
+      {
+        "role": "system",
+        "content": "You are a CSV repair assistant.\n\nYour task is to inspect a possibly malformed CSV file and reconstruct it as a valid CSV table.\n\nReturn the repaired CSV and a brief error report. Do not include explanations outside the requested output sections."
+      },
+      {
+        "role": "user",
+        "content": "Repair the following CSV file.\n\nReturn exactly two sections and nothing else.\nDo not use Markdown fences. Do not include prose before, between, or after the sections.\nThe section markers must appear exactly as shown, each on its own line.\n\n--BEGIN FIXED CSV--\n<repaired CSV text only, including exactly one header row>\n--END FIXED CSV--\n--BEGIN ERROR REPORT--\n<JSON error report object only>\n--END ERROR REPORT--\n\nRules for the fixed CSV section:\n\n- Use a comma as the output delimiter.\n- Use double quotes according to standard CSV escaping rules.\n- Encode an embedded double quote as two double quotes.\n- Preserve every payload character exactly.\n- Do not normalize, infer, translate, reformat, round, complete, shorten, or otherwise rewrite cell values.\n- Preserve embedded line breaks inside quoted fields.\n- Use LF line endings.\n- Return the complete repaired CSV, not a sample, preview, summary, or first portion.\n- Include every recoverable source data row exactly once unless the input clearly marks it as non-data.\n- Finish the entire fixed CSV section before starting the error report.\n- If output length is a concern, keep the error report as short as possible but do not truncate the fixed CSV.\n- Do not wrap the CSV in Markdown fences.\n- Do not include comments, explanations, or section labels inside the CSV.\n- If the input is empty, whitespace-only, or contains no table evidence, leave the fixed CSV section empty. Do not invent headers, rows, columns, examples, placeholder data, or sample content.\n\nThe error report must use this format:\n\n{\n  \"fixed_errors\": [\n    {\n      \"type\": \"<error type>\",\n      \"description\": \"<brief description>\",\n      \"rows\": [<affected physical line numbers>]\n    }\n  ],\n  \"summary\": \"<brief summary>\"\n}\n\nIf no errors were fixed, return an empty fixed_errors list.\n\nCSV content:\n\nCRIME_CATEGORY,2020,2024,COUNTY\nCrimes,,,Santaclara\nViolent Crimes,\"6,141\",\"8,139\",Santaclara\nHomicide,53,35,Santaclara\nRape (Forcible Rape prior to 2014),806,\"1,021\",Santaclara\nRape,796,\"1,003\",Santaclara\nAttempted Rape,10,18,Santaclara\nRobbery,\"1,704\",\"1,923\",Santaclara\nWeapon,,,Santaclara\nFirearm,369,286,Santaclara\nKnife or Cutting Instrument,199,197,Santaclara\nOther Weapon,181,264,Santaclara\nStrong-Arm,955,\"1,176\",Santaclara\nLocation,,,Santaclara\nHighway,659,539,Santaclara\nCommercial,374,540,Santaclara\nGas Station,47,46,Santaclara\nConvenience Store,185,167,Santaclara\nResidence,165,184,Santaclara\nBank,22,20,Santaclara\nMiscellaneous,252,427,Santaclara\nAggravated Assault,\"3,578\",\"5,160\",Santaclara\nWeapon,,,Santaclara\nFirearm,682,646,Santaclara\nKnife or Cutting Instrument,757,919,Santaclara\nOther Weapon,\"1,568\",\"2,332\",Santaclara\nHands  Fists  Feet,571,\"1,263\",Santaclara\nProperty Crimes,\"43,690\",\"44,677\",Santaclara\nBurglary,\"7,233\",\"6,735\",Santaclara\nMeans of Entry,,,Santaclara\nForcible Entry,\"5,312\",\"4,788\",Santaclara\nNo Force,\"1,921\",\"1,947\",Santaclara\nLocation / Time,,,Santaclara\nResidence,\"2,702\",\"2,667\",Santaclara\nNight,855,\"1,251\",Santaclara\nDay,721,\"1,251\",Santaclara\nUnknown,\"1,126\",165,Santaclara\nNon-Residence,\"4,531\",\"4,068\",Santaclara\nNight,\"2,221\",\"2,466\",Santaclara\nDay,735,\"1,431\",Santaclara\nUnknown,\"1,575\",171,Santaclara\nMotor Vehicle Theft,\"9,926\",\"8,709\",Santaclara\nAutomotive,\"6,491\",\"6,245\",Santaclara\nTrucks and Buses,\"2,819\",\"1,851\",Santaclara\nOther,616,613,Santaclara\nLarceny-Theft,\"26,531\",\"29,233\",Santaclara\nType,,,Santaclara\nPocket-Picking,82,347,Santaclara\nPurse-Snatching,77,147,Santaclara\nShoplifting,\"2,247\",\"7,270\",Santaclara\nFrom Motor Vehicle,\"10,837\",\"7,089\",Santaclara\n\n"
+      }
+    ],
+    "stream": false,
+    "max_completion_tokens": 16000
+  },
+  "content": "--BEGIN FIXED CSV--\nCRIME_CATEGORY,2020,2024,COUNTY\nCrimes,,,Santaclara\nViolent Crimes,\"6,141\",\"8,139\",Santaclara\nHomicide,53,35,Santaclara\nRape (Forcible Rape prior to 2014),806,\"1,021\",Santaclara\nRape,796,\"1,003\",Santaclara\nAttempted Rape,10,18,Santaclara\nRobbery,\"1,704\",\"1,923\",Santaclara\nWeapon,,,Santaclara\nFirearm,369,286,Santaclara\nKnife or Cutting Instrument,199,197,Santaclara\nOther Weapon,181,264,Santaclara\nStrong-Arm,955,\"1,176\",Santaclara\nLocation,,,Santaclara\nHighway,659,539,Santaclara\nCommercial,374,540,Santaclara\nGas Station,47,46,Santaclara\nConvenience Store,185,167,Santaclara\nResidence,165,184,Santaclara\nBank,22,20,Santaclara\nMiscellaneous,252,427,Santaclara\nAggravated Assault,\"3,578\",\"5,160\",Santaclara\nWeapon,,,Santaclara\nFirearm,682,646,Santaclara\nKnife or Cutting Instrument,757,919,Santaclara\nOther Weapon,\"1,568\",\"2,332\",Santaclara\nHands  Fists  Feet,571,\"1,263\",Santaclara\nProperty Crimes,\"43,690\",\"44,677\",Santaclara\nBurglary,\"7,233\",\"6,735\",Santaclara\nMeans of Entry,,,Santaclara\nForcible Entry,\"5,312\",\"4,788\",Santaclara\nNo Force,\"1,921\",\"1,947\",Santaclara\nLocation / Time,,,Santaclara\nResidence,\"2,702\",\"2,667\",Santaclara\nNight,855,\"1,251\",Santaclara\nDay,721,\"1,251\",Santaclara\nUnknown,\"1,126\",165,Santaclara\nNon-Residence,\"4,531\",\"4,068\",Santaclara\nNight,\"2,221\",\"2,466\",Santaclara\nDay,735,\"1,431\",Santaclara\nUnknown,\"1,575\",171,Santaclara\nMotor Vehicle Theft,\"9,926\",\"8,709\",Santaclara\nAutomotive,\"6,491\",\"6,245\",Santaclara\nTrucks and Buses,\"2,819\",\"1,851\",Santaclara\nOther,616,613,Santaclara\nLarceny-Theft,\"26,531\",\"29,233\",Santaclara\nType,,,Santaclara\nPocket-Picking,82,347,Santaclara\nPurse-Snatching,77,147,Santaclara\nShoplifting,\"2,247\",\"7,270\",Santaclara\nFrom Motor Vehicle,\"10,837\",\"7,089\",Santaclara\n--END FIXED CSV--\n--BEGIN ERROR REPORT--\n{\n  \"fixed_errors\": [],\n  \"summary\": \"No CSV errors found; all rows have four fields.\"\n}\n--END ERROR REPORT--",
+  "usage": {
+    "prompt_tokens": 1097,
+    "completion_tokens": 771,
+    "total_tokens": 1868,
+    "prompt_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 1094,
+      "audio_tokens": 0
+    },
+    "completion_tokens_details": {
+      "reasoning_tokens": 65,
+      "audio_tokens": 0,
+      "accepted_prediction_tokens": 0,
+      "rejected_prediction_tokens": 0
+    }
+  },
+  "cost": {
+    "backend": "openai",
+    "model": "gpt-6-luna",
+    "api_base": "https://api.openai.com/v1",
+    "local_cache_hit": false,
+    "usage_available": true,
+    "cache_path": "/home/robin/offsite/pollock-offsite/results/runs/20261123T235243Z-7721ec29/full_llm_loader_naive_gpt_6_luna/combined_real_world_files/llm_cache/069a1329b775e7ab8a3f16961e4ef67067538b6979e9faea28189b870f77f905.json",
+    "prompt_tokens": 1097,
+    "cached_input_tokens": 0,
+    "uncached_input_tokens": 1097,
+    "ordinary_input_tokens": 3,
+    "cache_write_tokens": 1094,
+    "completion_tokens": 771,
+    "total_tokens": 1868,
+    "input_usd_per_1m": 0.1,
+    "cached_input_usd_per_1m": 0.01,
+    "cache_write_usd_per_1m": 0.125,
+    "output_usd_per_1m": 0.5,
+    "input_cost_usd": 3.0000000000000004e-07,
+    "cached_input_cost_usd": 0.0,
+    "cache_write_cost_usd": 0.00013675,
+    "output_cost_usd": 0.0003855,
+    "estimated_api_cost_usd": 0.00052255,
+    "billable_cost_usd": 0.00052255
+  }
+}

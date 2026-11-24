@@ -1,0 +1,2 @@
+Malformed rows: 1
+{"line_num": 1, "reason": "header row normalized", "raw": ["id", "text", "language", "script", "source_type", "label", "source", "style", "group_id", "bt_similarity", "text_en", "orig_label", "split_hint", "annotator_agreement"], "repaired": true}

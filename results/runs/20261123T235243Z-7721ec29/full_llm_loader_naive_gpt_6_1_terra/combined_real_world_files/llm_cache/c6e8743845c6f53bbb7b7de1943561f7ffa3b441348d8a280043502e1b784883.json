@@ -1,0 +1,62 @@
+{
+  "cache_version": 1,
+  "created_at": "2026-11-24T15:22:14.613912+00:00",
+  "api_base": "https://api.openai.com/v1",
+  "payload": {
+    "model": "gpt-6.1-terra",
+    "messages": [
+      {
+        "role": "system",
+        "content": "You are a CSV repair assistant.\n\nYour task is to inspect a possibly malformed CSV file and reconstruct it as a valid CSV table.\n\nReturn the repaired CSV and a brief error report. Do not include explanations outside the requested output sections."
+      },
+      {
+        "role": "user",
+        "content": "Repair the following CSV file.\n\nReturn exactly two sections and nothing else.\nDo not use Markdown fences. Do not include prose before, between, or after the sections.\nThe section markers must appear exactly as shown, each on its own line.\n\n--BEGIN FIXED CSV--\n<repaired CSV text only, including exactly one header row>\n--END FIXED CSV--\n--BEGIN ERROR REPORT--\n<JSON error report object only>\n--END ERROR REPORT--\n\nRules for the fixed CSV section:\n\n- Use a comma as the output delimiter.\n- Use double quotes according to standard CSV escaping rules.\n- Encode an embedded double quote as two double quotes.\n- Preserve every payload character exactly.\n- Do not normalize, infer, translate, reformat, round, complete, shorten, or otherwise rewrite cell values.\n- Preserve embedded line breaks inside quoted fields.\n- Use LF line endings.\n- Return the complete repaired CSV, not a sample, preview, summary, or first portion.\n- Include every recoverable source data row exactly once unless the input clearly marks it as non-data.\n- Finish the entire fixed CSV section before starting the error report.\n- If output length is a concern, keep the error report as short as possible but do not truncate the fixed CSV.\n- Do not wrap the CSV in Markdown fences.\n- Do not include comments, explanations, or section labels inside the CSV.\n- If the input is empty, whitespace-only, or contains no table evidence, leave the fixed CSV section empty. Do not invent headers, rows, columns, examples, placeholder data, or sample content.\n\nThe error report must use this format:\n\n{\n  \"fixed_errors\": [\n    {\n      \"type\": \"<error type>\",\n      \"description\": \"<brief description>\",\n      \"rows\": [<affected physical line numbers>]\n    }\n  ],\n  \"summary\": \"<brief summary>\"\n}\n\nIf no errors were fixed, return an empty fixed_errors list.\n\nCSV content:\n\nrun,version,n_models,QWK,QWK_95CI,accuracy,macro_F1,ref_sens,ref_spec,recall_per_grade\nmobilenetv3large_kfold_clean,as_trained,5,0.5712120752886976,0.516-0.625,0.2810077519379845,0.3080953906326581,0.5139318885448917,0.9792746113989638,\"[0.25, 0.84, 0.262, 0.204, 0.306]\"\nmobilenetv3large_kfold_clean,cropped,5,0.5627418951334011,0.501-0.618,0.3023255813953488,0.32608318677927733,0.4891640866873065,0.9844559585492227,\"[0.321, 0.8, 0.25, 0.237, 0.29]\"\nefficientnetb3_kfold_clean,as_trained,5,0.6259688647339816,0.567-0.679,0.3856589147286822,0.360518902469444,0.5015479876160991,0.9948186528497409,\"[0.625, 0.4, 0.268, 0.237, 0.274]\"\nefficientnetb3_kfold_clean,cropped,5,0.6142088123878513,0.554-0.666,0.3507751937984496,0.3376482816447134,0.43653250773993807,0.9896373056994818,\"[0.619, 0.52, 0.161, 0.204, 0.29]\"\ninceptionv3_kfold_clean,as_trained,5,0.6861531699304825,0.632-0.734,0.4127906976744186,0.37260144129888106,0.5634674922600619,0.9896373056994818,\"[0.685, 0.36, 0.232, 0.183, 0.532]\"\ninceptionv3_kfold_clean,cropped,5,0.6473624544730938,0.594-0.694,0.39728682170542634,0.3576890587171235,0.4674922600619195,0.9948186528497409,\"[0.738, 0.32, 0.179, 0.194, 0.403]\"\nresnet50_kfold_clean,as_trained,5,0.668983805772251,0.612-0.723,0.5251937984496124,0.40334986631016034,0.7925696594427245,0.8808290155440415,\"[0.726, 0.16, 0.661, 0.161, 0.306]\"\nresnet50_kfold_clean,cropped,5,0.6984399599255761,0.645-0.745,0.48643410852713176,0.4007455978743419,0.6068111455108359,0.9844559585492227,\"[0.863, 0.24, 0.345, 0.204, 0.371]\"\nvgg16_lr1e-5_kfold_clean,as_trained,5,0.6237758869802537,0.571-0.673,0.4050387596899225,0.347377901351827,0.5479876160990712,0.9896373056994818,\"[0.667, 0.48, 0.345, 0.161, 0.194]\"\nvgg16_lr1e-5_kfold_clean,cropped,5,0.6062154566114869,0.558-0.654,0.375968992248062,0.31713692775420993,0.5139318885448917,0.9896373056994818,\"[0.679, 0.4, 0.28, 0.14, 0.161]\"\ndensenet121_kfold_clean,as_trained,5,0.6461050501736254,0.591-0.695,0.39147286821705424,0.3748505510120169,0.4984520123839009,0.9948186528497409,\"[0.595, 0.64, 0.214, 0.409, 0.194]\"\ndensenet121_kfold_clean,cropped,5,0.6189190663176265,0.562-0.668,0.3624031007751938,0.3520023209231457,0.4148606811145511,0.9948186528497409,\"[0.595, 0.68, 0.137, 0.376, 0.194]\"\nresnet50_kfold_naive,as_trained,5,0.6107761189892016,0.555-0.668,0.4496124031007752,0.35229614642441265,0.6811145510835913,0.9430051813471503,\"[0.667, 0.4, 0.524, 0.14, 0.145]\"\nresnet50_kfold_naive,cropped,5,0.5518293506142837,0.500-0.606,0.3701550387596899,0.3133969047943815,0.42105263157894735,0.9896373056994818,\"[0.708, 0.36, 0.232, 0.172, 0.129]\"\nconvnexttiny_kfold_clean,as_trained,5,0.6978098676293623,0.650-0.741,0.4883720930232558,0.3784813644753293,0.6346749226006192,0.9896373056994818,\"[0.875, 0.24, 0.405, 0.075, 0.387]\"\nconvnexttiny_kfold_clean,cropped,5,0.6670799281431066,0.619-0.711,0.43023255813953487,0.35143703428304385,0.5510835913312694,0.9896373056994818,\"[0.81, 0.4, 0.292, 0.118, 0.258]\"\n\n"
+      }
+    ],
+    "stream": false,
+    "max_completion_tokens": 16000
+  },
+  "content": "--BEGIN FIXED CSV--\nrun,version,n_models,QWK,QWK_95CI,accuracy,macro_F1,ref_sens,ref_spec,recall_per_grade\nmobilenetv3large_kfold_clean,as_trained,5,0.5712120752886976,0.516-0.625,0.2810077519379845,0.3080953906326581,0.5139318885448917,0.9792746113989638,\"[0.25, 0.84, 0.262, 0.204, 0.306]\"\nmobilenetv3large_kfold_clean,cropped,5,0.5627418951334011,0.501-0.618,0.3023255813953488,0.32608318677927733,0.4891640866873065,0.9844559585492227,\"[0.321, 0.8, 0.25, 0.237, 0.29]\"\nefficientnetb3_kfold_clean,as_trained,5,0.6259688647339816,0.567-0.679,0.3856589147286822,0.360518902469444,0.5015479876160991,0.9948186528497409,\"[0.625, 0.4, 0.268, 0.237, 0.274]\"\nefficientnetb3_kfold_clean,cropped,5,0.6142088123878513,0.554-0.666,0.3507751937984496,0.3376482816447134,0.43653250773993807,0.9896373056994818,\"[0.619, 0.52, 0.161, 0.204, 0.29]\"\ninceptionv3_kfold_clean,as_trained,5,0.6861531699304825,0.632-0.734,0.4127906976744186,0.37260144129888106,0.5634674922600619,0.9896373056994818,\"[0.685, 0.36, 0.232, 0.183, 0.532]\"\ninceptionv3_kfold_clean,cropped,5,0.6473624544730938,0.594-0.694,0.39728682170542634,0.3576890587171235,0.4674922600619195,0.9948186528497409,\"[0.738, 0.32, 0.179, 0.194, 0.403]\"\nresnet50_kfold_clean,as_trained,5,0.668983805772251,0.612-0.723,0.5251937984496124,0.40334986631016034,0.7925696594427245,0.8808290155440415,\"[0.726, 0.16, 0.661, 0.161, 0.306]\"\nresnet50_kfold_clean,cropped,5,0.6984399599255761,0.645-0.745,0.48643410852713176,0.4007455978743419,0.6068111455108359,0.9844559585492227,\"[0.863, 0.24, 0.345, 0.204, 0.371]\"\nvgg16_lr1e-5_kfold_clean,as_trained,5,0.6237758869802537,0.571-0.673,0.4050387596899225,0.347377901351827,0.5479876160990712,0.9896373056994818,\"[0.667, 0.48, 0.345, 0.161, 0.194]\"\nvgg16_lr1e-5_kfold_clean,cropped,5,0.6062154566114869,0.558-0.654,0.375968992248062,0.31713692775420993,0.5139318885448917,0.9896373056994818,\"[0.679, 0.4, 0.28, 0.14, 0.161]\"\ndensenet121_kfold_clean,as_trained,5,0.6461050501736254,0.591-0.695,0.39147286821705424,0.3748505510120169,0.4984520123839009,0.9948186528497409,\"[0.595, 0.64, 0.214, 0.409, 0.194]\"\ndensenet121_kfold_clean,cropped,5,0.6189190663176265,0.562-0.668,0.3624031007751938,0.3520023209231457,0.4148606811145511,0.9948186528497409,\"[0.595, 0.68, 0.137, 0.376, 0.194]\"\nresnet50_kfold_naive,as_trained,5,0.6107761189892016,0.555-0.668,0.4496124031007752,0.35229614642441265,0.6811145510835913,0.9430051813471503,\"[0.667, 0.4, 0.524, 0.14, 0.145]\"\nresnet50_kfold_naive,cropped,5,0.5518293506142837,0.500-0.606,0.3701550387596899,0.3133969047943815,0.42105263157894735,0.9896373056994818,\"[0.708, 0.36, 0.232, 0.172, 0.129]\"\nconvnexttiny_kfold_clean,as_trained,5,0.6978098676293623,0.650-0.741,0.4883720930232558,0.3784813644753293,0.6346749226006192,0.9896373056994818,\"[0.875, 0.24, 0.405, 0.075, 0.387]\"\nconvnexttiny_kfold_clean,cropped,5,0.6670799281431066,0.619-0.711,0.43023255813953487,0.35143703428304385,0.5510835913312694,0.9896373056994818,\"[0.81, 0.4, 0.292, 0.118, 0.258]\"\n--END FIXED CSV--\n--BEGIN ERROR REPORT--\n{\"fixed_errors\":[],\"summary\":\"No errors found.\"}\n--END ERROR REPORT--",
+  "usage": {
+    "prompt_tokens": 1936,
+    "completion_tokens": 1540,
+    "total_tokens": 3476,
+    "prompt_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 1933,
+      "audio_tokens": 0
+    },
+    "completion_tokens_details": {
+      "reasoning_tokens": 8,
+      "audio_tokens": 0,
+      "accepted_prediction_tokens": 0,
+      "rejected_prediction_tokens": 0
+    }
+  },
+  "cost": {
+    "backend": "openai",
+    "model": "gpt-6.1-terra",
+    "api_base": "https://api.openai.com/v1",
+    "local_cache_hit": false,
+    "usage_available": true,
+    "cache_path": "/home/robin/offsite/pollock-offsite/results/runs/20261123T235243Z-7721ec29/full_llm_loader_naive_gpt_6_1_terra/combined_real_world_files/llm_cache/c6e8743845c6f53bbb7b7de1943561f7ffa3b441348d8a280043502e1b784883.json",
+    "prompt_tokens": 1936,
+    "cached_input_tokens": 0,
+    "uncached_input_tokens": 1936,
+    "ordinary_input_tokens": 3,
+    "cache_write_tokens": 1933,
+    "completion_tokens": 1540,
+    "total_tokens": 3476,
+    "input_usd_per_1m": 1.0,
+    "cached_input_usd_per_1m": 0.05,
+    "cache_write_usd_per_1m": 1.25,
+    "output_usd_per_1m": 5.0,
+    "input_cost_usd": 3e-06,
+    "cached_input_cost_usd": 0.0,
+    "cache_write_cost_usd": 0.00241625,
+    "output_cost_usd": 0.0077,
+    "estimated_api_cost_usd": 0.01011925,
+    "billable_cost_usd": 0.01011925
+  }
+}

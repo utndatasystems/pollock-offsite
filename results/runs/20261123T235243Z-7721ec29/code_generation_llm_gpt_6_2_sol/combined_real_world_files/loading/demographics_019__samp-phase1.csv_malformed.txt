@@ -1,0 +1,2 @@
+Malformed rows: 1
+{"line_num": 1, "reason": "header row normalized", "raw": ["ts", "mem_avail_mb", "swap_used_mb", "dirty_kb", "nvme_rd_kbs", "nvme_wr_kbs", "vram_used_mb", "gpu_util", "gpu_power_w", "gpu_temp_c", "gpu_clk_mhz", "cpu_temp_c", "load1"], "repaired": true}

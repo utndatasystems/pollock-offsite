@@ -1,0 +1,6 @@
+Malformed rows: 5
+{"line_num": 1, "reason": "header row normalized", "raw": ["# Genesis experiment"], "repaired": true}
+{"line_num": 2, "reason": "header row normalized", "raw": ["# genesis 0.7.0 commit 469f747", " node v22.23.4"], "repaired": true}
+{"line_num": 3, "reason": "header row normalized", "raw": ["# settings {\"days\":60", "brain:64", "people:25", "herbivores:20", "predators:6", "fish:24", "retina:false", "vicar:true", "pickyCopy:true", "soundPhysics:true", "animalCalls:true", "modernVoice:false", "homeland:false", "earth:false}"], "repaired": true}
+{"line_num": 4, "reason": "header row normalized", "raw": ["# seeds 1-12"], "repaired": true}
+{"line_num": 5, "reason": "header row normalized", "raw": ["# day_X = the day (1 = first) something first happened in that world; empty = never"], "repaired": true}

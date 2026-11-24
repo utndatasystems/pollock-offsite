@@ -1,0 +1,62 @@
+{
+  "cache_version": 1,
+  "created_at": "2026-11-24T12:01:05.375274+00:00",
+  "api_base": "https://api.openai.com/v1",
+  "payload": {
+    "model": "gpt-6.1-terra",
+    "messages": [
+      {
+        "role": "system",
+        "content": "You are a CSV repair assistant.\n\nYour task is to inspect a possibly malformed CSV file and reconstruct it as a valid CSV table.\n\nReturn the repaired CSV and a brief error report. Do not include explanations outside the requested output sections."
+      },
+      {
+        "role": "user",
+        "content": "Repair the following CSV file.\n\nReturn exactly two sections and nothing else.\nDo not use Markdown fences. Do not include prose before, between, or after the sections.\nThe section markers must appear exactly as shown, each on its own line.\n\n--BEGIN FIXED CSV--\n<repaired CSV text only, including exactly one header row>\n--END FIXED CSV--\n--BEGIN ERROR REPORT--\n<JSON error report object only>\n--END ERROR REPORT--\n\nRules for the fixed CSV section:\n\n- Use a comma as the output delimiter.\n- Use double quotes according to standard CSV escaping rules.\n- Encode an embedded double quote as two double quotes.\n- Preserve every payload character exactly.\n- Do not normalize, infer, translate, reformat, round, complete, shorten, or otherwise rewrite cell values.\n- Preserve embedded line breaks inside quoted fields.\n- Use LF line endings.\n- Return the complete repaired CSV, not a sample, preview, summary, or first portion.\n- Include every recoverable source data row exactly once unless the input clearly marks it as non-data.\n- Finish the entire fixed CSV section before starting the error report.\n- If output length is a concern, keep the error report as short as possible but do not truncate the fixed CSV.\n- Do not wrap the CSV in Markdown fences.\n- Do not include comments, explanations, or section labels inside the CSV.\n- If the input is empty, whitespace-only, or contains no table evidence, leave the fixed CSV section empty. Do not invent headers, rows, columns, examples, placeholder data, or sample content.\n\nThe error report must use this format:\n\n{\n  \"fixed_errors\": [\n    {\n      \"type\": \"<error type>\",\n      \"description\": \"<brief description>\",\n      \"rows\": [<affected physical line numbers>]\n    }\n  ],\n  \"summary\": \"<brief summary>\"\n}\n\nIf no errors were fixed, return an empty fixed_errors list.\n\nCSV content:\n\nDepartment Family,Entity,Clearing,Expense Type,Expense Area,Supplier,Doc Nbr,Item Text,Merchant category,Amount\nCommunities & Local Government,DCLG,01/12/2015,\"IT - PC, Network & Hardware\",\"Strategy, Communications and Private Office\",WPCHRG.COM               8772733049,1000004070,Polling function add on for DCLG intranet,COMPUTER NETWORK INFORMATION SERVICES,136.38\nCommunities & Local Government,DCLG,03/12/2015,Publications,Finance & Corporate Services,AMAZON UK MARKETPLACE    800-279-6620,1000004071,5 x Blackberry chargers. Fujitsu no longer supply,BOOK STORES,14.95\nCommunities & Local Government,DCLG,08/12/2015,Government Procurement Card (expense),Local Government & Public Services,AMAZON UK MARKETPLACE    800-279-6620,1000004072,Printheads for HP printer,MISC. SPECIALITY RETAIL,269.86\nCommunities & Local Government,DCLG,09/12/2015,\"IT - PC, Network & Hardware\",Troubled Families,DROPBOX 5NRKNWF5VJMN     415-986-7057,1000004073,Needed for extra file space for filming case study,COMPUTER NETWORK INFORMATION SERVICES,66.00\nCommunities & Local Government,DCLG,14/12/2015,\"IT - PC, Network & Hardware\",Finance & Corporate Services,1&1 INTERNET LIMITED     GLOUCESTER,1000004074,monthly sub for domain name needed for testing,COMPUTER NETWORK INFORMATION SERVICES,2.39\nCommunities & Local Government,DCLG,15/12/2015,Publications,Local Government & Public Services,AMAZON UK MARKETPLACE    800-279-6620,1000004075,Display frames,BOOK STORES,68.34\nCommunities & Local Government,DCLG,21/12/2015,Government Procurement Card (expense),Finance & Corporate Services,AMAZON UK MARKETPLACE    800-279-6620,1000004077,6 x Blackberry batteries.,MISC. SPECIALITY RETAIL,31.68\nCommunities & Local Government,DCLG,21/12/2015,Government Procurement Card (expense),\"Strategy, Communications and Private Office\",AVVEL INTERNATIONAL      +447713503055,1000004076,Software tool to enable app to smoke alarm comms,ELECTRONICS SHOPS,147.50\n\n"
+      }
+    ],
+    "stream": false,
+    "max_completion_tokens": 16000
+  },
+  "content": "--BEGIN FIXED CSV--\nDepartment Family,Entity,Clearing,Expense Type,Expense Area,Supplier,Doc Nbr,Item Text,Merchant category,Amount\nCommunities & Local Government,DCLG,01/12/2015,\"IT - PC, Network & Hardware\",\"Strategy, Communications and Private Office\",WPCHRG.COM               8772733049,1000004070,Polling function add on for DCLG intranet,COMPUTER NETWORK INFORMATION SERVICES,136.38\nCommunities & Local Government,DCLG,03/12/2015,Publications,Finance & Corporate Services,AMAZON UK MARKETPLACE    800-279-6620,1000004071,5 x Blackberry chargers. Fujitsu no longer supply,BOOK STORES,14.95\nCommunities & Local Government,DCLG,08/12/2015,Government Procurement Card (expense),Local Government & Public Services,AMAZON UK MARKETPLACE    800-279-6620,1000004072,Printheads for HP printer,MISC. SPECIALITY RETAIL,269.86\nCommunities & Local Government,DCLG,09/12/2015,\"IT - PC, Network & Hardware\",Troubled Families,DROPBOX 5NRKNWF5VJMN     415-986-7057,1000004073,Needed for extra file space for filming case study,COMPUTER NETWORK INFORMATION SERVICES,66.00\nCommunities & Local Government,DCLG,14/12/2015,\"IT - PC, Network & Hardware\",Finance & Corporate Services,1&1 INTERNET LIMITED     GLOUCESTER,1000004074,monthly sub for domain name needed for testing,COMPUTER NETWORK INFORMATION SERVICES,2.39\nCommunities & Local Government,DCLG,15/12/2015,Publications,Local Government & Public Services,AMAZON UK MARKETPLACE    800-279-6620,1000004075,Display frames,BOOK STORES,68.34\nCommunities & Local Government,DCLG,21/12/2015,Government Procurement Card (expense),Finance & Corporate Services,AMAZON UK MARKETPLACE    800-279-6620,1000004077,6 x Blackberry batteries.,MISC. SPECIALITY RETAIL,31.68\nCommunities & Local Government,DCLG,21/12/2015,Government Procurement Card (expense),\"Strategy, Communications and Private Office\",AVVEL INTERNATIONAL      +447713503055,1000004076,Software tool to enable app to smoke alarm comms,ELECTRONICS SHOPS,147.50\n--END FIXED CSV--\n--BEGIN ERROR REPORT--\n{\"fixed_errors\":[],\"summary\":\"No errors found.\"}\n--END ERROR REPORT--",
+  "usage": {
+    "prompt_tokens": 995,
+    "completion_tokens": 607,
+    "total_tokens": 1602,
+    "prompt_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 0,
+      "audio_tokens": 0
+    },
+    "completion_tokens_details": {
+      "reasoning_tokens": 15,
+      "audio_tokens": 0,
+      "accepted_prediction_tokens": 0,
+      "rejected_prediction_tokens": 0
+    }
+  },
+  "cost": {
+    "backend": "openai",
+    "model": "gpt-6.1-terra",
+    "api_base": "https://api.openai.com/v1",
+    "local_cache_hit": false,
+    "usage_available": true,
+    "cache_path": "/home/robin/offsite/pollock-offsite/results/runs/20261123T235243Z-7721ec29/full_llm_loader_naive_gpt_6_1_terra/combined_real_world_files/llm_cache/00e7a8bda456dd7f2d7d568cf5307d40193d0f798e480711eab53d7b101d6bcc.json",
+    "prompt_tokens": 995,
+    "cached_input_tokens": 0,
+    "uncached_input_tokens": 995,
+    "ordinary_input_tokens": 995,
+    "cache_write_tokens": 0,
+    "completion_tokens": 607,
+    "total_tokens": 1602,
+    "input_usd_per_1m": 1.0,
+    "cached_input_usd_per_1m": 0.05,
+    "cache_write_usd_per_1m": 1.25,
+    "output_usd_per_1m": 5.0,
+    "input_cost_usd": 0.000995,
+    "cached_input_cost_usd": 0.0,
+    "cache_write_cost_usd": 0.0,
+    "output_cost_usd": 0.003035,
+    "estimated_api_cost_usd": 0.00403,
+    "billable_cost_usd": 0.00403
+  }
+}

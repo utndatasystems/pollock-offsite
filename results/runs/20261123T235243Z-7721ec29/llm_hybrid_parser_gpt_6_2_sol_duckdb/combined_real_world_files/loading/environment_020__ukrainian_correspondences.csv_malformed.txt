@@ -1,0 +1,2 @@
+Malformed rows: 1
+{"line_num": 17, "reason": "TOO MANY COLUMNS: Expected Number of Columns: 5 Found: 6", "raw": "h,\u0433,0.90,Ukrainian \u0433 is the selected practical approximation for Lao /h/; this is a project policy, not phonetic identity,project-policy", "repaired": true}

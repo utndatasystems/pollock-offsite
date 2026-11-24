@@ -1,0 +1,24 @@
+Malformed rows: 23
+{"line_num": 1, "reason": "header row normalized", "raw": ["#EXPORTTYPE:  ", "DATA ALL                      "], "repaired": true}
+{"line_num": 2, "reason": "header row normalized", "raw": ["#FILE:        ", "dma4.ngb-dm2                  "], "repaired": true}
+{"line_num": 3, "reason": "header row normalized", "raw": ["#FORMAT:      ", "NETZSCH5                      "], "repaired": true}
+{"line_num": 4, "reason": "header row normalized", "raw": ["#FTYPE:       ", "ANSI                          "], "repaired": true}
+{"line_num": 5, "reason": "width 2 -> 5", "raw": ["#IDENTITY:    ", "1                             "], "repaired": true}
+{"line_num": 6, "reason": "width 2 -> 5", "raw": ["#DECIMAL:     ", "POINT                         "], "repaired": true}
+{"line_num": 7, "reason": "width 2 -> 5", "raw": ["#SEPARATOR:   ", "COMMA                         "], "repaired": true}
+{"line_num": 8, "reason": "width 2 -> 5", "raw": ["#MTYPE:       ", "DMA                           "], "repaired": true}
+{"line_num": 9, "reason": "width 2 -> 5", "raw": ["#INSTRUMENT:  ", "NETZSCH DMA 242               "], "repaired": true}
+{"line_num": 10, "reason": "width 2 -> 5", "raw": ["#PROJECT:     ", "1                             "], "repaired": true}
+{"line_num": 11, "reason": "width 2 -> 5", "raw": ["#DATE/TIME:   ", "2016-12-21 \u00cf\u00c2\u00ce\u00e7 12:31:41 (UTC+8)"], "repaired": true}
+{"line_num": 12, "reason": "width 2 -> 5", "raw": ["#LABORATORY:  ", "1                             "], "repaired": true}
+{"line_num": 13, "reason": "width 2 -> 5", "raw": ["#OPERATOR:    ", "1                             "], "repaired": true}
+{"line_num": 14, "reason": "width 2 -> 5", "raw": ["#REMARK:      ", "                              "], "repaired": true}
+{"line_num": 15, "reason": "width 2 -> 5", "raw": ["#SAMPLEHOLDER:", "3ptBending50                  "], "repaired": true}
+{"line_num": 16, "reason": "width 2 -> 5", "raw": ["#SAMPLE:      ", "dma3                          "], "repaired": true}
+{"line_num": 17, "reason": "width 2 -> 5", "raw": ["#SAMPLEDIM/MM:", "50.000x10.000x4.050           "], "repaired": true}
+{"line_num": 18, "reason": "width 2 -> 5", "raw": ["#MATERIAL:    ", "\u00c4\u00be\u00cb\u00dc                            "], "repaired": true}
+{"line_num": 19, "reason": "width 2 -> 5", "raw": ["#CORR. CODE:  ", "0                             "], "repaired": true}
+{"line_num": 20, "reason": "width 2 -> 5", "raw": ["#RANGE:       ", "20.0\u00a1\u00e3C/5.0(K/min)/120.0\u00a1\u00e3C     "], "repaired": true}
+{"line_num": 21, "reason": "width 2 -> 5", "raw": ["#SEGMENT:     ", "S1/1                          "], "repaired": true}
+{"line_num": 22, "reason": "width 2 -> 5", "raw": ["#SEG. 1:      ", "20.0\u00a1\u00e3C/5.0(K/min)/120.0\u00a1\u00e3C     "], "repaired": true}
+{"line_num": 23, "reason": "width 1 -> 5", "raw": [""], "repaired": true}

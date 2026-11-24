@@ -1,0 +1,12 @@
+Malformed rows: 11
+{"line_num": 2, "reason": "TOO MANY COLUMNS: Expected Number of Columns: 1 Found: 2", "raw": "veh_indices=[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]", "repaired": true}
+{"line_num": 3, "reason": "TOO MANY COLUMNS: Expected Number of Columns: 1 Found: 2", "raw": "length=[4.010,15.000,4.210,4.640,10.220,4.360,4.210,4.210,4.210,4.760,4.640,4.610,4.010,4.010,4.610]", "repaired": true}
+{"line_num": 4, "reason": "TOO MANY COLUMNS: Expected Number of Columns: 1 Found: 2", "raw": "width=[1.850,3.170,2.000,2.000,2.500,1.970,2.000,2.000,2.000,2.070,2.000,1.950,1.850,1.850,1.950]", "repaired": true}
+{"line_num": 5, "reason": "TOO MANY COLUMNS: Expected Number of Columns: 1 Found: 2", "raw": "height=[1.500,1.500,1.500,1.500,1.500,1.500,1.500,1.500,1.500,1.500,1.500,1.500,1.500,1.500,1.500]", "repaired": true}
+{"line_num": 6, "reason": "TOO MANY COLUMNS: Expected Number of Columns: 1 Found: 2", "raw": "cog2front=[2.005,7.500,2.105,2.320,5.110,2.180,2.105,2.105,2.105,2.380,2.320,2.305,2.005,2.005,2.305]", "repaired": true}
+{"line_num": 7, "reason": "TOO MANY COLUMNS: Expected Number of Columns: 1 Found: 2", "raw": "mass=[1390.969,8915.625,1578.750,1740.000,4790.625,1610.475,1578.750,1578.750,1578.750,1847.475,1740.000,1685.531,1390.969,1390.969,1685.531]", "repaired": true}
+{"line_num": 8, "reason": "TOO MANY COLUMNS: Expected Number of Columns: 1 Found: 2", "raw": "wheelbase=[2.807,10.500,2.947,3.248,7.154,3.052,2.947,2.947,2.947,3.332,3.248,3.227,2.807,2.807,3.227]", "repaired": true}
+{"line_num": 9, "reason": "TOO MANY COLUMNS: Expected Number of Columns: 1 Found: 2", "raw": "trackwidth=[1.550,2.870,1.700,1.700,2.200,1.670,1.700,1.700,1.700,1.770,1.700,1.650,1.550,1.550,1.650]", "repaired": true}
+{"line_num": 10, "reason": "TOO MANY COLUMNS: Expected Number of Columns: 1 Found: 2", "raw": "cogaxle=[1.403,5.250,1.474,1.624,3.577,1.526,1.473,1.473,1.473,1.666,1.624,1.613,1.403,1.403,1.613]", "repaired": true}
+{"line_num": 11, "reason": "TOO MANY COLUMNS: Expected Number of Columns: 1 Found: 2", "raw": "type=[Car,Truck,Car,Car,Truck,Car,Car,Car,Car,Car,Car,Car,Car,Car,Car]", "repaired": true}
+{"line_num": 12, "reason": "TOO MANY COLUMNS: Expected Number of Columns: 1 Found: 2", "raw": "is_environmental=[0,0,0,1,1,1,1,1,1,1,1,1,1,1,1]", "repaired": true}
