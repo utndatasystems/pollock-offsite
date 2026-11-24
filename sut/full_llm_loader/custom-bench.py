@@ -15,7 +15,7 @@ from tqdm import tqdm
 
 from utils import print
 from solution import parse_csv
-from llm_utils import MAX_OUTPUT_TOKENS, get_last_llm_cost_record
+from llm_utils import MAX_OUTPUT_TOKENS, get_last_llm_cost_record, reset_last_llm_cost_record
 
 # A full rewrite of a longer input cannot fit in MAX_OUTPUT_TOKENS: CSV text
 # tokenizes at well under 8 characters per token (CSV Storm: ~2.3-3.8).
@@ -226,6 +226,8 @@ for idx, file in enumerate(tqdm(benchmark_files, total=len(benchmark_files), des
     for time_rep in range(N_REPETITIONS):
         start = time.time()
         rejected_before_generation = False
+        # A file that fails before its request must not inherit the previous file's cost.
+        reset_last_llm_cost_record()
         try:
             if too_long_for_output:
                 raise ValueError(
@@ -259,8 +261,7 @@ for idx, file in enumerate(tqdm(benchmark_files, total=len(benchmark_files), des
                 text_file.write(str(e))
 
         elapsed = end - start
-        # No request was made, so the last cost record belongs to another file.
-        cost_record = {} if too_long_for_output else (get_last_llm_cost_record() or {})
+        cost_record = get_last_llm_cost_record() or {}
         if (rejected_before_generation or too_long_for_output) and not cost_record:
             cost_record = {'billable_cost_usd': 0.0}
         run_dict.setdefault(f, []).append({

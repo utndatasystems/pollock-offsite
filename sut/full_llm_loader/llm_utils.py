@@ -136,6 +136,12 @@ def get_last_llm_cost_record() -> dict | None:
     return dict(_LAST_LLM_COST_RECORD) if _LAST_LLM_COST_RECORD else None
 
 
+def reset_last_llm_cost_record() -> None:
+    """Forget the previous call's record, e.g. before a file that may fail before any call."""
+    global _LAST_LLM_COST_RECORD
+    _LAST_LLM_COST_RECORD = None
+
+
 def _query_llm(
     messages: list[dict[str, str]],
     cache_context: dict | None = None,
