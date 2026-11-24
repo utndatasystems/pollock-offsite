@@ -855,6 +855,10 @@ def _execute_generated_code(program: str, raw_csv: str) -> Any:
         "abs", "all", "any", "bool", "chr", "dict", "enumerate", "Exception",
         "float", "IndexError", "int", "isinstance", "len", "list", "max", "min", "next",
         "range", "reversed", "set", "sorted", "str", "sum", "tuple", "TypeError", "ValueError", "zip",
+        # Side-effect-free builtins that ordinary parsing code uses; the prompt
+        # does not list the allowed builtins, so missing ones crash valid code.
+        "divmod", "filter", "frozenset", "iter", "KeyError", "map", "ord", "repr",
+        "round", "slice", "StopIteration", "UnicodeError",
     ]
     namespace: Dict[str, Any] = {
         "__name__": "__llm_generated__",
