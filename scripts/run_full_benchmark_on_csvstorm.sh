@@ -9,9 +9,9 @@
 #   --real-world       Run on data/combined_real_world_files instead of csv_storm
 #                      (skips DuckDB Explicit; not combinable with --regenerate).
 #   --skip-local       Skip the local Ollama models; run only the remote models.
-#   --local-only       Skip the remote models; run only the local Ollama models
-#                      (no paid calls, so neither --confirm-cost nor an API key
-#                      is required).
+#   --local-only       Run only the local Ollama models, without the remote models
+#                      and the classical parsers (no paid calls, so neither
+#                      --confirm-cost nor an API key is required).
 #   --run-id ID        Name this isolated run (default: UTC timestamp + commit).
 #   --resume ID        Continue an interrupted run with matching inputs/settings.
 #   --verbose          Print hybrid- and full-agentic-parser LLM prompts/responses.
@@ -179,6 +179,9 @@ classical_suts=(duckdbauto_strict duckdbparse pandas clevercs pycsv)
 if [[ "$dataset" != "csv_storm" ]]; then
     classical_suts=(duckdbauto_strict pandas clevercs pycsv)
 fi
+if [[ "$local_only" == true ]]; then
+    classical_suts=()
+fi
 suts=("${classical_suts[@]}")
 for model in "${remote_models[@]}" "${local_models[@]}"; do
     slug="$(model_slug "$model")"
@@ -336,13 +339,15 @@ echo "Other SUTs:    ${classical_suts[*]}"
 echo "Python:        $python_bin"
 echo "Remote API:    $remote_openai_endpoint"
 
-run_classical_sut "DuckDB Auto" "duckdbauto_strict" "sut/duckdbauto/duck-bench.py" --strict
-if [[ "$dataset" == "csv_storm" ]]; then
-    run_classical_sut "DuckDB Explicit" "duckdbparse" "sut/duckdbparse/duck-bench.py"
+if [[ "$local_only" != true ]]; then
+    run_classical_sut "DuckDB Auto" "duckdbauto_strict" "sut/duckdbauto/duck-bench.py" --strict
+    if [[ "$dataset" == "csv_storm" ]]; then
+        run_classical_sut "DuckDB Explicit" "duckdbparse" "sut/duckdbparse/duck-bench.py"
+    fi
+    run_classical_sut "pandas" "pandas" "sut/pandas/panda.py"
+    run_classical_sut "CleverCSV" "clevercs" "sut/clevercs/clevercs.py"
+    run_classical_sut "Python CSV" "pycsv" "sut/pycsv/pycsv.py"
 fi
-run_classical_sut "pandas" "pandas" "sut/pandas/panda.py"
-run_classical_sut "CleverCSV" "clevercs" "sut/clevercs/clevercs.py"
-run_classical_sut "Python CSV" "pycsv" "sut/pycsv/pycsv.py"
 
 for model in "${remote_models[@]}"; do
     run_llm_model "openai" "$model"
