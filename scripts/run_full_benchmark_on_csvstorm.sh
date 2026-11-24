@@ -126,7 +126,7 @@ fi
 
 dataset_seed=1337
 remote_models=("gpt-6.2-sol" "gpt-6.1-terra" "gpt-6-luna")
-local_models=("qwen3.5:0.8b")
+local_models=("qwen3.5:0.8b" "qwen3.5:9b")
 if [[ "$skip_local" == true ]]; then
     local_models=()
 fi
