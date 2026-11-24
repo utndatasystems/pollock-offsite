@@ -200,7 +200,10 @@ def save_run_df(time_dir, sut_name, run_dict):
         run_df = run_df.drop_duplicates(subset=['filename', 'pollution', 'model'], keep='last')
     except FileNotFoundError:
         run_df = update_run_df
-    run_df.to_csv(run_path, index=False)
+    # Write atomically so an interrupt cannot leave a truncated CSV.
+    temporary_path = run_path + ".tmp"
+    run_df.to_csv(temporary_path, index=False)
+    os.replace(temporary_path, run_path)
 
 
 run_dict = {}
@@ -209,6 +212,9 @@ for idx, file in enumerate(tqdm(benchmark_files, total=len(benchmark_files), des
     in_filepath = join(IN_DIR, f)
     out_filename = f'{f}_converted.csv'
     out_filepath = join(OUT_DIR, out_filename)
+    # Output only appears under its final name once its usage row is saved, so an
+    # interrupt never leaves an output that resume would skip without usage.
+    pending_filepath = out_filepath + '.tmp'
     if not args.overwrite and not args.file and os.path.exists(out_filepath):
         continue
     print(f"({idx + 1}/{len(benchmark_files)}) {f}")
@@ -235,7 +241,7 @@ for idx, file in enumerate(tqdm(benchmark_files, total=len(benchmark_files), des
             )
             end = time.time()
             fixed_csv = df.attrs["llm_fixed_csv"]
-            with open(out_filepath, 'w', encoding='utf-8', newline='') as text_file:
+            with open(pending_filepath, 'w', encoding='utf-8', newline='') as text_file:
                 text_file.write(fixed_csv)
                 newline = chr(10)
                 if fixed_csv and not fixed_csv.endswith(newline):
@@ -248,7 +254,7 @@ for idx, file in enumerate(tqdm(benchmark_files, total=len(benchmark_files), des
                 and getattr(e.response, 'status_code', None) == 400
                 and 'string too long' in str(e)
             )
-            with open(out_filepath, 'w') as text_file:
+            with open(pending_filepath, 'w') as text_file:
                 text_file.write('Application Error\n')
                 text_file.write(str(e))
 
@@ -275,4 +281,6 @@ for idx, file in enumerate(tqdm(benchmark_files, total=len(benchmark_files), des
         except:
             pass
 
-save_run_df(TIME_DIR, sut, run_dict)
+    # Save after every file so an interrupted run keeps usage for finished files.
+    save_run_df(TIME_DIR, sut, {f: run_dict[f]})
+    os.replace(pending_filepath, out_filepath)
