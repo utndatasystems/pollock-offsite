@@ -31,12 +31,17 @@ def init_args(**changes):
     return Namespace(**values)
 
 
-def test_run_id_is_unique_and_resume_checks_dataset(run_workspace):
+def test_run_id_is_unique_and_resume_checks_dataset(run_workspace, monkeypatch):
     runs.init_run(init_args())
     with pytest.raises(FileExistsError):
         runs.init_run(init_args())
 
     runs.init_run(init_args(resume=True))
+    monkeypatch.setattr(runs, "git", lambda *args: "b" * 40)
+    runs.init_run(init_args(resume=True))
+    manifest = runs.load_manifest(runs.run_dir("trial"))
+    assert manifest["git_commit"] == "a" * 40
+    assert [entry["git_commit"] for entry in manifest["resumes"]] == ["a" * 40, "b" * 40]
     with pytest.raises(ValueError, match="config"):
         runs.init_run(init_args(resume=True, seed=999))
     (run_workspace / "data" / "tiny" / "csv" / "file.csv").write_text("a\n2\n")

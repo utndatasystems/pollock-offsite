@@ -137,7 +137,6 @@ def init_run(args: argparse.Namespace) -> None:
         if manifest["status"] == "complete":
             raise ValueError(f"run {args.run_id} is already complete")
         for key, expected in (
-            ("git_commit", commit),
             ("dataset_sha256", digest),
             ("requirements_sha256", requirements_digest),
             ("python_version", sys.version.split()[0]),
@@ -147,7 +146,13 @@ def init_run(args: argparse.Namespace) -> None:
             if manifest[key] != expected:
                 raise ValueError(f"cannot resume {args.run_id}: {key} has changed")
         manifest["status"] = "running"
-        manifest["resumed_at_utc"] = now_utc()
+        # The code may have changed since git_commit; record where each resume
+        # started so the history shows which SUTs ran on which commit.
+        manifest.setdefault("resumes", []).append({
+            "git_commit": commit,
+            "resumed_at_utc": now_utc(),
+            "completed_suts": list(manifest["completed_suts"]),
+        })
         write_manifest(directory / "manifest.json", manifest)
     else:
         directory.mkdir(parents=True, exist_ok=False)
