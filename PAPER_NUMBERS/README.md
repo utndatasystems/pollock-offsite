@@ -19,7 +19,7 @@ Dataset: `data/csv_storm` (69 files: 68 polluted + `source.csv`). Evaluation: `e
 | `llm_hybrid_parser_{gpt_5_6_sol,gpt_5_6_luna,gpt_5_4_mini,qwen3_5_0_8b}_duckdb` | The submission runs of the DuckDB-sniff hybrid were almost entirely served from the response cache, so their timings were meaningless. Rerun with `--overwrite` (cache off). | 0 |
 | `full_llm_loader_naive_gpt_5_6_luna` | Missing from Table 1. | not recorded by this script; started with an empty cache |
 | `code_generation_llm_{gpt_5_6_sol,gpt_5_6_luna,gpt_5_4_mini,qwen3_5_0_8b}` | Submission failures were artefacts: Sol 22 × empty response (4096-token limit used up by reasoning), Luna 11 × quota exceeded (HTTP 429), sandbox missing harmless builtins. | 16 per model: files whose prompt is identical to another file's in the same run (same behaviour as the submission code) |
-| `full_llm_loader_naive_qwen3_5_0_8b` | **Pending** (running on the GPU machine). The submission artefact `full_llm_loader_naive_qwen3_4_0_8b` is unusable: wrong model name, sent to the OpenAI endpoint, 69 × HTTP 404. | |
+| `full_llm_loader_naive_qwen3_5_0_8b` | Missing from Table 1. The submission artefact `full_llm_loader_naive_qwen3_4_0_8b` is unusable: wrong model name, sent to the OpenAI endpoint, 69 × HTTP 404. | not recorded by this script; started with an empty cache |
 
 Qwen runs (code generation, hybrid, full agentic) ran on the GPU machine via Ollama; all GPT runs via the OpenAI API.
 
@@ -47,7 +47,7 @@ The submission's Table 1 showed the LLM-sniff-only variant; that variant is not 
 | Hybrid | GPT-5.4 Mini | 94.2 / 9.23 / 63.8 | **100.0 / 9.82 / 68.1** |
 | Hybrid | Qwen3.5 0.8B | 100.0 / 7.53 / 27.5 | **97.1 / 8.15 / 30.4** |
 | Full Agentic | GPT-5.6 Luna | — | **89.9 / 8.67 / 59.4** |
-| Full Agentic | Qwen3.5 0.8B | — | pending |
+| Full Agentic | Qwen3.5 0.8B | — | **26.1 / 1.79 / 4.3** |
 | Custom Parser Code | GPT-5.6 Sol | 68.1 / 6.71 / 44.9 | **100.0 / 9.82 / 75.4** |
 | Custom Parser Code | GPT-5.6 Luna | 79.7 / 7.75 / 49.3 | **98.6 / 9.70 / 59.4** |
 | Custom Parser Code | GPT-5.4 Mini | 95.7 / 8.46 / 34.8 | **97.1 / 8.44 / 34.8** |
@@ -70,6 +70,7 @@ input / cached input / output tokens): Sol 5.00 / 0.50 / 30.00, Luna 1.00 / 0.10
 - **Paper vs. committed summary:** some unchanged rows in the paper differ slightly from the committed evaluation summary (e.g. DuckDB Parse 40.6 vs 43.5, Pandas 33.3 vs 34.8). The paper table was built from an earlier evaluation; these SUTs were not rerun.
 - **Code-generation timings:** the 16 cache-hit files per model take ~0 s; the time totals include them as zeros.
 - Hybrid DuckDB: all three GPT models hit a DuckDB strict-mode error on `file_unescaped_multiline_string_row_2_col_7.csv` and fall back to non-strict parsing (parser behaviour, not an API error). Qwen hybrid: one HTTP 400 (prompt longer than context) on `file_num_columns_pad_randints_1000.csv`.
+- No run hit a quota, rate limit, authentication, server or connection error. Remaining failures are method or model limits: context length (Qwen code generation 1, Qwen hybrid 1, full agentic Luna 1, full agentic Qwen 2), output-token limit 16000 (full agentic Luna 1, full agentic Qwen 39), Qwen repetition abort (hybrid 1, HTTP 500 "token repeat limit reached"), generated-parser timeouts (Qwen code generation 2), and unparseable or wrong outputs.
 
 ## Folder layout
 - `logs/<sut>.log` — console log of each rerun.

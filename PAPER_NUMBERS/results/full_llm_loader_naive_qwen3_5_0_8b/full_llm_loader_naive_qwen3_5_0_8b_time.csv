@@ -1,0 +1,70 @@
+filename,pollution,model,time_0,uncached_input_tokens_0,cached_input_tokens_0,completion_tokens_0
+file_less_columns_deleted_value_row_45_col_7.csv,Unknown,qwen3.5:0.8b,33.93550109863281,,,
+file_embedded_json_cell_2_1_len_4.csv,Unknown,qwen3.5:0.8b,13.872969388961792,7738.0,0.0,7364.0
+file_more_columns_row_39_col_8.csv,Unknown,qwen3.5:0.8b,30.17521381378174,,,
+file_whitespace_delimiter_cells_unquoted_padded.csv,Unknown,qwen3.5:0.8b,1.925661325454712,7772.0,0.0,843.0
+combo__more_columns_row_10_col_4__mixed_delimiters_within_row_row_11_range_3_0x3B.csv,Unknown,qwen3.5:0.8b,30.09824252128601,,,
+file_field_delimiter_0x2C_0x20.csv,Non-standard field delimiter (0x2C_0x20),qwen3.5:0.8b,14.558991432189941,8171.0,0.0,7716.0
+file_double_escaping_backslash_row_3_col_7.csv,Unknown,qwen3.5:0.8b,30.39055109024048,,,
+combo__move_header_row5__preamble_2_raw_empty_row.csv,Unknown,qwen3.5:0.8b,27.912271976470947,,,
+file_commented_row_56.csv,Unknown,qwen3.5:0.8b,13.615707635879517,7720.0,0.0,7269.0
+file_num_columns_pad_randints_1000.csv,Unknown,qwen3.5:0.8b,0.5570785999298096,,,
+file_commented_row_49.csv,Unknown,qwen3.5:0.8b,13.638078689575195,7720.0,0.0,7264.0
+file_double_trailing_newline.csv,Double trailing newline,qwen3.5:0.8b,29.97844672203064,,,
+file_header_only.csv,"Header row only, no data",qwen3.5:0.8b,0.2916529178619385,509.0,0.0,54.0
+file_less_columns_deleted_value_row_26_col_5.csv,Unknown,qwen3.5:0.8b,29.578287839889526,,,
+file_mixed_time_formats_iso_8601.csv,Unknown,qwen3.5:0.8b,13.483168840408325,7718.0,0.0,7262.0
+combo__multiline_header_rows_3__footnote_2_blank_line.csv,Unknown,qwen3.5:0.8b,1.110856294631958,7731.0,0.0,341.0
+file_multiline_header_rows_3.csv,Unknown,qwen3.5:0.8b,29.538228034973145,,,
+file_unescaped_multiline_string_row_2_col_7.csv,Unknown,qwen3.5:0.8b,29.82033658027649,,,
+file_no_header.csv,No header row,qwen3.5:0.8b,29.80902862548828,,,
+file_field_delimiter_0x3B.csv,Non-standard field delimiter (0x3B),qwen3.5:0.8b,13.629657983779907,7839.0,0.0,7356.0
+file_whitespace_delimiter_cells_quoted_unpadded.csv,Unknown,qwen3.5:0.8b,13.62144947052002,7978.0,0.0,7318.0
+file_num_columns_1000.csv,Unknown,qwen3.5:0.8b,1.2114529609680176,21968.0,0.0,218.0
+combo__row_quotation_mark_2_0x27__mixed_delimiters_within_row_row_2_range_3_0x3B.csv,Unknown,qwen3.5:0.8b,29.933773040771484,,,
+file_excel_formulas.csv,Unknown,qwen3.5:0.8b,12.535983800888062,2081.0,5670.0,6637.0
+file_record_delimiter_0xD.csv,Non-standard record delimiter (0xD),qwen3.5:0.8b,29.63919711112976,,,
+file_field_delimiter_0x20.csv,Non-standard field delimiter (0x20),qwen3.5:0.8b,13.383967399597168,7697.0,0.0,7215.0
+file_less_columns_deleted_value_row_70_col_3.csv,Unknown,qwen3.5:0.8b,30.105764627456665,,,
+file_superheader_whitespace_aligned_columns_transaction_info_cols_0-1-2_group_product_info_cols_3-4-5-6-7_group_notes_cols_8.csv,Unknown,qwen3.5:0.8b,13.892643690109253,7866.0,0.0,7384.0
+file_less_columns_deleted_value_row_40_col_1.csv,Unknown,qwen3.5:0.8b,29.906460762023926,,,
+file_footnote_3.csv,Unknown,qwen3.5:0.8b,30.538285970687866,,,
+file_footnote_1.csv,Unknown,qwen3.5:0.8b,1.0382866859436035,2019.0,5703.0,357.0
+file_mixed_time_formats_month_day_year.csv,Unknown,qwen3.5:0.8b,13.580949783325195,7718.0,0.0,7267.0
+file_num_rows_50000_repeat_file.csv,Unknown,qwen3.5:0.8b,12.507953405380249,,,
+file_escape_char_0x00.csv,Non-standard escape character (0x00),qwen3.5:0.8b,30.064256191253662,,,
+file_more_columns_row_72_col_5.csv,Unknown,qwen3.5:0.8b,30.02114963531494,,,
+file_header_multirow_3.csv,Multi-row header (3 rows),qwen3.5:0.8b,30.06249499320984,,,
+file_quotation_char_none.csv,Unknown,qwen3.5:0.8b,13.531145095825195,7707.0,0.0,7224.0
+file_escape_char_0x5C.csv,Non-standard escape character (0x5C),qwen3.5:0.8b,29.739315509796143,,,
+file_whitespace_delimiter_cells_quoted_empty_last_column_padded.csv,Unknown,qwen3.5:0.8b,15.074641942977905,8614.0,0.0,8116.0
+combo__move_header_row5__preamble_2_raw_empty_row__footnote_2_blank_line.csv,Unknown,qwen3.5:0.8b,0.5049831867218018,2060.0,5682.0,129.0
+file_double_escaping_double_quote_row_2_col_7.csv,Unknown,qwen3.5:0.8b,29.579037189483643,,,
+file_no_trailing_newline.csv,Missing trailing newline,qwen3.5:0.8b,29.817172527313232,,,
+file_record_delimiter_0xA.csv,Non-standard record delimiter (0xA),qwen3.5:0.8b,29.585756540298462,,,
+file_no_payload.csv,Empty file (0 bytes),qwen3.5:0.8b,0.31024837493896484,488.0,0.0,125.0
+file_footnote_3_blank_line.csv,Unknown,qwen3.5:0.8b,13.876844644546509,7730.0,0.0,7477.0
+combo__multiline_header_rows_3__mixed_delimiters_within_row_row_4_range_3_0x3B__footnote_2_blank_line.csv,Unknown,qwen3.5:0.8b,1.081871509552002,7731.0,0.0,319.0
+file_one_data_row.csv,Single data row,qwen3.5:0.8b,0.3594932556152344,589.0,0.0,134.0
+file_less_columns_deleted_value_row_57_col_1.csv,Unknown,qwen3.5:0.8b,29.90553045272827,,,
+file_more_columns_row_9_col_6.csv,Unknown,qwen3.5:0.8b,30.04176425933838,,,
+file_whitespace_delimiter_cells_quoted_padded.csv,Unknown,qwen3.5:0.8b,15.21036434173584,8531.0,0.0,8033.0
+file_mixed_delimiters_whole_row_row_13_0x3B.csv,Unknown,qwen3.5:0.8b,30.030932188034058,,,
+file_mixed_time_formats_long_month_name_unquoted.csv,Unknown,qwen3.5:0.8b,13.67095422744751,7718.0,0.0,7236.0
+source.csv,Unknown,qwen3.5:0.8b,29.9660165309906,,,
+file_mixed_time_formats_day_month_year.csv,Unknown,qwen3.5:0.8b,14.878415584564209,7718.0,0.0,7930.0
+file_preamble.csv,Preamble rows before header,qwen3.5:0.8b,29.93020224571228,,,
+file_mixed_delimiters_within_row_row_13_range_3_0x3B.csv,Unknown,qwen3.5:0.8b,29.69760489463806,,,
+file_field_delimiter_0x9.csv,Non-standard field delimiter (0x9),qwen3.5:0.8b,13.823279619216919,7966.0,0.0,7484.0
+file_unquoted_lists_row_9_col_6.csv,Unknown,qwen3.5:0.8b,29.87427568435669,,,
+file_move_header_row8.csv,Unknown,qwen3.5:0.8b,29.71535038948059,,,
+file_extremely_long_field_row_3_col_6_len_10000.csv,Unknown,qwen3.5:0.8b,27.66202974319458,,,
+file_mixed_time_formats_long_month_name.csv,Unknown,qwen3.5:0.8b,13.562241315841675,7759.0,0.0,7304.0
+file_mixed_delimiters_within_row_row_13_range_1_0x3B.csv,Unknown,qwen3.5:0.8b,29.626977920532227,,,
+file_more_columns_row_34_col_1.csv,Unknown,qwen3.5:0.8b,29.673507690429688,,,
+row_quotation_mark_12_0x27.csv,Unknown,qwen3.5:0.8b,29.834947109222412,,,
+file_quotation_char_0x27.csv,Non-standard quotation character (0x27),qwen3.5:0.8b,29.780552864074707,,,
+file_more_columns_row_79_col_7.csv,Unknown,qwen3.5:0.8b,30.23799467086792,,,
+file_superheader_sparse_transaction_info_cols_0-1-2_group_product_info_cols_3-4-5-6-7_group_notes_cols_8.csv,Unknown,qwen3.5:0.8b,30.139770030975342,,,
+file_commented_row_41.csv,Unknown,qwen3.5:0.8b,30.049978971481323,,,
+file_header_multirow_2.csv,Multi-row header (2 rows),qwen3.5:0.8b,29.946921348571777,,,

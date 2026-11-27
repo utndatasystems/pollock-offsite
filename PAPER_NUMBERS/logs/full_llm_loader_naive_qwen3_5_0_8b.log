@@ -1,0 +1,173 @@
+Benchmark files:   0%|          | 0/69 [00:00<?, ?file/s][94m10:40:36:[0m (1/69) file_less_columns_deleted_value_row_45_col_7.csv
+[94m10:41:10:[0m 	 LLM response was truncated because it reached the configured output token limit (max_tokens=16000). Increase the limit or reduce the requested output before parsing this result.
+Benchmark files:   1%|▏         | 1/69 [00:33<38:27, 33.94s/file][94m10:41:10:[0m (2/69) file_embedded_json_cell_2_1_len_4.csv
+Benchmark files:   3%|▎         | 2/69 [00:47<24:43, 22.13s/file][94m10:41:24:[0m (3/69) file_more_columns_row_39_col_8.csv
+[94m10:41:54:[0m 	 LLM response was truncated because it reached the configured output token limit (max_tokens=16000). Increase the limit or reduce the requested output before parsing this result.
+Benchmark files:   4%|▍         | 3/69 [01:17<28:23, 25.81s/file][94m10:41:54:[0m (4/69) file_whitespace_delimiter_cells_unquoted_padded.csv
+[94m10:41:56:[0m 	 The LLM response contained a fixed-CSV section, but pandas could not parse it.
+
+Attempts:
+- standard comma-separated CSV: Error tokenizing data. C error: Expected 2 fields in line 5, saw 3
+
+- comma-separated CSV with Python engine: Expected 2 fields in line 5, saw 3
+Benchmark files:   6%|▌         | 4/69 [01:19<17:44, 16.38s/file][94m10:41:56:[0m (5/69) combo__more_columns_row_10_col_4__mixed_delimiters_within_row_row_11_range_3_0x3B.csv
+[94m10:42:26:[0m 	 LLM response was truncated because it reached the configured output token limit (max_tokens=16000). Increase the limit or reduce the requested output before parsing this result.
+Benchmark files:   7%|▋         | 5/69 [01:50<22:44, 21.33s/file][94m10:42:26:[0m (6/69) file_field_delimiter_0x2C_0x20.csv
+[94m10:42:40:[0m 	 The LLM response contained a fixed-CSV section, but pandas could not parse it.
+
+Attempts:
+- standard comma-separated CSV: Error tokenizing data. C error: Expected 9 fields in line 3, saw 11
+
+- comma-separated CSV with Python engine: Expected 9 fields in line 3, saw 11
+Benchmark files:   9%|▊         | 6/69 [02:04<19:58, 19.03s/file][94m10:42:40:[0m (7/69) file_double_escaping_backslash_row_3_col_7.csv
+[94m10:43:11:[0m 	 LLM response was truncated because it reached the configured output token limit (max_tokens=16000). Increase the limit or reduce the requested output before parsing this result.
+Benchmark files:  10%|█         | 7/69 [02:34<23:29, 22.74s/file][94m10:43:11:[0m (8/69) combo__move_header_row5__preamble_2_raw_empty_row.csv
+[94m10:43:39:[0m 	 LLM response was truncated because it reached the configured output token limit (max_tokens=16000). Increase the limit or reduce the requested output before parsing this result.
+Benchmark files:  12%|█▏        | 8/69 [03:02<24:47, 24.39s/file][94m10:43:39:[0m (9/69) file_commented_row_56.csv
+Benchmark files:  13%|█▎        | 9/69 [03:16<21:01, 21.02s/file][94m10:43:52:[0m (10/69) file_num_columns_pad_randints_1000.csv
+[94m10:43:53:[0m 	 400 Client Error: Bad Request for url: http://localhost:11434/v1/chat/completions
+LLM API error: invalid_request_error: the prompt is longer than the context length currently available to the model; shorten the prompt, adjust the context length in settings, or use a model with a longer context length
+Benchmark files:  14%|█▍        | 10/69 [03:17<14:27, 14.70s/file][94m10:43:53:[0m (11/69) file_commented_row_49.csv
+Benchmark files:  16%|█▌        | 11/69 [03:30<13:53, 14.38s/file][94m10:44:07:[0m (12/69) file_double_trailing_newline.csv
+[94m10:44:36:[0m 	 LLM response was truncated because it reached the configured output token limit (max_tokens=16000). Increase the limit or reduce the requested output before parsing this result.
+Benchmark files:  17%|█▋        | 12/69 [04:00<18:10, 19.12s/file][94m10:44:36:[0m (13/69) file_header_only.csv
+Benchmark files:  19%|█▉        | 13/69 [04:00<12:31, 13.42s/file][94m10:44:37:[0m (14/69) file_less_columns_deleted_value_row_26_col_5.csv
+[94m10:45:06:[0m 	 LLM response was truncated because it reached the configured output token limit (max_tokens=16000). Increase the limit or reduce the requested output before parsing this result.
+Benchmark files:  20%|██        | 14/69 [04:30<16:46, 18.30s/file][94m10:45:06:[0m (15/69) file_mixed_time_formats_iso_8601.csv
+Benchmark files:  22%|██▏       | 15/69 [04:44<15:09, 16.85s/file][94m10:45:20:[0m (16/69) combo__multiline_header_rows_3__footnote_2_blank_line.csv
+Benchmark files:  23%|██▎       | 16/69 [04:45<10:41, 12.11s/file][94m10:45:21:[0m (17/69) file_multiline_header_rows_3.csv
+[94m10:45:51:[0m 	 LLM response was truncated because it reached the configured output token limit (max_tokens=16000). Increase the limit or reduce the requested output before parsing this result.
+Benchmark files:  25%|██▍       | 17/69 [05:14<15:02, 17.35s/file][94m10:45:51:[0m (18/69) file_unescaped_multiline_string_row_2_col_7.csv
+[94m10:46:20:[0m 	 LLM response was truncated because it reached the configured output token limit (max_tokens=16000). Increase the limit or reduce the requested output before parsing this result.
+Benchmark files:  26%|██▌       | 18/69 [05:44<17:56, 21.10s/file][94m10:46:20:[0m (19/69) file_no_header.csv
+[94m10:46:50:[0m 	 LLM response was truncated because it reached the configured output token limit (max_tokens=16000). Increase the limit or reduce the requested output before parsing this result.
+Benchmark files:  28%|██▊       | 19/69 [06:14<19:45, 23.71s/file][94m10:46:50:[0m (20/69) file_field_delimiter_0x3B.csv
+Benchmark files:  29%|██▉       | 20/69 [06:27<16:53, 20.69s/file][94m10:47:04:[0m (21/69) file_whitespace_delimiter_cells_quoted_unpadded.csv
+[94m10:47:17:[0m 	 The LLM response contained a fixed-CSV section, but pandas could not parse it.
+
+Attempts:
+- standard comma-separated CSV: Error tokenizing data. C error: Expected 1 fields in line 3, saw 3
+
+- comma-separated CSV with Python engine: Expected 1 fields in line 3, saw 3
+Benchmark files:  30%|███       | 21/69 [06:41<14:51, 18.57s/file][94m10:47:17:[0m (22/69) file_num_columns_1000.csv
+Benchmark files:  32%|███▏      | 22/69 [06:42<10:27, 13.36s/file][94m10:47:19:[0m (23/69) combo__row_quotation_mark_2_0x27__mixed_delimiters_within_row_row_2_range_3_0x3B.csv
+[94m10:47:49:[0m 	 LLM response was truncated because it reached the configured output token limit (max_tokens=16000). Increase the limit or reduce the requested output before parsing this result.
+Benchmark files:  33%|███▎      | 23/69 [07:12<14:03, 18.33s/file][94m10:47:49:[0m (24/69) file_excel_formulas.csv
+Benchmark files:  35%|███▍      | 24/69 [07:25<12:26, 16.59s/file][94m10:48:01:[0m (25/69) file_record_delimiter_0xD.csv
+[94m10:48:31:[0m 	 LLM response was truncated because it reached the configured output token limit (max_tokens=16000). Increase the limit or reduce the requested output before parsing this result.
+Benchmark files:  36%|███▌      | 25/69 [07:54<15:02, 20.51s/file][94m10:48:31:[0m (26/69) file_field_delimiter_0x20.csv
+[94m10:48:44:[0m 	 The LLM response contained a fixed-CSV section, but pandas could not parse it.
+
+Attempts:
+- standard comma-separated CSV: Error tokenizing data. C error: Expected 1 fields in line 3, saw 3
+
+- comma-separated CSV with Python engine: Expected 1 fields in line 3, saw 3
+Benchmark files:  38%|███▊      | 26/69 [08:08<13:09, 18.37s/file][94m10:48:44:[0m (27/69) file_less_columns_deleted_value_row_70_col_3.csv
+[94m10:49:14:[0m 	 LLM response was truncated because it reached the configured output token limit (max_tokens=16000). Increase the limit or reduce the requested output before parsing this result.
+Benchmark files:  39%|███▉      | 27/69 [08:38<15:19, 21.89s/file][94m10:49:14:[0m (28/69) file_superheader_whitespace_aligned_columns_transaction_info_cols_0-1-2_group_product_info_cols_3-4-5-6-7_group_notes_cols_8.csv
+[94m10:49:28:[0m 	 The LLM response contained a fixed-CSV section, but pandas could not parse it.
+
+Attempts:
+- standard comma-separated CSV: Error tokenizing data. C error: Expected 1 fields in line 4, saw 3
+
+- comma-separated CSV with Python engine: Expected 1 fields in line 4, saw 3
+Benchmark files:  41%|████      | 28/69 [08:52<13:19, 19.49s/file][94m10:49:28:[0m (29/69) file_less_columns_deleted_value_row_40_col_1.csv
+[94m10:49:58:[0m 	 LLM response was truncated because it reached the configured output token limit (max_tokens=16000). Increase the limit or reduce the requested output before parsing this result.
+Benchmark files:  42%|████▏     | 29/69 [09:22<15:04, 22.62s/file][94m10:49:58:[0m (30/69) file_footnote_3.csv
+[94m10:50:29:[0m 	 LLM response was truncated because it reached the configured output token limit (max_tokens=16000). Increase the limit or reduce the requested output before parsing this result.
+Benchmark files:  43%|████▎     | 30/69 [09:52<16:14, 24.99s/file][94m10:50:29:[0m (31/69) file_footnote_1.csv
+Benchmark files:  45%|████▍     | 31/69 [09:53<11:16, 17.81s/file][94m10:50:30:[0m (32/69) file_mixed_time_formats_month_day_year.csv
+Benchmark files:  46%|████▋     | 32/69 [10:07<10:11, 16.54s/file][94m10:50:43:[0m (33/69) file_num_rows_50000_repeat_file.csv
+[94m10:50:56:[0m 	 400 Client Error: Bad Request for url: http://localhost:11434/v1/chat/completions
+LLM API error: invalid_request_error: the prompt is longer than the context length currently available to the model; shorten the prompt, adjust the context length in settings, or use a model with a longer context length
+Benchmark files:  48%|████▊     | 33/69 [10:19<09:11, 15.33s/file][94m10:50:56:[0m (34/69) file_escape_char_0x00.csv
+[94m10:51:26:[0m 	 LLM response was truncated because it reached the configured output token limit (max_tokens=16000). Increase the limit or reduce the requested output before parsing this result.
+Benchmark files:  49%|████▉     | 34/69 [10:49<11:31, 19.75s/file][94m10:51:26:[0m (35/69) file_more_columns_row_72_col_5.csv
+[94m10:51:56:[0m 	 LLM response was truncated because it reached the configured output token limit (max_tokens=16000). Increase the limit or reduce the requested output before parsing this result.
+Benchmark files:  51%|█████     | 35/69 [11:19<12:56, 22.83s/file][94m10:51:56:[0m (36/69) file_header_multirow_3.csv
+[94m10:52:26:[0m 	 LLM response was truncated because it reached the configured output token limit (max_tokens=16000). Increase the limit or reduce the requested output before parsing this result.
+Benchmark files:  52%|█████▏    | 36/69 [11:49<13:45, 25.00s/file][94m10:52:26:[0m (37/69) file_quotation_char_none.csv
+[94m10:52:39:[0m 	 The LLM response contained a fixed-CSV section, but pandas could not parse it.
+
+Attempts:
+- standard comma-separated CSV: Error tokenizing data. C error: Expected 9 fields in line 3, saw 11
+
+- comma-separated CSV with Python engine: Expected 9 fields in line 3, saw 11
+Benchmark files:  54%|█████▎    | 37/69 [12:03<11:29, 21.56s/file][94m10:52:39:[0m (38/69) file_escape_char_0x5C.csv
+[94m10:53:09:[0m 	 LLM response was truncated because it reached the configured output token limit (max_tokens=16000). Increase the limit or reduce the requested output before parsing this result.
+Benchmark files:  55%|█████▌    | 38/69 [12:33<12:24, 24.01s/file][94m10:53:09:[0m (39/69) file_whitespace_delimiter_cells_quoted_empty_last_column_padded.csv
+[94m10:53:24:[0m 	 The LLM response contained a fixed-CSV section, but pandas could not parse it.
+
+Attempts:
+- standard comma-separated CSV: Error tokenizing data. C error: Expected 1 fields in line 3, saw 3
+
+- comma-separated CSV with Python engine: Expected 1 fields in line 3, saw 3
+Benchmark files:  57%|█████▋    | 39/69 [12:48<10:39, 21.33s/file][94m10:53:24:[0m (40/69) combo__move_header_row5__preamble_2_raw_empty_row__footnote_2_blank_line.csv
+Benchmark files:  58%|█████▊    | 40/69 [12:48<07:17, 15.08s/file][94m10:53:25:[0m (41/69) file_double_escaping_double_quote_row_2_col_7.csv
+[94m10:53:54:[0m 	 LLM response was truncated because it reached the configured output token limit (max_tokens=16000). Increase the limit or reduce the requested output before parsing this result.
+Benchmark files:  59%|█████▉    | 41/69 [13:18<09:04, 19.43s/file][94m10:53:54:[0m (42/69) file_no_trailing_newline.csv
+[94m10:54:24:[0m 	 LLM response was truncated because it reached the configured output token limit (max_tokens=16000). Increase the limit or reduce the requested output before parsing this result.
+Benchmark files:  61%|██████    | 42/69 [13:48<10:08, 22.55s/file][94m10:54:24:[0m (43/69) file_record_delimiter_0xA.csv
+[94m10:54:54:[0m 	 LLM response was truncated because it reached the configured output token limit (max_tokens=16000). Increase the limit or reduce the requested output before parsing this result.
+Benchmark files:  62%|██████▏   | 43/69 [14:17<10:41, 24.66s/file][94m10:54:54:[0m (44/69) file_no_payload.csv
+Benchmark files:  64%|██████▍   | 44/69 [14:18<07:13, 17.35s/file][94m10:54:54:[0m (45/69) file_footnote_3_blank_line.csv
+[94m10:55:08:[0m 	 The LLM response contained a fixed-CSV section, but pandas could not parse it.
+
+Attempts:
+- standard comma-separated CSV: Error tokenizing data. C error: Expected 7 fields in line 3, saw 9
+
+- comma-separated CSV with Python engine: Expected 7 fields in line 3, saw 9
+Benchmark files:  65%|██████▌   | 45/69 [14:32<06:31, 16.31s/file][94m10:55:08:[0m (46/69) combo__multiline_header_rows_3__mixed_delimiters_within_row_row_4_range_3_0x3B__footnote_2_blank_line.csv
+[94m10:55:09:[0m 	 The LLM response contained a fixed-CSV section, but pandas could not parse it.
+
+Attempts:
+- standard comma-separated CSV: Error tokenizing data. C error: Expected 3 fields in line 4, saw 6
+
+- comma-separated CSV with Python engine: Expected 3 fields in line 4, saw 6
+Benchmark files:  67%|██████▋   | 46/69 [14:33<04:30, 11.74s/file][94m10:55:09:[0m (47/69) file_one_data_row.csv
+Benchmark files:  68%|██████▊   | 47/69 [14:33<03:03,  8.33s/file][94m10:55:09:[0m (48/69) file_less_columns_deleted_value_row_57_col_1.csv
+[94m10:55:39:[0m 	 LLM response was truncated because it reached the configured output token limit (max_tokens=16000). Increase the limit or reduce the requested output before parsing this result.
+Benchmark files:  70%|██████▉   | 48/69 [15:03<05:10, 14.80s/file][94m10:55:39:[0m (49/69) file_more_columns_row_9_col_6.csv
+[94m10:56:09:[0m 	 LLM response was truncated because it reached the configured output token limit (max_tokens=16000). Increase the limit or reduce the requested output before parsing this result.
+Benchmark files:  71%|███████   | 49/69 [15:33<06:27, 19.37s/file][94m10:56:09:[0m (50/69) file_whitespace_delimiter_cells_quoted_padded.csv
+[94m10:56:24:[0m 	 The LLM response contained a fixed-CSV section, but pandas could not parse it.
+
+Attempts:
+- standard comma-separated CSV: Error tokenizing data. C error: Expected 1 fields in line 3, saw 3
+
+- comma-separated CSV with Python engine: Expected 1 fields in line 3, saw 3
+Benchmark files:  72%|███████▏  | 50/69 [15:48<05:44, 18.12s/file][94m10:56:24:[0m (51/69) file_mixed_delimiters_whole_row_row_13_0x3B.csv
+[94m10:56:54:[0m 	 LLM response was truncated because it reached the configured output token limit (max_tokens=16000). Increase the limit or reduce the requested output before parsing this result.
+Benchmark files:  74%|███████▍  | 51/69 [16:18<06:30, 21.70s/file][94m10:56:54:[0m (52/69) file_mixed_time_formats_long_month_name_unquoted.csv
+Benchmark files:  75%|███████▌  | 52/69 [16:32<05:27, 19.29s/file][94m10:57:08:[0m (53/69) source.csv
+[94m10:57:38:[0m 	 LLM response was truncated because it reached the configured output token limit (max_tokens=16000). Increase the limit or reduce the requested output before parsing this result.
+Benchmark files:  77%|███████▋  | 53/69 [17:02<05:59, 22.49s/file][94m10:57:38:[0m (54/69) file_mixed_time_formats_day_month_year.csv
+Benchmark files:  78%|███████▊  | 54/69 [17:17<05:03, 20.21s/file][94m10:57:53:[0m (55/69) file_preamble.csv
+[94m10:58:23:[0m 	 LLM response was truncated because it reached the configured output token limit (max_tokens=16000). Increase the limit or reduce the requested output before parsing this result.
+Benchmark files:  80%|███████▉  | 55/69 [17:47<05:23, 23.12s/file][94m10:58:23:[0m (56/69) file_mixed_delimiters_within_row_row_13_range_3_0x3B.csv
+[94m10:58:53:[0m 	 LLM response was truncated because it reached the configured output token limit (max_tokens=16000). Increase the limit or reduce the requested output before parsing this result.
+Benchmark files:  81%|████████  | 56/69 [18:16<05:26, 25.10s/file][94m10:58:53:[0m (57/69) file_field_delimiter_0x9.csv
+Benchmark files:  83%|████████▎ | 57/69 [18:30<04:20, 21.71s/file][94m10:59:06:[0m (58/69) file_unquoted_lists_row_9_col_6.csv
+[94m10:59:36:[0m 	 LLM response was truncated because it reached the configured output token limit (max_tokens=16000). Increase the limit or reduce the requested output before parsing this result.
+Benchmark files:  84%|████████▍ | 58/69 [19:00<04:25, 24.16s/file][94m10:59:36:[0m (59/69) file_move_header_row8.csv
+[94m11:00:06:[0m 	 LLM response was truncated because it reached the configured output token limit (max_tokens=16000). Increase the limit or reduce the requested output before parsing this result.
+Benchmark files:  86%|████████▌ | 59/69 [19:30<04:18, 25.83s/file][94m11:00:06:[0m (60/69) file_extremely_long_field_row_3_col_6_len_10000.csv
+[94m11:00:34:[0m 	 LLM response was truncated because it reached the configured output token limit (max_tokens=16000). Increase the limit or reduce the requested output before parsing this result.
+Benchmark files:  87%|████████▋ | 60/69 [19:57<03:57, 26.38s/file][94m11:00:34:[0m (61/69) file_mixed_time_formats_long_month_name.csv
+Benchmark files:  88%|████████▊ | 61/69 [20:11<03:00, 22.53s/file][94m11:00:47:[0m (62/69) file_mixed_delimiters_within_row_row_13_range_1_0x3B.csv
+[94m11:01:17:[0m 	 LLM response was truncated because it reached the configured output token limit (max_tokens=16000). Increase the limit or reduce the requested output before parsing this result.
+Benchmark files:  90%|████████▉ | 62/69 [20:41<02:52, 24.66s/file][94m11:01:17:[0m (63/69) file_more_columns_row_34_col_1.csv
+[94m11:01:47:[0m 	 LLM response was truncated because it reached the configured output token limit (max_tokens=16000). Increase the limit or reduce the requested output before parsing this result.
+Benchmark files:  91%|█████████▏| 63/69 [21:10<02:36, 26.17s/file][94m11:01:47:[0m (64/69) row_quotation_mark_12_0x27.csv
+[94m11:02:16:[0m 	 LLM response was truncated because it reached the configured output token limit (max_tokens=16000). Increase the limit or reduce the requested output before parsing this result.
+Benchmark files:  93%|█████████▎| 64/69 [21:40<02:16, 27.27s/file][94m11:02:16:[0m (65/69) file_quotation_char_0x27.csv
+[94m11:02:46:[0m 	 LLM response was truncated because it reached the configured output token limit (max_tokens=16000). Increase the limit or reduce the requested output before parsing this result.
+Benchmark files:  94%|█████████▍| 65/69 [22:10<01:52, 28.02s/file][94m11:02:46:[0m (66/69) file_more_columns_row_79_col_7.csv
+[94m11:03:16:[0m 	 LLM response was truncated because it reached the configured output token limit (max_tokens=16000). Increase the limit or reduce the requested output before parsing this result.
+Benchmark files:  96%|█████████▌| 66/69 [22:40<01:26, 28.69s/file][94m11:03:16:[0m (67/69) file_superheader_sparse_transaction_info_cols_0-1-2_group_product_info_cols_3-4-5-6-7_group_notes_cols_8.csv
+[94m11:03:47:[0m 	 LLM response was truncated because it reached the configured output token limit (max_tokens=16000). Increase the limit or reduce the requested output before parsing this result.
+Benchmark files:  97%|█████████▋| 67/69 [23:10<00:58, 29.12s/file][94m11:03:47:[0m (68/69) file_commented_row_41.csv
+[94m11:04:17:[0m 	 LLM response was truncated because it reached the configured output token limit (max_tokens=16000). Increase the limit or reduce the requested output before parsing this result.
+Benchmark files:  99%|█████████▊| 68/69 [23:40<00:29, 29.40s/file][94m11:04:17:[0m (69/69) file_header_multirow_2.csv
+[94m11:04:47:[0m 	 LLM response was truncated because it reached the configured output token limit (max_tokens=16000). Increase the limit or reduce the requested output before parsing this result.
+Benchmark files: 100%|██████████| 69/69 [24:10<00:00, 29.56s/file]Benchmark files: 100%|██████████| 69/69 [24:10<00:00, 21.02s/file]

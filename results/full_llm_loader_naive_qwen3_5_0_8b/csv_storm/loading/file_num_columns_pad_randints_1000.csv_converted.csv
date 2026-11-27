@@ -1,0 +1,3 @@
+Application Error
+400 Client Error: Bad Request for url: http://localhost:11434/v1/chat/completions
+LLM API error: invalid_request_error: the prompt is longer than the context length currently available to the model; shorten the prompt, adjust the context length in settings, or use a model with a longer context length
