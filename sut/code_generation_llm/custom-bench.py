@@ -11,6 +11,8 @@ sys.path.insert(0, join(REPO_ROOT, 'sut'))
 
 import time
 
+import pandas as pd
+
 parser = argparse.ArgumentParser()
 parser.add_argument(
     "--overwrite",
