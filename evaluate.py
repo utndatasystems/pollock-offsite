@@ -154,14 +154,14 @@ def main(default_dataset: str = "polluted_files") -> None:
     ordered = [sut for sut in SUT_ORDER if sut in aggregate.index]
     ordered.extend(sut for sut in aggregate.index if sut not in SUT_ORDER)
     display_columns = [
-        "pollock_simple", "pollock_weighted", "cell_f1", "record_f1",
+        "success", "pollock_simple", "pollock_weighted", "cell_f1", "record_f1",
         "header_f1", "accuracy", "weighted_accuracy", "correct", "wrong",
     ]
     print(
         "\n",
         aggregate.loc[ordered, display_columns].sort_values(
             "accuracy", ascending=False
-        ),
+        ).to_string(),
     )
 
     global_frame.to_csv(
