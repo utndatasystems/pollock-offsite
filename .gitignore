@@ -132,6 +132,8 @@ target/
 !/results/*/csv_storm/loading/
 /results/*/csv_storm/loading/*
 !/results/*/csv_storm/loading/*_converted.csv
+# Code-generation sidecars hold the generated parser programs.
+!/results/code_generation_llm_*/csv_storm/loading/*.llm.jsonl
 
 Agentic_Parsing.pdf
 Agentic_Parsing-*.pdf
