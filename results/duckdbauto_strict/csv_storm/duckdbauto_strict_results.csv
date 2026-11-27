@@ -50,8 +50,6 @@ file_no_header.csv,canonical,,,0,1,,1,0.0,0.0,0.0,1.0,0.9879518072289156,0.99393
 file_no_payload.csv,canonical,,,0,1,,1,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0
 file_no_trailing_newline.csv,canonical,canonical,canonical,1,0,,1,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0
 file_num_columns_1000.csv,canonical,canonical,canonical,1,0,,1,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0
-file_num_columns_pad_randints_1000.csv,canonical,canonical,canonical,1,0,,1,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0
-file_num_rows_50000_repeat_file.csv,canonical,canonical,canonical,1,0,,1,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0
 file_one_data_row.csv,canonical,canonical,canonical,1,0,,1,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0
 file_preamble.csv,canonical,,,0,1,,1,0.0,0.0,0.0,1.0,0.9325842696629213,0.9651162790697675,1.0,0.9333333333333333,0.9655172413793104
 file_quotation_char_0x27.csv,canonical,,,0,1,,1,1.0,1.0,1.0,0.6265060240963856,0.6265060240963856,0.6265060240963856,0.958994708994709,0.958994708994709,0.958994708994709
@@ -68,3 +66,5 @@ file_whitespace_delimiter_cells_quoted_unpadded.csv,canonical,,,0,1,,1,0.0,0.0,0
 file_whitespace_delimiter_cells_unquoted_padded.csv,canonical,,,0,1,,1,0.0,0.0,0.0,0.0,0.0,0.0,0.10978835978835978,0.141156462585034,0.12351190476190477
 row_quotation_mark_12_0x27.csv,canonical,,,0,1,,1,1.0,0.8181818181818182,0.9,0.9879518072289156,0.9879518072289156,0.9879518072289156,0.996031746031746,0.814935064935065,0.8964285714285714
 source.csv,canonical,canonical,canonical,1,0,,1,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0
+file_num_columns_pad_randints_1000.csv,canonical,canonical,canonical,1,0,,1,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0
+file_num_rows_50000_repeat_file.csv,canonical,canonical,canonical,1,0,,1,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0

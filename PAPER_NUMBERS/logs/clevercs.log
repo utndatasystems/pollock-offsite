@@ -1,0 +1,276 @@
+[94m12:30:24:[0m Processing file (1/69) file_num_columns_pad_randints_1000.csv
+[94m12:30:25:[0m 	Processing complete in 831.2969207763672 ms
+[94m12:30:26:[0m 	Processing complete in 819.2627429962158 ms
+[94m12:30:27:[0m 	Processing complete in 820.2784061431885 ms
+[94m12:30:27:[0m Processing file (2/69) file_whitespace_delimiter_cells_quoted_padded.csv
+[94m12:30:27:[0m 	Processing complete in 41.30959510803223 ms
+[94m12:30:27:[0m 	Processing complete in 41.4121150970459 ms
+[94m12:30:27:[0m 	Processing complete in 41.40830039978027 ms
+[94m12:30:27:[0m Processing file (3/69) file_mixed_time_formats_iso_8601.csv
+[94m12:30:27:[0m 	Processing complete in 22.329330444335938 ms
+[94m12:30:27:[0m 	Processing complete in 22.797822952270508 ms
+[94m12:30:27:[0m 	Processing complete in 22.17864990234375 ms
+[94m12:30:27:[0m Processing file (4/69) combo__move_header_row5__preamble_2_raw_empty_row.csv
+[94m12:30:27:[0m 	Processing complete in 22.2623348236084 ms
+[94m12:30:27:[0m 	Processing complete in 23.193359375 ms
+[94m12:30:27:[0m 	Processing complete in 22.590160369873047 ms
+[94m12:30:27:[0m Processing file (5/69) file_more_columns_row_79_col_7.csv
+[94m12:30:27:[0m 	Processing complete in 22.63164520263672 ms
+[94m12:30:27:[0m 	Processing complete in 23.525476455688477 ms
+[94m12:30:27:[0m 	Processing complete in 25.929689407348633 ms
+[94m12:30:27:[0m Processing file (6/69) file_superheader_whitespace_aligned_columns_transaction_info_cols_0-1-2_group_product_info_cols_3-4-5-6-7_group_notes_cols_8.csv
+[94m12:30:27:[0m 	Processing complete in 45.153141021728516 ms
+[94m12:30:27:[0m 	Processing complete in 45.176029205322266 ms
+[94m12:30:27:[0m 	Processing complete in 42.65618324279785 ms
+[94m12:30:27:[0m Processing file (7/69) file_whitespace_delimiter_cells_quoted_unpadded.csv
+[94m12:30:27:[0m 	Processing complete in 35.599708557128906 ms
+[94m12:30:27:[0m 	Processing complete in 34.93046760559082 ms
+[94m12:30:27:[0m 	Processing complete in 36.774396896362305 ms
+[94m12:30:27:[0m Processing file (8/69) combo__row_quotation_mark_2_0x27__mixed_delimiters_within_row_row_2_range_3_0x3B.csv
+[94m12:30:27:[0m 	Processing complete in 34.50727462768555 ms
+[94m12:30:27:[0m 	Processing complete in 36.277055740356445 ms
+[94m12:30:27:[0m 	Processing complete in 37.018775939941406 ms
+[94m12:30:27:[0m Processing file (9/69) file_unescaped_multiline_string_row_2_col_7.csv
+[94m12:30:27:[0m 	Processing complete in 23.082256317138672 ms
+[94m12:30:28:[0m 	Processing complete in 22.297382354736328 ms
+[94m12:30:28:[0m 	Processing complete in 21.947860717773438 ms
+[94m12:30:28:[0m Processing file (10/69) file_more_columns_row_72_col_5.csv
+[94m12:30:28:[0m 	Processing complete in 21.84772491455078 ms
+[94m12:30:28:[0m 	Processing complete in 23.3762264251709 ms
+[94m12:30:28:[0m 	Processing complete in 21.770715713500977 ms
+[94m12:30:28:[0m Processing file (11/69) file_more_columns_row_34_col_1.csv
+[94m12:30:28:[0m 	Processing complete in 22.222518920898438 ms
+[94m12:30:28:[0m 	Processing complete in 22.595643997192383 ms
+[94m12:30:28:[0m 	Processing complete in 22.531509399414062 ms
+[94m12:30:28:[0m Processing file (12/69) file_mixed_delimiters_within_row_row_13_range_3_0x3B.csv
+[94m12:30:28:[0m 	Processing complete in 22.94778823852539 ms
+[94m12:30:28:[0m 	Processing complete in 22.500991821289062 ms
+[94m12:30:28:[0m 	Processing complete in 22.97234535217285 ms
+[94m12:30:28:[0m Processing file (13/69) file_header_multirow_2.csv
+[94m12:30:28:[0m 	Processing complete in 22.403240203857422 ms
+[94m12:30:28:[0m 	Processing complete in 22.500276565551758 ms
+[94m12:30:28:[0m 	Processing complete in 23.06532859802246 ms
+[94m12:30:28:[0m Processing file (14/69) file_whitespace_delimiter_cells_unquoted_padded.csv
+[94m12:30:28:[0m 	Processing complete in 43.90668869018555 ms
+[94m12:30:28:[0m 	Processing complete in 44.40736770629883 ms
+[94m12:30:28:[0m 	Processing complete in 41.03827476501465 ms
+[94m12:30:28:[0m Processing file (15/69) file_preamble.csv
+[94m12:30:28:[0m 	Processing complete in 23.94247055053711 ms
+[94m12:30:28:[0m 	Processing complete in 24.364709854125977 ms
+[94m12:30:28:[0m 	Processing complete in 23.047685623168945 ms
+[94m12:30:28:[0m Processing file (16/69) file_double_escaping_double_quote_row_2_col_7.csv
+[94m12:30:28:[0m 	Processing complete in 22.164106369018555 ms
+[94m12:30:28:[0m 	Processing complete in 22.397518157958984 ms
+[94m12:30:28:[0m 	Processing complete in 21.82769775390625 ms
+[94m12:30:28:[0m Processing file (17/69) file_record_delimiter_0xA.csv
+[94m12:30:28:[0m 	Processing complete in 22.448301315307617 ms
+[94m12:30:28:[0m 	Processing complete in 22.249460220336914 ms
+[94m12:30:28:[0m 	Processing complete in 22.311687469482422 ms
+[94m12:30:28:[0m Processing file (18/69) file_commented_row_41.csv
+[94m12:30:28:[0m 	Processing complete in 22.29022979736328 ms
+[94m12:30:28:[0m 	Processing complete in 21.997928619384766 ms
+[94m12:30:28:[0m 	Processing complete in 21.98052406311035 ms
+[94m12:30:28:[0m Processing file (19/69) file_extremely_long_field_row_3_col_6_len_10000.csv
+[94m12:30:28:[0m 	Processing complete in 28.237581253051758 ms
+[94m12:30:28:[0m 	Processing complete in 28.614521026611328 ms
+[94m12:30:28:[0m 	Processing complete in 28.889179229736328 ms
+[94m12:30:28:[0m Processing file (20/69) combo__multiline_header_rows_3__mixed_delimiters_within_row_row_4_range_3_0x3B__footnote_2_blank_line.csv
+[94m12:30:28:[0m 	Processing complete in 31.870365142822266 ms
+[94m12:30:28:[0m 	Processing complete in 30.568838119506836 ms
+[94m12:30:28:[0m 	Processing complete in 30.734777450561523 ms
+[94m12:30:28:[0m Processing file (21/69) file_commented_row_49.csv
+[94m12:30:28:[0m 	Processing complete in 23.215293884277344 ms
+[94m12:30:28:[0m 	Processing complete in 23.175716400146484 ms
+[94m12:30:28:[0m 	Processing complete in 23.485898971557617 ms
+[94m12:30:28:[0m Processing file (22/69) file_field_delimiter_0x2C_0x20.csv
+[94m12:30:29:[0m 	Processing complete in 21.350622177124023 ms
+[94m12:30:29:[0m 	Processing complete in 20.902395248413086 ms
+[94m12:30:29:[0m 	Processing complete in 21.531105041503906 ms
+[94m12:30:29:[0m Processing file (23/69) file_embedded_json_cell_2_1_len_4.csv
+[94m12:30:29:[0m 	Processing complete in 22.568225860595703 ms
+[94m12:30:29:[0m 	Processing complete in 23.067474365234375 ms
+[94m12:30:29:[0m 	Processing complete in 23.84018898010254 ms
+[94m12:30:29:[0m Processing file (24/69) file_less_columns_deleted_value_row_45_col_7.csv
+[94m12:30:29:[0m 	Processing complete in 25.36606788635254 ms
+[94m12:30:29:[0m 	Processing complete in 23.947954177856445 ms
+[94m12:30:29:[0m 	Processing complete in 23.847103118896484 ms
+[94m12:30:29:[0m Processing file (25/69) file_more_columns_row_39_col_8.csv
+[94m12:30:29:[0m 	Processing complete in 23.33688735961914 ms
+[94m12:30:29:[0m 	Processing complete in 22.23682403564453 ms
+[94m12:30:29:[0m 	Processing complete in 23.07438850402832 ms
+[94m12:30:29:[0m Processing file (26/69) file_mixed_time_formats_long_month_name.csv
+[94m12:30:29:[0m 	Processing complete in 22.12810516357422 ms
+[94m12:30:29:[0m 	Processing complete in 23.461580276489258 ms
+[94m12:30:29:[0m 	Processing complete in 21.96788787841797 ms
+[94m12:30:29:[0m Processing file (27/69) file_field_delimiter_0x9.csv
+[94m12:30:29:[0m 	Processing complete in 25.75206756591797 ms
+[94m12:30:29:[0m 	Processing complete in 26.108741760253906 ms
+[94m12:30:29:[0m 	Processing complete in 26.241302490234375 ms
+[94m12:30:29:[0m Processing file (28/69) file_no_payload.csv
+[94m12:30:29:[0m 	Processing complete in 0.32711029052734375 ms
+[94m12:30:29:[0m 	Processing complete in 0.2009868621826172 ms
+[94m12:30:29:[0m 	Processing complete in 0.24318695068359375 ms
+[94m12:30:29:[0m Processing file (29/69) file_header_only.csv
+[94m12:30:29:[0m 	Processing complete in 0.9706020355224609 ms
+[94m12:30:29:[0m 	Processing complete in 0.55694580078125 ms
+[94m12:30:29:[0m 	Processing complete in 0.5712509155273438 ms
+[94m12:30:29:[0m Processing file (30/69) file_escape_char_0x5C.csv
+[94m12:30:29:[0m 	Processing complete in 24.247169494628906 ms
+[94m12:30:29:[0m 	Processing complete in 25.471925735473633 ms
+[94m12:30:29:[0m 	Processing complete in 27.067899703979492 ms
+[94m12:30:29:[0m Processing file (31/69) file_mixed_time_formats_month_day_year.csv
+[94m12:30:29:[0m 	Processing complete in 22.47452735900879 ms
+[94m12:30:29:[0m 	Processing complete in 22.492408752441406 ms
+[94m12:30:29:[0m 	Processing complete in 22.791624069213867 ms
+[94m12:30:29:[0m Processing file (32/69) file_num_rows_50000_repeat_file.csv
+[94m12:30:37:[0m 	Processing complete in 7344.238042831421 ms
+[94m12:30:44:[0m 	Processing complete in 7154.372215270996 ms
+[94m12:30:51:[0m 	Processing complete in 7208.110570907593 ms
+[94m12:30:51:[0m Processing file (33/69) file_field_delimiter_0x3B.csv
+[94m12:30:52:[0m 	Processing complete in 25.4824161529541 ms
+[94m12:30:52:[0m 	Processing complete in 25.48384666442871 ms
+[94m12:30:52:[0m 	Processing complete in 25.575637817382812 ms
+[94m12:30:52:[0m Processing file (34/69) source.csv
+[94m12:30:52:[0m 	Processing complete in 22.001028060913086 ms
+[94m12:30:52:[0m 	Processing complete in 21.930456161499023 ms
+[94m12:30:52:[0m 	Processing complete in 21.677255630493164 ms
+[94m12:30:52:[0m Processing file (35/69) file_num_columns_1000.csv
+[94m12:30:52:[0m 	Processing complete in 105.14354705810547 ms
+[94m12:30:52:[0m 	Processing complete in 107.85222053527832 ms
+[94m12:30:52:[0m 	Processing complete in 105.0729751586914 ms
+[94m12:30:52:[0m Processing file (36/69) combo__more_columns_row_10_col_4__mixed_delimiters_within_row_row_11_range_3_0x3B.csv
+[94m12:30:52:[0m 	Processing complete in 22.71127700805664 ms
+[94m12:30:52:[0m 	Processing complete in 22.225379943847656 ms
+[94m12:30:52:[0m 	Processing complete in 21.950244903564453 ms
+[94m12:30:52:[0m Processing file (37/69) file_commented_row_56.csv
+[94m12:30:52:[0m 	Processing complete in 22.808313369750977 ms
+[94m12:30:52:[0m 	Processing complete in 22.035598754882812 ms
+[94m12:30:52:[0m 	Processing complete in 22.757530212402344 ms
+[94m12:30:52:[0m Processing file (38/69) file_less_columns_deleted_value_row_57_col_1.csv
+[94m12:30:52:[0m 	Processing complete in 22.556781768798828 ms
+[94m12:30:52:[0m 	Processing complete in 22.507667541503906 ms
+[94m12:30:52:[0m 	Processing complete in 22.299528121948242 ms
+[94m12:30:52:[0m Processing file (39/69) file_multiline_header_rows_3.csv
+[94m12:30:52:[0m 	Processing complete in 22.624969482421875 ms
+[94m12:30:52:[0m 	Processing complete in 22.32980728149414 ms
+[94m12:30:52:[0m 	Processing complete in 22.679805755615234 ms
+[94m12:30:52:[0m Processing file (40/69) file_header_multirow_3.csv
+[94m12:30:52:[0m 	Processing complete in 22.38178253173828 ms
+[94m12:30:52:[0m 	Processing complete in 21.973848342895508 ms
+[94m12:30:52:[0m 	Processing complete in 24.16515350341797 ms
+[94m12:30:52:[0m Processing file (41/69) file_quotation_char_0x27.csv
+[94m12:30:52:[0m 	Processing complete in 30.458688735961914 ms
+[94m12:30:52:[0m 	Processing complete in 29.369592666625977 ms
+[94m12:30:52:[0m 	Processing complete in 30.265092849731445 ms
+[94m12:30:52:[0m Processing file (42/69) file_double_trailing_newline.csv
+[94m12:30:52:[0m 	Processing complete in 22.4459171295166 ms
+[94m12:30:52:[0m 	Processing complete in 23.09107780456543 ms
+[94m12:30:52:[0m 	Processing complete in 22.457122802734375 ms
+[94m12:30:52:[0m Processing file (43/69) file_whitespace_delimiter_cells_quoted_empty_last_column_padded.csv
+[94m12:30:53:[0m 	Processing complete in 44.631004333496094 ms
+[94m12:30:53:[0m 	Processing complete in 44.55971717834473 ms
+[94m12:30:53:[0m 	Processing complete in 43.820858001708984 ms
+[94m12:30:53:[0m Processing file (44/69) file_less_columns_deleted_value_row_70_col_3.csv
+[94m12:30:53:[0m 	Processing complete in 23.09870719909668 ms
+[94m12:30:53:[0m 	Processing complete in 23.22244644165039 ms
+[94m12:30:53:[0m 	Processing complete in 23.235321044921875 ms
+[94m12:30:53:[0m Processing file (45/69) file_escape_char_0x00.csv
+[94m12:30:53:[0m 	Processing complete in 37.14132308959961 ms
+[94m12:30:53:[0m 	Processing complete in 32.948970794677734 ms
+[94m12:30:53:[0m 	Processing complete in 31.381607055664062 ms
+[94m12:30:53:[0m Processing file (46/69) file_footnote_3_blank_line.csv
+[94m12:30:53:[0m 	Processing complete in 23.3001708984375 ms
+[94m12:30:53:[0m 	Processing complete in 22.889137268066406 ms
+[94m12:30:53:[0m 	Processing complete in 22.766590118408203 ms
+[94m12:30:53:[0m Processing file (47/69) file_mixed_delimiters_whole_row_row_13_0x3B.csv
+[94m12:30:53:[0m 	Processing complete in 22.688627243041992 ms
+[94m12:30:53:[0m 	Processing complete in 22.275686264038086 ms
+[94m12:30:53:[0m 	Processing complete in 21.715402603149414 ms
+[94m12:30:53:[0m Processing file (48/69) file_mixed_time_formats_day_month_year.csv
+[94m12:30:53:[0m 	Processing complete in 22.348880767822266 ms
+[94m12:30:53:[0m 	Processing complete in 22.174835205078125 ms
+[94m12:30:53:[0m 	Processing complete in 22.007465362548828 ms
+[94m12:30:53:[0m Processing file (49/69) file_less_columns_deleted_value_row_26_col_5.csv
+[94m12:30:53:[0m 	Processing complete in 22.0949649810791 ms
+[94m12:30:53:[0m 	Processing complete in 23.04363250732422 ms
+[94m12:30:53:[0m 	Processing complete in 21.900177001953125 ms
+[94m12:30:53:[0m Processing file (50/69) row_quotation_mark_12_0x27.csv
+[94m12:30:53:[0m 	Processing complete in 27.027130126953125 ms
+[94m12:30:53:[0m 	Processing complete in 26.675939559936523 ms
+[94m12:30:53:[0m 	Processing complete in 27.436494827270508 ms
+[94m12:30:53:[0m Processing file (51/69) file_superheader_sparse_transaction_info_cols_0-1-2_group_product_info_cols_3-4-5-6-7_group_notes_cols_8.csv
+[94m12:30:53:[0m 	Processing complete in 23.549556732177734 ms
+[94m12:30:53:[0m 	Processing complete in 22.04751968383789 ms
+[94m12:30:53:[0m 	Processing complete in 21.965742111206055 ms
+[94m12:30:53:[0m Processing file (52/69) file_quotation_char_none.csv
+[94m12:30:53:[0m 	Processing complete in 27.242422103881836 ms
+[94m12:30:53:[0m 	Processing complete in 26.93772315979004 ms
+[94m12:30:53:[0m 	Processing complete in 26.749849319458008 ms
+[94m12:30:53:[0m Processing file (53/69) combo__multiline_header_rows_3__footnote_2_blank_line.csv
+[94m12:30:53:[0m 	Processing complete in 23.028135299682617 ms
+[94m12:30:53:[0m 	Processing complete in 21.86298370361328 ms
+[94m12:30:53:[0m 	Processing complete in 21.800994873046875 ms
+[94m12:30:53:[0m Processing file (54/69) file_record_delimiter_0xD.csv
+[94m12:30:53:[0m 	Processing complete in 21.94809913635254 ms
+[94m12:30:53:[0m 	Processing complete in 21.367311477661133 ms
+[94m12:30:53:[0m 	Processing complete in 21.819114685058594 ms
+[94m12:30:53:[0m Processing file (55/69) file_unquoted_lists_row_9_col_6.csv
+[94m12:30:53:[0m 	Processing complete in 21.79884910583496 ms
+[94m12:30:53:[0m 	Processing complete in 21.915197372436523 ms
+[94m12:30:54:[0m 	Processing complete in 22.00913429260254 ms
+[94m12:30:54:[0m Processing file (56/69) file_footnote_3.csv
+[94m12:30:54:[0m 	Processing complete in 22.853612899780273 ms
+[94m12:30:54:[0m 	Processing complete in 24.950265884399414 ms
+[94m12:30:54:[0m 	Processing complete in 23.77462387084961 ms
+[94m12:30:54:[0m Processing file (57/69) file_move_header_row8.csv
+[94m12:30:54:[0m 	Processing complete in 23.986101150512695 ms
+[94m12:30:54:[0m 	Processing complete in 22.08256721496582 ms
+[94m12:30:54:[0m 	Processing complete in 23.84638786315918 ms
+[94m12:30:54:[0m Processing file (58/69) file_no_trailing_newline.csv
+[94m12:30:54:[0m 	Processing complete in 23.657798767089844 ms
+[94m12:30:53:[0m 	Processing complete in 21.97885513305664 ms
+[94m12:30:53:[0m 	Processing complete in 22.33576774597168 ms
+[94m12:30:53:[0m Processing file (59/69) file_less_columns_deleted_value_row_40_col_1.csv
+[94m12:30:53:[0m 	Processing complete in 48.09761047363281 ms
+[94m12:30:53:[0m 	Processing complete in 22.803068161010742 ms
+[94m12:30:53:[0m 	Processing complete in 22.391080856323242 ms
+[94m12:30:53:[0m Processing file (60/69) file_excel_formulas.csv
+[94m12:30:53:[0m 	Processing complete in 22.674560546875 ms
+[94m12:30:53:[0m 	Processing complete in 22.58586883544922 ms
+[94m12:30:53:[0m 	Processing complete in 22.9339599609375 ms
+[94m12:30:53:[0m Processing file (61/69) file_one_data_row.csv
+[94m12:30:53:[0m 	Processing complete in 1.7054080963134766 ms
+[94m12:30:53:[0m 	Processing complete in 1.4255046844482422 ms
+[94m12:30:53:[0m 	Processing complete in 1.2829303741455078 ms
+[94m12:30:53:[0m Processing file (62/69) file_more_columns_row_9_col_6.csv
+[94m12:30:53:[0m 	Processing complete in 22.00603485107422 ms
+[94m12:30:53:[0m 	Processing complete in 21.867036819458008 ms
+[94m12:30:53:[0m 	Processing complete in 23.59151840209961 ms
+[94m12:30:53:[0m Processing file (63/69) file_footnote_1.csv
+[94m12:30:53:[0m 	Processing complete in 22.466182708740234 ms
+[94m12:30:53:[0m 	Processing complete in 21.592378616333008 ms
+[94m12:30:53:[0m 	Processing complete in 22.46236801147461 ms
+[94m12:30:53:[0m Processing file (64/69) combo__move_header_row5__preamble_2_raw_empty_row__footnote_2_blank_line.csv
+[94m12:30:53:[0m 	Processing complete in 22.20296859741211 ms
+[94m12:30:53:[0m 	Processing complete in 22.041797637939453 ms
+[94m12:30:53:[0m 	Processing complete in 22.57513999938965 ms
+[94m12:30:53:[0m Processing file (65/69) file_mixed_delimiters_within_row_row_13_range_1_0x3B.csv
+[94m12:30:53:[0m 	Processing complete in 22.228479385375977 ms
+[94m12:30:53:[0m 	Processing complete in 22.574186325073242 ms
+[94m12:30:53:[0m 	Processing complete in 22.032976150512695 ms
+[94m12:30:53:[0m Processing file (66/69) file_double_escaping_backslash_row_3_col_7.csv
+[94m12:30:53:[0m 	Processing complete in 23.08034896850586 ms
+[94m12:30:53:[0m 	Processing complete in 24.411916732788086 ms
+[94m12:30:53:[0m 	Processing complete in 23.195743560791016 ms
+[94m12:30:53:[0m Processing file (67/69) file_no_header.csv
+[94m12:30:53:[0m 	Processing complete in 21.748065948486328 ms
+[94m12:30:53:[0m 	Processing complete in 21.52872085571289 ms
+[94m12:30:53:[0m 	Processing complete in 21.435022354125977 ms
+[94m12:30:53:[0m Processing file (68/69) file_mixed_time_formats_long_month_name_unquoted.csv
+[94m12:30:53:[0m 	Processing complete in 23.25153350830078 ms
+[94m12:30:53:[0m 	Processing complete in 21.563291549682617 ms
+[94m12:30:53:[0m 	Processing complete in 21.84581756591797 ms
+[94m12:30:53:[0m Processing file (69/69) file_field_delimiter_0x20.csv
+[94m12:30:53:[0m 	Processing complete in 42.891740798950195 ms
+[94m12:30:53:[0m 	Processing complete in 42.719125747680664 ms
+[94m12:30:53:[0m 	Processing complete in 42.66715049743652 ms
