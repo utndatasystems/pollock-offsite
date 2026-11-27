@@ -634,7 +634,7 @@ def _execute_generated_code(program: str, raw_csv: str) -> Any:
         # does not list the allowed builtins, so missing ones crash valid code.
         "divmod", "filter", "frozenset", "iter", "KeyError", "map", "ord", "repr",
         "round", "slice", "StopIteration", "UnicodeError",
-        "__build_class__", "OverflowError",
+        "__build_class__", "OverflowError", "bytes",
     ]
     namespace: Dict[str, Any] = {
         "__name__": "__llm_generated__",
