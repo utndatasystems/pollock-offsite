@@ -1,2 +1,2 @@
 Application Error
-Generated parser is not valid Python: unterminated string literal (detected at line 10) (<unknown>, line 10)
+LLM request failed: {"error":{"message":"the prompt is longer than the context length currently available to the model; shorten the prompt, adjust the context length in settings, or use a model with a longer context length","type":"invalid_request_error","param":null,"code":null}}

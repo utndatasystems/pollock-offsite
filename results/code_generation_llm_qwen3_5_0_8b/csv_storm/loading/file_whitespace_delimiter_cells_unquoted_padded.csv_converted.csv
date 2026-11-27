@@ -1,2 +1,2 @@
 Application Error
-Generated parser is not valid Python: unterminated string literal (detected at line 4) (<unknown>, line 4)
+Generated code did not define parse_csv(raw_csv: str)

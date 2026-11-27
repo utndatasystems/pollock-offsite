@@ -1,0 +1,70 @@
+filename,pollution,model,time_0,uncached_input_tokens_0,cached_input_tokens_0,completion_tokens_0
+file_num_columns_pad_randints_1000.csv,Unknown,gpt-5.6-luna,8.736674547195435,3.0,255229.0,560.0
+file_whitespace_delimiter_cells_quoted_padded.csv,Unknown,gpt-5.6-luna,57.79158329963684,3.0,7368.0,6960.0
+file_mixed_time_formats_iso_8601.csv,Unknown,gpt-5.6-luna,55.409334659576416,3.0,6475.0,6511.0
+combo__move_header_row5__preamble_2_raw_empty_row.csv,Unknown,gpt-5.6-luna,55.717143535614014,3.0,6487.0,6809.0
+file_more_columns_row_79_col_7.csv,Unknown,gpt-5.6-luna,55.839569330215454,6499.0,0.0,6705.0
+file_superheader_whitespace_aligned_columns_transaction_info_cols_0-1-2_group_product_info_cols_3-4-5-6-7_group_notes_cols_8.csv,Unknown,gpt-5.6-luna,59.9021782875061,6696.0,0.0,6997.0
+file_whitespace_delimiter_cells_quoted_unpadded.csv,Unknown,gpt-5.6-luna,63.189605474472046,6818.0,0.0,7468.0
+combo__row_quotation_mark_2_0x27__mixed_delimiters_within_row_row_2_range_3_0x3B.csv,Unknown,gpt-5.6-luna,61.18503975868225,6480.0,0.0,7015.0
+file_unescaped_multiline_string_row_2_col_7.csv,Unknown,gpt-5.6-luna,60.55148100852966,6480.0,0.0,6796.0
+file_more_columns_row_72_col_5.csv,Unknown,gpt-5.6-luna,57.73062181472778,6490.0,0.0,6925.0
+file_more_columns_row_34_col_1.csv,Unknown,gpt-5.6-luna,60.208240270614624,6490.0,0.0,7173.0
+file_mixed_delimiters_within_row_row_13_range_3_0x3B.csv,Unknown,gpt-5.6-luna,52.61639380455017,6478.0,0.0,6477.0
+file_header_multirow_2.csv,Multi-row header (2 rows),gpt-5.6-luna,51.08101224899292,6499.0,0.0,6385.0
+file_whitespace_delimiter_cells_unquoted_padded.csv,Unknown,gpt-5.6-luna,59.22524833679199,6602.0,0.0,7069.0
+file_preamble.csv,Preamble rows before header,gpt-5.6-luna,53.229445695877075,6527.0,0.0,6632.0
+file_double_escaping_double_quote_row_2_col_7.csv,Unknown,gpt-5.6-luna,52.36946392059326,6480.0,0.0,6498.0
+file_record_delimiter_0xA.csv,Non-standard record delimiter (0xA),gpt-5.6-luna,56.19046950340271,6478.0,0.0,6704.0
+file_commented_row_41.csv,Unknown,gpt-5.6-luna,53.32402801513672,6480.0,0.0,6517.0
+file_extremely_long_field_row_3_col_6_len_10000.csv,Unknown,gpt-5.6-luna,122.5283613204956,,,
+combo__multiline_header_rows_3__mixed_delimiters_within_row_row_4_range_3_0x3B__footnote_2_blank_line.csv,Unknown,gpt-5.6-luna,59.32767987251282,6491.0,0.0,6905.0
+file_commented_row_49.csv,Unknown,gpt-5.6-luna,54.773677349090576,6480.0,0.0,6609.0
+file_field_delimiter_0x2C_0x20.csv,Non-standard field delimiter (0x2C_0x20),gpt-5.6-luna,59.30232810974121,7003.0,0.0,7202.0
+file_embedded_json_cell_2_1_len_4.csv,Unknown,gpt-5.6-luna,54.04744839668274,6498.0,0.0,6606.0
+file_less_columns_deleted_value_row_45_col_7.csv,Unknown,gpt-5.6-luna,53.830453634262085,6465.0,0.0,6699.0
+file_more_columns_row_39_col_8.csv,Unknown,gpt-5.6-luna,55.56015062332153,6493.0,0.0,6804.0
+file_mixed_time_formats_long_month_name.csv,Unknown,gpt-5.6-luna,55.643521547317505,6560.0,0.0,6754.0
+file_field_delimiter_0x9.csv,Non-standard field delimiter (0x9),gpt-5.6-luna,59.033416748046875,6824.0,0.0,6935.0
+file_no_payload.csv,Empty file (0 bytes),gpt-5.6-luna,1.8448066711425781,446.0,0.0,75.0
+file_header_only.csv,"Header row only, no data",gpt-5.6-luna,2.873831272125244,467.0,0.0,173.0
+file_escape_char_0x5C.csv,Non-standard escape character (0x5C),gpt-5.6-luna,57.67934274673462,6479.0,0.0,6830.0
+file_mixed_time_formats_month_day_year.csv,Unknown,gpt-5.6-luna,51.65256381034851,6478.0,0.0,6435.0
+file_num_rows_50000_repeat_file.csv,Unknown,gpt-5.6-luna,3.3839690685272217,,,
+file_field_delimiter_0x3B.csv,Non-standard field delimiter (0x3B),gpt-5.6-luna,54.513347148895264,6597.0,0.0,6594.0
+source.csv,Unknown,gpt-5.6-luna,0.004965543746948242,6478.0,0.0,6704.0
+file_num_columns_1000.csv,Unknown,gpt-5.6-luna,63.13329195976257,29128.0,0.0,7410.0
+combo__more_columns_row_10_col_4__mixed_delimiters_within_row_row_11_range_3_0x3B.csv,Unknown,gpt-5.6-luna,65.57487940788269,6480.0,0.0,7659.0
+file_commented_row_56.csv,Unknown,gpt-5.6-luna,55.041181802749634,6479.0,0.0,6808.0
+file_less_columns_deleted_value_row_57_col_1.csv,Unknown,gpt-5.6-luna,59.19357419013977,6474.0,0.0,7007.0
+file_multiline_header_rows_3.csv,Unknown,gpt-5.6-luna,58.090009927749634,6479.0,0.0,6793.0
+file_header_multirow_3.csv,Multi-row header (3 rows),gpt-5.6-luna,54.06214642524719,6520.0,0.0,6516.0
+file_quotation_char_0x27.csv,Non-standard quotation character (0x27),gpt-5.6-luna,68.10839557647705,6652.0,0.0,7529.0
+file_double_trailing_newline.csv,Double trailing newline,gpt-5.6-luna,53.67252564430237,6479.0,0.0,6456.0
+file_whitespace_delimiter_cells_quoted_empty_last_column_padded.csv,Unknown,gpt-5.6-luna,63.10273885726929,7371.0,0.0,7226.0
+file_less_columns_deleted_value_row_70_col_3.csv,Unknown,gpt-5.6-luna,58.70176100730896,6473.0,0.0,6777.0
+file_escape_char_0x00.csv,Non-standard escape character (0x00),gpt-5.6-luna,56.90837097167969,6478.0,0.0,6907.0
+file_footnote_3_blank_line.csv,Unknown,gpt-5.6-luna,61.14060163497925,6490.0,0.0,7176.0
+file_mixed_delimiters_whole_row_row_13_0x3B.csv,Unknown,gpt-5.6-luna,56.7405571937561,6479.0,0.0,6600.0
+file_mixed_time_formats_day_month_year.csv,Unknown,gpt-5.6-luna,53.96424698829651,6478.0,0.0,6434.0
+file_less_columns_deleted_value_row_26_col_5.csv,Unknown,gpt-5.6-luna,57.91039538383484,6474.0,0.0,6843.0
+row_quotation_mark_12_0x27.csv,Unknown,gpt-5.6-luna,64.12310028076172,6481.0,0.0,7030.0
+file_superheader_sparse_transaction_info_cols_0-1-2_group_product_info_cols_3-4-5-6-7_group_notes_cols_8.csv,Unknown,gpt-5.6-luna,53.66326379776001,6487.0,0.0,6574.0
+file_quotation_char_none.csv,Unknown,gpt-5.6-luna,62.129302978515625,6470.0,0.0,7147.0
+combo__multiline_header_rows_3__footnote_2_blank_line.csv,Unknown,gpt-5.6-luna,56.8922324180603,6491.0,0.0,6927.0
+file_record_delimiter_0xD.csv,Non-standard record delimiter (0xD),gpt-5.6-luna,0.004561185836791992,6478.0,0.0,6704.0
+file_unquoted_lists_row_9_col_6.csv,Unknown,gpt-5.6-luna,54.8970148563385,6487.0,0.0,6490.0
+file_footnote_3.csv,Unknown,gpt-5.6-luna,59.68024945259094,6490.0,0.0,6981.0
+file_move_header_row8.csv,Unknown,gpt-5.6-luna,51.93510627746582,6478.0,0.0,6381.0
+file_no_trailing_newline.csv,Missing trailing newline,gpt-5.6-luna,59.01756763458252,6478.0,0.0,6751.0
+file_less_columns_deleted_value_row_40_col_1.csv,Unknown,gpt-5.6-luna,56.75267839431763,6474.0,0.0,6547.0
+file_excel_formulas.csv,Unknown,gpt-5.6-luna,57.293262243270874,6510.0,0.0,6856.0
+file_one_data_row.csv,Single data row,gpt-5.6-luna,3.3373711109161377,533.0,0.0,212.0
+file_more_columns_row_9_col_6.csv,Unknown,gpt-5.6-luna,61.16619062423706,6494.0,0.0,7005.0
+file_footnote_1.csv,Unknown,gpt-5.6-luna,56.07781362533569,6482.0,0.0,6840.0
+combo__move_header_row5__preamble_2_raw_empty_row__footnote_2_blank_line.csv,Unknown,gpt-5.6-luna,59.380265951156616,6502.0,0.0,7157.0
+file_mixed_delimiters_within_row_row_13_range_1_0x3B.csv,Unknown,gpt-5.6-luna,56.172491788864136,6478.0,0.0,6605.0
+file_double_escaping_backslash_row_3_col_7.csv,Unknown,gpt-5.6-luna,59.89401078224182,6480.0,0.0,7092.0
+file_no_header.csv,No header row,gpt-5.6-luna,54.65593099594116,6457.0,0.0,6635.0
+file_mixed_time_formats_long_month_name_unquoted.csv,Unknown,gpt-5.6-luna,59.53340744972229,6519.0,0.0,6811.0
+file_field_delimiter_0x20.csv,Non-standard field delimiter (0x20),gpt-5.6-luna,62.542221546173096,6529.0,0.0,7295.0

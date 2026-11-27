@@ -1,0 +1,148 @@
+[94m09:11:46:[0m (1/69) file_less_columns_deleted_value_row_45_col_7.csv
+[94m09:11:48:[0m 	 Shape of passed values is (825, 1), indices imply (825, 9)
+[94m09:11:48:[0m (2/69) file_embedded_json_cell_2_1_len_4.csv
+[94m09:11:52:[0m 	 Generated parser is not valid Python: unterminated triple-quoted string literal (detected at line 80) (<unknown>, line 77)
+[94m09:11:52:[0m (3/69) file_more_columns_row_39_col_8.csv
+[94m09:11:52:[0m 	 Shape of passed values is (827, 1), indices imply (827, 9)
+[94m09:11:52:[0m (4/69) file_whitespace_delimiter_cells_unquoted_padded.csv
+[94m09:12:16:[0m 	 Generated code did not define parse_csv(raw_csv: str)
+[94m09:12:16:[0m (5/69) combo__more_columns_row_10_col_4__mixed_delimiters_within_row_row_11_range_3_0x3B.csv
+[94m09:12:17:[0m 	 9 columns passed, passed data had 4 columns
+[94m09:12:17:[0m (6/69) file_field_delimiter_0x2C_0x20.csv
+[94m09:12:18:[0m 	 Generated parser returned an unsupported value
+[94m09:12:18:[0m (7/69) file_double_escaping_backslash_row_3_col_7.csv
+[94m09:12:23:[0m 	 new-line character seen in unquoted field - do you need to open the file with newline=''?
+[94m09:12:23:[0m (8/69) combo__move_header_row5__preamble_2_raw_empty_row.csv
+[94m09:12:26:[0m 	 Shape of passed values is (88, 1), indices imply (88, 0)
+[94m09:12:26:[0m (9/69) file_commented_row_56.csv
+[94m09:12:26:[0m 	 Shape of passed values is (826, 1), indices imply (826, 9)
+[94m09:12:26:[0m (10/69) file_num_columns_pad_randints_1000.csv
+[94m09:12:26:[0m 	 LLM request failed: {"error":{"message":"the prompt is longer than the context length currently available to the model; shorten the prompt, adjust the context length in settings, or use a model with a longer context length","type":"invalid_request_error","param":null,"code":null}}
+
+[94m09:12:26:[0m (11/69) file_commented_row_49.csv
+[94m09:12:26:[0m 	 Shape of passed values is (826, 1), indices imply (826, 9)
+[94m09:12:26:[0m (12/69) file_double_trailing_newline.csv
+[94m09:12:48:[0m 	 Generated parser is not valid Python: expected an indented block after 'else' statement on line 1055 (<unknown>, line 1055)
+[94m09:12:48:[0m (13/69) file_header_only.csv
+[94m09:12:50:[0m 	 Error parsing CSV: No header found
+[94m09:12:50:[0m (14/69) file_less_columns_deleted_value_row_26_col_5.csv
+[94m09:12:52:[0m 	 Error parsing CSV: Expected single line header
+[94m09:12:52:[0m (15/69) file_mixed_time_formats_iso_8601.csv
+[94m09:12:53:[0m 	 'continue' not properly in loop (<llm-generated-parser>, line 27)
+[94m09:12:53:[0m (16/69) combo__multiline_header_rows_3__footnote_2_blank_line.csv
+[94m09:12:56:[0m 	 Generated parser is not valid Python: unterminated triple-quoted string literal (detected at line 106) (<unknown>, line 94)
+[94m09:12:56:[0m (17/69) file_multiline_header_rows_3.csv
+[94m09:13:01:[0m 	 Generated parser is not valid Python: unterminated triple-quoted string literal (detected at line 132) (<unknown>, line 111)
+[94m09:13:01:[0m (18/69) file_unescaped_multiline_string_row_2_col_7.csv
+[94m09:13:02:[0m 	 'continue' not properly in loop (<llm-generated-parser>, line 25)
+[94m09:13:02:[0m (19/69) file_no_header.csv
+[94m09:13:08:[0m 	 9 columns passed, passed data had 7 columns
+[94m09:13:08:[0m (20/69) file_field_delimiter_0x3B.csv
+[94m09:13:12:[0m 	 Generated parser is not valid Python: unterminated triple-quoted string literal (detected at line 64) (<unknown>, line 52)
+[94m09:13:12:[0m (21/69) file_whitespace_delimiter_cells_quoted_unpadded.csv
+[94m09:13:14:[0m 	 Generated parser calls disallowed function open
+[94m09:13:14:[0m (22/69) file_num_columns_1000.csv
+[94m09:13:15:[0m 	 1000 columns passed, passed data had 998 columns
+[94m09:13:15:[0m (23/69) combo__row_quotation_mark_2_0x27__mixed_delimiters_within_row_row_2_range_3_0x3B.csv
+[94m09:13:18:[0m 	2 malformed row(s):
+[94m09:13:18:[0m 	  line 1: header row normalized — ['DATE', 'TIME', 'Qty', 'PRODUCTID', 'Price', 'ProductType', 'ProductDescription', 'URL', 'Comments']
+[94m09:13:18:[0m 	  line 2: width 6 -> 9 — ['28/01/2018', '00:00', '2;MG-8769;$74.69;Men"\'s Waterproof Hiking Boots', "'These waterproof hiking boots for men are rugged enough for peak performance yet light and quick enough to keep feet from feeling weighed down.'", "'https://www.example.com/product/MG_8769.html'", '']
+[94m09:13:18:[0m (24/69) file_excel_formulas.csv
+[94m09:13:23:[0m 	 168 columns passed, passed data had 1 columns
+[94m09:13:23:[0m (25/69) file_record_delimiter_0xD.csv
+[94m09:13:23:[0m 	 Shape of passed values is (826, 1), indices imply (826, 9)
+[94m09:13:23:[0m (26/69) file_field_delimiter_0x20.csv
+[94m09:13:24:[0m 	 Generated parser calls disallowed function input
+[94m09:13:24:[0m (27/69) file_less_columns_deleted_value_row_70_col_3.csv
+[94m09:13:24:[0m 	 Shape of passed values is (825, 1), indices imply (825, 9)
+[94m09:13:24:[0m (28/69) file_superheader_whitespace_aligned_columns_transaction_info_cols_0-1-2_group_product_info_cols_3-4-5-6-7_group_notes_cols_8.csv
+[94m09:13:47:[0m 	 Generated parser is not valid Python: '(' was never closed (<unknown>, line 1727)
+[94m09:13:47:[0m (29/69) file_less_columns_deleted_value_row_40_col_1.csv
+[94m09:13:47:[0m 	 Shape of passed values is (825, 1), indices imply (825, 9)
+[94m09:13:47:[0m (30/69) file_footnote_3.csv
+[94m09:14:10:[0m 	 'TIME'
+[94m09:14:10:[0m (31/69) file_footnote_1.csv
+[94m09:14:11:[0m 	 9 columns passed, passed data had 15 columns
+[94m09:14:11:[0m (32/69) file_mixed_time_formats_month_day_year.csv
+[94m09:14:12:[0m 	1 malformed row(s):
+[94m09:14:12:[0m 	  line 1: header row normalized — ['DATE', 'TIME', 'Qty', 'PRODUCTID', 'Price', 'ProductType', 'ProductDescription', 'URL', 'Comments']
+[94m09:14:12:[0m (33/69) file_num_rows_50000_repeat_file.csv
+[94m09:14:20:[0m 	 Generated parser is not valid Python: unterminated triple-quoted string literal (detected at line 92) (<unknown>, line 63)
+[94m09:14:20:[0m (34/69) file_escape_char_0x00.csv
+[94m09:14:24:[0m 	3 malformed row(s):
+[94m09:14:24:[0m 	  line 1: header row normalized — ['DATE', 'TIME', 'Qty', 'PRODUCTID', 'Price', 'ProductType', 'ProductDescription', 'URL', 'Comments']
+[94m09:14:24:[0m 	  line 13: width 10 -> 9 — ['20/02/2018', '02:45', '1', 'BH-7531', '$48.08', "Women's  Fly Rod 8 Wt.", "Amazingly crisp action and a remarkably light feel in our 8\\'9 length fly rod", ' impeccably designed for her."', 'https://www.example.com/product/BH_7531.html', '']
+[94m09:14:24:[0m 	  line 40: width 11 -> 9 — ['13/04/2018', '11:00', '4', 'YY-9611', '$3.79', 'Women\'s Hunting Shoes, 10",The original boot', ' made since 1912. Now with even more protection from cold', ' wet weather', ' with the addition of a waterproof liner and warm insulation."', 'https://www.example.com/product/YY_9611.html', '']
+[94m09:14:24:[0m (35/69) file_more_columns_row_72_col_5.csv
+[94m09:14:24:[0m 	 Shape of passed values is (827, 1), indices imply (827, 9)
+[94m09:14:24:[0m (36/69) file_header_multirow_3.csv
+[94m09:14:26:[0m 	 all arrays must be same length
+[94m09:14:26:[0m (37/69) file_quotation_char_none.csv
+[94m09:14:48:[0m 	 Generated parser is not valid Python: '[' was never closed (<unknown>, line 1450)
+[94m09:14:48:[0m (38/69) file_escape_char_0x5C.csv
+[94m09:14:51:[0m 	 Generated parser calls disallowed function open
+[94m09:14:51:[0m (39/69) file_whitespace_delimiter_cells_quoted_empty_last_column_padded.csv
+[94m09:14:56:[0m 	 Generated parser is not valid Python: unterminated triple-quoted string literal (detected at line 79) (<unknown>, line 72)
+[94m09:14:56:[0m (40/69) combo__move_header_row5__preamble_2_raw_empty_row__footnote_2_blank_line.csv
+[94m09:14:58:[0m 	 Generated parser calls disallowed function input
+[94m09:14:58:[0m (41/69) file_double_escaping_double_quote_row_2_col_7.csv
+[94m09:14:59:[0m 	 152 columns passed, passed data had 0 columns
+[94m09:14:59:[0m (42/69) file_no_trailing_newline.csv
+[94m09:14:59:[0m 	 Shape of passed values is (826, 1), indices imply (826, 9)
+[94m09:14:59:[0m (43/69) file_record_delimiter_0xA.csv
+[94m09:14:59:[0m 	 Shape of passed values is (826, 1), indices imply (826, 9)
+[94m09:14:59:[0m (44/69) file_no_payload.csv
+[94m09:15:01:[0m (45/69) file_footnote_3_blank_line.csv
+[94m09:15:03:[0m 	 cannot access free variable 'part' where it is not associated with a value in enclosing scope
+[94m09:15:03:[0m (46/69) combo__multiline_header_rows_3__mixed_delimiters_within_row_row_4_range_3_0x3B__footnote_2_blank_line.csv
+[94m09:15:06:[0m 	 Generated parser is not valid Python: unterminated triple-quoted string literal (detected at line 84) (<unknown>, line 76)
+[94m09:15:06:[0m (47/69) file_one_data_row.csv
+[94m09:15:07:[0m 	1 malformed row(s):
+[94m09:15:07:[0m 	  line 1: header row normalized — ['DATE', 'TIME', 'Qty', 'PRODUCTID', 'Price', 'ProductType', 'ProductDescription', 'URL', 'Comments']
+[94m09:15:07:[0m (48/69) file_less_columns_deleted_value_row_57_col_1.csv
+[94m09:15:07:[0m 	 Shape of passed values is (825, 1), indices imply (825, 9)
+[94m09:15:07:[0m (49/69) file_more_columns_row_9_col_6.csv
+[94m09:15:12:[0m 	 Shape of passed values is (1, 1), indices imply (1, 83)
+[94m09:15:12:[0m (50/69) file_whitespace_delimiter_cells_quoted_padded.csv
+[94m09:15:17:[0m 	 Generated parser is not valid Python: unterminated triple-quoted string literal (detected at line 84) (<unknown>, line 71)
+[94m09:15:17:[0m (51/69) file_mixed_delimiters_whole_row_row_13_0x3B.csv
+[94m09:15:17:[0m 	 Shape of passed values is (819, 1), indices imply (819, 9)
+[94m09:15:17:[0m (52/69) file_mixed_time_formats_long_month_name_unquoted.csv
+[94m09:15:33:[0m 	 Generated parser exceeded 10 second execution timeout
+[94m09:15:33:[0m (53/69) source.csv
+[94m09:15:33:[0m 	 Shape of passed values is (826, 1), indices imply (826, 9)
+[94m09:15:33:[0m (54/69) file_mixed_time_formats_day_month_year.csv
+[94m09:15:34:[0m 	 Generated parser returned an unsupported value
+[94m09:15:34:[0m (55/69) file_preamble.csv
+[94m09:15:36:[0m 	 1 columns passed, passed data had 15 columns
+[94m09:15:36:[0m (56/69) file_mixed_delimiters_within_row_row_13_range_3_0x3B.csv
+[94m09:15:36:[0m 	 Shape of passed values is (823, 1), indices imply (823, 9)
+[94m09:15:36:[0m (57/69) file_field_delimiter_0x9.csv
+[94m09:15:36:[0m 	 Generated parser returned an unsupported value
+[94m09:15:36:[0m (58/69) file_unquoted_lists_row_9_col_6.csv
+[94m09:15:59:[0m 	2 malformed row(s):
+[94m09:15:59:[0m 	  line 1: header row normalized — ['DATE', 'TIME', 'Qty', 'PRODUCTID', 'Price', 'ProductType', 'ProductDescription', 'URL', 'Comments']
+[94m09:15:59:[0m 	  line 9: width 12 -> 9 — ['16/02/2018', '01:45', '2', 'YY-3522', '$19.34', "[Kids' Pullover", "Men's Shorts", 'Light-Up Running Jacket', "Women's Booties]", 'Designed with lots of performance features, plus a semi-form-fitting profile, this cycling jersey delivers all-day comfort and serious style.', 'https://www.example.com/product/YY_3522.html', '']
+[94m09:15:59:[0m (59/69) file_move_header_row8.csv
+[94m09:16:00:[0m 	 Shape of passed values is (8, 1), indices imply (8, 83)
+[94m09:16:00:[0m (60/69) file_extremely_long_field_row_3_col_6_len_10000.csv
+[94m09:16:22:[0m 	 Generated parser is not valid Python: expected an indented block after 'if' statement on line 1262 (<unknown>, line 1263)
+[94m09:16:22:[0m (61/69) file_mixed_time_formats_long_month_name.csv
+[94m09:16:24:[0m 	 cannot access local variable 'row_data' where it is not associated with a value
+[94m09:16:24:[0m (62/69) file_mixed_delimiters_within_row_row_13_range_1_0x3B.csv
+[94m09:16:24:[0m 	 Shape of passed values is (825, 1), indices imply (825, 9)
+[94m09:16:24:[0m (63/69) file_more_columns_row_34_col_1.csv
+[94m09:16:26:[0m 	 Shape of passed values is (83, 1), indices imply (83, 9)
+[94m09:16:26:[0m (64/69) row_quotation_mark_12_0x27.csv
+[94m09:16:37:[0m 	 Generated parser exceeded 10 second execution timeout
+[94m09:16:37:[0m (65/69) file_quotation_char_0x27.csv
+[94m09:16:44:[0m 	 Generated parser is not valid Python: unterminated triple-quoted string literal (detected at line 88) (<unknown>, line 73)
+[94m09:16:44:[0m (66/69) file_more_columns_row_79_col_7.csv
+[94m09:16:44:[0m 	 Shape of passed values is (827, 1), indices imply (827, 9)
+[94m09:16:44:[0m (67/69) file_superheader_sparse_transaction_info_cols_0-1-2_group_product_info_cols_3-4-5-6-7_group_notes_cols_8.csv
+[94m09:16:48:[0m 	 Generated parser is not valid Python: invalid syntax. Perhaps you forgot a comma? (<unknown>, line 71)
+[94m09:16:48:[0m (68/69) file_commented_row_41.csv
+[94m09:16:48:[0m 	 Shape of passed values is (826, 1), indices imply (826, 9)
+[94m09:16:48:[0m (69/69) file_header_multirow_2.csv
+[94m09:17:10:[0m 	 Generated parser is not valid Python: unterminated string literal (detected at line 1609) (<unknown>, line 1609)
+[94m09:17:10:[0m LLM calls: 16/69 served from cache

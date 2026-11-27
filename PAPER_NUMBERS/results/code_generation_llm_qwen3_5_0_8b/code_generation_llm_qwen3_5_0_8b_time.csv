@@ -1,0 +1,71 @@
+filename,time_0,success_0,error_0,llm_calls_0,local_cache_hits_0
+file_less_columns_deleted_value_row_45_col_7.csv,1.3290301579982042,False,"ValueError: Shape of passed values is (825, 1), indices imply (825, 9)",1,0
+file_embedded_json_cell_2_1_len_4.csv,4.56480927800294,False,"ValueError: Generated parser is not valid Python: unterminated triple-quoted string literal (detected at line 80) (<unknown>, line 77)",1,0
+file_more_columns_row_39_col_8.csv,0.0276620099321007,False,"ValueError: Shape of passed values is (827, 1), indices imply (827, 9)",1,1
+file_whitespace_delimiter_cells_unquoted_padded.csv,23.247842072043568,False,ValueError: Generated code did not define parse_csv(raw_csv: str),1,0
+combo__more_columns_row_10_col_4__mixed_delimiters_within_row_row_11_range_3_0x3B.csv,1.5531243809964508,False,"ValueError: 9 columns passed, passed data had 4 columns",1,0
+file_field_delimiter_0x2C_0x20.csv,0.74431583203841,False,ValueError: Generated parser returned an unsupported value,1,0
+file_double_escaping_backslash_row_3_col_7.csv,4.7468513019848615,False,Error: new-line character seen in unquoted field - do you need to open the file with newline=''?,1,0
+combo__move_header_row5__preamble_2_raw_empty_row.csv,3.0360661649610847,False,"ValueError: Shape of passed values is (88, 1), indices imply (88, 0)",1,0
+file_commented_row_56.csv,0.0161219220608472,False,"ValueError: Shape of passed values is (826, 1), indices imply (826, 9)",1,1
+file_num_columns_pad_randints_1000.csv,0.3155088319908827,False,"RuntimeError: LLM request failed: {""error"":{""message"":""the prompt is longer than the context length currently available to the model; shorten the prompt, adjust the context length in settings, or use a model with a longer context length"",""type"":""invalid_request_error"",""param"":null,""code"":null}}
+",1,0
+file_commented_row_49.csv,0.0154319310095161,False,"ValueError: Shape of passed values is (826, 1), indices imply (826, 9)",1,1
+file_double_trailing_newline.csv,22.28723037301097,False,"ValueError: Generated parser is not valid Python: expected an indented block after 'else' statement on line 1055 (<unknown>, line 1055)",1,0
+file_header_only.csv,1.395805691019632,False,ValueError: Error parsing CSV: No header found,1,0
+file_less_columns_deleted_value_row_26_col_5.csv,1.8233462000498548,False,ValueError: Error parsing CSV: Expected single line header,1,0
+file_mixed_time_formats_iso_8601.csv,1.4994496629806235,False,"SyntaxError: 'continue' not properly in loop (<llm-generated-parser>, line 27)",1,0
+combo__multiline_header_rows_3__footnote_2_blank_line.csv,2.9740642679389566,False,"ValueError: Generated parser is not valid Python: unterminated triple-quoted string literal (detected at line 106) (<unknown>, line 94)",1,0
+file_multiline_header_rows_3.csv,5.083505587070249,False,"ValueError: Generated parser is not valid Python: unterminated triple-quoted string literal (detected at line 132) (<unknown>, line 111)",1,0
+file_unescaped_multiline_string_row_2_col_7.csv,1.2498388990061358,False,"SyntaxError: 'continue' not properly in loop (<llm-generated-parser>, line 25)",1,0
+file_no_header.csv,5.361427030991763,False,"ValueError: 9 columns passed, passed data had 7 columns",1,0
+file_field_delimiter_0x3B.csv,4.357634951011278,False,"ValueError: Generated parser is not valid Python: unterminated triple-quoted string literal (detected at line 64) (<unknown>, line 52)",1,0
+file_whitespace_delimiter_cells_quoted_unpadded.csv,1.459758752025664,False,ValueError: Generated parser calls disallowed function open,1,0
+file_num_columns_1000.csv,1.7153838749509305,False,"ValueError: 1000 columns passed, passed data had 998 columns",1,0
+combo__row_quotation_mark_2_0x27__mixed_delimiters_within_row_row_2_range_3_0x3B.csv,2.8016830360284075,True,,1,0
+file_excel_formulas.csv,4.522495371988043,False,"ValueError: 168 columns passed, passed data had 1 columns",1,0
+file_record_delimiter_0xD.csv,0.0153188139665871,False,"ValueError: Shape of passed values is (826, 1), indices imply (826, 9)",1,1
+file_field_delimiter_0x20.csv,1.5947759510017931,False,ValueError: Generated parser calls disallowed function input,1,0
+file_less_columns_deleted_value_row_70_col_3.csv,0.015395269030705,False,"ValueError: Shape of passed values is (825, 1), indices imply (825, 9)",1,1
+file_superheader_whitespace_aligned_columns_transaction_info_cols_0-1-2_group_product_info_cols_3-4-5-6-7_group_notes_cols_8.csv,22.744437120039947,False,"ValueError: Generated parser is not valid Python: '(' was never closed (<unknown>, line 1727)",1,0
+file_less_columns_deleted_value_row_40_col_1.csv,0.0154674290679395,False,"ValueError: Shape of passed values is (825, 1), indices imply (825, 9)",1,1
+file_footnote_3.csv,22.525847287033685,False,KeyError: 'TIME',1,0
+file_footnote_1.csv,0.9916619108989836,False,"ValueError: 9 columns passed, passed data had 15 columns",1,0
+file_mixed_time_formats_month_day_year.csv,1.7294017849490049,True,,1,0
+file_num_rows_50000_repeat_file.csv,7.279202527017333,False,"ValueError: Generated parser is not valid Python: unterminated triple-quoted string literal (detected at line 92) (<unknown>, line 63)",1,0
+file_escape_char_0x00.csv,4.369728068006225,True,,1,0
+file_more_columns_row_72_col_5.csv,0.0153697440400719,False,"ValueError: Shape of passed values is (827, 1), indices imply (827, 9)",1,1
+file_header_multirow_3.csv,2.166249472997152,False,ValueError: all arrays must be same length,1,0
+file_quotation_char_none.csv,22.35124407999683,False,"ValueError: Generated parser is not valid Python: '[' was never closed (<unknown>, line 1450)",1,0
+file_escape_char_0x5C.csv,2.288749607047066,False,ValueError: Generated parser calls disallowed function open,1,0
+file_whitespace_delimiter_cells_quoted_empty_last_column_padded.csv,4.976630073972046,False,"ValueError: Generated parser is not valid Python: unterminated triple-quoted string literal (detected at line 79) (<unknown>, line 72)",1,0
+combo__move_header_row5__preamble_2_raw_empty_row__footnote_2_blank_line.csv,1.964089907007292,False,ValueError: Generated parser calls disallowed function input,1,0
+file_double_escaping_double_quote_row_2_col_7.csv,1.5232361770467833,False,"ValueError: 152 columns passed, passed data had 0 columns",1,0
+file_no_trailing_newline.csv,0.0329452360747382,False,"ValueError: Shape of passed values is (826, 1), indices imply (826, 9)",1,1
+file_record_delimiter_0xA.csv,0.015524165937677,False,"ValueError: Shape of passed values is (826, 1), indices imply (826, 9)",1,1
+file_no_payload.csv,2.105514736031182,True,,1,0
+file_footnote_3_blank_line.csv,1.125480604940094,False,NameError: cannot access free variable 'part' where it is not associated with a value in enclosing scope,1,0
+combo__multiline_header_rows_3__mixed_delimiters_within_row_row_4_range_3_0x3B__footnote_2_blank_line.csv,3.82606653298717,False,"ValueError: Generated parser is not valid Python: unterminated triple-quoted string literal (detected at line 84) (<unknown>, line 76)",1,0
+file_one_data_row.csv,0.9908826149767264,True,,1,0
+file_less_columns_deleted_value_row_57_col_1.csv,0.0155170749640092,False,"ValueError: Shape of passed values is (825, 1), indices imply (825, 9)",1,1
+file_more_columns_row_9_col_6.csv,4.780953517998569,False,"ValueError: Shape of passed values is (1, 1), indices imply (1, 83)",1,0
+file_whitespace_delimiter_cells_quoted_padded.csv,4.762988408911042,False,"ValueError: Generated parser is not valid Python: unterminated triple-quoted string literal (detected at line 84) (<unknown>, line 71)",1,0
+file_mixed_delimiters_whole_row_row_13_0x3B.csv,0.0157617629738524,False,"ValueError: Shape of passed values is (819, 1), indices imply (819, 9)",1,1
+file_mixed_time_formats_long_month_name_unquoted.csv,15.858759216964245,False,TimeoutError: Generated parser exceeded 10 second execution timeout,1,0
+source.csv,0.0159623590297997,False,"ValueError: Shape of passed values is (826, 1), indices imply (826, 9)",1,1
+file_mixed_time_formats_day_month_year.csv,1.1590240439400077,False,ValueError: Generated parser returned an unsupported value,1,0
+file_preamble.csv,1.5663555869832635,False,"ValueError: 1 columns passed, passed data had 15 columns",1,0
+file_mixed_delimiters_within_row_row_13_range_3_0x3B.csv,0.0157982730306684,False,"ValueError: Shape of passed values is (823, 1), indices imply (823, 9)",1,1
+file_field_delimiter_0x9.csv,0.810567892040126,False,ValueError: Generated parser returned an unsupported value,1,0
+file_unquoted_lists_row_9_col_6.csv,22.550542465993203,True,,1,0
+file_move_header_row8.csv,1.024391722981818,False,"ValueError: Shape of passed values is (8, 1), indices imply (8, 83)",1,0
+file_extremely_long_field_row_3_col_6_len_10000.csv,22.20850888406858,False,"ValueError: Generated parser is not valid Python: expected an indented block after 'if' statement on line 1262 (<unknown>, line 1263)",1,0
+file_mixed_time_formats_long_month_name.csv,2.0343937469879165,False,UnboundLocalError: cannot access local variable 'row_data' where it is not associated with a value,1,0
+file_mixed_delimiters_within_row_row_13_range_1_0x3B.csv,0.0165055480320006,False,"ValueError: Shape of passed values is (825, 1), indices imply (825, 9)",1,1
+file_more_columns_row_34_col_1.csv,1.3363142720190808,False,"ValueError: Shape of passed values is (83, 1), indices imply (83, 9)",1,0
+row_quotation_mark_12_0x27.csv,11.509088356047869,False,TimeoutError: Generated parser exceeded 10 second execution timeout,1,0
+file_quotation_char_0x27.csv,6.526031337096356,False,"ValueError: Generated parser is not valid Python: unterminated triple-quoted string literal (detected at line 88) (<unknown>, line 73)",1,0
+file_more_columns_row_79_col_7.csv,0.0164499409729614,False,"ValueError: Shape of passed values is (827, 1), indices imply (827, 9)",1,1
+file_superheader_sparse_transaction_info_cols_0-1-2_group_product_info_cols_3-4-5-6-7_group_notes_cols_8.csv,4.218880578991957,False,"ValueError: Generated parser is not valid Python: invalid syntax. Perhaps you forgot a comma? (<unknown>, line 71)",1,0
+file_commented_row_41.csv,0.0160739509155973,False,"ValueError: Shape of passed values is (826, 1), indices imply (826, 9)",1,1
+file_header_multirow_2.csv,22.196039718110114,False,"ValueError: Generated parser is not valid Python: unterminated string literal (detected at line 1609) (<unknown>, line 1609)",1,0

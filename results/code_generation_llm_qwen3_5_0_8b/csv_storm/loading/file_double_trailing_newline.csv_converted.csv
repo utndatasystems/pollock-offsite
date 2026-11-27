@@ -1,2 +1,2 @@
 Application Error
-Error parsing CSV: iterator should return strings, not list (the file should be opened in text mode)
+Generated parser is not valid Python: expected an indented block after 'else' statement on line 1055 (<unknown>, line 1055)

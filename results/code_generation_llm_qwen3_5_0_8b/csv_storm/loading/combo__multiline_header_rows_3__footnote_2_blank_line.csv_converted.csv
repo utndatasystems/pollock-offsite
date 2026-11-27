@@ -1,2 +1,2 @@
 Application Error
-Generated parser is not valid Python: '[' was never closed (<unknown>, line 253)
+Generated parser is not valid Python: unterminated triple-quoted string literal (detected at line 106) (<unknown>, line 94)

@@ -1,2 +1,2 @@
 Application Error
-'int' object has no attribute 'strip'
+Shape of passed values is (8, 1), indices imply (8, 83)

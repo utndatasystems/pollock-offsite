@@ -4,7 +4,7 @@ combo__move_header_row5__preamble_2_raw_empty_row.csv,,,,0,1,,0,0.0,0.0,0.0,0.0,
 combo__move_header_row5__preamble_2_raw_empty_row__footnote_2_blank_line.csv,,,,0,1,,0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
 combo__multiline_header_rows_3__footnote_2_blank_line.csv,,,,0,1,,0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
 combo__multiline_header_rows_3__mixed_delimiters_within_row_row_4_range_3_0x3B__footnote_2_blank_line.csv,,,,0,1,,0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
-combo__row_quotation_mark_2_0x27__mixed_delimiters_within_row_row_2_range_3_0x3B.csv,,,,0,1,,0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
+combo__row_quotation_mark_2_0x27__mixed_delimiters_within_row_row_2_range_3_0x3B.csv,canonical,,,0,1,,1,1.0,1.0,1.0,0.0,0.0,0.0,0.011904761904761904,1.0,0.023529411764705882
 file_commented_row_41.csv,,,,0,1,,0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
 file_commented_row_49.csv,,,,0,1,,0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
 file_commented_row_56.csv,,,,0,1,,0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
@@ -12,7 +12,7 @@ file_double_escaping_backslash_row_3_col_7.csv,,,,0,1,,0,0.0,0.0,0.0,0.0,0.0,0.0
 file_double_escaping_double_quote_row_2_col_7.csv,,,,0,1,,0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
 file_double_trailing_newline.csv,,,,0,1,,0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
 file_embedded_json_cell_2_1_len_4.csv,,,,0,1,,0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
-file_escape_char_0x00.csv,,,,0,1,,0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
+file_escape_char_0x00.csv,canonical,,,0,1,,1,0.0,0.0,0.0,0.0,0.0,0.0,0.006613756613756613,0.007575757575757576,0.007062146892655367
 file_escape_char_0x5C.csv,,,,0,1,,0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
 file_excel_formulas.csv,,,,0,1,,0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
 file_extremely_long_field_row_3_col_6_len_10000.csv,,,,0,1,,0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
@@ -38,7 +38,7 @@ file_mixed_time_formats_day_month_year.csv,,,,0,1,,0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
 file_mixed_time_formats_iso_8601.csv,,,,0,1,,0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
 file_mixed_time_formats_long_month_name.csv,,,,0,1,,0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
 file_mixed_time_formats_long_month_name_unquoted.csv,,,,0,1,,0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
-file_mixed_time_formats_month_day_year.csv,,,,0,1,,0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
+file_mixed_time_formats_month_day_year.csv,temporal_values_as_strings,temporal_values_as_strings,temporal_values_as_strings,1,0,,1,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0
 file_more_columns_row_34_col_1.csv,,,,0,1,,0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
 file_more_columns_row_39_col_8.csv,,,,0,1,,0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
 file_more_columns_row_72_col_5.csv,,,,0,1,,0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
@@ -47,12 +47,10 @@ file_more_columns_row_9_col_6.csv,,,,0,1,,0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
 file_move_header_row8.csv,,,,0,1,,0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
 file_multiline_header_rows_3.csv,,,,0,1,,0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
 file_no_header.csv,,,,0,1,,0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
-file_no_payload.csv,,,,0,1,,0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
+file_no_payload.csv,canonical,,,0,1,,1,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0
 file_no_trailing_newline.csv,,,,0,1,,0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
 file_num_columns_1000.csv,,,,0,1,,0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
-file_num_columns_pad_randints_1000.csv,,,,0,1,,0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
-file_num_rows_50000_repeat_file.csv,,,,0,1,,0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
-file_one_data_row.csv,,,,0,1,,0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
+file_one_data_row.csv,canonical,,,0,1,,1,0.0,0.0,0.0,0.0,0.0,0.0,0.05555555555555555,0.5,0.09999999999999999
 file_preamble.csv,,,,0,1,,0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
 file_quotation_char_0x27.csv,,,,0,1,,0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
 file_quotation_char_none.csv,,,,0,1,,0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
@@ -61,10 +59,12 @@ file_record_delimiter_0xD.csv,,,,0,1,,0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
 file_superheader_sparse_transaction_info_cols_0-1-2_group_product_info_cols_3-4-5-6-7_group_notes_cols_8.csv,,,,0,1,,0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
 file_superheader_whitespace_aligned_columns_transaction_info_cols_0-1-2_group_product_info_cols_3-4-5-6-7_group_notes_cols_8.csv,,,,0,1,,0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
 file_unescaped_multiline_string_row_2_col_7.csv,,,,0,1,,0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
-file_unquoted_lists_row_9_col_6.csv,,,,0,1,,0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
+file_unquoted_lists_row_9_col_6.csv,canonical,,,0,1,,1,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
 file_whitespace_delimiter_cells_quoted_empty_last_column_padded.csv,,,,0,1,,0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
 file_whitespace_delimiter_cells_quoted_padded.csv,,,,0,1,,0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
 file_whitespace_delimiter_cells_quoted_unpadded.csv,,,,0,1,,0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
 file_whitespace_delimiter_cells_unquoted_padded.csv,,,,0,1,,0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
 row_quotation_mark_12_0x27.csv,,,,0,1,,0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
 source.csv,,,,0,1,,0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
+file_num_columns_pad_randints_1000.csv,,,,0,1,,0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
+file_num_rows_50000_repeat_file.csv,,,,0,1,,0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0

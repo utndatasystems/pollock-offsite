@@ -1,4 +1,4 @@
-13/02/2018 DATE,01:00 TIME,9 Qty,CC-9259 PRODUCTID,$48.00 Price,"Throw Pillow, Wooden Paddles ProductType","Add a pop of paddling fun to your bed, chair or sofa with this whimsical throw pillow, handhooked on front for a timeless style. ProductDescription",https://www.example.com/product/CC_9259.html URL,Comments
+DATE,TIME,Qty,PRODUCTID,Price,ProductType,ProductDescription,URL,Comments
 14/02/2018,01:15,1,CC-1697,$34.22,Men's Heavy-Duty Suspenders,"These tough Men's Heavy-Duty Suspenders are made to hold up heavy wool pants without stretching in any way, shape or form.",https://www.example.com/product/CC_1697.html,
 15/02/2018,01:30,2,RI-6052,$89.34,Organic Textured Cotton Towel,"All the softness and absorbency you've come to expect from our towels, in certified organic cotton for natural, ecofriendly comfort.",https://www.example.com/product/RI_6052.html,
 16/02/2018,01:45,2,YY-3522,$19.34,"Cycling Jersey, Short-Sleeve","Designed with lots of performance features, plus a semi-form-fitting profile, this cycling jersey delivers all-day comfort and serious style.",https://www.example.com/product/YY_3522.html,
@@ -77,7 +77,5 @@
 20/07/2018,18:00,1,BH-7918,$63.7,Kids' Jumper Hat,"With ski-inspired style and a toasty, fleece-lined earband, staying warm on the slopes has never looked cooler.",https://www.example.com/product/BH_7918.html,
 22/07/2018,18:30,1,BH-1085,$85.07,Heated Insoles,"This pair of water-resistant, remote-controlled heated insoles features thermal technology engineered to keep your feet warm, not hot, to avoid sweating and freezing.",https://www.example.com/product/BH_1085.html,
 24/07/2018,16:00,6,GN-2043,$23.25,"Men's Boots, 10"" Shearling-Lined","With waterproof leather outside and soft, plush shearling inside, our lined Boots are very possibly the coolest, warmest boots ever. Handcrafted right here.",https://www.example.com/product/GN_2043.html,
-,,,,,,,,
 Source: catalog activity export,,,,,,,,
 Source: catalog activity export,,,,,,,,
-,,,,,,,,

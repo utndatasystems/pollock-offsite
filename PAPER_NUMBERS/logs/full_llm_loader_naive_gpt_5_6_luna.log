@@ -1,0 +1,103 @@
+Benchmark files:   0%|          | 0/69 [00:00<?, ?file/s][94m10:00:27:[0m (1/69) file_num_columns_pad_randints_1000.csv
+Benchmark files:   1%|▏         | 1/69 [00:08<09:54,  8.74s/file][94m10:00:36:[0m (2/69) file_whitespace_delimiter_cells_quoted_padded.csv
+[94m10:01:33:[0m 	 The LLM response contained a fixed-CSV section, but pandas could not parse it.
+
+Attempts:
+- standard comma-separated CSV: Error tokenizing data. C error: Expected 9 fields in line 13, saw 10
+
+- comma-separated CSV with Python engine: ',' expected after '"'
+Benchmark files:   3%|▎         | 2/69 [01:06<41:58, 37.59s/file][94m10:01:33:[0m (3/69) file_mixed_time_formats_iso_8601.csv
+Benchmark files:   4%|▍         | 3/69 [02:01<50:18, 45.73s/file][94m10:02:29:[0m (4/69) combo__move_header_row5__preamble_2_raw_empty_row.csv
+Benchmark files:   6%|▌         | 4/69 [02:57<53:48, 49.67s/file][94m10:03:25:[0m (5/69) file_more_columns_row_79_col_7.csv
+Benchmark files:   7%|▋         | 5/69 [03:53<55:21, 51.90s/file][94m10:04:20:[0m (6/69) file_superheader_whitespace_aligned_columns_transaction_info_cols_0-1-2_group_product_info_cols_3-4-5-6-7_group_notes_cols_8.csv
+Benchmark files:   9%|▊         | 6/69 [04:53<57:20, 54.62s/file][94m10:05:20:[0m (7/69) file_whitespace_delimiter_cells_quoted_unpadded.csv
+Benchmark files:  10%|█         | 7/69 [05:56<59:20, 57.42s/file][94m10:06:23:[0m (8/69) combo__row_quotation_mark_2_0x27__mixed_delimiters_within_row_row_2_range_3_0x3B.csv
+Benchmark files:  12%|█▏        | 8/69 [06:57<59:35, 58.62s/file][94m10:07:25:[0m (9/69) file_unescaped_multiline_string_row_2_col_7.csv
+Benchmark files:  13%|█▎        | 9/69 [07:58<59:13, 59.22s/file][94m10:08:25:[0m (10/69) file_more_columns_row_72_col_5.csv
+Benchmark files:  14%|█▍        | 10/69 [08:56<57:47, 58.76s/file][94m10:09:23:[0m (11/69) file_more_columns_row_34_col_1.csv
+Benchmark files:  16%|█▌        | 11/69 [09:56<57:13, 59.21s/file][94m10:10:23:[0m (12/69) file_mixed_delimiters_within_row_row_13_range_3_0x3B.csv
+Benchmark files:  17%|█▋        | 12/69 [10:48<54:20, 57.20s/file][94m10:11:16:[0m (13/69) file_header_multirow_2.csv
+Benchmark files:  19%|█▉        | 13/69 [11:39<51:39, 55.35s/file][94m10:12:07:[0m (14/69) file_whitespace_delimiter_cells_unquoted_padded.csv
+[94m10:13:06:[0m 	 The LLM response contained a fixed-CSV section, but pandas could not parse it.
+
+Attempts:
+- standard comma-separated CSV: Error tokenizing data. C error: Expected 9 fields in line 3, saw 11
+
+- comma-separated CSV with Python engine: Expected 9 fields in line 3, saw 11
+Benchmark files:  20%|██        | 14/69 [12:39<51:48, 56.52s/file][94m10:13:06:[0m (15/69) file_preamble.csv
+Benchmark files:  22%|██▏       | 15/69 [13:32<49:58, 55.53s/file][94m10:13:59:[0m (16/69) file_double_escaping_double_quote_row_2_col_7.csv
+Benchmark files:  23%|██▎       | 16/69 [14:24<48:12, 54.58s/file][94m10:14:52:[0m (17/69) file_record_delimiter_0xA.csv
+Benchmark files:  25%|██▍       | 17/69 [15:20<47:43, 55.06s/file][94m10:15:48:[0m (18/69) file_commented_row_41.csv
+Benchmark files:  26%|██▌       | 18/69 [16:14<46:21, 54.54s/file][94m10:16:41:[0m (19/69) file_extremely_long_field_row_3_col_6_len_10000.csv
+[94m10:18:44:[0m 	 LLM response was truncated because it reached the configured output token limit (max_completion_tokens=16000). Increase the limit or reduce the requested output before parsing this result.
+Benchmark files:  28%|██▊       | 19/69 [18:16<1:02:28, 74.96s/file][94m10:18:44:[0m (20/69) combo__multiline_header_rows_3__mixed_delimiters_within_row_row_4_range_3_0x3B__footnote_2_blank_line.csv
+Benchmark files:  29%|██▉       | 20/69 [19:16<57:23, 70.27s/file]  [94m10:19:43:[0m (21/69) file_commented_row_49.csv
+Benchmark files:  30%|███       | 21/69 [20:10<52:29, 65.62s/file][94m10:20:38:[0m (22/69) file_field_delimiter_0x2C_0x20.csv
+[94m10:21:37:[0m 	 The LLM response contained a fixed-CSV section, but pandas could not parse it.
+
+Attempts:
+- standard comma-separated CSV: Error tokenizing data. C error: Expected 9 fields in line 3, saw 11
+
+- comma-separated CSV with Python engine: Expected 9 fields in line 3, saw 11
+Benchmark files:  32%|███▏      | 22/69 [21:10<49:54, 63.72s/file][94m10:21:37:[0m (23/69) file_embedded_json_cell_2_1_len_4.csv
+Benchmark files:  33%|███▎      | 23/69 [22:04<46:37, 60.82s/file][94m10:22:31:[0m (24/69) file_less_columns_deleted_value_row_45_col_7.csv
+Benchmark files:  35%|███▍      | 24/69 [22:58<44:02, 58.72s/file][94m10:23:25:[0m (25/69) file_more_columns_row_39_col_8.csv
+Benchmark files:  36%|███▌      | 25/69 [23:53<42:22, 57.77s/file][94m10:24:21:[0m (26/69) file_mixed_time_formats_long_month_name.csv
+Benchmark files:  38%|███▊      | 26/69 [24:49<40:56, 57.13s/file][94m10:25:16:[0m (27/69) file_field_delimiter_0x9.csv
+Benchmark files:  39%|███▉      | 27/69 [25:48<40:23, 57.70s/file][94m10:26:15:[0m (28/69) file_no_payload.csv
+Benchmark files:  41%|████      | 28/69 [25:50<27:58, 40.95s/file][94m10:26:17:[0m (29/69) file_header_only.csv
+Benchmark files:  42%|████▏     | 29/69 [25:53<19:40, 29.52s/file][94m10:26:20:[0m (30/69) file_escape_char_0x5C.csv
+[94m10:27:18:[0m 	 The LLM response contained a fixed-CSV section, but pandas could not parse it.
+
+Attempts:
+- standard comma-separated CSV: Error tokenizing data. C error: Expected 9 fields in line 13, saw 10
+
+- comma-separated CSV with Python engine: ',' expected after '"'
+Benchmark files:  43%|████▎     | 30/69 [26:50<24:40, 37.97s/file][94m10:27:18:[0m (31/69) file_mixed_time_formats_month_day_year.csv
+Benchmark files:  45%|████▍     | 31/69 [27:42<26:38, 42.08s/file][94m10:28:09:[0m (32/69) file_num_rows_50000_repeat_file.csv
+[94m10:28:13:[0m 	 400 Client Error: Bad Request for url: https://api.openai.com/v1/chat/completions
+LLM API error: invalid_request_error: Invalid 'messages[1].content': string too long. Expected a string with maximum length 10485760, but got a string with length 13010199 instead.
+Benchmark files:  46%|████▋     | 32/69 [27:45<18:47, 30.47s/file][94m10:28:13:[0m (33/69) file_field_delimiter_0x3B.csv
+Benchmark files:  48%|████▊     | 33/69 [28:40<22:36, 37.68s/file][94m10:29:07:[0m (34/69) source.csv
+[94m10:29:07:[0m (35/69) file_num_columns_1000.csv
+Benchmark files:  51%|█████     | 35/69 [29:43<19:45, 34.86s/file][94m10:30:10:[0m (36/69) combo__more_columns_row_10_col_4__mixed_delimiters_within_row_row_11_range_3_0x3B.csv
+Benchmark files:  52%|█████▏    | 36/69 [30:49<23:21, 42.48s/file][94m10:31:16:[0m (37/69) file_commented_row_56.csv
+Benchmark files:  54%|█████▎    | 37/69 [31:44<24:24, 45.76s/file][94m10:32:11:[0m (38/69) file_less_columns_deleted_value_row_57_col_1.csv
+Benchmark files:  55%|█████▌    | 38/69 [32:43<25:31, 49.42s/file][94m10:33:10:[0m (39/69) file_multiline_header_rows_3.csv
+Benchmark files:  57%|█████▋    | 39/69 [33:41<25:55, 51.84s/file][94m10:34:08:[0m (40/69) file_header_multirow_3.csv
+Benchmark files:  58%|█████▊    | 40/69 [34:35<25:21, 52.48s/file][94m10:35:02:[0m (41/69) file_quotation_char_0x27.csv
+Benchmark files:  59%|█████▉    | 41/69 [35:43<26:36, 57.01s/file][94m10:36:10:[0m (42/69) file_double_trailing_newline.csv
+Benchmark files:  61%|██████    | 42/69 [36:37<25:12, 56.03s/file][94m10:37:04:[0m (43/69) file_whitespace_delimiter_cells_quoted_empty_last_column_padded.csv
+Benchmark files:  62%|██████▏   | 43/69 [37:40<25:11, 58.12s/file][94m10:38:07:[0m (44/69) file_less_columns_deleted_value_row_70_col_3.csv
+Benchmark files:  64%|██████▍   | 44/69 [38:39<24:17, 58.29s/file][94m10:39:06:[0m (45/69) file_escape_char_0x00.csv
+Benchmark files:  65%|██████▌   | 45/69 [39:35<23:09, 57.88s/file][94m10:40:03:[0m (46/69) file_footnote_3_blank_line.csv
+Benchmark files:  67%|██████▋   | 46/69 [40:37<22:33, 58.85s/file][94m10:41:04:[0m (47/69) file_mixed_delimiters_whole_row_row_13_0x3B.csv
+Benchmark files:  68%|██████▊   | 47/69 [41:33<21:20, 58.22s/file][94m10:42:01:[0m (48/69) file_mixed_time_formats_day_month_year.csv
+Benchmark files:  70%|██████▉   | 48/69 [42:27<19:55, 56.95s/file][94m10:42:55:[0m (49/69) file_less_columns_deleted_value_row_26_col_5.csv
+Benchmark files:  71%|███████   | 49/69 [43:25<19:04, 57.24s/file][94m10:43:53:[0m (50/69) row_quotation_mark_12_0x27.csv
+Benchmark files:  72%|███████▏  | 50/69 [44:29<18:46, 59.30s/file][94m10:44:57:[0m (51/69) file_superheader_sparse_transaction_info_cols_0-1-2_group_product_info_cols_3-4-5-6-7_group_notes_cols_8.csv
+Benchmark files:  74%|███████▍  | 51/69 [45:23<17:16, 57.61s/file][94m10:45:50:[0m (52/69) file_quotation_char_none.csv
+Benchmark files:  75%|███████▌  | 52/69 [46:25<16:42, 58.97s/file][94m10:46:52:[0m (53/69) combo__multiline_header_rows_3__footnote_2_blank_line.csv
+Benchmark files:  77%|███████▋  | 53/69 [47:22<15:33, 58.34s/file][94m10:47:49:[0m (54/69) file_record_delimiter_0xD.csv
+[94m10:47:49:[0m (55/69) file_unquoted_lists_row_9_col_6.csv
+Benchmark files:  80%|███████▉  | 55/69 [48:17<10:17, 44.09s/file][94m10:48:44:[0m (56/69) file_footnote_3.csv
+Benchmark files:  81%|████████  | 56/69 [49:17<10:23, 47.95s/file][94m10:49:44:[0m (57/69) file_move_header_row8.csv
+Benchmark files:  83%|████████▎ | 57/69 [50:09<09:47, 49.00s/file][94m10:50:36:[0m (58/69) file_no_trailing_newline.csv
+Benchmark files:  84%|████████▍ | 58/69 [51:08<09:28, 51.72s/file][94m10:51:35:[0m (59/69) file_less_columns_deleted_value_row_40_col_1.csv
+Benchmark files:  86%|████████▌ | 59/69 [52:04<08:51, 53.13s/file][94m10:52:32:[0m (60/69) file_excel_formulas.csv
+Benchmark files:  87%|████████▋ | 60/69 [53:02<08:08, 54.32s/file][94m10:53:29:[0m (61/69) file_one_data_row.csv
+Benchmark files:  88%|████████▊ | 61/69 [53:05<05:16, 39.55s/file][94m10:53:32:[0m (62/69) file_more_columns_row_9_col_6.csv
+Benchmark files:  90%|████████▉ | 62/69 [54:06<05:21, 45.88s/file][94m10:54:33:[0m (63/69) file_footnote_1.csv
+Benchmark files:  91%|█████████▏| 63/69 [55:02<04:53, 48.88s/file][94m10:55:30:[0m (64/69) combo__move_header_row5__preamble_2_raw_empty_row__footnote_2_blank_line.csv
+Benchmark files:  93%|█████████▎| 64/69 [56:02<04:19, 52.00s/file][94m10:56:29:[0m (65/69) file_mixed_delimiters_within_row_row_13_range_1_0x3B.csv
+Benchmark files:  94%|█████████▍| 65/69 [56:58<03:32, 53.24s/file][94m10:57:25:[0m (66/69) file_double_escaping_backslash_row_3_col_7.csv
+[94m10:58:25:[0m 	 The LLM response contained a fixed-CSV section, but pandas could not parse it.
+
+Attempts:
+- standard comma-separated CSV: Error tokenizing data. C error: Expected 9 fields in line 3, saw 11
+
+- comma-separated CSV with Python engine: ',' expected after '"'
+Benchmark files:  96%|█████████▌| 66/69 [57:58<02:45, 55.22s/file][94m10:58:25:[0m (67/69) file_no_header.csv
+Benchmark files:  97%|█████████▋| 67/69 [58:52<01:50, 55.05s/file][94m10:59:20:[0m (68/69) file_mixed_time_formats_long_month_name_unquoted.csv
+Benchmark files:  99%|█████████▊| 68/69 [59:52<00:56, 56.39s/file][94m11:00:19:[0m (69/69) file_field_delimiter_0x20.csv
+Benchmark files: 100%|██████████| 69/69 [1:00:54<00:00, 58.24s/file]Benchmark files: 100%|██████████| 69/69 [1:00:54<00:00, 52.97s/file]

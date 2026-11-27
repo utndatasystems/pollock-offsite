@@ -1,2 +1,2 @@
 Application Error
-Index(...) must be called with a collection of some kind, False was passed
+Generated parser is not valid Python: '[' was never closed (<unknown>, line 1450)
